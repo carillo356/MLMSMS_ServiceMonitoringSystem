@@ -1,0 +1,10 @@
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\bin\Debug\ServiceMonitor.exe.config
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\bin\Debug\ServiceMonitor.exe
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\bin\Debug\ServiceMonitor.pdb
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\obj\Debug\ServiceMonitor.csproj.AssemblyReference.cache
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\obj\Debug\ServiceMonitor.csproj.SuggestedBindingRedirects.cache
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\obj\Debug\ServiceMonitor.csproj.CoreCompileInputs.cache
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\obj\Debug\ServiceMonitor.exe
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\obj\Debug\ServiceMonitor.pdb
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\obj\Debug\ServiceMonitor.ProjectInstaller.resources
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\obj\Debug\ServiceMonitor.csproj.GenerateResource.cache

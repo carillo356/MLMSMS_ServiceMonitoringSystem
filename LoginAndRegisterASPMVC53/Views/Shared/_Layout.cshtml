@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<!-- Nav Bar with Responsive -->
+<header>
+    <div class="container-fluid">
+        <div class="navb-name">
+            MLM Service Monitoring System
+        </div>
+
+        <div class="navb-items d-none d-xl-flex">
+            <div class="item">
+                <a href="@Url.Action("Index","Home")" class="navbar active">Home</a>
+            </div>
+
+            <div class="item">
+                <a href="@Url.Action("Users","Home")" class="navbar">Users</a>
+            </div>
+
+            <div class="item-button">
+                <a href="@Url.Action("Logout","Home")" type="button">Logout</a>
+            </div>
+        </div>
+
+        <!-- Button trigger modal (Responsive) -->
+        <div class="mobile-toggler d-lg-none">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#navbModal">
+                <i class="bi bi-list"></i>
+            </a>
+        </div>
+
+        <!-- Modal (Responsive) -->
+        <div class="modal fade" style="width: 500px;" id="navbModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="title">MLM Service Monitoring System</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="modal-line">
+                            <i class="bi bi-house"></i><a href="@Url.Action("Index","Home")">Home</a>
+                        </div>
+
+                        <div class="modal-line">
+                            <i class="bi bi-bell"></i><a href="@Url.Action("Users","Home")">Users</a>
+                        </div>
+
+                        <a href="@Url.Action("Logout","Home")" class="navb-button" type="button">Logout</a>
+                    </div>
+
+                    <div class="mobile-modal-footer">
+                        <a target="_blank" href="#"><i class="bi bi-instagram"></i></a>
+                        <a target="_blank" href="#"><i class="bi bi-linkedin"></i></a>
+                        <a target="_blank" href="#"><i class="bi bi-youtube"></i></a>
+                        <a target="_blank" href="#"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <link href="~/Style/homepage.css" rel="stylesheet" />
+    <link href="~/Style/login.css" rel="stylesheet" />
+    <link href="~/Style/signup.css" rel="stylesheet" />
+    <link href="~/Style/service.css" rel="stylesheet" />
+    <link href="~/Style/users.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-OL1e6CQNw1N27PzZZYl0Tj0IvJ90pOUomU9XPTa3vp7IksdvLwCz7xlKC0Gt/kZh" crossorigin="anonymous" />
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+    <script src="~/Scripts/login.js"></script>
+    <script src="~/Scripts/service.js"></script>
+</head>
+<body>
+    <div>
+        @RenderBody();
+    </div>
+</body>
+</html>
+
+
