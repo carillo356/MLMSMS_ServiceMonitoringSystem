@@ -1,0 +1,720 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<body class="bgcolor">
+    <!-- Nav Bar with Responsive -->
+    <header>
+        <div class="container-fluid">
+            <div class="navb-name">
+                MLM Service Monitoring System
+            </div>
+
+            <div class="navb-items d-none d-xl-flex">
+                <div class="menu-item">
+                    <a href="@Url.Action("Index","Home")" class="navbar active">Home</a>
+                </div>
+
+                <div class="menu-item">
+                    <a href="@Url.Action("Users","Home")" class="navbar">Users</a>
+                </div>
+
+                <div class="item-button">
+                    <a href="@Url.Action("Logout","Home")" type="button">Logout</a>
+                </div>
+            </div>
+
+            <!-- Button trigger modal (Responsive) -->
+            <div class="mobile-toggler d-lg-none">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#navbModal">
+                    <i class="bi bi-list"></i>
+                </a>
+            </div>
+
+            <!-- Modal (Responsive) -->
+            <div class="modal fade" style="width: 500px;" id="navbModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="title">MLM Service Monitoring System</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="modal-line">
+                                <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="bi bi-house"></i>Home</a>
+                            </div>
+
+                            <div class="modal-line">
+                                <a href="@Url.Action("Users","Home")" class="btn btn-primary"><i class="bi bi-bell"></i>Users</a>
+                            </div>
+
+                            <a href="@Url.Action("Logout","Home")" class="navb-button" type="button">Logout</a>
+                        </div>
+
+                        <div class="mobile-modal-footer">
+                            <a target="_blank" href="#"><i class="bi bi-instagram"></i></a>
+                            <a target="_blank" href="#"><i class="bi bi-linkedin"></i></a>
+                            <a target="_blank" href="#"><i class="bi bi-youtube"></i></a>
+                            <a target="_blank" href="#"><i class="bi bi-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    @*<div class="fs-1 fw-bold text-center my-4">List of Services</div>*@
+    <!--Select Service Dropdown with Search Filter-->
+    @*<div class="container my-5">
+            <div class="select-btn">
+                <span class="btn-text">Add Services</span>
+                <span class="arrow-dwn">
+                    <i class="bi bi-arrow-down-short"></i>
+                </span>
+            </div>
+            <ul class="list-items">
+                <div class="d-flex justify-content-left">
+                    <form onsubmit="event.preventDefault(); addService(this.ServiceName.value);" class="d-flex align-items-center mb-0">
+                        <div class="form-group m-3" style="width: 65%;">
+                            <input type="text" name="ServiceName" class="form-control" style="width: 100%;" placeholder="Search" />
+                        </div>
+                        <div class="item-button mt-2" style="display:flex;">
+                            <button type="submit" class="custom-button"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+                <div id="serviceCheckboxes"></div>
+            </ul>
+        </div>*@
+    @*Service Table with CRUD*@
+    @*<table class="table table-hover" id="serviceTable">
+            <thead>
+                <tr>
+                    <th scope="col">SERVICE NAME</th>
+                    <th scope="col">LAST START</th>
+                    <th scope="col">LAST LOG</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">ACTION BY</th>
+                    <th scope="col">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>*@
+
+    <!-- Service Table with search filter to add service -->
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>List of Services</b></h2>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=""><i class="bi bi-dash-circle"></i><span>Delete Services</span></button>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover" id="serviceTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="custom-checkbox">
+                                    <input type="checkbox" id="selectAll">
+                                    <label for="selectAll"></label>
+                                </span>
+                            </th>
+                            <th scope="col" style="width: 15%;">SERVICE NAME</th>
+                            <th scope="col" style="width: 20%;">LAST START</th>
+                            <th scope="col" style="width: 10%;">LAST LOG</th>
+                            <th scope="col" style="width: 20%;">STATUS</th>
+                            <th scope="col" style="width: 15%;">ACTION BY</th>
+                            <th scope="col" style="width: 15%;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- table content goes here -->
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    <div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a href="#">Previous</a></li>
+                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="displayService-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Add Services</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-left">
+                        <form onsubmit="event.preventDefault(); addService(this.ServiceName.value);" class="d-flex align-items-center mb-0">
+                            <div class="form-group m-3" style="width: 100%;">
+                                <input type="text" name="ServiceName" class="form-control" style="width: 250px;" autocomplete="off" placeholder="Search" />
+                            </div>
+                            <div class="item-button mt-2" style="display:flex;">
+                                <button type="submit" class="custom-button"><i class="bi bi-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="list-group">
+                        <div id="serviceCheckboxes"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dropdown menu in selecting no. of rows -->
+    <div id="service-modal" class="modal">
+        <div class="modal-servicecontent">
+            <span class="close">&times;</span>
+            <div class="service_title">Log History</div>
+            <div class="service_name mb-2 fst-italic"></div>
+            <div class="select-menu">
+                <div class="select-btn1">
+                    <span class="sBtn-text">Select row</span>
+                    <i class="bi bi-arrow-down-short"></i>
+                </div>
+
+                <ul class="options">
+                    <li class="option">
+                        <span class="option-text">10 rows</span>
+                    </li>
+                    <li class="option">
+                        <span class="option-text">20 rows</span>
+                    </li>
+                    <li class="option">
+                        <span class="option-text">30 rows</span>
+                    </li>
+                    <li class="option">
+                        <span class="option-text">40 rows</span>
+                    </li>
+                    <li class="option">
+                        <span class="option-text">All rows</span>
+                    </li>
+                </ul>
+            </div>
+            <table class="table" id="popupTable">
+                <thead>
+                    <tr class="border-4 border-dark">
+                        @*<th scope="col">SERVICE NAME</th>*@
+                        <th scope="col" style="width: 25%;">LAST START</th>
+                        <th scope="col" style="width: 20%;">LAST LOG</th>
+                        <th scope="col">STATUS</th>
+                        <th scope="col" style="width: 25%;">ACTIONBY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Select Service Dropdown -->
+    <script>
+        const selectBtn = document.querySelector(".select-btn"),
+            items = document.querySelectorAll(".item");
+
+        selectBtn.addEventListener("click", () => {
+            selectBtn.classList.toggle("open");
+        });
+    </script>
+
+    <!-- Service Tables (CRUD, ViewLogs, etc) -->
+    <script>
+
+        // Refresh Function
+        $(document).ready(function () {
+            refreshtable()
+        });
+
+        // Function to fetch service names and generate checkboxes
+        function generateServiceCheckboxes() {
+            $.ajax({
+                url: '@Url.Action("GetServiceNames")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (serviceNames) {
+                    serviceCheckboxes(serviceNames);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert('Error fetching service names');
+                }
+            });
+        }
+
+        //Checkboxes for Service Name
+        function serviceCheckboxes(serviceNames) {
+            $.ajax({
+                url: "/Home/GetMonitoredServices",
+                type: 'GET',
+                dataType: 'json',
+                success: function (monitoredServices) {
+                    if (serviceNames.length > 0) {
+                        var checkboxes = '';
+                        $.each(serviceNames, function (i, item) {
+                            var checkbox = '<li class="item"><div class="form-check">';
+                            checkbox += '<input class="form-check-input" type="checkbox" value="' + item + '" id="service-' + i + '"';
+                            if (monitoredServices.indexOf(item) !== -1) {
+                                checkbox += ' checked="checked"';
+                            }
+                            checkbox += '>';
+                            checkbox += '<label class="form-check-label" for="service-' + i + '">' + item + '</label>';
+                            checkbox += '</div></li>';
+                            checkboxes += checkbox;
+                        });
+                        $('#serviceCheckboxes').html(checkboxes);
+
+                        // Add event listener for change event
+                        $('.form-check-input').on('change', function () {
+                            var serviceName = $(this).val();
+                            if (this.checked) {
+                                addService(serviceName);
+                            } else {
+                                deleteServices(serviceName);
+                            }
+                        });
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert('Error fetching monitored services');
+                }
+            });
+        }
+
+    generateServiceCheckboxes();
+
+    //Event Listener for Selecting no. of Rows
+    $(document).ready(function () {
+        // Set up the event listener for options
+        $('.options li').click(function () {
+            var optionText = $(this).find('.option-text').text();
+            switch (optionText) {
+                case "All rows":
+                    limit = -1;
+                    break;
+                default:
+                    limit = parseInt(optionText);
+                    break;
+            }
+            logHistory(currentServiceName, limit);
+        });
+
+        // Set up the close button to hide the dialog when clicked
+        $('.close').click(function () {
+            $('#service-modal').css('display', 'none');
+        });
+    });
+
+    var currentServiceName; //Gets the servicename of the opened log history
+
+    // Log History Modal
+    function logHistory(serviceName, limit) {
+        //Viewlogs, Gets all the records of a service
+        $.ajax({
+            url: "/Home/GetLogHistory",
+            type: "POST",
+            data: { serviceName: serviceName },
+            success: function (data) {
+                // Get the table body element
+                var tbody = $('#popupTable tbody');
+                tbody.empty();
+
+                // Create a string containing all the rows
+                var rows = '';
+                data.slice(0, limit).forEach(function (service) {
+                    rows += '<tr>' +
+                        /*'<td>' + service.ServiceName + '</td>' +*/
+                        '<td>' + service.LastStart + '</td>' +
+                        '<td>' + service.ServiceStatus + '</td>' +
+                        '<td>' + service.LastLog + '</td>' +
+                        '<td>' + service.ActionBy + '</td>' +
+                        '</tr>';
+                });
+
+                // Append the rows to the table in a single operation
+                tbody.append(rows);
+                currentServiceName = serviceName;
+
+                $('#service-modal .modal-servicecontent .service_name').text(serviceName);
+
+                // Show the popup dialog
+                $('#service-modal').css('display', 'block');
+
+            },
+            error: function () {
+                alert("Failed to retrieve records for " + serviceName);
+            }
+        });
+    }
+
+        //function manageServices(serviceName, command) {
+
+        //    $.ajax({
+        //        url: '/Home/ManageServices',
+        //        type: 'POST',
+        //        data: { serviceName: serviceName, command: command },
+        //        success: function () {
+        //            $("#serviceTable tbody").empty();
+        //            setTimeout(function () {
+        //                $.ajax({
+        //                    url: "/Home/Refresh",
+        //                    type: "GET",
+        //                    success: function () {
+        //                        refreshtable();
+        //                    },
+        //                    error: function () {
+        //                        alert("Failed to refresh services.");
+        //                    }
+        //                });
+        //        }, 2500);
+        //        },
+        //        error: function () {
+        //            alert('Failed to ' + command + ' ' + serviceName);
+        //        }
+        //    });
+
+        //}
+
+        //Add Service
+        function addService(serviceName) {
+            $.ajax({
+                url: "/Home/GetLatestRecord",
+                type: "POST",
+                data: { serviceName: serviceName },
+                success: function () {
+                    refreshtable();
+                    generateServiceCheckboxes();
+                },
+                error: function () {
+                    alert("Failed to add " + serviceName);
+                }
+            });
+        }
+
+        //Delete Service
+        function deleteServices(serviceName) {
+            $.ajax({
+                url: "/Home/DeleteServices",
+                type: "POST",
+                data: { serviceName: serviceName },
+                success: function () {
+                    $("#serviceTable tbody").empty();
+                    refreshtable();
+                    /*Refresh the table with the updated data*/
+
+                },
+                error: function () {
+                    alert("Failed to delete " + serviceName);
+                }
+            });
+        }
+        deleteService(serviceName);
+
+        //Refresh Table for Updating Data
+        function refreshtable() {
+            /*Refresh the table with the updated data*/
+            $.ajax({
+                url: "/Home/GetServices",
+                type: "GET",
+                dataType: 'json',
+                success: function (result) {
+                    $("#serviceTable tbody").empty();
+                    // Loop through the data and append each row to the table
+                    result.forEach(function (Data) {
+                        var limit = 20;
+                        var statusClass = "badge-danger";
+                        var statusText = "Stopped";
+                        if (Data.ServiceStatus === "Running") {
+                            statusClass = "badge-success";
+                            statusText = "Running";
+                        }
+
+                        //var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                        //row += "<td onclick='(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + "<input type=\"checkbox\" id=\"checkbox1\" name=\"options[]\" value=\"1\">" + "</td>";
+                        //row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
+                        //row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
+                        //row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'><span class='badge " + statusClass + "'>" + statusText + "</span></td>";
+                        //row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastLog + "</td>";
+                        //row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ActionBy + "</td>";
+                        //row += "<td>";
+                        var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                        row += "<td onclick='(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + "<span class='custom-checkbox'>" +
+                            "<input type='checkbox' id='checkbox1' name='options[]' value='1'>" +
+                            "<label for='checkbox1'></label>" +
+                            "</span>" +
+                            "</td>";
+                        row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
+                        row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
+                        row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'><span class='badge " + statusClass + "'>" + statusText + "</span></td>";
+                        row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastLog + "</td>";
+                        row += "<td onclick='logHistory(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ActionBy + "</td>";
+                        row += "<td>";
+
+                        if (Data.ServiceStatus === "Stopped") {
+                            row += "<button class='action-button' id='btnRun' onclick='manageServices(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                        } else if (Data.ServiceStatus === "Running") {
+                            row += "<button class='action-button' style='display:none;' id='btnRun' onclick='manageServices(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                            row += "<button class='action-button' id='btnStop' onclick='manageServices(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
+                            row += "<button class='action-button ms-2' id='btnRestart' onclick='manageServices(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
+                        }
+                        row += "</td></tr>";
+                        $("#serviceTable tbody").append(row);
+                    });
+                },
+                error: function () {
+                    alert("Failed to refresh services.");
+                }
+            });
+        }
+
+        //Manage Services
+        function manageServices(serviceName, command) {
+            /*Show the confirmation box here*/
+            var modal = document.getElementById("alert-modal");
+            var modalTitle = document.getElementById("modal-title");
+            var modalMessage = document.getElementById("modal-message");
+            var btnYes = document.getElementById("btnYes");
+            var btnNo = document.getElementById("btnNo");
+
+            modal.style.display = "block";
+            modalTitle.innerHTML = "System Message";
+            modalMessage.innerHTML = "Are you sure you want to " + command.toUpperCase() + " '" + serviceName + "'?";
+            btnYes.onclick = function () {
+                /* Handle the command here*/
+                $.ajax({
+                    url: '/Home/ManageServices',
+                    type: 'POST',
+                    data: { serviceName: serviceName, command: command },
+                    success: function () {
+                        $("#serviceTable tbody").empty();
+                       
+                            $.ajax({
+                                url: "/Home/Refresh",
+                                type: "GET",
+                                success: function () {
+                                    refreshtable();
+                                },
+                                error: function () {
+                                    alert("Failed to refresh services.");
+                                }
+                            });
+                     
+                    },
+                    error: function () {
+                        alert('Failed to ' + command + ' ' + serviceName);
+                    }
+                });
+                modal.style.display = "none";
+            }
+            btnNo.onclick = function () {
+                modal.style.display = "none";
+            }
+        }
+
+    </script>
+
+    <!-- Alert Box for Restart Button -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-title">System Message</div>
+            <div id="modal-message">Are you sure you want to RESTART 'Service1'?</div>
+            <div class="modal-buttons">
+                <button type="button" id="btnYes" name="Yes" onclick="btnYes_Click" class="alert-buttons">Yes</button>
+                <button type="button" id="btnNo" name="No" onclick="btnNo_Click" class="alert-buttons">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Select All Checkboxes -->
+    <script>
+        $(document).ready(function () {
+            // Activate tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // Select/Deselect checkboxes
+            var checkbox = $('table tbody input[type="checkbox"]');
+            $("#selectAll").click(function () {
+                if (this.checked) {
+                    checkbox.each(function () {
+                        this.checked = true;
+                    });
+                } else {
+                    checkbox.each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+            checkbox.click(function () {
+                if (!this.checked) {
+                    $("#selectAll").prop("checked", false);
+                }
+            });
+        });
+    </script>
+
+    <!-- Nav Bar Active -->
+    <script>
+        $(document).ready(function () {
+            // Get the current URL path
+            var currentPath = window.location.pathname;
+
+            // Find the link in the navigation bar that matches the current URL path and add the "active" class to it
+            $('.navbar[href="' + currentPath + '"]').addClass('active');
+
+            // Handle click events on the navigation links
+            $('.navbar').click(function () {
+                // Remove the "active" class from all links in the navigation bar
+                $('.navbar').removeClass('active');
+
+                // Add the "active" class to the clicked link
+                $(this).addClass('active');
+            });
+        });
+
+    </script>
+
+    <!-- Selecting Rows Dropdwon -->
+    <script>
+        const optionMenu = document.querySelector(".select-menu"),
+            select_btn = optionMenu.querySelector(".select-btn1"),
+            options = optionMenu.querySelectorAll(".option"),
+            sBtn_text = optionMenu.querySelector(".sBtn-text");
+
+        select_btn.addEventListener("click", () => optionMenu.classList.toggle("active"));
+
+        options.forEach(option => {
+            option.addEventListener("click", () => {
+                let selectedOption = option.querySelector(".option-text").innerText;
+                sBtn_text.innerText = selectedOption;
+
+                optionMenu.classList.remove("active");
+            });
+        });
+    </script>
+
+    <!-- Restart and Delete Modal -->
+    <script>
+        // Action Button
+        const run = document.getElementById('btnRun');
+        const stop = document.getElementById('btnStop');
+        const restart = document.getElementById('btnRestart');
+        const del = document.getElementById('btnDelete');
+
+
+        run.addEventListener('click', () => {
+            stop.style.display = "inline-block";
+            restart.style.display = "inline-block";
+            run.style.display = "none";
+            del.style.display = "none";
+        });
+
+        stop.addEventListener('click', () => {
+            stop.style.display = "none";
+            restart.style.display = "none";
+            run.style.display = "inline-block";
+            del.style.display = "inline-block";
+        });
+
+        restart.addEventListener('click', () => {
+            stop.style.display = "inline-block";
+            restart.style.display = "inline-block";
+            run.style.display = "none";
+            del.style.display = "none";
+        });
+
+        // Show Alert Button when the restart button clicked and hide it.
+        function showModal(title, message) {
+            var modal = document.getElementById('myModal');
+            var modalTitle = document.getElementById('modal-title');
+            var modalMessage = document.getElementById('modal-message');
+
+            modal.style.display = "block";
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+        }
+
+        function hideModal() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = "none";
+        }
+        // Select the Yes and No buttons
+        var btnYes = document.getElementById('btnYes');
+        var btnNo = document.getElementById('btnNo');
+
+        // Add event listeners to the buttons
+        btnYes.addEventListener('click', btnYes_Click);
+        btnNo.addEventListener('click', btnNo_Click);
+
+        function btnYes_Click() {
+            updateDateTime();
+            hideModal();
+        }
+
+        function btnNo_Click() {
+            hideModal();
+        }
+
+        // Show Alert Button when the delete button clicked and hide it.
+        function showdeleteModal(title, message) {
+            var modal = document.getElementById('deleteModal');
+            var modalTitle = document.getElementById('modal-title1');
+            var modalMessage = document.getElementById('modal-message1');
+
+            modal.style.display = "block";
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+        }
+
+        function hidedeleteModal() {
+            var modal = document.getElementById('deleteModal');
+            modal.style.display = "none";
+        }
+        // Select the Yes and No buttons
+        var btnDe = document.getElementById('btnDel');
+        var btnCancel = document.getElementById('btnCancel');
+
+        // Add event listeners to the buttons
+        btnDe.addEventListener('click', btnDel_Click);
+        btnCancel.addEventListener('click', btnCancel_Click);
+
+        function btnDel_Click() {
+            hidedeleteModal();
+        }
+
+        function btnCancel_Click() {
+            hidedeleteModal();
+        }
+    </script>
+
+</body>
+
+
+
+
+
+
