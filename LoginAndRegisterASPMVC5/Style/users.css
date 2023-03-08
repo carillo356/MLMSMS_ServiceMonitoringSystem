@@ -1,0 +1,156 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
+.bgcolor {
+    margin: 0;
+    padding: 0;
+    font-family: "Trebuchet MS", sans-serif;
+}
+
+.user-button {
+    width: 25%;
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-top: 3px;
+    cursor: pointer;
+    margin-left: 10px;
+    color: black;
+    display: inline;
+}
+
+.btn-green {
+    background-color: #39e76f;
+}
+
+.btn-red {
+    background-color: #ff4122;
+}
+
+.bi.bi-envelope-check-fill, .bi.bi-trash3-fill, .bi.bi-envelope-x-fill {
+    font-size: 20px;
+}
+
+/* Add Users */
+.btn.btn-dark {
+    background-color: deeppink;
+    width: 8%;
+    padding: 7px;
+    border: none;
+    border-radius: 4px;
+}
+
+    .btn.btn-dark:hover {
+        background-color: #64d6f4;
+        color: black;
+    }
+
+/* Add Users modal */
+#addUsers-modal .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 60%;
+}
+
+#addUsers-modal .modal-dialog {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+}
+
+#addUsers-modal .modal-content {
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+/* Responsive */
+@media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
+    
+    .btn.btn-dark {
+        width: 30%;
+        padding: 5px;
+    }
+
+    #addUsers-modal .modal-dialog {
+        width: 80%;
+    }
+
+    #usersTable .table-container {
+        width: 100%;
+        background: transparent;
+    }
+
+    #usersTable table,
+    #usersTable thead,
+    #usersTable tbody,
+    #usersTable th,
+    #usersTable td,
+    #usersTable tr {
+        display: block;
+    }
+
+        #usersTable thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+    #usersTable tr {
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    #usersTable th {
+        font-size: 15px;
+    }
+
+    #usersTable td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+        font-size: 10px;
+        line-height: 12px;
+        width: 300px;
+    }
+
+        #usersTable td::before {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        #usersTable td:nth-of-type(1)::before {
+            content: "UserID";
+        }
+
+        #usersTable td:nth-of-type(2)::before {
+            content: "FIRST NAME";
+        }
+
+        #usersTable td:nth-of-type(3)::before {
+            content: "LAST NAME";
+        }
+
+        #usersTable td:nth-of-type(4)::before {
+            content: "EMAIL ADDRESS";
+        }
+
+/*        #usersTable td:nth-of-type(5)::before {
+            content: "SET NOTIFICATION";
+        }*/
+
+        #usersTable td:nth-of-type(5)::before {
+            content: "ACTION";
+        }
+}

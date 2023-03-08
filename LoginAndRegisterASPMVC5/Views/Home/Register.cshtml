@@ -1,0 +1,91 @@
+﻿@model LoginAndRegisterASPMVC5.Models.User
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+<body class="gradient-page">
+
+    <div class="d-flex justify-content-center">
+        <div class="card position-absolute top-50 start-50 translate-middle rounded-3" style="width: 35rem;">
+            <div class="card-body">
+
+                <div class="container">
+                    <div class="text-center">
+                        <p class="fs-1 fw-bold mb-0">MLM</p>
+                        <p class="fs-5 fw-light">Service Monitoring System</p><hr />
+                        <p class="fs-2 fw-normal">Sign up</p>
+                    </div>
+                </div>
+
+
+                @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+                {
+                    //@Html.ValidationSummary()
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group m-3">
+                        @Html.LabelFor(m => m.FirstName, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", @placeholder = "First Name" })
+                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "badge badge-danger" })
+                    </div>
+
+                    <div class="form-group m-3">
+                        @Html.LabelFor(m => m.LastName, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", @placeholder = "Last Name" })
+                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "badge badge-danger" })
+                    </div>
+
+                    <div class="form-group m-3">
+                        @Html.LabelFor(m => m.Email, new { @class = "label" })
+                        @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
+                        @if (ViewBag.error != null)
+                        {
+                            <span class="badge badge-danger">@ViewBag.error</span>
+                        }
+                    </div>
+
+                    <div class="form-group m-3">
+                        @Html.LabelFor(m => m.Password, new { @class = "label" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                    </div>
+
+                    @*<div class="form-group m-3">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "label" })
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", id = "confirmPass" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
+                    </div>*@
+
+                    <div class="form-group m-3">
+                        <input type="checkbox" id="togglePassword" />
+                        <label for="togglePassword">Show password</label>
+
+                        <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="Register">Register</button>
+                    </div>
+
+                    <div class="login_link">
+                        <asp:LinkButton ID="SignupLink" runat="server" value="Signup" Text="Signup"><a href="@Url.Action("Login", "Home")">I am already a member.</a></asp:LinkButton>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPass")
+
+    togglePassword.addEventListener("change", function () {
+        if (togglePassword.checked) {
+            password.type = "text";
+            confirmPassword.type = "text";
+        } else {
+            password.type = "password";
+            confirmPassword.type = "password";
+        }
+    });
+</script>
+

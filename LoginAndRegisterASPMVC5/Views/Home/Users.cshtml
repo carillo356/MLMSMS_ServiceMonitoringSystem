@@ -1,0 +1,274 @@
+﻿@model LoginAndRegisterASPMVC5.Models.User
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<body class="bgcolor">
+    <!-- Nav Bar with Responsive -->
+    <header>
+        <div class="container-fluid">
+            <div class="navb-name">
+                MLM Service Monitoring System
+            </div>
+
+            <div class="navb-items d-none d-xl-flex">
+                <div class="menu-item">
+                    <a href="@Url.Action("Index","Home")" class="navbar">Home</a>
+                </div>
+
+                <div class="menu-item">
+                    <a href="@Url.Action("Users","Home")" class="navbar active">Users</a>
+                </div>
+
+                <div class="item-button">
+                    <a href="@Url.Action("Logout","Home")" type="button">Logout</a>
+                </div>
+            </div>
+
+            <!-- Button trigger modal (Responsive) -->
+            <div class="mobile-toggler d-lg-none">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#navbModal">
+                    <i class="bi bi-list"></i>
+                </a>
+            </div>
+
+            <!-- Modal (Responsive) -->
+            <div class="modal fade" style="width: 500px;" id="navbModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="title">MLM Service Monitoring System</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="modal-line">
+                                <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="bi bi-house"></i> Home</a>
+                            </div>
+
+                            <div class="modal-line">
+                                <a href="@Url.Action("Users","Home")" class="btn btn-primary"><i class="bi bi-bell"></i>Users</a>
+                            </div>
+
+                            <a href="@Url.Action("Logout","Home")" class="navb-button" type="button">Logout</a>
+                        </div>
+
+                        <div class="mobile-modal-footer">
+                            <a target="_blank" href="#"><i class="bi bi-instagram"></i></a>
+                            <a target="_blank" href="#"><i class="bi bi-linkedin"></i></a>
+                            <a target="_blank" href="#"><i class="bi bi-youtube"></i></a>
+                            <a target="_blank" href="#"><i class="bi bi-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    @*<div class="fs-1 fw-bold text-center my-4">List of Users</div>
+
+
+    <div class="text-center">
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addUsers-modal">Add New Users</button>
+    </div>*@
+
+
+    <!-- Users Table -->
+    @*<div class="users">
+        <table class="table mt-3" id="usersTable">
+            <thead>
+                <tr>
+                    <th scope="col">UserID</th>
+                    <th scope="col">FIRST NAME</th>
+                    <th scope="col">LAST NAME</th>
+                    <th scope="col">EMAIL ADDRESS</th>*@
+    @*<th scope="col">NOTIFICATION</th>*@
+    @*<th scope="col">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>*@
+
+    <!-- Users Table -->
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>List of Users</b></h2>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUsers-modal"><i class="bi bi-plus-circle"></i><span>Add Users</span></button>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 15%;">USER ID</th>
+                            <th scope="col" style="width: 15%;">FIRST NAME</th>
+                            <th scope="col" style="width: 15%;">LAST NAME</th>
+                            <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
+                            @*<th scope="col" style="width: 20%;">NOTIFICATION</th>*@
+                            <th scope="col" style="width: 15%;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- table content goes here -->
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Add user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddUser", "Home", FormMethod.Post))
+                    {
+                        //@Html.ValidationSummary()
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.FirstName, "First Name:", new { @class = "label" })
+                            @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", @placeholder = "First Name", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.LastName, "Last Name:", new { @class = "label" })
+                            @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", @placeholder = "Last Name", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.Email, "Email Address:", new { @class = "label" })
+                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email Address", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
+                            @if (ViewBag.error != null)
+                            {
+                                <span class="badge badge-danger">@ViewBag.error</span>
+                            }
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.Password, "Password", new { @class = "label" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        @*<div class="form-group m-3">
+                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "label" })
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", id = "confirmPass" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
+                        </div>*@
+
+                        <div class="form-group m-3">
+                            <input type="checkbox" id="togglePassword" />
+                            <label for="togglePassword">Show password</label>
+
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Add User</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show Modal -->
+    <script>
+        var myModal = new bootstrap.Modal(document.getElementById('signup-modal'));
+        myModal.show();
+    </script>
+
+    <!-- Tooltip, Refresh Table, Show Password, etc -->
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        $(document).ready(function () {
+            refreshtable()
+        });
+
+        function setNotification(idUser) {
+            $.ajax({
+                type: 'POST',
+                url: '/Home/UpdateEmailNotification',
+                data: { idUser: idUser },
+                success: function () {
+                    refreshtable();
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+        function refreshtable() {
+            /*Refresh the table with the updated data*/
+            $.ajax({
+                url: "/Home/GetUsers",
+                type: "GET",
+                dataType: 'json',
+                success: function (result) {
+                    $("#usersTable tbody").empty();
+                    // Loop through the data and append each row to the table
+                    result.forEach(function (Data) {
+                        var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                        row += "<td>" + Data.idUser + "</td>";
+                        row += "<td>" + Data.FirstName + "</td>";
+                        row += "<td>" + Data.LastName + "</td>";
+                        row += "<td>" + Data.Email + "</td>";
+                        /*row += "<td>" + Data.Email_Notification + "</td>";*/
+                        row += "<td>";
+                        if (Data.Email_Notification == true) {
+                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
+                            row += "<i class='bi bi-envelope-check-fill'></i>";
+                            row += "</button>";
+                        } else {
+                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
+                            row += "<i class='bi bi-envelope-x-fill'></i>";
+                            row += "</button>";
+                        }
+                        row += "<button onclick='deleteUser(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
+                        row += "<i class='bi bi-trash3-fill'></i>";
+                        row += "</button>";
+                        row += "</td></tr>";
+                        $("#usersTable tbody").append(row);
+                    });
+                },
+                error: function () {
+                    alert("Failed to refresh users.");
+                }
+            });
+        }
+
+        const togglePassword = document.getElementById("togglePassword");
+        const password = document.getElementById("password");
+
+        togglePassword.addEventListener("change", function () {
+            if (togglePassword.checked) {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        });
+
+    </script>
+
+</body>
+
+
