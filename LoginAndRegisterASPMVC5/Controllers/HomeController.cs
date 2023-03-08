@@ -52,7 +52,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public static SqlConnection GetConnectionUsers()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Db_website"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
             SqlConnection connection = _lazyConnectionUsers.Value;
             connection.ConnectionString = connectionString;
             if (connection.State == System.Data.ConnectionState.Closed)
