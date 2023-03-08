@@ -298,6 +298,51 @@ table.table td:last-child i {
         background: #ddd;
     }
 
+.pagination {
+    float: right;
+    margin: 0 0 5px;
+}
+
+    .pagination li a {
+        border: none;
+        font-size: 13px;
+        min-width: 30px;
+        min-height: 30px;
+        color: #999;
+        margin: 0 2px;
+        line-height: 30px;
+        border-radius: 2px !important;
+        text-align: center;
+        padding: 0 6px;
+    }
+
+        .pagination li a:hover {
+            color: #666;
+        }
+
+    .pagination li.active a, .pagination li.active a.page-link {
+        background: deeppink;
+    }
+
+        .pagination li.active a:hover {
+            background: deeppink;
+        }
+
+    .pagination li.disabled i {
+        color: #ccc;
+    }
+
+    .pagination li i {
+        font-size: 16px;
+        padding-top: 6px
+    }
+
+.hint-text {
+    float: left;
+    margin-top: 10px;
+    font-size: 13px;
+}  
+
 /* Add Users modal */
 #displayService-modal .modal {
     display: flex;
@@ -325,7 +370,7 @@ table.table td:last-child i {
 #displayService-modal .modal-body {
     /*overflow: auto;*/
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 
     /* Customize scrollbar */
