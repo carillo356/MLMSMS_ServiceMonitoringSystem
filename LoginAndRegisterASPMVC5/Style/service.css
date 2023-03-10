@@ -322,10 +322,12 @@ table.table td:last-child i {
 
     .pagination li.active a, .pagination li.active a.page-link {
         background: deeppink;
+        z-index: 0;
     }
 
         .pagination li.active a:hover {
             background: deeppink;
+ 
         }
 
     .pagination li.disabled i {
@@ -357,7 +359,7 @@ table.table td:last-child i {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 20%;
+    width: 40%;
 }
 
 #displayService-modal .modal-content {
@@ -370,8 +372,11 @@ table.table td:last-child i {
 #displayService-modal .modal-body {
     /*overflow: auto;*/
     overflow-y: auto;
-    overflow-x: auto;
 }
+
+    #displayService-modal .modal-body .form-control {
+        width: 400px;
+    }
 
     /* Customize scrollbar */
     #displayService-modal .modal-body::-webkit-scrollbar {

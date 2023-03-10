@@ -9,7 +9,7 @@ namespace LoginAndRegisterASPMVC5.Models
 {
     public class DB_Entities : DbContext
     {
-        public DB_Entities() : base("Db_website") { }
+        public DB_Entities() : base("dbconnection") { }
         public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
