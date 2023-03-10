@@ -301,6 +301,7 @@ table.table td:last-child i {
 .pagination {
     float: right;
     margin: 0 0 5px;
+
 }
 
     .pagination li a {
@@ -322,10 +323,12 @@ table.table td:last-child i {
 
     .pagination li.active a, .pagination li.active a.page-link {
         background: deeppink;
+        z-index: 0;
     }
 
         .pagination li.active a:hover {
             background: deeppink;
+ 
         }
 
     .pagination li.disabled i {

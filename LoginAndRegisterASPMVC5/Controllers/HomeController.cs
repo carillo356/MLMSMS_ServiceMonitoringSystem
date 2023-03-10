@@ -202,12 +202,19 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public void ManageServices(string serviceName, string command)
         {
+            DateTime lastStart = DateTime.MinValue;
+            string lastLog = null;
+
             using (SqlConnection connection = DatabaseManager.GetConnection())
             {
+                ServiceController[] services = ServiceController.GetServices();
+                string actionBy = Session["FullName"].ToString();
+                ServiceController sc = services.FirstOrDefault(s => s.ServiceName == serviceName);
+
+
                 EventLog eventLog = new EventLog("Application");
-                int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries")); // Limit the number of entries to search
-                DateTime lastStart = DateTime.MinValue;
-                string lastLog = null;
+                int numEntriesToSearch = 100/* int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries"))*/; // Limit the number of entries to search
+
 
                 // Get the collection of entries from the event log
                 EventLogEntryCollection entries = eventLog.Entries;
@@ -225,9 +232,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         lastLog = entry.Message;
                     }
                 }
-                ServiceController[] services = ServiceController.GetServices();
-                string actionBy = Session["FullName"].ToString();
-                ServiceController sc = services.FirstOrDefault(s => s.ServiceName == serviceName);
 
                 switch (command)
                 {
@@ -280,7 +284,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         break;
 
                     default:
-                        MessageBox.Show("Invalid command from " + command);
+                        //MessageBox.Show("Invalid command from " + command);
                         break;
                 }
             }

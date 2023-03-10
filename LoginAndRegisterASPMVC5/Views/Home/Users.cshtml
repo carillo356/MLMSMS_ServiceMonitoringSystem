@@ -69,9 +69,9 @@
     @*<div class="fs-1 fw-bold text-center my-4">List of Users</div>
 
 
-    <div class="text-center">
-        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addUsers-modal">Add New Users</button>
-    </div>*@
+        <div class="text-center">
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addUsers-modal">Add New Users</button>
+        </div>*@
 
 
     <!-- Users Table -->
@@ -109,10 +109,11 @@
                 <table class="table table-hover" id="usersTable">
                     <thead>
                         <tr>
-                            <th scope="col" style="width: 15%;">USER ID</th>
+                            <th scope="col" style="width: 10%;">USER ID</th>
                             <th scope="col" style="width: 15%;">FIRST NAME</th>
                             <th scope="col" style="width: 15%;">LAST NAME</th>
                             <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
+                            <th scope="col" style="width: 10%;">ISADMIN</th>
                             @*<th scope="col" style="width: 20%;">NOTIFICATION</th>*@
                             <th scope="col" style="width: 15%;">ACTION</th>
                         </tr>
@@ -122,7 +123,7 @@
                     </tbody>
                 </table>
                 <div class="clearfix">
-                    <div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>
+                    @*<div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>*@
                     <ul class="pagination">
                         <li class="page-item disabled"><a href="#">Previous</a></li>
                         <li class="page-item active"><a href="#" class="page-link">1</a></li>
@@ -137,7 +138,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Add Users Modal -->
     <div class="modal fade" id="addUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -152,19 +153,19 @@
                         @Html.AntiForgeryToken()
 
                         <div class="form-group m-3">
-                            @Html.LabelFor(m => m.FirstName, "First Name:", new { @class = "label" })
+                            @Html.LabelFor(m => m.FirstName, "First Name:", new { @class = "label fw-bold" })
                             @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", @placeholder = "First Name", autocomplete = "off" })
                             @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "badge badge-danger" })
                         </div>
 
                         <div class="form-group m-3">
-                            @Html.LabelFor(m => m.LastName, "Last Name:", new { @class = "label" })
+                            @Html.LabelFor(m => m.LastName, "Last Name:", new { @class = "label fw-bold" })
                             @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", @placeholder = "Last Name", autocomplete = "off" })
                             @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "badge badge-danger" })
                         </div>
 
                         <div class="form-group m-3">
-                            @Html.LabelFor(m => m.Email, "Email Address:", new { @class = "label" })
+                            @Html.LabelFor(m => m.Email, "Email Address:", new { @class = "label fw-bold" })
                             @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email Address", autocomplete = "off" })
                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
                             @if (ViewBag.error != null)
@@ -174,25 +175,124 @@
                         </div>
 
                         <div class="form-group m-3">
-                            @Html.LabelFor(m => m.Password, "Password", new { @class = "label" })
+                            @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password" })
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                         </div>
 
                         @*<div class="form-group m-3">
-                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "label" })
-                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", id = "confirmPass" })
-                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
-                        </div>*@
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "label" })
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", id = "confirmPass" })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
+                            </div>*@
 
                         <div class="form-group m-3">
                             <input type="checkbox" id="togglePassword" />
                             <label for="togglePassword">Show password</label>
+                        </div>
 
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.IsAdmin, "Assign User to be an admin or not:", new { @class = "label mb-2 fw-bold" })
+                            <div class="radio-container">
+                                <label>
+                                    @Html.RadioButtonFor(m => m.IsAdmin, "True")
+                                    <span>Admin</span>
+                                </label>
+                                <label>
+                                    @Html.RadioButtonFor(m => m.IsAdmin, "False")
+                                    <span>Not Admin</span>
+                                </label>
+                            </div>
                             <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Add User</button>
                         </div>
+
                     }
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Edit Users Modal -->
+    <div class="modal fade" id="editUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Add user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddUser", "Home", FormMethod.Post))
+                    {
+                        //@Html.ValidationSummary()
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.FirstName, "First Name:", new { @class = "label fw-bold" })
+                            @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", @placeholder = "First Name", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.LastName, "Last Name:", new { @class = "label fw-bold" })
+                            @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", @placeholder = "Last Name", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.Email, "Email Address:", new { @class = "label fw-bold" })
+                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email Address", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
+                            @if (ViewBag.error != null)
+                            {
+                                <span class="badge badge-danger">@ViewBag.error</span>
+                            }
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        @*<div class="form-group m-3">
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "label" })
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", id = "confirmPass" })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
+                            </div>*@
+
+                        <div class="form-group m-3">
+                            <input type="checkbox" id="togglePassword" />
+                            <label for="togglePassword">Show password</label>
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.IsAdmin, "Assign User to be an admin or not:", new { @class = "label mb-2 fw-bold" })
+                            <div class="radio-container">
+                                <label>
+                                    @Html.RadioButtonFor(m => m.IsAdmin, "True")
+                                    <span>Admin</span>
+                                </label>
+                                <label>
+                                    @Html.RadioButtonFor(m => m.IsAdmin, "False")
+                                    <span>Not Admin</span>
+                                </label>
+                            </div>
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Save Changes</button>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteUsers-modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-title">System Message</div>
+            <div id="modal-message">Are you sure you want to RESTART 'Service1'?</div>
+            <div class="modal-buttons">
+                <button type="button" id="btnYes" name="Yes" onclick="btnYes_Click" class="alert-buttons">Yes</button>
+                <button type="button" id="btnNo" name="No" onclick="btnNo_Click" class="alert-buttons">No</button>
             </div>
         </div>
     </div>
@@ -243,7 +343,7 @@
                         row += "<td>" + Data.FirstName + "</td>";
                         row += "<td>" + Data.LastName + "</td>";
                         row += "<td>" + Data.Email + "</td>";
-                        /*row += "<td>" + Data.Email_Notification + "</td>";*/
+                        row += "<td>" + Data.IsAdmin + "</td>";
                         row += "<td>";
                         if (Data.Email_Notification == true) {
                             row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
@@ -254,7 +354,7 @@
                             row += "<i class='bi bi-envelope-x-fill'></i>";
                             row += "</button>";
                         }
-                        row += "<button onclick='deleteUser(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
+                        row += "<button onclick='#deleteUser-modal(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
                         row += "<i class='bi bi-trash3-fill'></i>";
                         row += "</button>";
                         row += "</td></tr>";

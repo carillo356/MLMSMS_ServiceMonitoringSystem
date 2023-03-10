@@ -142,10 +142,10 @@
                     </tbody>
                 </table>
                 <div class="clearfix">
-                    <div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>
+                    @*<div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>*@
                     <ul class="pagination">
                         <li class="page-item disabled"><a href="#">Previous</a></li>
-                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item active"><a href="#" class="page-link";>1</a></li>
                         <li class="page-item"><a href="#" class="page-link">2</a></li>
                         <li class="page-item"><a href="#" class="page-link">3</a></li>
                         <li class="page-item"><a href="#" class="page-link">4</a></li>
@@ -181,7 +181,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary">Add</button>
                 </div>
             </div>
         </div>
@@ -523,7 +523,7 @@
                                     alert("Failed to refresh services.");
                                 }
                             });
-                     
+
                     },
                     error: function () {
                         alert('Failed to ' + command + ' ' + serviceName);
@@ -538,7 +538,7 @@
 
     </script>
 
-    <!-- Alert Box for Restart Button -->
+    <!-- Alert Box for all buttons in Action column -->
     <div id="alert-modal" class="modal">
         <div class="modal-content">
             <div id="modal-title">System Message</div>
