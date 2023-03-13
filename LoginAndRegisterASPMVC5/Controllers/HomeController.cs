@@ -34,7 +34,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
         private DB_Entities _db = new DB_Entities();
         public static List<Service> _activeServices = new List<Service>();
         public static List<User> _users = new List<User>();
-        public static List<User> _withNotif = new List<User>();
 
         public ActionResult Index()
         {
@@ -49,11 +48,10 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public void AddService(Service fetchInput)
+        [HttpPost]
+        public void AddService(Service fetchInput) //Gets the User Input for adding a service
         {
             string serviceName = fetchInput.ServiceName;
-
-            // Check if the service already exists in the list
             if (!_activeServices.Any(s => s.ServiceName == serviceName))
             {
                 FetchServicesTB(serviceName);
@@ -65,30 +63,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             var serviceToRemove = _activeServices.SingleOrDefault(r => r.ServiceName == serviceName);
             if (serviceToRemove != null)
                 _activeServices.Remove(serviceToRemove);
-        }
-
-        [HttpGet]
-        public ActionResult GetServicesInController() // For the Service Checkboxes
-        {
-            ServiceController[] services = ServiceController.GetServices(); // create a copy of the services list
-            List<string> servicesInController = new List<string>();
-
-            foreach (ServiceController service in services)
-            {
-                servicesInController.Add(service.ServiceName.ToString());
-            }
-            return Json(servicesInController, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult GetAddedServices()//For checkboxes as reference
-        {
-            List<string> addedServices = new List<string>();
-
-            foreach (Service service in _activeServices)
-            {
-                addedServices.Add(service.ServiceName.ToString());
-            }
-            return Json(addedServices, JsonRequestBehavior.AllowGet);
         }
 
         public void FetchServicesTB(string serviceName)
@@ -124,32 +98,53 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult GetServicesInController() // For the Service Checkboxes
+        {
+            ServiceController[] servicesInController = ServiceController.GetServices(); // create a copy of the services list
+            List<string> servicesInControllerList = new List<string>();
+
+            foreach (ServiceController serviceInController in servicesInController)
+            {
+                servicesInControllerList.Add(serviceInController.ServiceName.ToString());
+            }
+            return Json(servicesInControllerList, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAddedServices()//For checkboxes as reference
+        {
+            List<string> addedServicesList = new List<string>();
+
+            foreach (Service service in _activeServices)
+            {
+                addedServicesList.Add(service.ServiceName.ToString());
+            }
+            return Json(addedServicesList, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
-        public ActionResult FetchServiceLogs(string serviceName)
+        public ActionResult FetchServiceLogsTB(string serviceName)
         {
             string query = $"SELECT * FROM ServiceLogs WHERE ServiceName = '{serviceName}' ORDER BY LASTSTART DESC";
-            List<Service> serviceLogs = new List<Service>();
+            List<Service> servicesLogsList = new List<Service>();
 
             try
             {
                 using (SqlConnection connection = DatabaseManager.GetConnection())
+                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    while (reader.Read())
                     {
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        while (reader.Read())
+                        servicesLogsList.Add(new Service()
                         {
-                            serviceLogs.Add(new Service()
-                            {
-                                ServiceName = reader["ServiceName"].ToString(),
-                                LastStart = reader["LastStart"].ToString(),
-                                ServiceStatus = reader["ServiceStatus"].ToString(),
-                                LastLog = reader["LastLog"].ToString(),
-                                ActionBy = reader["ActionBy"].ToString()
-                            });
-                        }
+                            ServiceName = reader["ServiceName"].ToString(),
+                            LastStart = reader["LastStart"].ToString(),
+                            ServiceStatus = reader["ServiceStatus"].ToString(),
+                            LastLog = reader["LastLog"].ToString(),
+                            ActionBy = reader["ActionBy"].ToString()
+                        });
+
                     }
                 }
             }
@@ -158,10 +153,10 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 throw ex;
             }
 
-            return Json(serviceLogs, JsonRequestBehavior.AllowGet);
+            return Json(servicesLogsList, JsonRequestBehavior.AllowGet);
         }
 
-        public void ServiceActions(string serviceName, string command)
+        public void ServiceAction(string serviceName, string command)
         {
             string actionBy = Session["FullName"].ToString();
             string logBy = null;
@@ -204,7 +199,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
             using (SqlConnection connection = DatabaseManager.GetConnection())
             {
-
                 ServiceController[] services = ServiceController.GetServices();
                 ServiceController sc = services.FirstOrDefault(s => s.ServiceName == serviceName);
 
@@ -322,46 +316,45 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public void FetchUserWithNotif()
-        {
-            List<User> users = new List<User>();
-            string query = $"SELECT [Email] FROM Users WHERE Email_Notification = 1";
+        //public void FetchUserWithNotif()
+        //{
+        //    List<User> users = new List<User>();
+        //    string query = $"SELECT [Email] FROM Users WHERE Email_Notification = 1";
 
-            try
-            {
-                _withNotif.Clear();
-                using (SqlConnection connection = DatabaseManager.GetConnectionUsers())
-                using (SqlCommand commandLatestRecord = new SqlCommand(query, connection))
-                {
-                    SqlDataReader reader = commandLatestRecord.ExecuteReader();
+        //    try
+        //    {
+        //        _withNotif.Clear();
+        //        using (SqlConnection connection = DatabaseManager.GetConnectionUsers())
+        //        using (SqlCommand commandLatestRecord = new SqlCommand(query, connection))
+        //        {
+        //            SqlDataReader reader = commandLatestRecord.ExecuteReader();
 
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            users.Add(new User()
-                            {
-                                Email = reader["Email"].ToString(),
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception appropriately, e.g. log it, rethrow it, or return an error message to the user.
-                throw ex;
-            }
+        //            if (reader.HasRows)
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    users.Add(new User()
+        //                    {
+        //                        Email = reader["Email"].ToString(),
+        //                    });
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle the exception appropriately, e.g. log it, rethrow it, or return an error message to the user.
+        //        throw ex;
+        //    }
 
-            foreach (var user in users)
-            {
-                _withNotif.Add(user);
-            }
-        }
+        //    foreach (var user in users)
+        //    {
+        //        _withNotif.Add(user);
+        //    }
+        //}
 
         public void FetchUsersTB()
         {
-            List<User> users = new List<User>();
             string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification] FROM Users";
 
             try
@@ -376,7 +369,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     {
                         while (reader.Read())
                         {
-                            users.Add(new User()
+                            _users.Add(new User()
                             {
                                 idUser = (int)reader["idUser"],
                                 FirstName = reader["FirstName"].ToString(),
@@ -390,13 +383,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
             catch (Exception ex)
             {
-                // Handle the exception appropriately, e.g. log it, rethrow it, or return an error message to the user.
                 throw ex;
-            }
-
-            foreach (var user in users)
-            {
-                _users.Add(user);
             }
         }
 
@@ -585,6 +572,4 @@ namespace LoginAndRegisterASPMVC5.Controllers
         }
     }
 
-
 }
-
