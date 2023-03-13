@@ -159,12 +159,12 @@
                 <table class="table table-hover" id="serviceTable">
                     <thead>
                         <tr>
-                            <th>
+                            @*<th>
                                 <span class="custom-checkbox">
                                     <input type="checkbox" id="selectAll">
                                     <label for="selectAll"></label>
                                 </span>
-                            </th>
+                            </th>*@
                             <th scope="col" style="width: 15%;">SERVICE NAME</th>
                             <th scope="col" style="width: 20%;">LAST START</th>
                             <th scope="col" style="width: 10%;">LAST LOG</th>
@@ -400,11 +400,11 @@
                         }
 
                         var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                        row += "<td>" + "<span class='custom-checkbox'>" +
-                            "<input type='checkbox' id='checkbox1' name='options[]' value='1'>" +
-                            "<label for='checkbox1'></label>" +
-                            "</span>" +
-                            "</td>";
+                        //row += "<td>" + "<span class='custom-checkbox'>" +
+                        //    "<input type='checkbox' id='checkbox1' name='options[]' value='1'>" +
+                        //    "<label for='checkbox1'></label>" +
+                        //    "</span>" +
+                        //    "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'><span class='badge " + statusClass + "'>" + statusText + "</span></td>";
@@ -419,6 +419,7 @@
                             row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
                             row += "<button class='action-button ms-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
                         }
+                        row += "<button class='action-button ms-2' id='btnRestart' onclick='RemoveAddedService(\"" + Data.ServiceName + "\")'>Delete</button>";
                         row += "</td></tr>";
                         $("#serviceTable tbody").append(row);
                     });
@@ -477,7 +478,7 @@
                         // Refresh the table
                     RealTimeTable();
 
-                    // Check the corresponding checkbox and move it to the top of the list
+                    //checked the added service
                     $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', true);
                     // Add the checkbox to the top of the list
                     var checkbox = $('input[type="checkbox"][value="' + serviceName + '"]').closest('.item');
@@ -497,6 +498,9 @@
                 success: function () {
                     $("#serviceTable tbody").empty();
                     RealTimeTable();
+
+                    //unchecked the remove service
+                    $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
                 },
                 error: function () {
                     alert("Failed to delete " + serviceName);
