@@ -25,65 +25,14 @@ using System.Security.Policy;
 using System.Net.Mail;
 using System.Web.Services.Description;
 using Service = LoginAndRegisterASPMVC5.Models.Service;
+using System.Web.UI.WebControls;
 
 namespace LoginAndRegisterASPMVC5.Controllers
 {
-    public sealed class DatabaseManager
-    {
-        private static readonly Lazy<SqlConnection> _lazyConnection = new Lazy<SqlConnection>(() => new SqlConnection());
-        private static readonly Lazy<SqlConnection> _lazyConnectionUsers = new Lazy<SqlConnection>(() => new SqlConnection());
-
-        private DatabaseManager()
-        {
-        }
-
-        public static SqlConnection GetConnection()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
-            SqlConnection connection = _lazyConnection.Value;
-            connection.ConnectionString = connectionString;
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                connection.Open();
-            }
-
-            return connection;
-        }
-
-        public static SqlConnection GetConnectionUsers()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
-            SqlConnection connection = _lazyConnectionUsers.Value;
-            connection.ConnectionString = connectionString;
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                connection.Open();
-            }
-
-            return connection;
-        }
-
-        public static void CloseConnection()
-        {
-            if (_lazyConnection.Value.State != System.Data.ConnectionState.Closed)
-            {
-                _lazyConnection.Value.Close();
-            }
-        }
-
-        public static void CloseConnectionUsers()
-        {
-            if (_lazyConnectionUsers.Value.State != System.Data.ConnectionState.Closed)
-            {
-                _lazyConnectionUsers.Value.Close();
-            }
-        }
-    }
-
     public class HomeController : Controller
     {
         private DB_Entities _db = new DB_Entities();
-        public static List<Service> services = new List<Service>();
+        public static List<Service> _activeServices = new List<Service>();
         public static List<User> _users = new List<User>();
         public static List<User> _withNotif = new List<User>();
 
@@ -91,7 +40,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             if (Session["idUser"] != null)
             {
-                FetchUserWithNotif();
                 return View();
 
             }
@@ -101,11 +49,256 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
+        public void AddService(Service fetchInput)
+        {
+            string serviceName = fetchInput.ServiceName;
+
+            // Check if the service already exists in the list
+            if (!_activeServices.Any(s => s.ServiceName == serviceName))
+            {
+                FetchServicesTB(serviceName);
+            }
+        }
+
+        public void RemoveAddedService(string serviceName) //Removes a service row
+        {
+            var serviceToRemove = _activeServices.SingleOrDefault(r => r.ServiceName == serviceName);
+            if (serviceToRemove != null)
+                _activeServices.Remove(serviceToRemove);
+        }
+
+        [HttpGet]
+        public ActionResult GetServicesInController() // For the Service Checkboxes
+        {
+            ServiceController[] services = ServiceController.GetServices(); // create a copy of the services list
+            List<string> servicesInController = new List<string>();
+
+            foreach (ServiceController service in services)
+            {
+                servicesInController.Add(service.ServiceName.ToString());
+            }
+            return Json(servicesInController, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAddedServices()//For checkboxes as reference
+        {
+            List<string> addedServices = new List<string>();
+
+            foreach (Service service in _activeServices)
+            {
+                addedServices.Add(service.ServiceName.ToString());
+            }
+            return Json(addedServices, JsonRequestBehavior.AllowGet);
+        }
+
+        public void FetchServicesTB(string serviceName)
+        {
+            string query = $"SELECT [ServiceName],[LastStart],[ServiceStatus],[LastLog],[ActionBy] FROM Services WHERE ServiceName = '{serviceName}'";
+
+            try
+            {
+                using (SqlConnection connection = DatabaseManager.GetConnection())
+                using (SqlCommand commandLatestRecord = new SqlCommand(query, connection))
+                {
+                    SqlDataReader reader = commandLatestRecord.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            _activeServices.Add(new Service()
+                            {
+                                ServiceName = reader["ServiceName"].ToString(),
+                                LastStart = reader["LastStart"].ToString(),
+                                ServiceStatus = reader["ServiceStatus"].ToString(),
+                                LastLog = reader["LastLog"].ToString(),
+                                ActionBy = reader["ActionBy"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult FetchServiceLogs(string serviceName)
+        {
+            string query = $"SELECT * FROM ServiceLogs WHERE ServiceName = '{serviceName}' ORDER BY LASTSTART DESC";
+            List<Service> serviceLogs = new List<Service>();
+
+            try
+            {
+                using (SqlConnection connection = DatabaseManager.GetConnection())
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            serviceLogs.Add(new Service()
+                            {
+                                ServiceName = reader["ServiceName"].ToString(),
+                                LastStart = reader["LastStart"].ToString(),
+                                ServiceStatus = reader["ServiceStatus"].ToString(),
+                                LastLog = reader["LastLog"].ToString(),
+                                ActionBy = reader["ActionBy"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return Json(serviceLogs, JsonRequestBehavior.AllowGet);
+        }
+
+        public void ServiceActions(string serviceName, string command)
+        {
+            string actionBy = Session["FullName"].ToString();
+            string logBy = null;
+            DateTime lastStart = DateTime.MinValue;
+            string lastLog = null;
+
+            EventLog eventLog = new EventLog("Application");
+            int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries")); // Limit the number of entries to search
+            EventLogEntryCollection entries = eventLog.Entries;
+
+            int totalEntries = entries.Count;
+            int startIndex = totalEntries - 1;
+            int endIndex = Math.Max(startIndex - numEntriesToSearch, 0);
+            bool entryFound = false;
+
+            while (!entryFound && startIndex >= 0)
+            {
+                for (int i = startIndex; i >= endIndex; i--)
+                {
+                    EventLogEntry entry = entries[i];
+
+                    if (entry.Source == serviceName && entry.TimeGenerated > lastStart)
+                    {
+                        logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                        lastStart = entry.TimeGenerated;
+                        lastLog = entry.Message;
+                        entryFound = true;
+                        break;
+                    }
+                }
+
+                startIndex = endIndex - 1;
+                endIndex = Math.Max(startIndex - numEntriesToSearch, 0);
+            }
+
+            if (!entryFound)
+            {
+                throw new Exception("Target entry not found in event log.");
+            }
+
+            using (SqlConnection connection = DatabaseManager.GetConnection())
+            {
+
+                ServiceController[] services = ServiceController.GetServices();
+                ServiceController sc = services.FirstOrDefault(s => s.ServiceName == serviceName);
+
+                switch (command)
+                {
+                    case "start":
+                        if (sc.Status == ServiceControllerStatus.Stopped)
+                        {
+                            sc.Start();
+                            //MessageBox.Show("Service started.");
+                            StoreData(connection, logBy, serviceName, DateTime.Now, ServiceControllerStatus.Running.ToString(), "Started at SMS", actionBy);
+                        }
+                        else
+                        {
+                            //MessageBox.Show("Service is already running.");
+                            StoreData(connection, logBy, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
+                        }
+                        break;
+
+                    case "stop":
+                        if (sc.Status == ServiceControllerStatus.Running)
+                        {
+                            sc.Stop();
+                            //MessageBox.Show("Service stopped.");
+                            StoreData(connection, logBy, serviceName, DateTime.Now, ServiceControllerStatus.Stopped.ToString(), "Stop at SMS", actionBy);
+                        }
+                        else
+                        {
+                            //MessageBox.Show("Service is already stopped.");
+                            StoreData(connection, logBy, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
+                        }
+                        break;
+
+                    case "restart":
+                        if (sc.Status == ServiceControllerStatus.Running)
+                        {
+                            sc.Stop();
+                            sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
+                            sc.Start();
+                            //MessageBox.Show("Service restarted.");
+                            StoreData(connection, logBy, serviceName, DateTime.Now, ServiceControllerStatus.Running.ToString(), "Restarted at SMS", actionBy);
+                        }
+                        else
+                        {
+                            //MessageBox.Show("Service is not running.");
+                            StoreData(connection, logBy, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
+                        }
+                        break;
+
+                    default:
+                        //MessageBox.Show("Invalid command from " + command);
+                        break;
+                }
+            }
+        }
+
+        public ActionResult RealTimeTable()
+        {
+            List<Service> _activeServicesCopy = new List<Service>(_activeServices); // create a copy of the services list
+            _activeServices.Clear();
+            foreach (Service service in _activeServicesCopy)
+            {
+                FetchServicesTB(service.ServiceName);
+            }
+
+            return Json(_activeServices, JsonRequestBehavior.AllowGet);
+        }
+
+        static void StoreData(SqlConnection connection, string logBy, string serviceName, DateTime lastStart, string serviceStatus, string lastLog, string actionBy)
+        {
+            try
+            {
+                using (var command = new SqlCommand("InsertIntoServices", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@LogBy", logBy);
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.Parameters.AddWithValue("@LastStart", lastStart);
+                    command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
+                    command.Parameters.AddWithValue("@LastLog", lastLog);
+                    command.Parameters.AddWithValue("@ActionBy", actionBy);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public ActionResult Users()
         {
             if (Session["idUser"] != null)
             {
-                FetchUserData();
                 return View();
 
             }
@@ -121,44 +314,11 @@ namespace LoginAndRegisterASPMVC5.Controllers
             {
                 using (var command = new SqlCommand("dbo.UpdateUserEmailNotification", connection))
                 {
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@idUser", idUser);
 
                     command.ExecuteNonQuery();
                 }
-            }
-        }
-
-        public void SendEmail(string message)
-        {
-            try
-            {
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings.Get("smtpServer"));
-
-                mail.From = new MailAddress("carillo.aaronjoseph@gmail.com");
-
-                foreach (User user in _withNotif)
-                {
-                    string emailAddress = user.Email;
-                    mail.To.Add(emailAddress);
-                }
-
-                mail.Subject = "Windows Service Alert!";
-                mail.Body = message;
-
-                SmtpServer.Port = 587;
-                SmtpServer.UseDefaultCredentials = false;
-                SmtpServer.Credentials = new NetworkCredential(
-                    ConfigurationManager.AppSettings.Get("smtpUsername"),
-                    ConfigurationManager.AppSettings.Get("smtpPassword"));
-                SmtpServer.EnableSsl = true;
-
-                SmtpServer.Send(mail);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
             }
         }
 
@@ -199,98 +359,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-
-        public void ManageServices(string serviceName, string command)
-        {
-            DateTime lastStart = DateTime.MinValue;
-            string lastLog = null;
-
-            using (SqlConnection connection = DatabaseManager.GetConnection())
-            {
-                ServiceController[] services = ServiceController.GetServices();
-                string actionBy = Session["FullName"].ToString();
-                ServiceController sc = services.FirstOrDefault(s => s.ServiceName == serviceName);
-
-
-                EventLog eventLog = new EventLog("Application");
-                int numEntriesToSearch = 100/* int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries"))*/; // Limit the number of entries to search
-
-
-                // Get the collection of entries from the event log
-                EventLogEntryCollection entries = eventLog.Entries;
-
-                // Iterate over the last numEntriesToSearch entries in reverse order
-                int count = entries.Count;
-                for (int i = count - 1; i >= Math.Max(count - numEntriesToSearch, 0); i--)
-                {
-                    EventLogEntry entry = entries[i];
-
-                    // Check if the entry matches the service we're monitoring and is more recent than the previous one
-                    if (entry.Source == serviceName && entry.TimeGenerated > lastStart)
-                    {
-                        lastStart = entry.TimeGenerated;
-                        lastLog = entry.Message;
-                    }
-                }
-
-                switch (command)
-                {
-                    case "start":
-                        if (sc.Status == ServiceControllerStatus.Stopped)
-                        {
-                            sc.Start();
-                            //MessageBox.Show("Service started.");
-                            StoreData(connection, serviceName, DateTime.Now, ServiceControllerStatus.Running.ToString(), "Started at SMS", actionBy);
-                        }
-                        else
-                        {
-                            //MessageBox.Show("Service is already running.");
-                            StoreData(connection, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
-                        }
-                        break;
-
-                    case "stop":
-                        if (sc.Status == ServiceControllerStatus.Running)
-                        {
-                            sc.Stop();
-                            //MessageBox.Show("Service stopped.");
-                            StoreData(connection, serviceName, DateTime.Now, ServiceControllerStatus.Stopped.ToString(), "Stop at SMS", actionBy);
-                            SendEmail("Service Name: " + serviceName + "\nLastStart: " + DateTime.Now + "\nStatus: "
-                                      + ServiceControllerStatus.Stopped.ToString() + "\nLastLog: Stop at SMS" + "");
-                        }
-                        else
-                        {
-                            //MessageBox.Show("Service is already stopped.");
-                            StoreData(connection, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
-                            SendEmail("Service Name: " + serviceName + "\nLastStart: " + lastStart + "\nStatus: "
-                                      + ServiceControllerStatus.Stopped.ToString() + "\nLastLog: " + lastLog + "Actionby: " + actionBy);
-                        }
-                        break;
-
-                    case "restart":
-                        if (sc.Status == ServiceControllerStatus.Running)
-                        {
-                            sc.Stop();
-                            sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
-                            sc.Start();
-                            //MessageBox.Show("Service restarted.");
-                            StoreData(connection, serviceName, DateTime.Now, ServiceControllerStatus.Running.ToString(), "Restarted at SMS", actionBy);
-                        }
-                        else
-                        {
-                            //MessageBox.Show("Service is not running.");
-                            StoreData(connection, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
-                        }
-                        break;
-
-                    default:
-                        //MessageBox.Show("Invalid command from " + command);
-                        break;
-                }
-            }
-        }
-
-        public void FetchUserData()
+        public void FetchUsersTB()
         {
             List<User> users = new List<User>();
             string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification] FROM Users";
@@ -333,212 +402,16 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult GetUsers()
         {
-            FetchUserData();
+            FetchUsersTB();
             return Json(_users, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult GetServices()
-        {
-            List<Service> refreshServices = new List<Service>(services); // create a copy of the services list
-            services.Clear();
-            foreach (Service service in refreshServices)
-            {
-                FetchData(service.ServiceName);
-            }
-
-            return Json(refreshServices, JsonRequestBehavior.AllowGet);
-        }
-
-
-        public void GetLatestRecord(Service fetchInput)//Gets the latest record of a service
-        {
-            string serviceName = fetchInput.ServiceName;
-
-            // Check if the service already exists in the list
-            if (!services.Any(s => s.ServiceName == serviceName))
-            {
-                FetchData(serviceName);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult GetServiceNames() // For the Service Checkboxes
-        {
-            ServiceController[] services = ServiceController.GetServices(); // create a copy of the services list
-            List<string> checkedServices = new List<string>();
-
-            foreach (ServiceController service in services)
-            {
-                checkedServices.Add(service.ServiceName.ToString());
-            }
-            return Json(checkedServices, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult GetMonitoredServices()//For checkboxes as reference
-        {
-            List<Service> servicesCopy = new List<Service>(services); // create a copy of the services list
-            List<string> checkedServices = new List<string>();
-
-            foreach (Service service in servicesCopy)
-            {
-                checkedServices.Add(service.ServiceName.ToString());
-            }
-            return Json(checkedServices, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult Refresh() //Refeshes the table
-        {
-            List<Service> refreshServices = new List<Service>(services); // create a copy of the services list
-            services.Clear();
-            foreach (Service service in refreshServices)
-            {
-                FetchData(service.ServiceName);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-
-        [HttpPost]
-        public ActionResult AddService(Service fetchInput) //Gets the User Input for adding a service
-        {
-            string serviceName = fetchInput.ServiceName;
-
-            // Check if the service already exists in the list
-            if (!services.Any(s => s.ServiceName == serviceName))
-            {
-                FetchData(serviceName);
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        public void FetchData(string serviceName)
-        {
-            List<Service> newServices = new List<Service>();
-            string queryLatestRecord = $"SELECT [ServiceName],[LastStart],[ServiceStatus],[LastLog],[ActionBy] FROM Services WHERE ServiceName = '{serviceName}'";
-
-            try
-            {
-                using (SqlConnection connection = DatabaseManager.GetConnection())
-                using (SqlCommand commandLatestRecord = new SqlCommand(queryLatestRecord, connection))
-                {
-                    SqlDataReader reader = commandLatestRecord.ExecuteReader();
-
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            newServices.Add(new Service()
-                            {
-                                ServiceName = reader["ServiceName"].ToString(),
-                                LastStart = reader["LastStart"].ToString(),
-                                ServiceStatus = reader["ServiceStatus"].ToString(),
-                                LastLog = reader["LastLog"].ToString(),
-                                ActionBy = reader["ActionBy"].ToString()
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception appropriately, e.g. log it, rethrow it, or return an error message to the user.
-                throw ex;
-            }
-
-            foreach (var newService in newServices)
-            {
-                services.Add(newService);
-            }
-        }
-
-
-        [HttpPost]
-        public ActionResult GetLogHistory(string serviceName)
-        {
-            string query = $"SELECT * FROM ServiceTB WHERE ServiceName = '{serviceName}' ORDER BY LASTSTART DESC";
-            List<Service> services = new List<Service>();
-
-            try
-            {
-                using (SqlConnection connection = DatabaseManager.GetConnection())
-                {
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        while (reader.Read())
-                        {
-                            services.Add(new Service()
-                            {
-                                ServiceName = reader["ServiceName"].ToString(),
-                                LastStart = reader["LastStart"].ToString(),
-                                ServiceStatus = reader["ServiceStatus"].ToString(),
-                                LastLog = reader["LastLog"].ToString(),
-                                ActionBy = reader["ActionBy"].ToString()
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return Json(services, JsonRequestBehavior.AllowGet);
-        }
-
-        public void DeleteServices(string serviceName) //Removes a service row
-        {
-            var serviceToRemove = services.SingleOrDefault(r => r.ServiceName == serviceName);
-            if (serviceToRemove != null)
-                services.Remove(serviceToRemove);
-        }
-
-        static void StoreData(SqlConnection connection, string serviceName, DateTime entryTime, string serviceStatus, string exceptionDetails, string actionBy)
-        {
-            try
-            {
-                // Use the singleton SqlConnection instance
-                using (var command = new SqlCommand("InsertIntoServiceTB", connection))
-                {
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@ServiceName", serviceName);
-                    command.Parameters.AddWithValue("@LastStart", entryTime);
-                    command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
-                    command.Parameters.AddWithValue("@LastLog", exceptionDetails);
-                    command.Parameters.AddWithValue("@ActionBy", actionBy);
-
-                    command.ExecuteNonQuery();
-                }
-
-                // Use the singleton SqlConnection instance
-                using (var command = new SqlCommand("InsertIntoServices", connection))
-                {
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@ServiceName", serviceName);
-                    command.Parameters.AddWithValue("@LastStart", entryTime);
-                    command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
-                    command.Parameters.AddWithValue("@LastLog", exceptionDetails);
-                    command.Parameters.AddWithValue("@ActionBy", actionBy);
-
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An error occured while executing the query: " + ex.Message);
-            }
         }
 
         public ActionResult Register()
         {
-            //if (Session["FullName"] != null) // check if the user is already logged in
-            //{
-            //    return RedirectToAction("Index", "Home"); // redirect to index page
-            //}
+            if (Session["FullName"] != null) // check if the user is already logged in
+            {
+                return RedirectToAction("Index", "Home"); // redirect to index page
+            }
 
             return View();
         }
@@ -659,6 +532,59 @@ namespace LoginAndRegisterASPMVC5.Controllers
         }
 
     }
+
+    public sealed class DatabaseManager
+    {
+        private static readonly Lazy<SqlConnection> _lazyConnection = new Lazy<SqlConnection>(() => new SqlConnection());
+        private static readonly Lazy<SqlConnection> _lazyConnectionUsers = new Lazy<SqlConnection>(() => new SqlConnection());
+
+        private DatabaseManager()
+        {
+        }
+
+        public static SqlConnection GetConnection()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
+            SqlConnection connection = _lazyConnection.Value;
+            connection.ConnectionString = connectionString;
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+
+            return connection;
+        }
+
+        public static SqlConnection GetConnectionUsers()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
+            SqlConnection connection = _lazyConnectionUsers.Value;
+            connection.ConnectionString = connectionString;
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+
+            return connection;
+        }
+
+        public static void CloseConnection()
+        {
+            if (_lazyConnection.Value.State != System.Data.ConnectionState.Closed)
+            {
+                _lazyConnection.Value.Close();
+            }
+        }
+
+        public static void CloseConnectionUsers()
+        {
+            if (_lazyConnectionUsers.Value.State != System.Data.ConnectionState.Closed)
+            {
+                _lazyConnectionUsers.Value.Close();
+            }
+        }
+    }
+
 
 }
 
