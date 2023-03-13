@@ -267,6 +267,11 @@
     <Content Include="Scripts\jquery-3.6.3.min.map" />
     <Content Include="Views\Home\Service.cshtml" />
     <Content Include="Views\Home\Users.cshtml" />
+    <Content Include="Views\Test1\Create.cshtml" />
+    <Content Include="Views\Test1\Delete.cshtml" />
+    <Content Include="Views\Test1\Details.cshtml" />
+    <Content Include="Views\Test1\Edit.cshtml" />
+    <Content Include="Views\Test1\Index.cshtml" />
     <None Include="Views\_ViewStart.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -301,6 +306,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Index\" />
     <Folder Include="Views\Service\" />
   </ItemGroup>
   <PropertyGroup>

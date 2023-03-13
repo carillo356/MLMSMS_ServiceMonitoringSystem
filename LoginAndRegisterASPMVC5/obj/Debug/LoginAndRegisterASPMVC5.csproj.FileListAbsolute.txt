@@ -450,9 +450,15 @@ C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.IO.Compression.dll
 C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.IO.Compression.ZipFile.dll
 C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.IO.FileSystem.dll
 C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.IO.FileSystem.Primitives.dll
+<<<<<<< Updated upstream
 C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Net.Http.dll
 C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Net.Sockets.dll
 C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Reflection.Metadata.dll
+=======
+C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Memory.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Numerics.Vectors.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Runtime.CompilerServices.Unsafe.dll
+>>>>>>> Stashed changes
 C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Runtime.InteropServices.RuntimeInformation.dll
 C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Security.Cryptography.Algorithms.dll
 C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Security.Cryptography.Encoding.dll
@@ -502,3 +508,4 @@ C:\github repos\LoginAndRegisterASPMVC5\obj\Debug\LoginAndRegisterASPMVC5.csproj
 C:\github repos\LoginAndRegisterASPMVC5\obj\Debug\LoginAndRegisterASPMVC5.csproj.CopyComplete
 C:\github repos\LoginAndRegisterASPMVC5\obj\Debug\LoginAndRegisterASPMVC5.dll
 C:\github repos\LoginAndRegisterASPMVC5\obj\Debug\LoginAndRegisterASPMVC5.pdb
+C:\github repos\LoginAndRegisterASPMVC5\bin\roslyn\System.Buffers.dll
