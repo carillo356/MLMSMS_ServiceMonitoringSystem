@@ -159,12 +159,12 @@
                 <table class="table table-hover" id="serviceTable">
                     <thead>
                         <tr>
-                            @*<th>
+                            <th>
                                 <span class="custom-checkbox">
                                     <input type="checkbox" id="selectAll">
                                     <label for="selectAll"></label>
                                 </span>
-                            </th>*@
+                            </th>
                             <th scope="col" style="width: 15%;">SERVICE NAME</th>
                             <th scope="col" style="width: 20%;">LAST START</th>
                             <th scope="col" style="width: 10%;">LAST LOG</th>
@@ -786,7 +786,7 @@
         //        type: "POST",
         //        data: { serviceName: serviceName },
         //        success: function () {
-        //            refreshtable();
+        //            RealTimeTable();
         //            generateServiceCheckboxes();
         //        },
         //        error: function () {
@@ -803,7 +803,7 @@
         //        data: { serviceName: serviceName },
         //        success: function () {
         //            $("#serviceTable tbody").empty();
-        //            refreshtable();
+        //            RealTimeTable();
         //            generateServiceCheckboxes();
         //        },
         //        error: function () {

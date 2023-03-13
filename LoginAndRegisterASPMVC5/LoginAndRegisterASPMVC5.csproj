@@ -266,12 +266,13 @@
     <Content Include="Scripts\jquery-3.6.3.slim.min.map" />
     <Content Include="Scripts\jquery-3.6.3.min.map" />
     <Content Include="Views\Home\Service.cshtml" />
-    <Content Include="Views\Home\Users.cshtml" />
+    <Content Include="Views\Home\AdminUsers.cshtml" />
     <Content Include="Views\Test1\Create.cshtml" />
     <Content Include="Views\Test1\Delete.cshtml" />
     <Content Include="Views\Test1\Details.cshtml" />
     <Content Include="Views\Test1\Edit.cshtml" />
     <Content Include="Views\Test1\Index.cshtml" />
+    <Content Include="Views\Home\Users.cshtml" />
     <None Include="Views\_ViewStart.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>

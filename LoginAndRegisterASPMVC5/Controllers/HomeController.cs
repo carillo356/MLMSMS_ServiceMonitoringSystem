@@ -26,6 +26,8 @@ using System.Net.Mail;
 using System.Web.Services.Description;
 using Service = LoginAndRegisterASPMVC5.Models.Service;
 using System.Web.UI.WebControls;
+using System.Runtime.Remoting.Contexts;
+
 
 namespace LoginAndRegisterASPMVC5.Controllers
 {
@@ -294,13 +296,32 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             if (Session["idUser"] != null)
             {
-                return View();
+
+                bool isAdmin = false;
+                if (Session["IsAdmin"] != null)
+                {
+                    isAdmin = (bool)Session["IsAdmin"];
+                }
+
+                if (isAdmin)
+                {
+                    return RedirectToAction("AdminUsers");
+                }
+                else
+                {
+                    return View();
+                }
 
             }
             else
             {
                 return RedirectToAction("Login");
             }
+        }
+
+        public ActionResult AdminUsers()
+        {
+            return View();
         }
 
         public void UpdateEmailNotification(int idUser)
@@ -316,9 +337,44 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 }
             }
         }
+
+        public void DeleteUser(int idUser)
+        {
+            using (SqlConnection connection = DatabaseManager.GetConnectionUsers())
+            {
+                using (var command = new SqlCommand("dbo.DeleteUser", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@idUser", idUser);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetUserById(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userViewModel = new UserViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                IsAdmin = user.IsAdmin
+            };
+
+            return Json(userViewModel);
+        }
+
         public void FetchUsersTB()
         {
-            string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification] FROM Users";
+            string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification],[IsAdmin] FROM Users";
 
             try
             {
@@ -338,7 +394,8 @@ namespace LoginAndRegisterASPMVC5.Controllers
                                 FirstName = reader["FirstName"].ToString(),
                                 LastName = reader["LastName"].ToString(),
                                 Email = reader["Email"].ToString(),
-                                Email_Notification = (bool)reader["Email_Notification"]
+                                Email_Notification = (bool)reader["Email_Notification"],
+                                IsAdmin = (bool)reader["IsAdmin"]
                             });
                         }
                     }
@@ -350,7 +407,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public ActionResult GetUsers()
+        public ActionResult RealTimeUsersTB()
         {
             FetchUsersTB();
             return Json(_users, JsonRequestBehavior.AllowGet);
@@ -416,7 +473,39 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
 
             }
-            return View("Index");
+            return View("Users");
+        }
+
+        public ActionResult UpdateUser(User userToUpdate)
+        {
+            if (ModelState.IsValid)
+            {
+                var check = _db.Users.FirstOrDefault(s => s.Email == userToUpdate.Email && s.idUser != userToUpdate.idUser);
+                if (check == null)
+                {
+                    var userInDb = _db.Users.Single(u => u.idUser == userToUpdate.idUser);
+                    userInDb.FirstName = userToUpdate.FirstName;
+                    userInDb.LastName = userToUpdate.LastName;
+                    userInDb.Email = userToUpdate.Email;
+                    userInDb.IsAdmin = userToUpdate.IsAdmin;
+
+                    if (!string.IsNullOrEmpty(userToUpdate.Password))
+                    {
+                        userInDb.Password = GetMD5(userToUpdate.Password);
+                    }
+
+                    _db.SaveChanges();
+
+                    return RedirectToAction("Users");
+                }
+                else
+                {
+                    ViewBag.error = "Email already exists";
+                    return View("Users");
+                }
+            }
+
+            return View("Users");
         }
 
         //create a string MD5
@@ -461,8 +550,11 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 {
                     //add session
                     Session["FullName"] = data.FirstOrDefault().FirstName + " " + data.FirstOrDefault().LastName;
+                    Session["FirstName"] = data.FirstOrDefault().FirstName;
+                    Session["LastName"] = data.FirstOrDefault().LastName;
                     Session["Email"] = data.FirstOrDefault().Email;
                     Session["idUser"] = data.FirstOrDefault().idUser;
+                    Session["IsAdmin"] = data.FirstOrDefault().IsAdmin;
                     return RedirectToAction("Index");
                 }
                 else

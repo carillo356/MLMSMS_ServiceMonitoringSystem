@@ -1,0 +1,413 @@
+﻿@model LoginAndRegisterASPMVC5.Models.User
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<body class="bgcolor">
+    <!-- Nav Bar with Responsive -->
+    <header>
+        <div class="container-fluid">
+            <div class="navb-name">
+                MLM Service Monitoring System
+            </div>
+
+            <div class="navb-items d-none d-xl-flex">
+                <div class="menu-item">
+                    <a href="@Url.Action("Index","Home")" class="navbar">Home</a>
+                </div>
+
+                <div class="menu-item">
+                    <a href="@Url.Action("Users","Home")" class="navbar active">Users</a>
+                </div>
+
+                <div class="item-button">
+                    <a href="@Url.Action("Logout","Home")" type="button">Logout</a>
+                </div>
+            </div>
+
+            <!-- Button trigger modal (Responsive) -->
+            <div class="mobile-toggler d-lg-none">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#navbModal">
+                    <i class="bi bi-list"></i>
+                </a>
+            </div>
+
+            <!-- Modal (Responsive) -->
+            <div class="modal fade" style="width: 500px;" id="navbModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="title">MLM Service Monitoring System</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="modal-line">
+                                <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="bi bi-house"></i> Home</a>
+                            </div>
+
+                            <div class="modal-line">
+                                <a href="@Url.Action("Users","Home")" class="btn btn-primary"><i class="bi bi-bell"></i>Users</a>
+                            </div>
+
+                            <a href="@Url.Action("Logout","Home")" class="navb-button" type="button">Logout</a>
+                        </div>
+
+                        <div class="mobile-modal-footer">
+                            <a target="_blank" href="#"><i class="bi bi-instagram"></i></a>
+                            <a target="_blank" href="#"><i class="bi bi-linkedin"></i></a>
+                            <a target="_blank" href="#"><i class="bi bi-youtube"></i></a>
+                            <a target="_blank" href="#"><i class="bi bi-facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    @*<div class="fs-1 fw-bold text-center my-4">List of Users</div>
+
+
+        <div class="text-center">
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addUsers-modal">Add New Users</button>
+        </div>*@
+
+
+    <!-- Users Table -->
+    @*<div class="users">
+        <table class="table mt-3" id="usersTable">
+            <thead>
+                <tr>
+                    <th scope="col">UserID</th>
+                    <th scope="col">FIRST NAME</th>
+                    <th scope="col">LAST NAME</th>
+                    <th scope="col">EMAIL ADDRESS</th>*@
+    @*<th scope="col">NOTIFICATION</th>*@
+    @*<th scope="col">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>*@
+
+    <!-- Users Table -->
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>List of Users</b></h2>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editUsers-modal"><i class="bi bi-plus-circle"></i><span>Add Users</span></button>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 10%;">USER ID</th>
+                            <th scope="col" style="width: 15%;">FIRST NAME</th>
+                            <th scope="col" style="width: 15%;">LAST NAME</th>
+                            <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
+                            <th scope="col" style="width: 10%;">ROLE</th>
+                            @*<th scope="col" style="width: 20%;">NOTIFICATION</th>*@
+                            <th scope="col" style="width: 15%;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- table content goes here -->
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    @*<div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>*@
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a href="#">Previous</a></li>
+                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Users Modal -->
+    <div class="modal fade" id="addUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Add user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("AddUser", "Home", FormMethod.Post))
+                    {
+                        //@Html.ValidationSummary()
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.FirstName, "First Name:", new { @class = "label fw-bold" })
+                            @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", @placeholder = "First Name", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.LastName, "Last Name:", new { @class = "label fw-bold" })
+                            @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", @placeholder = "Last Name", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.Email, "Email Address:", new { @class = "label fw-bold" })
+                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email Address", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
+                            @if (ViewBag.error != null)
+                            {
+                                <span class="badge badge-danger">@ViewBag.error</span>
+                            }
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        @*<div class="form-group m-3">
+                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "label" })
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", id = "confirmPass" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
+                        </div>*@
+
+                        <div class="form-group m-3">
+                            <input type="checkbox" id="togglePassword" />
+                            <label for="togglePassword">Show password</label>
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.IsAdmin, "Assign User to be an admin or not:", new { @class = "label mb-2 fw-bold" })
+                            <div class="radio-container">
+                                <label>
+                                    @Html.RadioButtonFor(m => m.IsAdmin, "True", new { onchange = "this.value = this.checked" })
+                                    <span>Admin</span>
+                                </label>
+                                <label>
+                                    @Html.RadioButtonFor(m => m.IsAdmin, "False", new { onchange = "this.value = !this.checked" })
+                                    <span>Not Admin</span>
+                                </label>
+                            </div>
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Add User</button>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Edit Users Modal -->
+    <div class="modal fade" id="editUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Add user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @*<form method="post" action="@Url.Action("UpdateUser", "Home")">
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group m-3">
+                            <label for="firstName" class="label fw-bold">First Name:</label>
+                            <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="First Name" value="" autocomplete="off" />
+                        </div>
+
+                        <div class="form-group m-3">
+                            <label for="lastName" class="label fw-bold">Last Name:</label>
+                            <input type="text" id="lastName" name="LastName" class="form-control" placeholder="Last Name" value="@Session["" autocomplete="off" />
+                        </div>
+
+                        <div class="form-group m-3">
+                            <label for="email" class="label fw-bold">Email Address:</label>
+                            <input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" value="@Session["Email"]" autocomplete="off" />
+                        </div>
+
+                        <div class="form-group m-3">
+                            <label for="password" class="label fw-bold">Password:</label>
+                            <input type="password" id="password" name="Password" class="form-control" placeholder="Password" />
+                        </div>
+
+                        <div class="form-group m-3">
+                            <input type="checkbox" id="togglePassword" />
+                            <label for="togglePassword">Show password</label>
+                        </div>
+
+                        <div class="form-group m-3">
+                            <label class="label mb-2 fw-bold">Assign User to be an admin or not:</label>
+                            <div class="radio-container">
+                                <label>
+                                    <input type="radio" name="IsAdmin" value="true" @((bool)Session["IsAdmin"] ? "checked" : "") />
+                                    <span>Admin</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="IsAdmin" value="false" @(Session["IsAdmin"] != null && !(bool)Session["IsAdmin"] ? "checked" : "") />
+                                    <span>Not Admin</span>
+                                </label>
+                            </div>
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2" value="addUser">Save Changes</button>
+                        </div>
+                    </form>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteUsers-modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-title">System Message</div>
+            <div id="modal-message">Are you sure you want to RESTART 'Service1'?</div>
+            <div class="modal-buttons">
+                <button type="button" id="btnYes" name="Yes" onclick="btnYes_Click" class="alert-buttons">Yes</button>
+                <button type="button" id="btnNo" name="No" onclick="btnNo_Click" class="alert-buttons">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show Modal -->
+    <script>
+        var myModal = new bootstrap.Modal(document.getElementById('signup-modal'));
+        myModal.show();
+    </script>
+
+    <!-- Tooltip, Refresh Table, Show Password, etc -->
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        $(document).ready(function () {
+            RealTimeUsersTable()
+        });
+
+        function setNotification(idUser) {
+            $.ajax({
+                type: 'POST',
+                url: '/Home/UpdateEmailNotification',
+                data: { idUser: idUser },
+                success: function () {
+                    RealTimeUsersTable();
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+        function DeleteUser(idUser) {
+            $.ajax({
+                type: 'POST',
+                url: '/Home/DeleteUser',
+                data: { idUser: idUser },
+                success: function () {
+                    RealTimeUsersTable();
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+        function UpdateUser(idUser) {
+             $.ajax({
+                url: "/Home/GetUserById",
+                type: "GET",
+                data: { idUser: idUser },
+                dataType: "json",
+                success: function (data) {
+                    $("#firstName").val(data.firstName);
+                    $("#lastName").val(data.lastName);
+                    $("#email").val(data.email);
+                    $("#isAdmin").prop("checked", data.isAdmin);
+                    // clear password field
+                    $("#password").val("");
+                    // show modal
+                    $("#editUserModal").modal("show");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error retrieving user data: " + errorThrown);
+                }
+             });
+        }
+
+        function RealTimeUsersTable() {
+            /*Refresh the table with the updated data*/
+            $.ajax({
+                url: "/Home/RealTimeUsersTB",
+                type: "GET",
+                dataType: 'json',
+                success: function (result) {
+                    $("#usersTable tbody").empty();
+                    // Loop through the data and append each row to the table
+                    result.forEach(function (Data) {
+                        const Role = (Data.IsAdmin === true) ? '<span>Admin</span>' : '<span>Non-Admin</span>';
+
+                        var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                        row += "<td>" + Data.idUser + "</td>";
+                        row += "<td>" + Data.FirstName + "</td>";
+                        row += "<td>" + Data.LastName + "</td>";
+                        row += "<td>" + Data.Email + "</td>";
+                        row += "<td>" + Role + "</td>";
+                        row += "<td>";
+                        if (Data.Email_Notification == true) {
+                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
+                            row += "<i class='bi bi-envelope-check-fill'></i>";
+                            row += "</button>";
+                        } else {
+                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
+                            row += "<i class='bi bi-envelope-x-fill'></i>";
+                            row += "</button>";
+                        }
+                        row += "<button onclick='DeleteUser(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
+                        row += "<i class='bi bi-trash3-fill'></i>";
+                        row += "</button>";
+
+                        row += "<button onclick='UpdateUser(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
+                        row += "<i class='bi bi-trash3-fill'></i>";
+                        row += "</button>";
+
+
+                        row += "</td></tr>";
+                        $("#usersTable tbody").append(row);
+                    });
+                },
+                error: function () {
+                    alert("Failed to refresh users.");
+                }
+            });
+        }
+
+        const togglePassword = document.getElementById("togglePassword");
+        const password = document.getElementById("password");
+
+        togglePassword.addEventListener("change", function () {
+            if (togglePassword.checked) {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        });
+
+    </script>
+
+</body>
+
+

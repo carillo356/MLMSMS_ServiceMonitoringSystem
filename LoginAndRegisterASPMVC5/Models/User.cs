@@ -35,6 +35,7 @@ namespace LoginAndRegisterASPMVC5.Models
         //[System.ComponentModel.DataAnnotations.Compare("Password")]
         //public string ConfirmPassword { get; set; }
 
+        [Required]
         public Boolean IsAdmin { get; set; }
         public string FullName()
         {
