@@ -315,44 +315,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 }
             }
         }
-
-        //public void FetchUserWithNotif()
-        //{
-        //    List<User> users = new List<User>();
-        //    string query = $"SELECT [Email] FROM Users WHERE Email_Notification = 1";
-
-        //    try
-        //    {
-        //        _withNotif.Clear();
-        //        using (SqlConnection connection = DatabaseManager.GetConnectionUsers())
-        //        using (SqlCommand commandLatestRecord = new SqlCommand(query, connection))
-        //        {
-        //            SqlDataReader reader = commandLatestRecord.ExecuteReader();
-
-        //            if (reader.HasRows)
-        //            {
-        //                while (reader.Read())
-        //                {
-        //                    users.Add(new User()
-        //                    {
-        //                        Email = reader["Email"].ToString(),
-        //                    });
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Handle the exception appropriately, e.g. log it, rethrow it, or return an error message to the user.
-        //        throw ex;
-        //    }
-
-        //    foreach (var user in users)
-        //    {
-        //        _withNotif.Add(user);
-        //    }
-        //}
-
         public void FetchUsersTB()
         {
             string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification] FROM Users";
