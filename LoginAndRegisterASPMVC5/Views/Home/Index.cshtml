@@ -43,11 +43,11 @@
 
                         <div class="modal-body">
                             <div class="modal-line">
-                                <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="bi bi-house"></i>Home</a>
+                                <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="bi bi-house-fill"></i>Home</a>
                             </div>
 
                             <div class="modal-line">
-                                <a href="@Url.Action("Users","Home")" class="btn btn-primary"><i class="bi bi-bell"></i>Users</a>
+                                <a href="@Url.Action("Users","Home")" class="btn btn-primary"><i class="bi bi-person-circle"></i>Users</a>
                             </div>
 
                             <a href="@Url.Action("Logout","Home")" class="navb-button" type="button">Logout</a>
@@ -122,8 +122,8 @@
                 <div class="modal-body">
                     <div class="d-flex justify-content-left">
                         <form onsubmit="event.preventDefault(); AddService(this.ServiceName.value);" class="d-flex align-items-center mb-0">
-                            <div class="form-group m-3" style="width: 100%;">
-                                <input type="text" name="ServiceName" class="form-control" style="width: 350px;" autocomplete="off" placeholder="Search" />
+                            <div class="form-group m-3 w-100">
+                                <input type="text" name="ServiceName" class="form-control" @*style="width: 350px;"*@ autocomplete="off" placeholder="Search" />
                             </div>
                             <div class="item-button mt-2" style="display:flex;">
                                 <button type="submit" class="custom-button"><i class="bi bi-search"></i></button>
@@ -150,48 +150,42 @@
                         <div class="col-sm-6">
                             <h2><b>List of Services</b></h2>
                         </div>
-                        <div class="col-sm-6">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=""><i class="bi bi-dash-circle"></i><span>Delete Services</span></button>
+                        <div class="col-sm-6 button-container">
+                            <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
+                            @*<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=""><i class="bi bi-dash-circle"></i><span>Delete Services</span></button>*@
                         </div>
                     </div>
                 </div>
-                <table class="table table-hover" id="serviceTable">
-                    <thead>
-                        <tr>
-                            <th>
-                                <span class="custom-checkbox">
-                                    <input type="checkbox" id="selectAll">
-                                    <label for="selectAll"></label>
-                                </span>
-                            </th>
-                            <th scope="col" style="width: 15%;">SERVICE NAME</th>
-                            <th scope="col" style="width: 20%;">LAST START</th>
-                            <th scope="col" style="width: 10%;">LAST LOG</th>
-                            <th scope="col" style="width: 20%;">STATUS</th>
-                            <th scope="col" style="width: 15%;">ACTION BY</th>
-                            <th scope="col" style="width: 15%;">ACTION</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <!-- table content goes here -->
-                    </tbody>
-                </table>
-                <div class="clearfix">
-                    @*<div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>*@
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a href="#">Previous</a></li>
-                        <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
-                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                        <li class="page-item"><a href="#" class="page-link">3</a></li>
-                        <li class="page-item"><a href="#" class="page-link">4</a></li>
-                        <li class="page-item"><a href="#" class="page-link">5</a></li>
-                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
+    </div>
+
+    <table class="table table-hover" id="serviceTable">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 10%;">SERVICE NAME</th>
+                <th scope="col" style="width: 15%;">LAST START</th>
+                <th scope="col" style="width: 10%;">LAST LOG</th>
+                <th scope="col" style="width: 10%;">STATUS</th>
+                <th scope="col" style="width: 15%;">ACTION BY</th>
+                <th scope="col" style="width: 15%;">ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <!-- table content goes here -->
+        </tbody>
+    </table>
+    <div class="clearfix">
+        <ul class="pagination">
+            <li class="page-item disabled"><a href="#">Previous</a></li>
+            <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
+            <li class="page-item"><a href="#" class="page-link">2</a></li>
+            <li class="page-item"><a href="#" class="page-link">3</a></li>
+            <li class="page-item"><a href="#" class="page-link">4</a></li>
+            <li class="page-item"><a href="#" class="page-link">5</a></li>
+            <li class="page-item"><a href="#" class="page-link">Next</a></li>
+        </ul>
     </div>
 
     <!--Checkbox-->
@@ -391,22 +385,20 @@
                     // Loop through the data and append each row to the table
                     result.forEach(function (Data) {
                         var limit = 20;
-                        var statusClass = "badge-danger";
-                        var statusText = "Stopped";
-                        if (Data.ServiceStatus === "Running") {
-                            statusClass = "badge-success";
-                            statusText = "Running";
-                        }
+                        //if (Data.ServiceStatus === "Running") {
+                        //    statusText = "Running";
+                        //}
+                        const statusText = (Data.ServiceStatus === "Running") ? '<span style="color:green">Running</span>' : '<span style="color:red">Stopped</span>';
 
                         var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + "<span class='custom-checkbox'>" +
-                            "<input type='checkbox' id='checkbox1' name='options[]' value='1'>" +
-                            "<label for='checkbox1'></label>" +
-                            "</span>" +
-                            "</td>";
+                        //row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + "<span class='custom-checkbox'>" +
+                        //    "<input type='checkbox' id='checkbox1' name='options[]' value='1'>" +
+                        //    "<label for='checkbox1'></label>" +
+                        //    "</span>" +
+                        //    "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'><span class='badge " + statusClass + "'>" + statusText + "</span></td>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastLog + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ActionBy + "</td>";
                         row += "<td>";
@@ -465,8 +457,6 @@
 
     <!--Add or Remove Service-->
     <script>
-
-
         function AddService(serviceName) {
             $.ajax({
                 url: "/Home/AddService",

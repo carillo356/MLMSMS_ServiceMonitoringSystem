@@ -46,6 +46,12 @@
     font-size: 20px;
 }
 
+table.table td:last-child i {
+    opacity: 0.9;
+    font-size: 22px;
+    margin: 0 0px
+}
+
 /* Add Users */
 .btn.btn-dark {
     background-color: deeppink;
@@ -166,11 +172,6 @@
         width: 80%;
     }
 
-    #usersTable .table-container {
-        width: 100%;
-        background: transparent;
-    }
-
     #usersTable table,
     #usersTable thead,
     #usersTable tbody,
@@ -201,9 +202,7 @@
         position: relative;
         padding-left: 50%;
         text-align: right;
-        font-size: 10px;
-        line-height: 12px;
-        width: 300px;
+        font-size: 12px;
     }
 
         #usersTable td::before {
@@ -234,11 +233,15 @@
             content: "EMAIL ADDRESS";
         }
 
-/*        #usersTable td:nth-of-type(5)::before {
-            content: "SET NOTIFICATION";
-        }*/
-
         #usersTable td:nth-of-type(5)::before {
+            content: "IS_ADMIN";
+        }
+
+        #usersTable td:nth-of-type(6)::before {
             content: "ACTION";
         }
+
+    .bi.bi-envelope-check-fill, .bi.bi-trash3-fill, .bi.bi-envelope-x-fill {
+        font-size: 15px;
+    }
 }

@@ -301,7 +301,7 @@ header .mobile-toggler {
     transform: translate(-50%, -50%);
     margin: auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: 2px solid #888;
     width: 60%;
     text-align: center;
     font-size: 20px;
@@ -420,6 +420,7 @@ header .mobile-toggler {
     padding: 0 20px;
     border-radius: 8px;
     color: black;
+    font-size: 14px;
 }
 
      .item:hover {
@@ -492,14 +493,38 @@ header .mobile-toggler {
     color: #333;
 }
 
+#serviceTable, #usersTable {
+    margin: auto;
+    width: 65%;
+    margin-top: -40px;
+}
+
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
     
     .list-items {
         z-index: 999;
     }
 
-    #serviceTable .table-container {
-        width: 50%;
+    .table-wrapper .table-title {
+        text-align: center;
+    }
+
+    .table-title .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+    }
+
+    .clearfix {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    #serviceTable, #usersTable {
+        width: 85%;
         background: transparent;
     }
 
@@ -598,7 +623,6 @@ header .mobile-toggler {
         width: 140px;
     }
 
-
     #popupTable table,
     #popupTable thead,
     #popupTable tbody,
@@ -660,6 +684,6 @@ header .mobile-toggler {
         #popupTable td:nth-of-type(5)::before {
             content: "ACTION BY";
         }
-        
 }
+
 

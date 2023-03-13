@@ -122,6 +122,11 @@ header {
     margin: 0 10px;
 }
 
+/*@media (max-width: 768px) {
+    #alert-modal .modal-content {
+        width: 80%;
+    }
+}*/
 
 /* Table */
 .table-responsive {
@@ -132,8 +137,8 @@ header {
     background: #fff;
     padding: 20px 25px;
     border-radius: 3px;
-    min-width: 1000px;
     box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    width: 100%;
 }
 
 .table-title {
@@ -300,7 +305,7 @@ table.table td:last-child i {
 
 .pagination {
     float: right;
-    margin: 0 0 5px;
+    margin: 20px 330px 5px;
 }
 
     .pagination li a {
@@ -339,18 +344,12 @@ table.table td:last-child i {
         padding-top: 6px
     }
 
-.hint-text {
-    float: left;
-    margin-top: 10px;
-    font-size: 13px;
-}  
-
-/* Add Users modal */
+/* Add Service modal */
 #displayService-modal .modal {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 450px;
+    max-width: 80%;
 }
 
 #displayService-modal .modal-dialog {
@@ -359,13 +358,12 @@ table.table td:last-child i {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 40%;
+    width: 60%;
 }
 
 #displayService-modal .modal-content {
     max-height: calc(100vh - 100px);
     overflow-y: auto;
-    overflow-x: hidden;
 }
 
 /* Show scrollbar */
@@ -373,10 +371,6 @@ table.table td:last-child i {
     /*overflow: auto;*/
     overflow-y: auto;
 }
-
-    #displayService-modal .modal-body .form-control {
-        width: 400px;
-    }
 
     /* Customize scrollbar */
     #displayService-modal .modal-body::-webkit-scrollbar {
@@ -412,3 +406,28 @@ table.table td:last-child i {
         background-color: #274d8a;
         color: #fefefe;
     }
+
+    #displayService-modal .form-control {
+        width: 350px;
+    }
+
+@media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
+    #alert-modal .modal-content {
+        width: 80%;
+    }
+    .service_name {
+        font-size: 20px;
+        margin-top: -15px;
+        margin-bottom: 30px;
+        margin-left: 20px;
+    }
+    #displayService-modal .form-control {
+        width: 230px;
+    }
+
+    #displayService-modal .modal-dialog {
+        width: 90%;
+    }
+}
+
+
