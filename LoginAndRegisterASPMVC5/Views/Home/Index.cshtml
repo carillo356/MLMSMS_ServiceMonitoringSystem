@@ -388,6 +388,7 @@
                 type: "GET",
                 dataType: 'json',
                 success: function (result) {
+                    $("#serviceTable tbody").empty();
                     // Loop through the data and append each row to the table
                     result.forEach(function (Data) {
                         var limit = 20;
@@ -399,7 +400,7 @@
                         }
 
                         var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + "<span class='custom-checkbox'>" +
+                        row += "<td>" + "<span class='custom-checkbox'>" +
                             "<input type='checkbox' id='checkbox1' name='options[]' value='1'>" +
                             "<label for='checkbox1'></label>" +
                             "</span>" +

@@ -51,6 +51,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         [HttpPost]
         public void AddService(Service fetchInput) //Gets the User Input for adding a service
         {
+
             string serviceName = fetchInput.ServiceName;
             if (!_activeServices.Any(s => s.ServiceName == serviceName))
             {
