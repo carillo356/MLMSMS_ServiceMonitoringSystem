@@ -106,7 +106,7 @@
         </table>*@
 
     <!-- Service Table with search filter to add service -->
-   <div class="container-xl">
+    <div class="container-xl">
         <div class="table-responsive">
             <div class="table-wrapper">
                 <div class="table-title">
@@ -120,42 +120,41 @@
                         </div>
                     </div>
                 </div>
+                <table class="table table-hover" id="serviceTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="custom-checkbox">
+                                    <input type="checkbox" id="selectAll">
+                                    <label for="selectAll"></label>
+                                </span>
+                            </th>
+                            <th scope="col" style="width: 15%;">SERVICE NAME</th>
+                            <th scope="col" style="width: 20%;">LAST START</th>
+                            <th scope="col" style="width: 10%;">LAST LOG</th>
+                            <th scope="col" style="width: 20%;">STATUS</th>
+                            <th scope="col" style="width: 15%;">ACTION BY</th>
+                            <th scope="col" style="width: 15%;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- table content goes here -->
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    @*<div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>*@
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a href="#">Previous</a></li>
+                        <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-   </div>
-
-    <table class="table table-hover" id="serviceTable">
-        <thead>
-            <tr>
-                <th>
-                    <span class="custom-checkbox">
-                        <input type="checkbox" id="selectAll">
-                        <label for="selectAll"></label>
-                    </span>
-                </th>
-                <th scope="col" style="width: 15%;">SERVICE NAME</th>
-                <th scope="col" style="width: 20%;">LAST START</th>
-                <th scope="col" style="width: 10%;">LAST LOG</th>
-                <th scope="col" style="width: 20%;">STATUS</th>
-                <th scope="col" style="width: 15%;">ACTION BY</th>
-                <th scope="col" style="width: 15%;">ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- table content goes here -->
-        </tbody>
-    </table>
-    <div class="clearfix">
-        @*<div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>*@
-        <ul class="pagination">
-            <li class="page-item disabled"><a href="#">Previous</a></li>
-            <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
-            <li class="page-item"><a href="#" class="page-link">2</a></li>
-            <li class="page-item"><a href="#" class="page-link">3</a></li>
-            <li class="page-item"><a href="#" class="page-link">4</a></li>
-            <li class="page-item"><a href="#" class="page-link">5</a></li>
-            <li class="page-item"><a href="#" class="page-link">Next</a></li>
-        </ul>
     </div>
 
     <!-- Modal -->
@@ -559,7 +558,7 @@
 
             // Select/Deselect checkboxes
             var checkbox = $('table tbody input[type="checkbox"]');
-            $("#selectAll").click(function () {
+            $("selectAll").click(function () {
                 if (this.checked) {
                     checkbox.each(function () {
                         this.checked = true;
@@ -572,7 +571,7 @@
             });
             checkbox.click(function () {
                 if (!this.checked) {
-                    $("#selectAll").prop("checked", false);
+                    $("selectAll").prop("checked", false);
                 }
             });
         });
