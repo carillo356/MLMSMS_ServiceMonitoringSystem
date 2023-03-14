@@ -27,7 +27,8 @@ using System.Web.Services.Description;
 using Service = LoginAndRegisterASPMVC5.Models.Service;
 using System.Web.UI.WebControls;
 using System.Runtime.Remoting.Contexts;
-
+using System.Data.Entity.Validation;
+using System.Text.RegularExpressions;
 
 namespace LoginAndRegisterASPMVC5.Controllers
 {
@@ -352,26 +353,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult GetUserById(int id)
-        {
-            var user = _context.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var userViewModel = new UserViewModel
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                IsAdmin = user.IsAdmin
-            };
-
-            return Json(userViewModel);
-        }
-
         public void FetchUsersTB()
         {
             string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification],[IsAdmin] FROM Users";
@@ -452,6 +433,8 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddUser(User _user)
         {
             if (ModelState.IsValid)
@@ -468,44 +451,47 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 else
                 {
                     ViewBag.error = "Email already exists";
-                    return View("Users");
                 }
 
 
             }
-            return View("Users");
+            return View("AdminUsers");
         }
 
-        public ActionResult UpdateUser(User userToUpdate)
+        [HttpPost]
+        public ActionResult UpdateUser(UserUpdate _user, string Password)
         {
+            // Retrieve the user from the database
+            var userToUpdate = _db.Users.FirstOrDefault(u => u.idUser == _user.idUser);
+
             if (ModelState.IsValid)
             {
-                var check = _db.Users.FirstOrDefault(s => s.Email == userToUpdate.Email && s.idUser != userToUpdate.idUser);
-                if (check == null)
+                if (userToUpdate != null)
                 {
-                    var userInDb = _db.Users.Single(u => u.idUser == userToUpdate.idUser);
-                    userInDb.FirstName = userToUpdate.FirstName;
-                    userInDb.LastName = userToUpdate.LastName;
-                    userInDb.Email = userToUpdate.Email;
-                    userInDb.IsAdmin = userToUpdate.IsAdmin;
+                    // Update the user's properties
+                    userToUpdate.FirstName = _user.FirstName;
+                    userToUpdate.LastName = _user.LastName;
+                    userToUpdate.Email = _user.Email;
+                    userToUpdate.IsAdmin = _user.IsAdmin;
 
-                    if (!string.IsNullOrEmpty(userToUpdate.Password))
+                    // Update the user's password if it is not null
+                    if (!string.IsNullOrEmpty(Password))
                     {
-                        userInDb.Password = GetMD5(userToUpdate.Password);
-                    }
+                        _db.Entry(userToUpdate).State = EntityState.Modified;
+                        userToUpdate.Password = GetMD5(Password);
 
+                    }
+                    _db.Configuration.ValidateOnSaveEnabled = false;
                     _db.SaveChanges();
 
-                    return RedirectToAction("Users");
+                    return RedirectToAction("AdminUsers");
                 }
                 else
                 {
-                    ViewBag.error = "Email already exists";
-                    return View("Users");
+                    return HttpNotFound();
                 }
             }
-
-            return View("Users");
+            return View("AdminUsers");
         }
 
         //create a string MD5

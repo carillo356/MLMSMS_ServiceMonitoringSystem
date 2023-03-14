@@ -8,7 +8,7 @@ using System.Web.Optimization;
 
 namespace LoginAndRegisterASPMVC5.Models
 {
-    public class User
+    public class UserUpdate
     {
         [Key, Column(Order = 1)]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
@@ -25,7 +25,6 @@ namespace LoginAndRegisterASPMVC5.Models
 
         public Boolean Email_Notification { get; set; }
 
-        [Required]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$")]
         public string Password { get; set; }
 
