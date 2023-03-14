@@ -43,7 +43,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             if (Session["idUser"] != null)
             {
                 return View();
-
             }
             else
             {
@@ -394,29 +393,40 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return Json(_users, JsonRequestBehavior.AllowGet);
         }
 
-        public void InsertControllerIntoServicesTB()
+        static void StoreServiceName(SqlConnection connection, string serviceName)
+        {
+            try
+            {
+                using (var command = new SqlCommand("INSERT INTO Services (ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM Services WHERE ServiceName = @ServiceName)", connection))
+                {
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void InsertAllServices()
         {
             using (SqlConnection connection = DatabaseManager.GetConnection())
             {
-                // Get the names of all running services
-                ServiceController[] services = ServiceController.GetServices();
-                foreach (ServiceController service in services)
+                // Get a list of all the installed services
+                var services = ServiceController.GetServices();
+
+                // Insert each service name into the Services table
+                foreach (var service in services)
                 {
-                    string serviceName = service.ServiceName;
-                    // Insert the service name into the Services table
-                    SqlCommand command = new SqlCommand("INSERT INTO Services (ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM Services WHERE ServiceName = @ServiceName)", connection);
-                    command.Parameters.AddWithValue("@ServiceName", serviceName);
-                    int rowsAffected = command.ExecuteNonQuery();
-                    if (rowsAffected > 0)
-                    {
-                        // Service name was inserted successfully
-                    }
-                    else
-                    {
-                        // Service name already exists in the Services table
-                    }
+                    StoreServiceName(connection, service.ServiceName);
                 }
             }
+        }
+
+        protected void Application_Start()
+        {
+            InsertAllServices();
         }
 
         public ActionResult Register()
