@@ -394,6 +394,31 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return Json(_users, JsonRequestBehavior.AllowGet);
         }
 
+        public void InsertControllerIntoServicesTB()
+        {
+            using (SqlConnection connection = DatabaseManager.GetConnection())
+            {
+                // Get the names of all running services
+                ServiceController[] services = ServiceController.GetServices();
+                foreach (ServiceController service in services)
+                {
+                    string serviceName = service.ServiceName;
+                    // Insert the service name into the Services table
+                    SqlCommand command = new SqlCommand("INSERT INTO Services (ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM Services WHERE ServiceName = @ServiceName)", connection);
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        // Service name was inserted successfully
+                    }
+                    else
+                    {
+                        // Service name already exists in the Services table
+                    }
+                }
+            }
+        }
+
         public ActionResult Register()
         {
             if (Session["FullName"] != null) // check if the user is already logged in
@@ -477,11 +502,11 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     // Update the user's password if it is not null
                     if (!string.IsNullOrEmpty(Password))
                     {
-                        _db.Entry(userToUpdate).State = EntityState.Modified;
                         userToUpdate.Password = GetMD5(Password);
 
                     }
                     _db.Configuration.ValidateOnSaveEnabled = false;
+                    _db.Entry(userToUpdate).State = EntityState.Modified;
                     _db.SaveChanges();
 
                     return RedirectToAction("AdminUsers");
