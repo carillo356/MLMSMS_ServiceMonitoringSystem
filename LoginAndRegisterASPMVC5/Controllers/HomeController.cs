@@ -40,6 +40,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult Index()
         {
+            InsertAllServices();
             if (Session["idUser"] != null)
             {
                 return View();
@@ -422,11 +423,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     StoreServiceName(connection, service.ServiceName);
                 }
             }
-        }
-
-        protected void Application_Start()
-        {
-            InsertAllServices();
         }
 
         public ActionResult Register()
