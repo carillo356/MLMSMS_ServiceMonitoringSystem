@@ -352,26 +352,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult GetUserById(int id)
-        {
-            var user = _context.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var userViewModel = new UserViewModel
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                IsAdmin = user.IsAdmin
-            };
-
-            return Json(userViewModel);
-        }
-
         public void FetchUsersTB()
         {
             string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification],[IsAdmin] FROM Users";
