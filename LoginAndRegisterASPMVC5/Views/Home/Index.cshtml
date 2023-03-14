@@ -95,6 +95,7 @@
                     </li>
                 </ul>
             </div>
+
             <table class="table" id="popupTable">
                 <thead>
                     <tr class="border-4 border-dark">
@@ -106,8 +107,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- table content goes here -->
                 </tbody>
             </table>
+            <div class="clearfix">
+                <ul class="pagination m-auto mt-2">
+                    <li class="page-item disabled"><a href="#">Previous</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -121,7 +134,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex justify-content-left">
-                        <form onsubmit="event.preventDefault(); AddService(this.ServiceName.value);" class="d-flex align-items-center mb-0">
+                        <form onsubmit="Event.preventDefault(); AddService(this.ServiceName.value);" class="d-flex align-items-center mb-0">
                             <div class="form-group m-3 w-100">
                                 <input type="text" name="ServiceName" class="form-control" @*style="width: 350px;"*@ autocomplete="off" placeholder="Search" />
                             </div>
@@ -172,7 +185,6 @@
             </tr>
         </thead>
         <tbody>
-
             <!-- table content goes here -->
         </tbody>
     </table>
@@ -235,9 +247,9 @@
                     $.each(servicesInController, function (i, item) {
                         var checked = _addedServices.includes(item) ? 'checked' : '';
                         var checkbox = `<li class="item"><div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
-                                  <label class="form-check-label" for="service-${i}">${item}</label>
-                              </div></li>`;
+                                      <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
+                                      <label class="form-check-label" for="service-${i}">${item}</label>
+                                  </div></li>`;
                         if (_addedServices.includes(item)) {
                             checkedItems.push(checkbox);
                         } else {
@@ -328,6 +340,7 @@
                 $('#service-modal').css('display', 'none');
             });
         });
+
         //Gets the servicename of the opened log history
 
         // Log History Modal
@@ -345,11 +358,15 @@
                     // Create a string containing all the rows
                     var rows = '';
                     data.slice(0, limit).forEach(function (service) {
+                        // Add a CSS class to the td element based on the value of ServiceStatus
+                        var statusColorClass = service.ServiceStatus === 'Running' ? 'text-success' : 'text-danger';
+
                         rows += '<tr>' +
-                            /*'<td>' + service.ServiceName + '</td>' +*/
                             '<td>' + service.LastStart + '</td>' +
-                            '<td>' + service.ServiceStatus + '</td>' +
                             '<td>' + service.LastLog + '</td>' +
+                            '<td class="status">' +
+                            '<span class="' + statusColorClass + '">' + service.ServiceStatus + '</span>' +
+                            '</td>' +
                             '<td>' + service.ActionBy + '</td>' +
                             '</tr>';
                     });
@@ -369,6 +386,7 @@
                 }
             });
         }
+
         function handleRowClick(serviceName, limit) {
             logHistory(serviceName, limit);
         }
@@ -376,6 +394,7 @@
         function handleServiceAction(serviceName, action) {
             ServiceActions(serviceName, action);
         }
+
         function RealTimeTable() {
             $.ajax({
                 url: "/Home/RealTimeTable",
@@ -385,9 +404,6 @@
                     // Loop through the data and append each row to the table
                     result.forEach(function (Data) {
                         var limit = 20;
-                        //if (Data.ServiceStatus === "Running") {
-                        //    statusText = "Running";
-                        //}
                         const statusText = (Data.ServiceStatus === "Running") ? '<span style="color:green">Running</span>' : '<span style="color:red">Stopped</span>';
 
                         var row = "<tr data-toggle='modal' data-target='#service-modal'>";
@@ -398,8 +414,8 @@
                         //    "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastLog + "</td>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ActionBy + "</td>";
                         row += "<td>";
 
@@ -430,7 +446,7 @@
             var btnNo = document.getElementById("btnNo");
 
             modal.style.display = "block";
-            modalTitle.innerHTML = "System Message";
+            modalTitle.innerHTML = "<i class='bi bi-exclamation-triangle-fill text-warning'></i> System Message";
             modalMessage.innerHTML = "Are you sure you want to " + command.toUpperCase() + " '" + serviceName + "'?";
             btnYes.onclick = function () {
                 /* Handle the command here*/
@@ -463,7 +479,7 @@
                 type: "POST",
                 data: { serviceName: serviceName },
                 success: function () {
-                        // Refresh the table
+                    // Refresh the table
                     RealTimeTable();
 
                     // Check the corresponding checkbox and move it to the top of the list
@@ -508,13 +524,14 @@
     <div id="alert-modal" class="modal">
         <div class="modal-content">
             <div id="modal-title">System Message</div>
-            <div id="modal-message">Are you sure you want to RESTART 'Service1'?</div>
+            <div id="modal-message"><i class="bi bi-exclamation-triangle-fill"></i> Are you sure you want to RESTART 'Service1'?</div>
             <div class="modal-buttons">
                 <button type="button" id="btnYes" name="Yes" onclick="btnYes_Click" class="alert-buttons">Yes</button>
                 <button type="button" id="btnNo" name="No" onclick="btnNo_Click" class="alert-buttons">No</button>
             </div>
         </div>
     </div>
+
 
     <!-- Select All Checkboxes -->
     <script>

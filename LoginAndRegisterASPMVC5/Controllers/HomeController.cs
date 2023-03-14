@@ -415,7 +415,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
 
             }
-            return View("Index");
+            return View("Users");
         }
 
         //create a string MD5

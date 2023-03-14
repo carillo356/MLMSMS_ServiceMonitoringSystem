@@ -129,13 +129,7 @@ header .item-button a {
 .bi.bi-search {
     font-size:20px;
     color: white;
-}
-
-.bi.bi-arrow-clockwise {
-    color: white;
-    font-size: 24px; 
-    transform: rotate(45deg); 
-}
+} 
 
 header .mobile-toggler {
     font-size: 30px;
@@ -146,9 +140,7 @@ header .mobile-toggler {
         margin-left: 10px;
     }
 
-
-/* modal */
-
+/* SideBar Menu Modal */
 #navbModal .modal-dialog {
     margin: 0;
     width: 430px;
@@ -343,73 +335,6 @@ header .mobile-toggler {
         cursor: pointer;
     }
 
- /*Checkbox for selecting services to display  
-.container {
-    position: relative;
-    max-width: 320px;
-    width: 100%;
-    margin: 10px auto 30px;
-}
-
-.select-btn {
-    display: flex;
-    height: 50px;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #fff;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-    .select-btn .btn-text {
-        font-size: 17px;
-        font-weight: 400;
-        color: #333;
-    }
-
-    .select-btn .arrow-dwn {
-        display: flex;
-        height: 21px;
-        width: 21px;
-        color: white;
-        font-size: 14px;
-        border-radius: 50%;
-        background: deeppink;
-        align-items: center;
-        justify-content: center;
-        transition: 0.3s;
-        margin-top: 7px;
-    }
-
-    .select-btn.open .arrow-dwn {
-        transform: rotate(-180deg);
-    }
-
-    .select-btn .arrow-dwn .bi.bi-arrow-down-short {
-        color: white;
-    }
-
-.bi.bi-arrow-down-short {
-    color: black;
-}
-
-.list-items {
-    position: absolute;
-    margin-top: 15px;
-    border-radius: 8px;
-    padding: 16px;
-    background-color: #fff;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    display: none;
-    width: 295px;
-}
-
-.select-btn.open ~ .list-items {
-    display: block;
-}*/
-
  .item {
     display: flex;
     align-items: center;
@@ -498,6 +423,7 @@ header .mobile-toggler {
     width: 65%;
     margin-top: -40px;
 }
+
 
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
     
@@ -593,6 +519,11 @@ header .mobile-toggler {
             content: "Action";
         }
 
+        /* override color of status name in responsive mode */
+        #serviceTable td.status span {
+            color: inherit;
+        }
+
     #service-modal {
         width: 100%;
         background: transparent;
@@ -662,26 +593,21 @@ header .mobile-toggler {
             font-size: 16px;
             font-weight: 600;
             text-align: left;
-        }
-
+        } 
 
         #popupTable td:nth-of-type(1)::before {
-        content: "SERVICE NAME";
-        }
-
-        #popupTable td:nth-of-type(2)::before {
             content: "LAST START";
         }
 
-        #popupTable td:nth-of-type(3)::before {
+        #popupTable td:nth-of-type(2)::before {
             content: "LAST LOG";
         }
 
-        #popupTable td:nth-of-type(4)::before {
+        #popupTable td:nth-of-type(3)::before {
             content: "STATUS";
         }
 
-        #popupTable td:nth-of-type(5)::before {
+        #popupTable td:nth-of-type(4)::before {
             content: "ACTION BY";
         }
 }

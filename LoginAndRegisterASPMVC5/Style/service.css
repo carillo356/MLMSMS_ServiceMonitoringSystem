@@ -7,14 +7,12 @@
 }
 
 /* HomePage */
-
 .title {
     font-size: 40px;
     font-weight: bold;
     text-align: center;
     margin-top: 20px;
 }
-
 
 .action-button {
     width: 40%;
@@ -66,13 +64,6 @@ header {
     background-color: #24252A;
 }
 
-@media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
-
-    .action-button {
-        font-size: 10px;
-    }
-}
-
  #alert-modal .modal {
     display: none; 
     position: fixed;
@@ -122,11 +113,9 @@ header {
     margin: 0 10px;
 }
 
-/*@media (max-width: 768px) {
-    #alert-modal .modal-content {
-        width: 80%;
-    }
-}*/
+.bi.bi-exclamation-triangle-fill {
+    font-size: 25px;
+}
 
 /* Table */
 .table-responsive {
@@ -134,7 +123,6 @@ header {
 }
 
 .table-wrapper {
-    background: #fff;
     padding: 20px 25px;
     border-radius: 3px;
     box-shadow: 0 1px 1px rgba(0,0,0,.05);
@@ -303,7 +291,7 @@ table.table td:last-child i {
         background: #ddd;
     }
 
-.pagination {
+/*.pagination {
     float: right;
     margin: 20px 330px 5px;
 }
@@ -333,6 +321,46 @@ table.table td:last-child i {
         .pagination li.active a:hover {
             background: deeppink;
  
+        }
+
+    .pagination li.disabled i {
+        color: #ccc;
+    }
+
+    .pagination li i {
+        font-size: 16px;
+        padding-top: 6px
+    }*/
+
+.pagination {
+    float: right;
+    margin: 20px 330px 5px;
+}
+
+    .pagination li a {
+        border: none;
+        font-size: 13px;
+        min-width: 30px;
+        min-height: 30px;
+        padding: 0 10px;
+        color: #999;
+        margin: 0 2px;
+        line-height: 30px;
+        border-radius: 30px !important;
+        text-align: center;
+    }
+
+        .pagination li a:hover {
+            color: #666;
+        }
+
+    .pagination li.active a, .pagination li.active a.page-link {
+        background: deeppink;
+        z-index: 0;
+    }
+
+        .pagination li.active a:hover {
+            background: deeppink;
         }
 
     .pagination li.disabled i {
@@ -412,15 +440,22 @@ table.table td:last-child i {
     }
 
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
+    
+    .action-button {
+        font-size: 10px;
+    }
+    
     #alert-modal .modal-content {
         width: 80%;
     }
+
     .service_name {
         font-size: 20px;
         margin-top: -15px;
         margin-bottom: 30px;
         margin-left: 20px;
     }
+
     #displayService-modal .form-control {
         width: 230px;
     }

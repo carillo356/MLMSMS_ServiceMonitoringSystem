@@ -84,25 +84,25 @@
         </div>
     </div>
 
-    <table class="table" id="usersTable">
+    <table class="table table-hover" id="usersTable">
         <thead>
             <tr>
-                <th scope="col" style="width: 10%;">USER ID</th>
-                <th scope="col" style="width: 15%;">FIRST NAME</th>
-                <th scope="col" style="width: 15%;">LAST NAME</th>
-                <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
-                <th scope="col" style="width: 10%;">ISADMIN</th>
+                <th scope="col" style="width: 5%;">USER ID</th>
+                <th scope="col" style="width: 10%;">FIRST NAME</th>
+                <th scope="col" style="width: 10%;">LAST NAME</th>
+                <th scope="col" style="width: 15%;">EMAIL ADDRESS</th>
+                <th scope="col" style="width: 10%;">USERS ROLE</th>
                 <th scope="col" style="width: 15%;">ACTION</th>
             </tr>
         </thead>
         <tbody>
-             @*table content goes here*@ 
+            @*table content goes here*@
         </tbody>
     </table>
     <div class="clearfix">
         <ul class="pagination">
             <li class="page-item disabled"><a href="#">Previous</a></li>
-            <li class="page-item active"><a href="#" class="page-link">1</a></li>
+            <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
             <li class="page-item"><a href="#" class="page-link">2</a></li>
             <li class="page-item"><a href="#" class="page-link">3</a></li>
             <li class="page-item"><a href="#" class="page-link">4</a></li>
@@ -173,7 +173,7 @@
                                 </label>
                                 <label>
                                     @Html.RadioButtonFor(m => m.IsAdmin, "False")
-                                    <span>Not Admin</span>
+                                    <span>Non-Admin</span>
                                 </label>
                             </div>
                             <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Add User</button>
@@ -258,6 +258,7 @@
         </div>
     </div>
 
+    <!-- Delete Users Modal -->
     <div id="deleteUsers-modal" class="modal">
         <div class="modal-content">
             <div id="modal-title">System Message</div>
@@ -271,7 +272,7 @@
 
     <!-- Show Modal -->
     <script>
-        var myModal = new bootstrap.Modal(document.getElementById('signup-modal'));
+        var myModal = new bootstrap.Modal(document.getElementById('#editUsers-modal'));
         myModal.show();
     </script>
 
@@ -318,18 +319,18 @@
                         row += "<td>" + Data.IsAdmin + "</td>";
                         row += "<td>";
                         if (Data.Email_Notification == true) {
-                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
+                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
                             row += "<i class='bi bi-envelope-check-fill'></i>";
                             row += "</button>";
                         } else {
-                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
+                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-red' id='' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
                             row += "<i class='bi bi-envelope-x-fill'></i>";
                             row += "</button>";
                         }
-                        row += "<button onclick='deleteUser(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Edit'>";
+                        row += "<button onclick='deleteUser(\"" + Data.idUser + "\")' class='user-button' id='editUsers-modal' data-bs-toggle='tooltip' data-bs-placement='top' title='Edit'>";
                         row += "<i class='bi bi-pencil-square'></i>";
                         row += "</button>";
-                        row += "<button onclick='deleteUser(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
+                        row += "<button onclick='deleteUser(\"" + Data.idUser + "\")' class='user-button' id='deleteUsers-modal' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
                         row += "<i class='bi bi-trash3-fill'></i>";
                         row += "</button>";
                         row += "</td></tr>";
