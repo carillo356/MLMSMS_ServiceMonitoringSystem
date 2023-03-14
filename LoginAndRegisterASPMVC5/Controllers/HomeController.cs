@@ -27,7 +27,8 @@ using System.Web.Services.Description;
 using Service = LoginAndRegisterASPMVC5.Models.Service;
 using System.Web.UI.WebControls;
 using System.Runtime.Remoting.Contexts;
-
+using System.Data.Entity.Validation;
+using System.Text.RegularExpressions;
 
 namespace LoginAndRegisterASPMVC5.Controllers
 {
@@ -42,7 +43,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             if (Session["idUser"] != null)
             {
                 return View();
-
             }
             else
             {
@@ -393,6 +393,42 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return Json(_users, JsonRequestBehavior.AllowGet);
         }
 
+        static void StoreServiceName(SqlConnection connection, string serviceName)
+        {
+            try
+            {
+                using (var command = new SqlCommand("INSERT INTO Services (ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM Services WHERE ServiceName = @ServiceName)", connection))
+                {
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void InsertAllServices()
+        {
+            using (SqlConnection connection = DatabaseManager.GetConnection())
+            {
+                // Get a list of all the installed services
+                var services = ServiceController.GetServices();
+
+                // Insert each service name into the Services table
+                foreach (var service in services)
+                {
+                    StoreServiceName(connection, service.ServiceName);
+                }
+            }
+        }
+
+        protected void Application_Start()
+        {
+            InsertAllServices();
+        }
+
         public ActionResult Register()
         {
             if (Session["FullName"] != null) // check if the user is already logged in
@@ -432,6 +468,8 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddUser(User _user)
         {
             if (ModelState.IsValid)
@@ -448,44 +486,47 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 else
                 {
                     ViewBag.error = "Email already exists";
-                    return View("Users");
                 }
 
 
             }
-            return View("Users");
+            return View("AdminUsers");
         }
 
-        public ActionResult UpdateUser(User userToUpdate)
+        [HttpPost]
+        public ActionResult UpdateUser(UserUpdate _user, string Password)
         {
+            // Retrieve the user from the database
+            var userToUpdate = _db.Users.FirstOrDefault(u => u.idUser == _user.idUser);
+
             if (ModelState.IsValid)
             {
-                var check = _db.Users.FirstOrDefault(s => s.Email == userToUpdate.Email && s.idUser != userToUpdate.idUser);
-                if (check == null)
+                if (userToUpdate != null)
                 {
-                    var userInDb = _db.Users.Single(u => u.idUser == userToUpdate.idUser);
-                    userInDb.FirstName = userToUpdate.FirstName;
-                    userInDb.LastName = userToUpdate.LastName;
-                    userInDb.Email = userToUpdate.Email;
-                    userInDb.IsAdmin = userToUpdate.IsAdmin;
+                    // Update the user's properties
+                    userToUpdate.FirstName = _user.FirstName;
+                    userToUpdate.LastName = _user.LastName;
+                    userToUpdate.Email = _user.Email;
+                    userToUpdate.IsAdmin = _user.IsAdmin;
 
-                    if (!string.IsNullOrEmpty(userToUpdate.Password))
+                    // Update the user's password if it is not null
+                    if (!string.IsNullOrEmpty(Password))
                     {
-                        userInDb.Password = GetMD5(userToUpdate.Password);
-                    }
+                        userToUpdate.Password = GetMD5(Password);
 
+                    }
+                    _db.Configuration.ValidateOnSaveEnabled = false;
+                    _db.Entry(userToUpdate).State = EntityState.Modified;
                     _db.SaveChanges();
 
-                    return RedirectToAction("Users");
+                    return RedirectToAction("AdminUsers");
                 }
                 else
                 {
-                    ViewBag.error = "Email already exists";
-                    return View("Users");
+                    return HttpNotFound();
                 }
             }
-
-            return View("Users");
+            return View("AdminUsers");
         }
 
         //create a string MD5
