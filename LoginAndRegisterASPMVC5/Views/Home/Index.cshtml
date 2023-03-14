@@ -430,10 +430,6 @@
 
     </script>
 
-    <script>
-        
-    </script>
-
     <!-- Pagination for Service Table -->
     <script>
         // define the number of items per page
@@ -476,11 +472,6 @@
                         const statusText = (Data.ServiceStatus === "Running") ? '<span style="color:green">Running</span>' : '<span style="color:red">Stopped</span>';
 
                         var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                        //row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + "<span class='custom-checkbox'>" +
-                        //    "<input type='checkbox' id='checkbox1' name='options[]' value='1'>" +
-                        //    "<label for='checkbox1'></label>" +
-                        //    "</span>" +
-                        //    "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastLog + "</td>";
@@ -505,12 +496,12 @@
             });
         }
 
+        // show the first page by default
         $(document).ready(function () {
             RealTimeTable().then(function () {
                 showPage(1);
             });
         });
-        // show the second page by default
 
         // handle the click event of the pagination links
         paginationLinks.forEach(link => {
@@ -591,7 +582,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Select All Checkboxes -->
     <script>

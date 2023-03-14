@@ -297,57 +297,6 @@
             });
         }
 
-        //function RealTimeUsersTable() {
-        //    return new Promise(function (resolve, reject) {
-        //        /*Refresh the table with the updated data*/
-        //        $.ajax({
-        //            url: "/Home/GetUsers",
-        //            type: "GET",
-        //            dataType: 'json',
-        //            success: function (result) {
-        //                $("#usersTable tbody").empty();
-        //                // Loop through the data and append each row to the table
-        //                result.forEach(function (Data) {
-        //                    var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-        //                    row += "<td>" + Data.idUser + "</td>";
-        //                    row += "<td>" + Data.FirstName + "</td>";
-        //                    row += "<td>" + Data.LastName + "</td>";
-        //                    row += "<td>" + Data.Email + "</td>";
-        //                    row += "<td>" + Data.IsAdmin + "</td>";
-        //                    row += "<td>";
-        //                    if (Data.Email_Notification == true) {
-        //                        row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
-        //                        row += "<i class='bi bi-envelope-check-fill'></i>";
-        //                        row += "</button>";
-        //                    } else {
-        //                        row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-red' id='' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
-        //                        row += "<i class='bi bi-envelope-x-fill'></i>";
-        //                        row += "</button>";
-        //                    }
-        //                    row += "<button onclick='deleteUser(\"" + Data.idUser + "\")' class='user-button' id='editUsers-modal' data-bs-toggle='tooltip' data-bs-placement='top' title='Edit'>";
-        //                    row += "<i class='bi bi-pencil-square'></i>";
-        //                    row += "</button>";
-        //                    row += "<button onclick='deleteUser(\"" + Data.idUser + "\")' class='user-button' id='deleteUsers-modal' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
-        //                    row += "<i class='bi bi-trash3-fill'></i>";
-        //                    row += "</button>";
-        //                    row += "</td></tr>";
-        //                    $("#usersTable tbody").append(row);
-        //                });
-        //            },
-        //            error: function () {
-        //                alert("Failed to refresh users.");
-        //            }
-        //        });
-        //    })
-        //}
-
-        //$(document).ready(function () {
-        //    RealTimeUsersTable().then(function () {
-        //        showPage(1);
-        //    });
-        //});
-
-
         const togglePassword = document.getElementById("togglePassword");
         const password = document.getElementById("password");
 
@@ -358,11 +307,9 @@
                 password.type = "password";
             }
         });
-
     </script>
 
     <script>
-
         // define the number of items per page
         const ITEMS_PER_PAGE = 5;
 
@@ -435,12 +382,12 @@
             });
         }
 
+        // show the first page by default
         $(document).ready(function () {
             RealTimeUsersTable().then(function () {
                 showPage(1);
             });
         });
-        // show the second page by default
 
         // handle the click event of the pagination links
         paginationLinks.forEach(link => {
@@ -458,8 +405,7 @@
                 });
                 link.parentElement.classList.add('active');
             });
-        });
-        
+        });   
     </script>
 
 </body>
