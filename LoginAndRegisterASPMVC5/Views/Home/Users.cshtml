@@ -283,20 +283,6 @@
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
 
-        function setNotification(idUser) {
-            $.ajax({
-                type: 'POST',
-                url: '/Home/UpdateEmailNotification',
-                data: { idUser: idUser },
-                success: function () {
-                    RealTimeUsersTable();
-                },
-                error: function (xhr, status, error) {
-                    alert(error);
-                }
-            });
-        }
-
         const togglePassword = document.getElementById("togglePassword");
         const password = document.getElementById("password");
 
@@ -386,16 +372,34 @@
         // show the first page by default
         $(document).ready(function () {
             RealTimeUsersTable().then(function () {
-                showPage(1);
+                showPage(pageNumber);
             });
         });
 
+        function setNotification(idUser) {
+            $.ajax({
+                type: 'POST',
+                url: '/Home/UpdateEmailNotification',
+                data: { idUser: idUser },
+                success: function () {
+                    $(document).ready(function () {
+                        RealTimeUsersTable().then(function () {
+                            showPage(pageNumber);
+                        });
+                    });
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        }
+        var pageNumber=1;
         // handle the click event of the pagination links
         paginationLinks.forEach(link => {
             link.addEventListener('click', event => {
                 event.preventDefault();
                 // get the selected page number from the link's text
-                const pageNumber = parseInt(link.innerText);
+                pageNumber = parseInt(link.innerText);
 
                 // show the items for the selected page
                 showPage(pageNumber);

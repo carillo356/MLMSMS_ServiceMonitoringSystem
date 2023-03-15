@@ -110,17 +110,19 @@
                     <!-- table content goes here -->
                 </tbody>
             </table>
-            <div class="clearfix">
-                <ul class="pagination m-auto mt-2">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
-            </div>
+            @*<div class="pageLogs">*@
+                <div class="clearfix">
+                    <ul class="pagination m-auto mt-2" id="pagination-logs">
+                        <li class="page-item disabled"><a href="#">Previous</a></li>
+                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                    </ul>
+                </div>
+            @*</div>*@
         </div>
     </div>
 
@@ -189,7 +191,7 @@
         </tbody>
     </table>
     <div class="clearfix">
-        <ul class="pagination">
+        <ul class="pagination" id="pagination-service">
             <li class="page-item disabled"><a href="#">Previous</a></li>
             <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
             <li class="page-item"><a href="#" class="page-link">2</a></li>
@@ -343,49 +345,49 @@
 
         //Gets the servicename of the opened log history
 
-        // Log History Modal
-        function logHistory(serviceName, limit) {
-            //Viewlogs, Gets all the records of a service
-            $.ajax({
-                url: "/Home/FetchServiceLogsTB",
-                type: "POST",
-                data: { serviceName: serviceName },
-                success: function (data) {
-                    // Get the table body element
-                    var tbody = $('#popupTable tbody');
-                    tbody.empty();
+        //// Log History Modal
+        //function logHistory(serviceName, limit) {
+        //    //Viewlogs, Gets all the records of a service
+        //    $.ajax({
+        //        url: "/Home/FetchServiceLogsTB",
+        //        type: "POST",
+        //        data: { serviceName: serviceName },
+        //        success: function (data) {
+        //            // Get the table body element
+        //            var tbody = $('#popupTable tbody');
+        //            tbody.empty();
 
-                    // Create a string containing all the rows
-                    var rows = '';
-                    data.slice(0, limit).forEach(function (service) {
-                        // Add a CSS class to the td element based on the value of ServiceStatus
-                        var statusColorClass = service.ServiceStatus === 'Running' ? 'text-success' : 'text-danger';
+        //            // Create a string containing all the rows
+        //            var rows = '';
+        //            data.slice(0, limit).forEach(function (service) {
+        //                // Add a CSS class to the td element based on the value of ServiceStatus
+        //                var statusColorClass = service.ServiceStatus === 'Running' ? 'text-success' : 'text-danger';
 
-                        rows += '<tr>' +
-                            '<td>' + service.LastStart + '</td>' +
-                            '<td>' + service.LastLog + '</td>' +
-                            '<td class="status">' +
-                            '<span class="' + statusColorClass + '">' + service.ServiceStatus + '</span>' +
-                            '</td>' +
-                            '<td>' + service.ActionBy + '</td>' +
-                            '</tr>';
-                    });
+        //                rows += '<tr>' +
+        //                    '<td>' + service.LastStart + '</td>' +
+        //                    '<td>' + service.LastLog + '</td>' +
+        //                    '<td class="status">' +
+        //                    '<span class="' + statusColorClass + '">' + service.ServiceStatus + '</span>' +
+        //                    '</td>' +
+        //                    '<td>' + service.ActionBy + '</td>' +
+        //                    '</tr>';
+        //            });
 
-                    // Append the rows to the table in a single operation
-                    tbody.append(rows);
-                    activeServiceName = serviceName;
+        //            // Append the rows to the table in a single operation
+        //            tbody.append(rows);
+        //            activeServiceName = serviceName;
 
-                    $('#service-modal .modal-servicecontent .service_name').text(serviceName);
+        //            $('#service-modal .modal-servicecontent .service_name').text(serviceName);
 
-                    // Show the popup dialog
-                    $('#service-modal').css('display', 'block');
+        //            // Show the popup dialog
+        //            $('#service-modal').css('display', 'block');
 
-                },
-                error: function () {
-                    alert("Failed to retrieve records for " + serviceName);
-                }
-            });
-        }
+        //        },
+        //        error: function () {
+        //            alert("Failed to retrieve records for " + serviceName);
+        //        }
+        //    });
+        //}
 
         function handleRowClick(serviceName, limit) {
             logHistory(serviceName, limit);
@@ -432,7 +434,98 @@
 
     <!-- Pagination for Log History-->
     <script>
-        
+
+        // define the number of items per page
+        var ITEMS_PAR_PAGE_LOGS;
+
+        // get the table body element
+        const logstableBody = document.querySelector('#popupTable tbody');
+
+        // get the pagination links
+        const logspaginationLinks = document.querySelectorAll('#pagination-logs .page-link');
+
+        // define a function to show the items for the selected page
+        function logsshowPage(logs_pageNumber) {
+            // calculate the start and end indexes of the items to show
+            const logsstartIndex = (logs_pageNumber - 1) * ITEMS_PAR_PAGE_LOGS;
+            const logsendIndex = logsstartIndex + ITEMS_PAR_PAGE_LOGS;
+
+            // hide all rows in the table
+            const logs_rows = logstableBody.querySelectorAll('tr');
+            logs_rows.forEach(logs_row => {
+                logs_row.style.display = 'none';
+            });
+
+            // show the rows for the current page
+            for (let i = logsstartIndex; i < logsendIndex && i < logs_rows.length; i++) {
+                logs_rows[i].style.display = '';
+            }
+        }
+
+        var logs_pageNumber = 1;
+        // handle the click event of the pagination links
+        logspaginationLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                // get the selected page number from the link's text
+                logs_pageNumber = parseInt(link.innerText);
+
+                // show the items for the selected page
+                logsshowPage(logs_pageNumber);
+
+                // mark the selected page as active
+                logspaginationLinks.forEach(link => {
+                    link.parentElement.classList.remove('active');
+                });
+                link.parentElement.classList.add('active');
+            });
+        });   
+
+        // Log History Modal
+        function logHistory(serviceName, limit) {
+            //Viewlogs, Gets all the records of a service
+            $.ajax({
+                url: "/Home/FetchServiceLogsTB",
+                type: "POST",
+                data: { serviceName: serviceName },
+                success: function (data) {
+                    // Get the table body element
+                    var tbody = $('#popupTable tbody');
+                    tbody.empty();
+
+                    // Create a string containing all the rows
+                    var rows = '';
+                    data.forEach(function (service) {
+                        // Add a CSS class to the td element based on the value of ServiceStatus
+                        var statusColorClass = service.ServiceStatus === 'Running' ? 'text-success' : 'text-danger';
+
+                        rows += '<tr>' +
+                            '<td>' + service.LastStart + '</td>' +
+                            '<td>' + service.LastLog + '</td>' +
+                            '<td class="status">' +
+                            '<span class="' + statusColorClass + '">' + service.ServiceStatus + '</span>' +
+                            '</td>' +
+                            '<td>' + service.ActionBy + '</td>' +
+                            '</tr>';
+                    });
+
+                    // Append the rows to the table in a single operation
+                    tbody.append(rows);
+                    activeServiceName = serviceName;
+
+                    $('#service-modal .modal-servicecontent .service_name').text(serviceName);
+
+                    // Show the popup dialog
+                    ITEMS_PAR_PAGE_LOGS = limit;
+                    logsshowPage(1);
+                    $('#service-modal').css('display', 'block');
+
+                },
+                error: function () {
+                    alert("Failed to retrieve records for " + serviceName);
+                }
+            });
+        }
     </script>
 
     <!-- Pagination for Service Table -->
@@ -444,7 +537,7 @@
         const tableBody = document.querySelector('#serviceTable tbody');
 
         // get the pagination links
-        const paginationLinks = document.querySelectorAll('.pagination .page-link');
+        const paginationLinks = document.querySelectorAll('#pagination-service .page-link');
 
         // define a function to show the items for the selected page
         function showPage(pageNumber) {
@@ -473,7 +566,7 @@
                     $("#serviceTable tbody").empty();
                     // Loop through the data and append each row to the table
                     result.forEach(function (Data) {
-                        var limit = 20;
+                        var limit = 999;
                         const statusText = (Data.ServiceStatus === "Running") ? '<span style="color:green">Running</span>' : '<span style="color:red">Stopped</span>';
 
                         var row = "<tr data-toggle='modal' data-target='#service-modal'>";
