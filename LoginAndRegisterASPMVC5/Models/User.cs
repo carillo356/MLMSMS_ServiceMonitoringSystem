@@ -27,14 +27,9 @@ namespace LoginAndRegisterASPMVC5.Models
 
         [Required]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$")]
-
         public string Password { get; set; }
 
-        //[NotMapped]
-        //[Required]
-        //[System.ComponentModel.DataAnnotations.Compare("Password")]
-        //public string ConfirmPassword { get; set; }
-
+        [Required]
         public Boolean IsAdmin { get; set; }
         public string FullName()
         {
@@ -44,3 +39,9 @@ namespace LoginAndRegisterASPMVC5.Models
 
     }
 }
+
+
+//[NotMapped]
+//[Required]
+//[System.ComponentModel.DataAnnotations.Compare("Password")]
+//public string ConfirmPassword { get; set; }

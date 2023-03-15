@@ -67,7 +67,7 @@
     </header>
 
     <!-- Users Table -->
-    <div class="container-xl">
+   <div class="container-xl">
         <div class="table-responsive">
             <div class="table-wrapper">
                 <div class="table-title">
@@ -75,6 +75,7 @@
                         <div class="col-sm-6">
                             <h2><b>List of Users</b></h2>
                         </div>
+
                         <div class="col-sm-6 button-container">
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUsers-modal"><i class="bi bi-plus-circle"></i><span>Add Users</span></button>
                         </div>
@@ -82,7 +83,7 @@
                 </div>
             </div>
         </div>
-    </div>
+   </div>
 
     <table class="table table-hover" id="usersTable">
         <thead>
@@ -270,11 +271,6 @@
         </div>
     </div>
 
-    <!-- Show Modal -->
-    <script>
-        var myModal = new bootstrap.Modal(document.getElementById('#editUsers-modal'));
-        myModal.show();
-    </script>
 
     <!-- Tooltip, Refresh Table, Show Password, etc -->
     <script>
@@ -282,6 +278,24 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+
+        $(document).ready(function () {
+            RealTimeUsersTB();
+        });
+
+        function setNotification(idUser) {
+            $.ajax({
+                type: 'POST',
+                url: '/Home/UpdateEmailNotification',
+                data: { idUser: idUser },
+                success: function () {
+                    RealTimeUsersTB();
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
+        }
 
         const togglePassword = document.getElementById("togglePassword");
         const password = document.getElementById("password");

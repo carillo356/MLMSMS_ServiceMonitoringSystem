@@ -26,6 +26,10 @@ using System.Net.Mail;
 using System.Web.Services.Description;
 using Service = LoginAndRegisterASPMVC5.Models.Service;
 using System.Web.UI.WebControls;
+using System.Runtime.Remoting.Contexts;
+using System.Data.Entity.Validation;
+using System.Text.RegularExpressions;
+using System.Diagnostics.Eventing.Reader;
 
 namespace LoginAndRegisterASPMVC5.Controllers
 {
@@ -37,10 +41,10 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult Index()
         {
+            InsertAllServices();
             if (Session["idUser"] != null)
             {
                 return View();
-
             }
             else
             {
@@ -51,6 +55,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         [HttpPost]
         public void AddService(Service fetchInput) //Gets the User Input for adding a service
         {
+
             string serviceName = fetchInput.ServiceName;
             if (!_activeServices.Any(s => s.ServiceName == serviceName))
             {
@@ -159,46 +164,40 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public void ServiceAction(string serviceName, string command)
         {
             string actionBy = Session["FullName"].ToString();
-            string logBy = null;
             DateTime lastStart = DateTime.MinValue;
-            string lastLog = null;
+            string lastLog = "No Record";
+            string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
-            EventLog eventLog = new EventLog("Application");
-            int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries")); // Limit the number of entries to search
-            EventLogEntryCollection entries = eventLog.Entries;
+            string queryString = $"*[System/Provider/@Name='{serviceName}']";
+            EventLogQuery eventLogQuery = new EventLogQuery("Application", PathType.LogName, queryString);
+            EventLogReader eventLogReader = new EventLogReader(eventLogQuery);
 
-            int totalEntries = entries.Count;
-            int startIndex = totalEntries - 1;
-            int endIndex = Math.Max(startIndex - numEntriesToSearch, 0);
-            bool entryFound = false;
+            int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries"));
+            int entriesSearched = 0;
+            EventRecord latestEvent = null;
 
-            while (!entryFound && startIndex >= 0)
+            while (entriesSearched < numEntriesToSearch && eventLogReader.ReadEvent() != null)
             {
-                for (int i = startIndex; i >= endIndex; i--)
-                {
-                    EventLogEntry entry = entries[i];
+                EventRecord currentEvent = eventLogReader.ReadEvent();
 
-                    if (entry.Source == serviceName && entry.TimeGenerated > lastStart)
-                    {
-                        logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-                        lastStart = entry.TimeGenerated;
-                        lastLog = entry.Message;
-                        entryFound = true;
-                        break;
-                    }
+                if (latestEvent == null || currentEvent.TimeCreated > latestEvent.TimeCreated)
+                {
+                    latestEvent = currentEvent;
                 }
 
-                startIndex = endIndex - 1;
-                endIndex = Math.Max(startIndex - numEntriesToSearch, 0);
+                entriesSearched++;
             }
 
-            if (!entryFound)
+            // Get the necessary information from the latest entry (if one was found)
+            if (latestEvent != null)
             {
-                throw new Exception("Target entry not found in event log.");
+                lastStart = (DateTime)latestEvent.TimeCreated;
+                lastLog = latestEvent.Properties[0].Value.ToString(); // Assumes log message is in the first property
             }
 
             using (SqlConnection connection = DatabaseManager.GetConnection())
             {
+                lastStart.ToString();
                 ServiceController[] services = ServiceController.GetServices();
                 ServiceController sc = services.FirstOrDefault(s => s.ServiceName == serviceName);
 
@@ -271,12 +270,12 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             try
             {
-                using (var command = new SqlCommand("InsertIntoServices", connection))
+                using (var command = new SqlCommand("sp_InsertIntoServices", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@LogBy", logBy);
                     command.Parameters.AddWithValue("@ServiceName", serviceName);
-                    command.Parameters.AddWithValue("@LastStart", lastStart);
+                    command.Parameters.AddWithValue("@LastStart", lastStart.ToString());
                     command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
                     command.Parameters.AddWithValue("@LastLog", lastLog);
                     command.Parameters.AddWithValue("@ActionBy", actionBy);
@@ -293,13 +292,32 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             if (Session["idUser"] != null)
             {
-                return View();
+
+                bool isAdmin = false;
+                if (Session["IsAdmin"] != null)
+                {
+                    isAdmin = (bool)Session["IsAdmin"];
+                }
+
+                if (isAdmin)
+                {
+                    return RedirectToAction("AdminUsers");
+                }
+                else
+                {
+                    return View();
+                }
 
             }
             else
             {
                 return RedirectToAction("Login");
             }
+        }
+
+        public ActionResult AdminUsers()
+        {
+            return View();
         }
 
         public void UpdateEmailNotification(int idUser)
@@ -315,9 +333,24 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 }
             }
         }
+
+        public void DeleteUser(int idUser)
+        {
+            using (SqlConnection connection = DatabaseManager.GetConnectionUsers())
+            {
+                using (var command = new SqlCommand("dbo.DeleteUser", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@idUser", idUser);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void FetchUsersTB()
         {
-            string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification] FROM Users";
+            string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification],[IsAdmin] FROM Users";
 
             try
             {
@@ -337,7 +370,8 @@ namespace LoginAndRegisterASPMVC5.Controllers
                                 FirstName = reader["FirstName"].ToString(),
                                 LastName = reader["LastName"].ToString(),
                                 Email = reader["Email"].ToString(),
-                                Email_Notification = (bool)reader["Email_Notification"]
+                                Email_Notification = (bool)reader["Email_Notification"],
+                                IsAdmin = (bool)reader["IsAdmin"]
                             });
                         }
                     }
@@ -349,10 +383,41 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public ActionResult GetUsers()
+        public ActionResult RealTimeUsersTB()
         {
             FetchUsersTB();
             return Json(_users, JsonRequestBehavior.AllowGet);
+        }
+
+        static void StoreServiceName(SqlConnection connection, string serviceName)
+        {
+            try
+            {
+                using (var command = new SqlCommand("INSERT INTO Services (ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM Services WHERE ServiceName = @ServiceName)", connection))
+                {
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void InsertAllServices()
+        {
+            using (SqlConnection connection = DatabaseManager.GetConnection())
+            {
+                // Get a list of all the installed services
+                var services = ServiceController.GetServices();
+
+                // Insert each service name into the Services table
+                foreach (var service in services)
+                {
+                    StoreServiceName(connection, service.ServiceName);
+                }
+            }
         }
 
         public ActionResult Register()
@@ -394,6 +459,8 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddUser(User _user)
         {
             if (ModelState.IsValid)
@@ -410,12 +477,47 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 else
                 {
                     ViewBag.error = "Email already exists";
-                    return View("Users");
                 }
 
 
             }
-            return View("Users");
+            return View("AdminUsers");
+        }
+
+        [HttpPost]
+        public ActionResult UpdateUser(UserUpdate _user, string Password)
+        {
+            // Retrieve the user from the database
+            var userToUpdate = _db.Users.FirstOrDefault(u => u.idUser == _user.idUser);
+
+            if (ModelState.IsValid)
+            {
+                if (userToUpdate != null)
+                {
+                    // Update the user's properties
+                    userToUpdate.FirstName = _user.FirstName;
+                    userToUpdate.LastName = _user.LastName;
+                    userToUpdate.Email = _user.Email;
+                    userToUpdate.IsAdmin = _user.IsAdmin;
+
+                    // Update the user's password if it is not null
+                    if (!string.IsNullOrEmpty(Password))
+                    {
+                        userToUpdate.Password = GetMD5(Password);
+
+                    }
+                    _db.Configuration.ValidateOnSaveEnabled = false;
+                    _db.Entry(userToUpdate).State = EntityState.Modified;
+                    _db.SaveChanges();
+
+                    return RedirectToAction("AdminUsers");
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+            }
+            return View("AdminUsers");
         }
 
         //create a string MD5
@@ -460,8 +562,11 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 {
                     //add session
                     Session["FullName"] = data.FirstOrDefault().FirstName + " " + data.FirstOrDefault().LastName;
+                    Session["FirstName"] = data.FirstOrDefault().FirstName;
+                    Session["LastName"] = data.FirstOrDefault().LastName;
                     Session["Email"] = data.FirstOrDefault().Email;
                     Session["idUser"] = data.FirstOrDefault().idUser;
+                    Session["IsAdmin"] = data.FirstOrDefault().IsAdmin;
                     return RedirectToAction("Index");
                 }
                 else
