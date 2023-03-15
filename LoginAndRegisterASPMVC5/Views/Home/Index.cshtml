@@ -178,7 +178,7 @@
                 <th scope="col" style="width: 10%;">STATUS</th>
                 <th scope="col" style="width: 15%;">ACTION BY</th>
                 <th scope="col" style="width: 15%;">ACTION</th>
-                <th scope="col" style="width: 10%;"></th>
+                <th scope="col" style="width: 15%;"></th>
             </tr>
         </thead>
         <tbody>
@@ -385,53 +385,6 @@
 
         function handleServiceAction(serviceName, action) {
             ServiceActions(serviceName, action);
-        }
-        function RealTimeTable() {
-            $.ajax({
-                url: "/Home/RealTimeTable",
-                type: "GET",
-                dataType: 'json',
-                success: function (result) {
-                    $("#serviceTable tbody").empty();
-                    // Loop through the data and append each row to the table
-                    result.forEach(function (Data) {
-                        var limit = 20;
-                        var statusClass = "badge-danger";
-                        var statusText = "Stopped";
-                        if (Data.ServiceStatus === "Running") {
-                            statusClass = "badge-success";
-                            statusText = "Running";
-                        }
-
-                        var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                        //row += "<td>" + "<span class='custom-checkbox'>" +
-                        //    "<input type='checkbox' id='checkbox1' name='options[]' value='1'>" +
-                        //    "<label for='checkbox1'></label>" +
-                        //    "</span>" +
-                        //    "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'><span class='badge " + statusClass + "'>" + statusText + "</span></td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastLog + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ActionBy + "</td>";
-                        row += "<td>";
-
-                        if (Data.ServiceStatus === "Stopped") {
-                            row += "<button class='action-button' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
-                        } else if (Data.ServiceStatus === "Running") {
-                            row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
-                            row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
-                            row += "<button class='action-button ms-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
-                        }
-                        row += "<button class='action-button ms-2' id='btnRestart' onclick='RemoveAddedService(\"" + Data.ServiceName + "\")'>Delete</button>";
-                        row += "</td></tr>";
-                        $("#serviceTable tbody").append(row);
-                    });
-                },
-                error: function () {
-                    alert("Failed to refresh services.");
-                }
-            });
         }
 
         //Manage Services
@@ -705,7 +658,7 @@
                             row += "<button class='action-button' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"\")'>Reload</button>";
                             row += "</td>";
                         row+="<td>";
-                        row += "<button class='action-button' id='btnRun' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"\")'>Delete</button>";
+                        row += "<button class='action-button' id='btnRun' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"\")'><i class='bi bi-trash3-fill'></i></button>";
                         row += "</td></tr>";
                         $("#serviceTable tbody").append(row);
                     });
