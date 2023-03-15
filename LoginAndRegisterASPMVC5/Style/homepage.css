@@ -126,8 +126,8 @@ header .item-button a {
         color: white;
     }
 
-.bi.bi-search {
-    font-size:20px;
+.bi.bi-plus-circle-fill {
+    font-size: 20px;
     color: white;
 }
 
@@ -410,16 +410,17 @@ header .mobile-toggler {
     display: block;
 }*/
 
- .item {
+.item {
     display: flex;
     align-items: center;
     list-style: none;
-    height: 50px;
+    height: 40px;
     cursor: pointer;
     transition: 0.3s;
     padding: 0 20px;
     border-radius: 8px;
     color: black;
+    font-size: 14px;
 }
 
      .item:hover {
@@ -492,14 +493,39 @@ header .mobile-toggler {
     color: #333;
 }
 
+#serviceTable {
+    margin: auto;
+    width: 65%;
+    margin-top: -40px;
+}
+
+
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
     
     .list-items {
         z-index: 999;
     }
 
-    #serviceTable .table-container {
-        width: 50%;
+    .table-wrapper .table-title {
+        text-align: center;
+    }
+
+    .table-title .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+    }
+
+    .clearfix {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    #serviceTable .usersTable {
+        width: 85%;
         background: transparent;
     }
 

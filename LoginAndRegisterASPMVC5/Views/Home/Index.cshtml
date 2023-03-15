@@ -108,6 +108,17 @@
                 <tbody>
                 </tbody>
             </table>
+            <div class="clearfix">
+                <ul class="pagination m-auto mt-2" id="pagination-logs">
+                    <li class="page-item disabled"><a href="#">Previous</a></li>
+                    <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -126,7 +137,7 @@
                                 <input type="text" name="ServiceName" class="form-control" style="width: 350px;" autocomplete="off" placeholder="Search" />
                             </div>
                             <div class="item-button mt-2" style="display:flex;">
-                                <button type="submit" class="custom-button"><i class="bi bi-search"></i></button>
+                                <button type="submit" class="custom-button"><i class="bi bi-plus-circle-fill"></i></button>
                             </div>
                         </form>
                     </div>
@@ -134,9 +145,9 @@
                         <div id="serviceCheckboxes"></div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Add</button>
-                </div>
+                @*<div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Add</button>
+                    </div>*@
             </div>
         </div>
     </div>
@@ -152,7 +163,6 @@
                         </div>
                         <div class="col-sm-6">
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target=""><i class="bi bi-dash-circle"></i><span>Delete Services</span></button>
                         </div>
                     </div>
                 </div>
@@ -176,10 +186,9 @@
         </tbody>
     </table>
     <div class="clearfix">
-        @*<div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>*@
-        <ul class="pagination">
-            <li class="page-item disabled"><a href="#">Previous</a></li>
-            <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
+        <ul class="pagination" id="pagination-service">
+            <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+            <li class="page-item active"><a href="#" class="page-link">1</a></li>
             <li class="page-item"><a href="#" class="page-link">2</a></li>
             <li class="page-item"><a href="#" class="page-link">3</a></li>
             <li class="page-item"><a href="#" class="page-link">4</a></li>
@@ -235,9 +244,9 @@
                     $.each(servicesInController, function (i, item) {
                         var checked = _addedServices.includes(item) ? 'checked' : '';
                         var checkbox = `<li class="item"><div class="form-check">
-                                      <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
-                                      <label class="form-check-label" for="service-${i}">${item}</label>
-                                  </div></li>`;
+                                              <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
+                                              <label class="form-check-label" for="service-${i}">${item}</label>
+                                          </div></li>`;
                         if (_addedServices.includes(item)) {
                             checkedItems.push(checkbox);
                         } else {
@@ -330,45 +339,45 @@
         });
         //Gets the servicename of the opened log history
 
-        // Log History Modal
-        function logHistory(serviceName, limit) {
-            //Viewlogs, Gets all the records of a service
-            $.ajax({
-                url: "/Home/FetchServiceLogsTB",
-                type: "POST",
-                data: { serviceName: serviceName },
-                success: function (data) {
-                    // Get the table body element
-                    var tbody = $('#popupTable tbody');
-                    tbody.empty();
+        //// Log History Modal
+        //function logHistory(serviceName, limit) {
+        //    //Viewlogs, Gets all the records of a service
+        //    $.ajax({
+        //        url: "/Home/FetchServiceLogsTB",
+        //        type: "POST",
+        //        data: { serviceName: serviceName },
+        //        success: function (data) {
+        //            // Get the table body element
+        //            var tbody = $('#popupTable tbody');
+        //            tbody.empty();
 
-                    // Create a string containing all the rows
-                    var rows = '';
-                    data.slice(0, limit).forEach(function (service) {
-                        rows += '<tr>' +
-                            /*'<td>' + service.ServiceName + '</td>' +*/
-                            '<td>' + service.LastStart + '</td>' +
-                            '<td>' + service.ServiceStatus + '</td>' +
-                            '<td>' + service.LastLog + '</td>' +
-                            '<td>' + service.ActionBy + '</td>' +
-                            '</tr>';
-                    });
+        //            // Create a string containing all the rows
+        //            var rows = '';
+        //            data.slice(0, limit).forEach(function (service) {
+        //                rows += '<tr>' +
+        //                    /*'<td>' + service.ServiceName + '</td>' +*/
+        //                    '<td>' + service.LastStart + '</td>' +
+        //                    '<td>' + service.ServiceStatus + '</td>' +
+        //                    '<td>' + service.LastLog + '</td>' +
+        //                    '<td>' + service.ActionBy + '</td>' +
+        //                    '</tr>';
+        //            });
 
-                    // Append the rows to the table in a single operation
-                    tbody.append(rows);
-                    activeServiceName = serviceName;
+        //            // Append the rows to the table in a single operation
+        //            tbody.append(rows);
+        //            activeServiceName = serviceName;
 
-                    $('#service-modal .modal-servicecontent .service_name').text(serviceName);
+        //            $('#service-modal .modal-servicecontent .service_name').text(serviceName);
 
-                    // Show the popup dialog
-                    $('#service-modal').css('display', 'block');
+        //            // Show the popup dialog
+        //            $('#service-modal').css('display', 'block');
 
-                },
-                error: function () {
-                    alert("Failed to retrieve records for " + serviceName);
-                }
-            });
-        }
+        //        },
+        //        error: function () {
+        //            alert("Failed to retrieve records for " + serviceName);
+        //        }
+        //    });
+        //}
         function handleRowClick(serviceName, limit) {
             logHistory(serviceName, limit);
         }
@@ -459,10 +468,247 @@
 
     </script>
 
-    <!--Add or Remove Service-->
+    <!-- Pagination for Log History-->
     <script>
 
+        // define the number of items per page
+        var ITEMS_PAR_PAGE_LOGS;
 
+        // get the table body element
+        const logstableBody = document.querySelector('#popupTable tbody');
+
+        // get the pagination links
+        const logspaginationLinks = document.querySelectorAll('#pagination-logs .page-link');
+
+        // define a function to show the items for the selected page
+        function logsshowPage(logs_pageNumber) {
+            // calculate the start and end indexes of the items to show
+            const logsstartIndex = (logs_pageNumber - 1) * ITEMS_PAR_PAGE_LOGS;
+            const logsendIndex = logsstartIndex + ITEMS_PAR_PAGE_LOGS;
+
+            // hide all rows in the table
+            const logs_rows = logstableBody.querySelectorAll('tr');
+            logs_rows.forEach(logs_row => {
+                logs_row.style.display = 'none';
+            });
+
+            // show the rows for the current page
+            for (let i = logsstartIndex; i < logsendIndex && i < logs_rows.length; i++) {
+                logs_rows[i].style.display = '';
+            }
+        }
+
+        var logs_pageNumber = 1;
+        // handle the click event of the pagination links
+        logspaginationLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                // get the selected page number from the link's text
+                logs_pageNumber = parseInt(link.innerText);
+
+                // show the items for the selected page
+                logsshowPage(logs_pageNumber);
+
+                // mark the selected page as active
+                logspaginationLinks.forEach(link => {
+                    link.parentElement.classList.remove('active');
+                });
+                link.parentElement.classList.add('active');
+            });
+        });
+
+        // Log History Modal
+        function logHistory(serviceName, limit) {
+            //Viewlogs, Gets all the records of a service
+            $.ajax({
+                url: "/Home/FetchServiceLogsTB",
+                type: "POST",
+                data: { serviceName: serviceName },
+                success: function (data) {
+                    // Get the table body element
+                    var tbody = $('#popupTable tbody');
+                    tbody.empty();
+
+                    // Create a string containing all the rows
+                    var rows = '';
+                    data.forEach(function (service) {
+                        // Add a CSS class to the td element based on the value of ServiceStatus
+                        var statusColorClass = service.ServiceStatus === 'Running' ? 'text-success' : 'text-danger';
+
+                        rows += '<tr>' +
+                            '<td>' + service.LastStart + '</td>' +
+                            '<td>' + service.LastLog + '</td>' +
+                            '<td class="status">' +
+                            '<span class="' + statusColorClass + '">' + service.ServiceStatus + '</span>' +
+                            '</td>' +
+                            '<td>' + service.ActionBy + '</td>' +
+                            '</tr>';
+                    });
+
+                    // Append the rows to the table in a single operation
+                    tbody.append(rows);
+                    activeServiceName = serviceName;
+
+                    $('#service-modal .modal-servicecontent .service_name').text(serviceName);
+
+                    // Show the popup dialog
+                    ITEMS_PAR_PAGE_LOGS = limit;
+                    logsshowPage(1);
+                    $('#service-modal').css('display', 'block');
+
+                },
+                error: function () {
+                    alert("Failed to retrieve records for " + serviceName);
+                }
+            });
+        }
+    </script>
+
+    <!-- Pagination for Service Table -->
+    <script>
+        $(document).ready(function () {
+            var $pagination = $('#pagination-service'),
+                $paginationItems = $pagination.find('li'),
+                $paginationLinks = $pagination.find('a'),
+                currentPage = 1,
+                numPerPage = 5,
+                numItems = $paginationItems.length,
+                totalPages = Math.ceil(numItems / numPerPage);
+
+            $paginationLinks.click(function (e) {
+                e.preventDefault();
+                var $this = $(this),
+                    $li = $this.parent(),
+                    prevPage = currentPage;
+
+                if ($li.hasClass('disabled') || $li.hasClass('active')) {
+                    return;
+                }
+
+                if ($this.text() === 'Next') {
+                    currentPage++;
+                } else if ($this.text() === 'Previous') {
+                    currentPage--;
+                } else {
+                    currentPage = parseInt($this.text(), 10);
+                }
+
+                if (currentPage < 1) {
+                    currentPage = 1;
+                } else if (currentPage > totalPages) {
+                    currentPage = totalPages;
+                }
+
+                $paginationItems.removeClass('active');
+                var startIndex = (currentPage - 1) * numPerPage,
+                    endIndex = Math.min(startIndex + numPerPage - 1, numItems - 1);
+                $paginationItems.slice(startIndex, endIndex + 1).addClass('active');
+
+                if (currentPage > 1 && $pagination.find('.prev-item').length === 0) {
+                    $pagination.prepend('<li class="page-item prev-item"><a href="#" class="page-link">Previous</a></li>');
+                } else if (currentPage === 1) {
+                    $pagination.find('.prev-item').remove();
+                }
+
+                if (currentPage < totalPages && $pagination.find('.next-item').length === 0) {
+                    $pagination.append('<li class="page-item next-item"><a href="#" class="page-link">Next</a></li>');
+                } else if (currentPage === totalPages) {
+                    $pagination.find('.next-item').remove();
+                }
+
+                if (prevPage !== currentPage) {
+                    $paginationLinks.each(function () {
+                        $(this).text(parseInt($(this).text()) + 5); // <-- Increment link text by 5
+                    });
+                }
+            });
+        });
+
+        // define the number of items per page
+        const ITEMS_PER_PAGE = 5;
+
+        // get the table body element
+        const tableBody = document.querySelector('#serviceTable tbody');
+
+        // get the pagination links
+        const paginationLinks = document.querySelectorAll('#pagination-service .page-link');
+
+        // define a function to show the items for the selected page
+        function showPage(pageNumber) {
+            // calculate the start and end indexes of the items to show
+            const startIndex = (pageNumber - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+
+            // hide all rows in the table
+            const rows = tableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                row.style.display = 'none';
+            });
+
+            // show the rows for the current page
+            for (let i = startIndex; i < endIndex && i < rows.length; i++) {
+                rows[i].style.display = '';
+            }
+        }
+
+        // handle the click event of the pagination links
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                // get the selected page number from the link's text
+                const pageNumber = parseInt(link.innerText);
+
+                // show the items for the selected page
+                showPage(pageNumber);
+
+                // mark the selected page as active
+                paginationLinks.forEach(link => {
+                    link.parentElement.classList.remove('active');
+                });
+                link.parentElement.classList.add('active');
+            });
+        });
+
+        function RealTimeTable() {
+            $.ajax({
+                url: "/Home/RealTimeTable",
+                type: "GET",
+                dataType: 'json',
+                success: function (result) {
+                    $("#serviceTable tbody").empty();
+                    // Loop through the data and append each row to the table
+                    result.forEach(function (Data) {
+                        var limit = 999;
+                        const statusText = (Data.ServiceStatus === "Running") ? '<span style="color:green">Running</span>' : '<span style="color:red">Stopped</span>';
+
+                        var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastLog + "</td>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ActionBy + "</td>";
+                        row += "<td>";
+
+                        if (Data.ServiceStatus === "Stopped") {
+                            row += "<button class='action-button' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                        } else if (Data.ServiceStatus === "Running") {
+                            row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                            row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
+                            row += "<button class='action-button ms-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
+                        }
+                        row += "</td></tr>";
+                        $("#serviceTable tbody").append(row);
+                    });
+                },
+                error: function () {
+                    alert("Failed to refresh services.");
+                }
+            });
+        }
+    </script>
+
+    <!--Add or Remove Service-->
+    <script>
         function AddService(serviceName) {
             $.ajax({
                 url: "/Home/AddService",
