@@ -306,6 +306,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 else
                 {
                     return View();
+
                 }
 
             }
@@ -383,7 +384,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public ActionResult RealTimeUsersTB()
+        public ActionResult RealTimeUsersTable()
         {
             FetchUsersTB();
             return Json(_users, JsonRequestBehavior.AllowGet);

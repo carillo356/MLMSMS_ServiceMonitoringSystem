@@ -78,13 +78,13 @@ header .menu-item {
         border-bottom: 3px solid #64d6f4;
     }
 
-    .navbar:hover {
-        opacity: 1;
-    }
+.navbar:hover {
+    opacity: 1;
+}
 
-    .navbar:not(.active) {
-        color: white;
-    }
+.navbar:not(.active) {
+    color: white;
+}
 
 header .item-button a {
     background-color: deeppink;
@@ -100,13 +100,13 @@ header .item-button a {
     border-radius: 5px;
 }
 
-    header .menu-item a:hover {
-        color: white;
-    }
+header .menu-item a:hover {
+    color: white;
+}
 
-    header .item-button a:hover {
-        background-color: #64d6f4;
-    }
+header .item-button a:hover {
+    background-color: #64d6f4;
+}
 
 .item-button .custom-button {
     background-color: deeppink;
@@ -121,34 +121,27 @@ header .item-button a {
     border: none;
     margin-top: 0px;
 }
+
     .item-button .custom-button:hover {
         background-color: #64d6f4;
         color: white;
     }
 
-.bi.bi-plus-circle-fill {
+.bi.bi-search {
     font-size: 20px;
     color: white;
-}
-
-.bi.bi-arrow-clockwise {
-    color: white;
-    font-size: 24px; 
-    transform: rotate(45deg); 
 }
 
 header .mobile-toggler {
     font-size: 30px;
 }
 
-    .bi.bi-list {
-        color: white;
-        margin-left: 10px;
-    }
+.bi.bi-list {
+    color: white;
+    margin-left: 10px;
+}
 
-
-/* modal */
-
+/* SideBar Menu Modal */
 #navbModal .modal-dialog {
     margin: 0;
     width: 430px;
@@ -159,6 +152,7 @@ header .mobile-toggler {
     #navbModal .modal-dialog {
         width: 70%;
     }
+
     header .navb-name {
         font-size: 20px;
         text-align: center;
@@ -182,6 +176,7 @@ header .mobile-toggler {
     border-bottom: 2px solid #fefefe;
     color: black;
 }
+
     #navbModal .modal-header .title {
         font-size: 25px;
         color: black;
@@ -301,7 +296,7 @@ header .mobile-toggler {
     transform: translate(-50%, -50%);
     margin: auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: 2px solid #888;
     width: 60%;
     text-align: center;
     font-size: 20px;
@@ -343,73 +338,6 @@ header .mobile-toggler {
         cursor: pointer;
     }
 
- /*Checkbox for selecting services to display  
-.container {
-    position: relative;
-    max-width: 320px;
-    width: 100%;
-    margin: 10px auto 30px;
-}
-
-.select-btn {
-    display: flex;
-    height: 50px;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #fff;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-    .select-btn .btn-text {
-        font-size: 17px;
-        font-weight: 400;
-        color: #333;
-    }
-
-    .select-btn .arrow-dwn {
-        display: flex;
-        height: 21px;
-        width: 21px;
-        color: white;
-        font-size: 14px;
-        border-radius: 50%;
-        background: deeppink;
-        align-items: center;
-        justify-content: center;
-        transition: 0.3s;
-        margin-top: 7px;
-    }
-
-    .select-btn.open .arrow-dwn {
-        transform: rotate(-180deg);
-    }
-
-    .select-btn .arrow-dwn .bi.bi-arrow-down-short {
-        color: white;
-    }
-
-.bi.bi-arrow-down-short {
-    color: black;
-}
-
-.list-items {
-    position: absolute;
-    margin-top: 15px;
-    border-radius: 8px;
-    padding: 16px;
-    background-color: #fff;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    display: none;
-    width: 295px;
-}
-
-.select-btn.open ~ .list-items {
-    display: block;
-}*/
-
 .item {
     display: flex;
     align-items: center;
@@ -423,7 +351,7 @@ header .mobile-toggler {
     font-size: 14px;
 }
 
-     .item:hover {
+    .item:hover {
         background-color: #e7edfe;
     }
 
@@ -493,7 +421,7 @@ header .mobile-toggler {
     color: #333;
 }
 
-#serviceTable {
+#serviceTable, #usersTable {
     margin: auto;
     width: 65%;
     margin-top: -40px;
@@ -501,7 +429,7 @@ header .mobile-toggler {
 
 
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
-    
+
     .list-items {
         z-index: 999;
     }
@@ -524,75 +452,82 @@ header .mobile-toggler {
         margin-bottom: 15px;
     }
 
-    #serviceTable .usersTable {
+
+
+    #serviceTable, #usersTable {
         width: 85%;
         background: transparent;
     }
 
-    #serviceTable table,
-    #serviceTable thead,
-    #serviceTable tbody,
-    #serviceTable th,
-    #serviceTable td,
-    #serviceTable tr {
-        display: block;
-    }
-
-        #serviceTable thead tr {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
+        #serviceTable table,
+        #serviceTable thead,
+        #serviceTable tbody,
+        #serviceTable th,
+        #serviceTable td,
+        #serviceTable tr {
+            display: block;
         }
 
-    #serviceTable tr {
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-    }
+            #serviceTable thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
 
-    #serviceTable td {
-        border: none;
-        border-bottom: 1px solid #eee;
-        position: relative;
-        padding-left: 50%;
-        text-align: right;
-        font-size: 12px;
-    }
-
-        #serviceTable td::before {
-            position: absolute;
-            top: 6px;
-            left: 6px;
-            width: 45%;
-            padding-right: 10px;
-            white-space: nowrap;
-            font-size: 16px;
-            font-weight: 600;
-            text-align: left;
+        #serviceTable tr {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
         }
 
-        #serviceTable td:nth-of-type(1)::before {
-            content: "Service Name";
+        #serviceTable td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+            text-align: right;
+            font-size: 12px;
         }
 
-        #serviceTable td:nth-of-type(2)::before {
-            content: "Last Start";
-        }
+            #serviceTable td::before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-size: 16px;
+                font-weight: 600;
+                text-align: left;
+            }
 
-        #serviceTable td:nth-of-type(3)::before {
-            content: "Last Log";
-        }
+            #serviceTable td:nth-of-type(1)::before {
+                content: "Service Name";
+            }
 
-        #serviceTable td:nth-of-type(4)::before {
-            content: "Status";
-        }
+            #serviceTable td:nth-of-type(2)::before {
+                content: "Last Start";
+            }
 
-        #serviceTable td:nth-of-type(5)::before {
-            content: "Action By";
-        }
+            #serviceTable td:nth-of-type(3)::before {
+                content: "Last Log";
+            }
 
-        #serviceTable td:nth-of-type(6)::before {
-            content: "Action";
-        }
+            #serviceTable td:nth-of-type(4)::before {
+                content: "Status";
+            }
+
+            #serviceTable td:nth-of-type(5)::before {
+                content: "Action By";
+            }
+
+            #serviceTable td:nth-of-type(6)::before {
+                content: "Action";
+            }
+
+            /* override color of status name in responsive mode */
+            #serviceTable td.status span {
+                color: inherit;
+            }
 
     #service-modal {
         width: 100%;
@@ -615,15 +550,14 @@ header .mobile-toggler {
         margin-bottom: 25px;
     }
 
-    .select-menu .sBtn-text {
-        font-size: 15px;
-    }
+        .select-menu .sBtn-text {
+            font-size: 15px;
+        }
 
-    .select-menu .options {
-        z-index: 999;
-        width: 140px;
-    }
-
+        .select-menu .options {
+            z-index: 999;
+            width: 140px;
+        }
 
     #popupTable table,
     #popupTable thead,
@@ -666,26 +600,19 @@ header .mobile-toggler {
             text-align: left;
         }
 
-
         #popupTable td:nth-of-type(1)::before {
-        content: "SERVICE NAME";
-        }
-
-        #popupTable td:nth-of-type(2)::before {
             content: "LAST START";
         }
 
-        #popupTable td:nth-of-type(3)::before {
+        #popupTable td:nth-of-type(2)::before {
             content: "LAST LOG";
         }
 
-        #popupTable td:nth-of-type(4)::before {
+        #popupTable td:nth-of-type(3)::before {
             content: "STATUS";
         }
 
-        #popupTable td:nth-of-type(5)::before {
+        #popupTable td:nth-of-type(4)::before {
             content: "ACTION BY";
         }
-        
 }
-
