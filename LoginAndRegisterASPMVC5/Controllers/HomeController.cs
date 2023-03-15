@@ -167,31 +167,23 @@ namespace LoginAndRegisterASPMVC5.Controllers
             DateTime lastStart = DateTime.MinValue;
             string lastLog = "No Record";
             string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-
-            string queryString = $"*[System/Provider/@Name='{serviceName}']";
-            EventLogQuery eventLogQuery = new EventLogQuery("Application", PathType.LogName, queryString);
-            EventLogReader eventLogReader = new EventLogReader(eventLogQuery);
-
-            int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries"));
-            int entriesSearched = 0;
-            EventRecord latestEvent = null;
-
-            EventRecord currentEvent = eventLogReader.ReadEvent();
-            while (currentEvent != null && entriesSearched < numEntriesToSearch)
+            try
             {
-                if (latestEvent == null || currentEvent.TimeCreated > latestEvent.TimeCreated)
-                {
-                    latestEvent = currentEvent;
-                }
-                entriesSearched++;
-                currentEvent = eventLogReader.ReadEvent();
-            }
 
-            // Get the necessary information from the latest entry (if one was found)
-            if (latestEvent != null)
+                ServiceController[] serviceInController = ServiceController.GetServices();
+                ServiceController service = serviceInController.FirstOrDefault(s => s.ServiceName == serviceName);
+
+                EventLog eventLog = new EventLog("Application");
+                EventLogEntry serviceEvent = eventLog.Entries.Cast<EventLogEntry>().Where(entry => entry.Source == serviceName).OrderByDescending(entry => entry.TimeGenerated).FirstOrDefault();
+                lastStart = serviceEvent.TimeGenerated;
+                lastLog = serviceEvent.Message;
+                logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                actionBy = eventLog.MachineName;
+
+            } 
+            catch(Exception ex)
             {
-                lastStart = (DateTime)latestEvent.TimeCreated;
-                lastLog = latestEvent.Properties[0].Value.ToString(); // Assumes log message is in the first property
+                throw ex;
             }
 
             using (SqlConnection connection = DatabaseManager.GetConnection())
@@ -247,6 +239,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         break;
 
                     default:
+                        StoreData(connection, logBy, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
                         //MessageBox.Show("Invalid command from " + command);
                         break;
                 }
