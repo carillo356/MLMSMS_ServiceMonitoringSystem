@@ -952,11 +952,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Aaron\\source\\repos\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
+      "projectUniqueName": "C:\\github repos\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
       "projectName": "Logger",
-      "projectPath": "C:\\Users\\Aaron\\source\\repos\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
+      "projectPath": "C:\\github repos\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
       "packagesPath": "C:\\Users\\Aaron\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Aaron\\source\\repos\\OJTWindowsService\\ConsoleApp\\obj\\",
+      "outputPath": "C:\\github repos\\OJTWindowsService\\ConsoleApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
