@@ -134,25 +134,27 @@
                     <h5 class="modal-title text-center" id="exampleModalLabel">Add Services</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="d-flex justify-content-left">
-                        <form onsubmit="Event.preventDefault(); AddService(this.ServiceName.value);" class="d-flex align-items-center mb-0">
+                <form onsubmit="event.preventDefault(); AddService(this.ServiceName.value);" class="d-flex align-items-center mb-0">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-left">
+
                             <div class="form-group m-3 w-100">
                                 <input type="text" name="ServiceName" class="form-control" @*style="width: 350px;"*@ autocomplete="off" placeholder="Search" />
 
                             </div>
                             <div class="item-button mt-2" style="display:flex;">
-                                <button type="submit" class="custom-button"><i class="bi bi-search"></i></button>
-                            </div>
-                        </form>
+                        <button type="submit" class="custom-button"><i class="bi bi-search"></i></button>
                     </div>
-                    <div class="list-group">
-                        <div id="serviceCheckboxes"></div>
+
+                        </div>
+                        <div class="list-group">
+                            <div id="serviceCheckboxes"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Add</button>
-                </div>
+                    @*<div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>*@
+                </form>
             </div>
         </div>
     </div>
