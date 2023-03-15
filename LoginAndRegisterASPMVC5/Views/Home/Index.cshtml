@@ -192,8 +192,8 @@
     </table>
     <div class="clearfix">
         <ul class="pagination" id="pagination-service">
-            <li class="page-item disabled"><a href="#">Previous</a></li>
-            <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
+            <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+            <li class="page-item active"><a href="#" class="page-link">1</a></li>
             <li class="page-item"><a href="#" class="page-link">2</a></li>
             <li class="page-item"><a href="#" class="page-link">3</a></li>
             <li class="page-item"><a href="#" class="page-link">4</a></li>
@@ -530,6 +530,64 @@
 
     <!-- Pagination for Service Table -->
     <script>
+        $(document).ready(function () {
+            var $pagination = $('#pagination-service'),
+                $paginationItems = $pagination.find('li'),
+                $paginationLinks = $pagination.find('a'),
+                currentPage = 1,
+                numPerPage = 5,
+                numItems = $paginationItems.length,
+                totalPages = Math.ceil(numItems / numPerPage);
+
+            $paginationLinks.click(function (e) {
+                e.preventDefault();
+                var $this = $(this),
+                    $li = $this.parent(),
+                    prevPage = currentPage;
+
+                if ($li.hasClass('disabled') || $li.hasClass('active')) {
+                    return;
+                }
+
+                if ($this.text() === 'Next') {
+                    currentPage++;
+                } else if ($this.text() === 'Previous') {
+                    currentPage--;
+                } else {
+                    currentPage = parseInt($this.text(), 10);
+                }
+
+                if (currentPage < 1) {
+                    currentPage = 1;
+                } else if (currentPage > totalPages) {
+                    currentPage = totalPages;
+                }
+
+                $paginationItems.removeClass('active');
+                var startIndex = (currentPage - 1) * numPerPage,
+                    endIndex = Math.min(startIndex + numPerPage - 1, numItems - 1);
+                $paginationItems.slice(startIndex, endIndex + 1).addClass('active');
+
+                if (currentPage > 1 && $pagination.find('.prev-item').length === 0) {
+                    $pagination.prepend('<li class="page-item prev-item"><a href="#" class="page-link">Previous</a></li>');
+                } else if (currentPage === 1) {
+                    $pagination.find('.prev-item').remove();
+                }
+
+                if (currentPage < totalPages && $pagination.find('.next-item').length === 0) {
+                    $pagination.append('<li class="page-item next-item"><a href="#" class="page-link">Next</a></li>');
+                } else if (currentPage === totalPages) {
+                    $pagination.find('.next-item').remove();
+                }
+
+                if (prevPage !== currentPage) {
+                    $paginationLinks.each(function () {
+                        $(this).text(parseInt($(this).text()) + 5); // <-- Increment link text by 5
+                    });
+                }
+            });
+        });
+
         // define the number of items per page
         const ITEMS_PER_PAGE = 5;
 
@@ -556,6 +614,24 @@
                 rows[i].style.display = '';
             }
         }
+
+        // handle the click event of the pagination links
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                // get the selected page number from the link's text
+                const pageNumber = parseInt(link.innerText);
+
+                // show the items for the selected page
+                showPage(pageNumber);
+
+                // mark the selected page as active
+                paginationLinks.forEach(link => {
+                    link.parentElement.classList.remove('active');
+                });
+                link.parentElement.classList.add('active');
+            });
+        });
 
         function RealTimeTable() {
             $.ajax({
@@ -594,30 +670,7 @@
             });
         }
 
-        // show the first page by default
-        $(document).ready(function () {
-            RealTimeTable().then(function () {
-                showPage(1);
-            });
-        });
 
-        // handle the click event of the pagination links
-        paginationLinks.forEach(link => {
-            link.addEventListener('click', event => {
-                event.preventDefault();
-                // get the selected page number from the link's text
-                const pageNumber = parseInt(link.innerText);
-
-                // show the items for the selected page
-                showPage(pageNumber);
-
-                // mark the selected page as active
-                paginationLinks.forEach(link => {
-                    link.parentElement.classList.remove('active');
-                });
-                link.parentElement.classList.add('active');
-            });
-        });
     </script>
 
     <!--Add or Remove Service-->
@@ -729,7 +782,7 @@
 
     </script>
 
-    <!-- Selecting Rows Dropdwon -->
+    <!-- Selecting Rows Dropdown -->
     <script>
         const optionMenu = document.querySelector(".select-menu"),
             select_btn = optionMenu.querySelector(".select-btn1"),
