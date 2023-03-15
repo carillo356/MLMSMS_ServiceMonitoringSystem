@@ -176,16 +176,15 @@ namespace LoginAndRegisterASPMVC5.Controllers
             int entriesSearched = 0;
             EventRecord latestEvent = null;
 
-            while (entriesSearched < numEntriesToSearch && eventLogReader.ReadEvent() != null)
+            EventRecord currentEvent = eventLogReader.ReadEvent();
+            while (currentEvent != null && entriesSearched < numEntriesToSearch)
             {
-                EventRecord currentEvent = eventLogReader.ReadEvent();
-
                 if (latestEvent == null || currentEvent.TimeCreated > latestEvent.TimeCreated)
                 {
                     latestEvent = currentEvent;
                 }
-
                 entriesSearched++;
+                currentEvent = eventLogReader.ReadEvent();
             }
 
             // Get the necessary information from the latest entry (if one was found)
