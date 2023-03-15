@@ -447,13 +447,14 @@
                                 row += "</button>";
                             }
 
+                            row += "<button onclick='editUser(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\")' class='user-button' data-bs-toggle='modal' data-bs-target='#editUsers-modal'>";
+                            row += "<i class='bi bi-pencil-square'></i>";
+                            row += "</button>";
+
                             row += "<button onclick='DeleteUser(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
                             row += "<i class='bi bi-trash3-fill'></i>";
                             row += "</button>";
 
-                            row += "<button onclick='editUser(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\")' class='user-button' data-bs-toggle='modal' data-bs-target='#editUsers-modal'>";
-                            row += "<i class='bi bi-pencil-square'></i>";
-                            row += "</button>";
                             /* row += "<button onclick='UpdateUser(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";*/
                             /*row += "<i class='bi bi-trash3-fill'></i>";*/
 

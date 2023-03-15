@@ -234,7 +234,7 @@ table.table td:last-child i {
         }
 
         #usersTable td:nth-of-type(5)::before {
-            content: "IS_ADMIN";
+            content: "USER ROLE";
         }
 
         #usersTable td:nth-of-type(6)::before {
