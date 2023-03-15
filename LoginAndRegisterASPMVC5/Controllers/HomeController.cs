@@ -29,6 +29,7 @@ using System.Web.UI.WebControls;
 using System.Runtime.Remoting.Contexts;
 using System.Data.Entity.Validation;
 using System.Text.RegularExpressions;
+using System.Diagnostics.Eventing.Reader;
 
 namespace LoginAndRegisterASPMVC5.Controllers
 {
@@ -163,46 +164,40 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public void ServiceAction(string serviceName, string command)
         {
             string actionBy = Session["FullName"].ToString();
-            string logBy = null;
             DateTime lastStart = DateTime.MinValue;
-            string lastLog = null;
+            string lastLog = "No Record";
+            string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
-            EventLog eventLog = new EventLog("Application");
-            int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries")); // Limit the number of entries to search
-            EventLogEntryCollection entries = eventLog.Entries;
+            string queryString = $"*[System/Provider/@Name='{serviceName}']";
+            EventLogQuery eventLogQuery = new EventLogQuery("Application", PathType.LogName, queryString);
+            EventLogReader eventLogReader = new EventLogReader(eventLogQuery);
 
-            int totalEntries = entries.Count;
-            int startIndex = totalEntries - 1;
-            int endIndex = Math.Max(startIndex - numEntriesToSearch, 0);
-            bool entryFound = false;
+            int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries"));
+            int entriesSearched = 0;
+            EventRecord latestEvent = null;
 
-            while (!entryFound && startIndex >= 0)
+            while (entriesSearched < numEntriesToSearch && eventLogReader.ReadEvent() != null)
             {
-                for (int i = startIndex; i >= endIndex; i--)
-                {
-                    EventLogEntry entry = entries[i];
+                EventRecord currentEvent = eventLogReader.ReadEvent();
 
-                    if (entry.Source == serviceName && entry.TimeGenerated > lastStart)
-                    {
-                        logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-                        lastStart = entry.TimeGenerated;
-                        lastLog = entry.Message;
-                        entryFound = true;
-                        break;
-                    }
+                if (latestEvent == null || currentEvent.TimeCreated > latestEvent.TimeCreated)
+                {
+                    latestEvent = currentEvent;
                 }
 
-                startIndex = endIndex - 1;
-                endIndex = Math.Max(startIndex - numEntriesToSearch, 0);
+                entriesSearched++;
             }
 
-            if (!entryFound)
+            // Get the necessary information from the latest entry (if one was found)
+            if (latestEvent != null)
             {
-                throw new Exception("Target entry not found in event log.");
+                lastStart = (DateTime)latestEvent.TimeCreated;
+                lastLog = latestEvent.Properties[0].Value.ToString(); // Assumes log message is in the first property
             }
 
             using (SqlConnection connection = DatabaseManager.GetConnection())
             {
+                lastStart.ToString();
                 ServiceController[] services = ServiceController.GetServices();
                 ServiceController sc = services.FirstOrDefault(s => s.ServiceName == serviceName);
 
@@ -275,12 +270,12 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             try
             {
-                using (var command = new SqlCommand("InsertIntoServices", connection))
+                using (var command = new SqlCommand("sp_InsertIntoServices", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@LogBy", logBy);
                     command.Parameters.AddWithValue("@ServiceName", serviceName);
-                    command.Parameters.AddWithValue("@LastStart", lastStart);
+                    command.Parameters.AddWithValue("@LastStart", lastStart.ToString());
                     command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
                     command.Parameters.AddWithValue("@LastLog", lastLog);
                     command.Parameters.AddWithValue("@ActionBy", actionBy);
