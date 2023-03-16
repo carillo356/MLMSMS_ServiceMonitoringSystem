@@ -41,7 +41,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult Index()
         {
-            InsertAllServices();
+            //InsertAllServices();
             if (Session["idUser"] != null)
             {
                 return View();
