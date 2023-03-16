@@ -298,6 +298,7 @@ table.table td:last-child i {
 #displayService-modal .modal-body {
     /*overflow: auto;*/
     overflow-y: auto;
+    height: 700px;
 }
 
     /* Customize scrollbar */
@@ -336,7 +337,7 @@ table.table td:last-child i {
     }
 
 #displayService-modal .search-box {
-    width: 350px;
+    width: 415px;
 }
 
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
@@ -357,7 +358,7 @@ table.table td:last-child i {
     }
 
     #displayService-modal .search-box {
-        width: 225px;
+        width: 290px;
     }
 
     #displayService-modal .modal-dialog {

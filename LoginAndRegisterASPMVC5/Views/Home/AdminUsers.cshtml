@@ -217,7 +217,7 @@
 
                         <div class="form-group m-3">
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password2" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Enter New Password", id = "password2" })
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                         </div>
 
@@ -247,6 +247,7 @@
         </div>
     </div>
 
+    <!-- Delete Users Modal -->
     <div id="deleteUsers-modal" class="modal">
         <div class="modal-content">
             <div id="modal-title">System Message</div>
