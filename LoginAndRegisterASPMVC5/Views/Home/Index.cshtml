@@ -257,7 +257,7 @@
                         if (this.checked) {
                             AddService(serviceName);
                         } else {
-                            RemoveAddedService(serviceName);
+                            RemoveAddedService1(serviceName);
                             var index = checkedItems.indexOf($(this).closest('.item'));
                             if (index > -1) {
                                 checkedItems.splice(index, 1);
@@ -354,7 +354,7 @@
             var btnNo = document.getElementById("btnNo");
 
             modal.style.display = "block";
-            modalTitle.innerHTML = "System Message";
+            modalTitle.innerHTML = "<i class='bi bi-exclamation-triangle-fill text-warning'></i> System Message";
             modalMessage.innerHTML = "Are you sure you want to " + command.toUpperCase() + " '" + serviceName + "'?";
             btnYes.onclick = function () {
                 /* Handle the command here*/
@@ -592,6 +592,25 @@
             });
         }
 
+        function RemoveAddedService1(serviceName) {
+            /*Show the confirmation box here*/
+                $.ajax({
+                    url: "/Home/RemoveAddedService",
+                    type: "POST",
+                    data: { serviceName: serviceName },
+                    success: function () {
+                        $("#serviceTable tbody").empty();
+                        RealTimeTable();
+
+                        //unchecked the remove service
+                        $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
+                    },
+                    error: function () {
+                        alert("Failed to delete " + serviceName);
+                    }
+                });
+        }
+
         function RemoveAddedService(serviceName, command) {
             /*Show the confirmation box here*/
             var modal = document.getElementById("alert-modal");
@@ -601,7 +620,7 @@
             var btnNo = document.getElementById("btnNo");
 
             modal.style.display = "block";
-            modalTitle.innerHTML = "System Message";
+            modalTitle.innerHTML = "<i class='bi bi-exclamation-triangle-fill text-warning'></i> System Message";
             modalMessage.innerHTML = "Are you sure you want to " + command.toUpperCase() + " '" + serviceName + "'?";
             btnYes.onclick = function () {
                 $.ajax({
@@ -641,7 +660,7 @@
     <div id="alert-modal" class="modal">
         <div class="modal-content">
             <div id="modal-title">System Message</div>
-            <div id="modal-message">Are you sure you want to RESTART 'Service1'?</div>
+            <div id="modal-message"> Are you sure you want to RESTART 'Service1'?</div>
             <div class="modal-buttons">
                 <button type="button" id="btnYes" name="Yes" onclick="btnYes_Click" class="alert-buttons">Yes</button>
                 <button type="button" id="btnNo" name="No" onclick="btnNo_Click" class="alert-buttons">No</button>
