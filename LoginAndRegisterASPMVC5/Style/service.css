@@ -27,8 +27,7 @@
 }
 
     .action-button:hover {
-        color: white;
-        background-color: black;
+        background-color: #dbd5d5;
     }
 
 .alert-buttons {
@@ -336,7 +335,7 @@ table.table td:last-child i {
         color: #fefefe;
     }
 
-#displayService-modal .form-control {
+#displayService-modal .search-box {
     width: 350px;
 }
 
@@ -357,8 +356,8 @@ table.table td:last-child i {
         margin-left: 20px;
     }
 
-    #displayService-modal .form-control {
-        width: 230px;
+    #displayService-modal .search-box {
+        width: 225px;
     }
 
     #displayService-modal .modal-dialog {

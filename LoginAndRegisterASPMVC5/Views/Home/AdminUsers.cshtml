@@ -90,7 +90,7 @@
                 <th scope="col" style="width: 15%;">FIRST NAME</th>
                 <th scope="col" style="width: 15%;">LAST NAME</th>
                 <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
-                <th scope="col" style="width: 10%;">USERS ROLE</th>
+                <th scope="col" style="width: 10%;">USER ROLE</th>
                 <th scope="col" style="width: 15%;">ACTION</th>
             </tr>
         </thead>
@@ -250,7 +250,7 @@
     <div id="deleteUsers-modal" class="modal">
         <div class="modal-content">
             <div id="modal-title">System Message</div>
-            <div id="modal-message">Are you sure you want to RESTART 'Service1'?</div>
+            <div id="modal-message">Are you sure you want to DELETE 'Service1'?</div>
             <div class="modal-buttons">
                 <button type="button" id="btnYes" name="Yes" onclick="btnYes_Click" class="alert-buttons">Yes</button>
                 <button type="button" id="btnNo" name="No" onclick="btnNo_Click" class="alert-buttons">No</button>
@@ -275,33 +275,20 @@
             RealTimeUsersTable()
         });
 
-        //function setNotification(idUser) {
-        //    $.ajax({
-        //        type: 'POST',
-        //        url: '/Home/UpdateEmailNotification',
-        //        data: { idUser: idUser },
-        //        success: function () {
-        //            RealTimeUsersTable();
-        //        },
-        //        error: function (xhr, status, error) {
-        //            alert(error);
-        //        }
-        //    });
-        //}
-
         function DeleteUser(idUser) {
-            $.ajax({
-                type: 'POST',
-                url: '/Home/DeleteUser',
-                data: { idUser: idUser },
-                success: function () {
-                    RealTimeUsersTable();
-                },
-                error: function (xhr, status, error) {
-                    alert(error);
-                }
-            });
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/DeleteUser',
+                    data: { idUser: idUser },
+                    success: function () {
+                        RealTimeUsersTable();
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });  
         }
+
         function editUser(idUser, firstName, lastName, email, isAdmin) {
             // Set the values of the input fields in the modal
             $('#idUser').val(idUser);
@@ -313,56 +300,6 @@
             $('#isAdminTrue').prop('checked', isAdmin === "true");
             $('#isAdminFalse').prop('checked', isAdmin === "false");
         }
-
-        //function RealTimeUsersTable() {
-        //    /*Refresh the table with the updated data*/
-        //    $.ajax({
-        //        url: "/Home/RealTimeUsersTable",
-        //        type: "GET",
-        //        dataType: 'json',
-        //        success: function (result) {
-        //            $("#usersTable tbody").empty();
-        //            // Loop through the data and append each row to the table
-        //            result.forEach(function (Data) {
-        //                const Role = (Data.IsAdmin === true) ? '<span>Admin</span>' : '<span>Non-Admin</span>';
-
-        //                var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-        //                row += "<td>" + Data.idUser + "</td>";
-        //                row += "<td>" + Data.FirstName + "</td>";
-        //                row += "<td>" + Data.LastName + "</td>";
-        //                row += "<td>" + Data.Email + "</td>";
-        //                row += "<td>" + Role + "</td>";
-        //                row += "<td>";
-        //                if (Data.Email_Notification == true) {
-        //                    row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
-        //                    row += "<i class='bi bi-envelope-check-fill'></i>";
-        //                    row += "</button>";
-        //                } else {
-        //                    row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
-        //                    row += "<i class='bi bi-envelope-x-fill'></i>";
-        //                    row += "</button>";
-        //                }
-
-        //                row += "<button onclick='DeleteUser(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
-        //                row += "<i class='bi bi-trash3-fill'></i>";
-        //                row += "</button>";
-
-        //                row += "<button onclick='editUser(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\")' class='user-button' data-bs-toggle='modal' data-bs-target='#editUsers-modal'>";
-        //                row += "<i class='bi bi-pencil-square'></i>";
-        //                row += "</button>";
-        //                /* row += "<button onclick='UpdateUser(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";*/
-        //                /*row += "<i class='bi bi-trash3-fill'></i>";*/
-
-
-        //                row += "</td></tr>";
-        //                $("#usersTable tbody").append(row);
-        //            });
-        //        },
-        //        error: function () {
-        //            alert("Failed to refresh users.");
-        //        }
-        //    });
-        //}
 
         const togglePassword = document.getElementById("togglePassword");
         const password = document.getElementById("password");
@@ -451,7 +388,7 @@
                             row += "<i class='bi bi-pencil-square'></i>";
                             row += "</button>";
 
-                            row += "<button onclick='DeleteUser(\"" + Data.idUser + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
+                            row += "<button onclick='DeleteUser(\"" + Data.idUser + "\", \"delete\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
                             row += "<i class='bi bi-trash3-fill'></i>";
                             row += "</button>";
 
@@ -514,6 +451,7 @@
             });
         });
     </script>
+
 
 </body>
 

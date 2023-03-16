@@ -134,7 +134,7 @@
                     <div class="d-flex justify-content-left">
                         <form onsubmit="event.preventDefault(); AddService(this.ServiceName.value);" class="d-flex align-items-center mb-0">
                             <div class="form-group m-3" style="width: 100%;">
-                                <input type="text" name="ServiceName" class="form-control" style="width: 350px;" autocomplete="off" placeholder="Search" />
+                                <input type="text" name="ServiceName" class="form-control search-box" @*style="width: 350px;"*@ autocomplete="off" placeholder="Search" />
                             </div>
                             <div class="item-button mt-2" style="display:flex;">
                                 <button type="submit" class="custom-button"><i class="bi bi-plus-circle-fill"></i></button>
@@ -145,9 +145,6 @@
                         <div id="serviceCheckboxes"></div>
                     </div>
                 </div>
-                @*<div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Add</button>
-                    </div>*@
             </div>
         </div>
     </div>
@@ -178,7 +175,7 @@
                 <th scope="col" style="width: 10%;">STATUS</th>
                 <th scope="col" style="width: 15%;">ACTION BY</th>
                 <th scope="col" style="width: 15%;">ACTION</th>
-                <th scope="col" style="width: 15%;"></th>
+                <th scope="col" style="width: 15%;">DELETE</th>
             </tr>
         </thead>
         <tbody>
@@ -338,47 +335,7 @@
                 $('#service-modal').css('display', 'none');
             });
         });
-        //Gets the servicename of the opened log history
-
-        //// Log History Modal
-        //function logHistory(serviceName, limit) {
-        //    //Viewlogs, Gets all the records of a service
-        //    $.ajax({
-        //        url: "/Home/FetchServiceLogsTB",
-        //        type: "POST",
-        //        data: { serviceName: serviceName },
-        //        success: function (data) {
-        //            // Get the table body element
-        //            var tbody = $('#popupTable tbody');
-        //            tbody.empty();
-
-        //            // Create a string containing all the rows
-        //            var rows = '';
-        //            data.slice(0, limit).forEach(function (service) {
-        //                rows += '<tr>' +
-        //                    /*'<td>' + service.ServiceName + '</td>' +*/
-        //                    '<td>' + service.LastStart + '</td>' +
-        //                    '<td>' + service.ServiceStatus + '</td>' +
-        //                    '<td>' + service.LastLog + '</td>' +
-        //                    '<td>' + service.ActionBy + '</td>' +
-        //                    '</tr>';
-        //            });
-
-        //            // Append the rows to the table in a single operation
-        //            tbody.append(rows);
-        //            activeServiceName = serviceName;
-
-        //            $('#service-modal .modal-servicecontent .service_name').text(serviceName);
-
-        //            // Show the popup dialog
-        //            $('#service-modal').css('display', 'block');
-
-        //        },
-        //        error: function () {
-        //            alert("Failed to retrieve records for " + serviceName);
-        //        }
-        //    });
-        //}
+        
         function handleRowClick(serviceName, limit) {
             logHistory(serviceName, limit);
         }
@@ -520,64 +477,6 @@
 
     <!-- Pagination for Service Table -->
     <script>
-        $(document).ready(function () {
-            var $pagination = $('#pagination-service'),
-                $paginationItems = $pagination.find('li'),
-                $paginationLinks = $pagination.find('a'),
-                currentPage = 1,
-                numPerPage = 5,
-                numItems = $paginationItems.length,
-                totalPages = Math.ceil(numItems / numPerPage);
-
-            $paginationLinks.click(function (e) {
-                e.preventDefault();
-                var $this = $(this),
-                    $li = $this.parent(),
-                    prevPage = currentPage;
-
-                if ($li.hasClass('disabled') || $li.hasClass('active')) {
-                    return;
-                }
-
-                if ($this.text() === 'Next') {
-                    currentPage++;
-                } else if ($this.text() === 'Previous') {
-                    currentPage--;
-                } else {
-                    currentPage = parseInt($this.text(), 10);
-                }
-
-                if (currentPage < 1) {
-                    currentPage = 1;
-                } else if (currentPage > totalPages) {
-                    currentPage = totalPages;
-                }
-
-                $paginationItems.removeClass('active');
-                var startIndex = (currentPage - 1) * numPerPage,
-                    endIndex = Math.min(startIndex + numPerPage - 1, numItems - 1);
-                $paginationItems.slice(startIndex, endIndex + 1).addClass('active');
-
-                if (currentPage > 1 && $pagination.find('.prev-item').length === 0) {
-                    $pagination.prepend('<li class="page-item prev-item"><a href="#" class="page-link">Previous</a></li>');
-                } else if (currentPage === 1) {
-                    $pagination.find('.prev-item').remove();
-                }
-
-                if (currentPage < totalPages && $pagination.find('.next-item').length === 0) {
-                    $pagination.append('<li class="page-item next-item"><a href="#" class="page-link">Next</a></li>');
-                } else if (currentPage === totalPages) {
-                    $pagination.find('.next-item').remove();
-                }
-
-                if (prevPage !== currentPage) {
-                    $paginationLinks.each(function () {
-                        $(this).text(parseInt($(this).text()) + 5); // <-- Increment link text by 5
-                    });
-                }
-            });
-        });
-
         // define the number of items per page
         const ITEMS_PER_PAGE = 5;
 
@@ -655,10 +554,10 @@
                             row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
                             row += "<button class='action-button ms-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
                         } else if (Data.ServicesStatus != "Running" && Data.ServicesStatus != "Stopped")
-                            row += "<button class='action-button' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"\")'>Reload</button>";
+                            row += "<button class='action-button' id='btnReload' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"reload\")'>Reload</button>";
                             row += "</td>";
                         row+="<td>";
-                        row += "<button class='action-button' id='btnRun' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"\")'><i class='bi bi-trash3-fill'></i></button>";
+                        row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")'><i class='bi bi-trash3-fill'></i></button>";
                         row += "</td></tr>";
                         $("#serviceTable tbody").append(row);
                     });
@@ -693,22 +592,38 @@
             });
         }
 
-        function RemoveAddedService(serviceName) {
-            $.ajax({
-                url: "/Home/RemoveAddedService",
-                type: "POST",
-                data: { serviceName: serviceName },
-                success: function () {
-                    $("#serviceTable tbody").empty();
-                    RealTimeTable();
+        function RemoveAddedService(serviceName, command) {
+            /*Show the confirmation box here*/
+            var modal = document.getElementById("alert-modal");
+            var modalTitle = document.getElementById("modal-title");
+            var modalMessage = document.getElementById("modal-message");
+            var btnYes = document.getElementById("btnYes");
+            var btnNo = document.getElementById("btnNo");
 
-                    //unchecked the remove service
-                    $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
-                },
-                error: function () {
-                    alert("Failed to delete " + serviceName);
-                }
-            });
+            modal.style.display = "block";
+            modalTitle.innerHTML = "System Message";
+            modalMessage.innerHTML = "Are you sure you want to " + command.toUpperCase() + " '" + serviceName + "'?";
+            btnYes.onclick = function () {
+                $.ajax({
+                    url: "/Home/RemoveAddedService",
+                    type: "POST",
+                    data: { serviceName: serviceName, command: command },
+                    success: function () {
+                        $("#serviceTable tbody").empty();
+                        RealTimeTable();
+
+                        //unchecked the remove service
+                        $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
+                    },
+                    error: function () {
+                        alert("Failed to delete " + serviceName);
+                    }
+                });
+                modal.style.display = "none";
+            }
+            btnNo.onclick = function () {
+                modal.style.display = "none";
+            }
         }
     </script>
 

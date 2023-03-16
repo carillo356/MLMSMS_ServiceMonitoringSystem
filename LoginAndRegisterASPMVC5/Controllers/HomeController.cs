@@ -247,6 +247,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         break;
 
                     default:
+                        StoreData(connection, logBy, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
                         //MessageBox.Show("Invalid command from " + command);
                         break;
                 }

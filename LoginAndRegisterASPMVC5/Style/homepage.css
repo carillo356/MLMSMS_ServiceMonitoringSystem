@@ -524,6 +524,10 @@ header .mobile-toggler {
                 content: "Action";
             }
 
+            #serviceTable td:nth-of-type(7)::before {
+                content: "Delete";
+            }
+
             /* override color of status name in responsive mode */
             #serviceTable td.status span {
                 color: inherit;
