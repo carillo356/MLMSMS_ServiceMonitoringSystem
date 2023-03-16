@@ -256,6 +256,7 @@
                                         </div></li>`;
                         if (_addedServices.includes(item)) {
                             checkedItems.push(checkbox);
+
                         } else {
                             checkboxes += checkbox;
                         }
@@ -626,6 +627,38 @@
             });
         }
 
+        //function AddService(serviceName) {
+        //    $.ajax({
+        //        url: "/Home/AddService",
+        //        type: "POST",
+        //        data: { serviceName: serviceName },
+        //        success: function () {
+        //            // Refresh the table
+
+        //            RealTimeTable();
+
+        //            // Checked the added service
+        //            $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', true);
+
+        //            // Add the checkbox to the top of the list
+        //            var checkbox = $('input[type="checkbox"][value="' + serviceName + '"]').closest('.item');
+        //            checkbox.prependTo('#serviceCheckboxes');
+
+        //            // Hide the checked service checkbox and remove it from the search results
+        //            var checkedCheckbox = $('#serviceCheckboxes').find('input[type="checkbox"]:checked');
+        //            checkedCheckbox.closest('.item').hide();
+        //            checkedCheckbox.prop('tabindex', '-1');
+
+        //            // Clear the search field and results
+        //            $('#searchServices').val('');
+        //            $('.item').show();
+        //        },
+        //        error: function (xhr, textStatus, errorThrown) {
+        //            alert('Error adding service');
+        //        }
+        //    });
+        //}
+
 
         function RemoveAddedService1(serviceName) {
             /*Show the confirmation box here*/
@@ -635,8 +668,8 @@
                 data: { serviceName: serviceName },
                 success: function () {
                     $("#serviceTable tbody").empty();
+ 
                     RealTimeTable();
-
                     //unchecked the remove service
                     $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
                 },
