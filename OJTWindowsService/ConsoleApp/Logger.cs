@@ -1,120 +1,318 @@
 ﻿using System;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Net;
 using System.Net.Mail;  
 using System.ServiceProcess;
 using System.Threading.Tasks;
 
-namespace ConsoleApp
+namespace Logger
 {
     class Logger
     {
         static void Main(string[] args)
         {
-                string serviceName = args[0]; //Gets the service name from the main.
-                string lastLog = "";
+            string serviceName = args[0]; //Gets the service name from the main.
 
-                ServiceController[] services = ServiceController.GetServices();
-
-                foreach (ServiceController service in services)
-                {
-                    if (service.ServiceName == serviceName)
-                    {
-                        EventLog eventLog = new EventLog("Application");
-                        EventLogEntry latestEntry = eventLog.Entries.Cast<EventLogEntry>().Where(entry => entry.Source == serviceName).OrderByDescending(entry => entry.TimeGenerated).FirstOrDefault();
-                        DateTime entryTime = latestEntry.TimeGenerated;
-                        lastLog = latestEntry.Message;
-
-                        if (service.Status == ServiceControllerStatus.Stopped)
-                        {
-                        //SendEmail("Service Name: " + service.ServiceName + "\nStatus: " + service.Status + "\n" + exceptionDetails);
-                        StoreData(service.ServiceName, entryTime, service.Status.ToString(), lastLog);
-                    }
-
-
-                    if (!(service.Status == ServiceControllerStatus.Stopped))
-                        {
-                        StoreData(service.ServiceName, entryTime, service.Status.ToString(), lastLog);
-                    }
-                    }
-                }
-
-            static void SendEmail(string message)
+            try
             {
-                try
+                ServiceController[] servicesInController = ServiceController.GetServices(); //3. Gets the installed services and stored it in services array
+                ServiceController serviceInController = servicesInController.FirstOrDefault(s => s.ServiceName == serviceName);
+                string serviceNamesCsv = string.Join("/", servicesInController.Select(s => s.ServiceName).ToArray());
+
+                using (SqlConnection connection = GetConnection())
                 {
-                    MailMessage mail = new MailMessage();
-                    SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings.Get("smtpServer"));
+                    if (connection == null) return;
 
-                    mail.From = new MailAddress("carillo.aaronjoseph@gmail.com");
+                    SP_UpdateServicesAvailable(connection, serviceNamesCsv);
+                    FetchServiceLogs(serviceInController, out ServiceControllerStatus serviceStatus, out string hostName, out string logBy, out DateTime lastStart, out string lastEventLog);
+                    SP_UpdateServiceStatus(connection, serviceName, serviceStatus.ToString(), hostName, logBy, lastStart, lastEventLog);
 
-                    string[] mailTos = ConfigurationManager.AppSettings.Get("mailTo").Split(" ");
-                    foreach (string s in mailTos)
+                    if (serviceStatus == ServiceControllerStatus.Stopped)
                     {
-                        if (!string.IsNullOrWhiteSpace(s))
-                            mail.To.Add(s);
+                        //SendEmail(connection,"Service Name: " + serviceInController.ServiceName + "\nStatus: " + serviceInController.Status + "\n" );
                     }
-                    mail.Subject = "Windows Service Alert";
-                    mail.Body = message;
 
-                    SmtpServer.Port = 587;
-                    SmtpServer.UseDefaultCredentials = false;
-                    SmtpServer.Credentials = new NetworkCredential(
-                                                 ConfigurationManager.AppSettings.Get("smtpUsername"),
-                                                 ConfigurationManager.AppSettings.Get("smtpPassword"));
-                    SmtpServer.EnableSsl = true;
-
-                    SmtpServer.Send(mail);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-            }//Closing of SendEmail()
-
-            static void StoreData(string serviceName, DateTime entryTime, string serviceStatus, string exceptionDetails)
+            }
+            catch(Exception ex) 
             {
-                SqlConnection connection = null;
-                SqlCommand command = null;
+                WriteToFile("Exception: main " + ex.Message);
+            }
 
-                try
+        }
+
+        static void FetchServiceLogs(ServiceController serviceInController, out ServiceControllerStatus serviceStatus, out string hostName, out string logBy, out DateTime lastStart, out string lastEventLog)
+        {
+            string serviceName = serviceInController.ServiceName;
+            serviceStatus = serviceInController.Status;
+            lastStart = new DateTime(1900, 1, 1);
+            lastEventLog = "No Record";
+            hostName = "No Record";
+            logBy = "Unknown";
+
+            try
+            {
+                    logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+
+                    EventLog eventLog = new EventLog("Application");
+                    EventLogEntry serviceEvent = eventLog.Entries.Cast<EventLogEntry>().Where(entry => entry.Source == serviceName).OrderByDescending(entry => entry.TimeGenerated).FirstOrDefault();
+                    if (serviceEvent.TimeGenerated > lastStart)
+                    {
+                        lastStart = serviceEvent.TimeGenerated;
+                    }
+                    lastEventLog = serviceEvent.Message;
+                    hostName = serviceEvent.MachineName;
+
+            }
+            catch (Exception ex)
+            {
+                WriteToFile("Exception: servicelogs" + ex.Message);
+            }
+        }
+
+        static void SP_UpdateServicesAvailable(SqlConnection connection, string updateServicesAvailable)
+        {
+            try
+            {
+                using (var command = new SqlCommand("UpdateServicesAvailable", connection))
                 {
-                    connection = new SqlConnection(ConfigurationManager.AppSettings.Get("connectionString"));
-                    connection.Open();
-
-
-                    command = new SqlCommand("InsertIntoServiceTB", connection);
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@ServiceName", serviceName);
-                    command.Parameters.AddWithValue("@LastStart", entryTime);
-                    command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
-                    command.Parameters.AddWithValue("@LastLog", exceptionDetails);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ServiceNameList", updateServicesAvailable);
                     command.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                WriteToFile("Exception: storeservicesavailable " + ex.Message);
+            }
+        }
+
+        static void SP_UpdateServiceStatus(SqlConnection connection, string serviceName, string serviceStatus, string hostName, string logBy, DateTime lastStart, string lastEventLog)
+        {
+            try
+            {
+                using (var command = new SqlCommand("UpdateServiceStatus", connection))
                 {
-                    Console.WriteLine("An error occured while executing the query: " + ex.Message);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
+                    command.Parameters.AddWithValue("@HostName", hostName);
+                    command.Parameters.AddWithValue("@LogBy", logBy);
+                    command.Parameters.AddWithValue("@LastStart", lastStart);
+                    command.Parameters.AddWithValue("@LastEventLog", lastEventLog);
+                    command.ExecuteNonQuery();
                 }
-                finally
+            }
+            catch (Exception ex)
+            {
+                WriteToFile("Exception: storedata " + ex.Message);
+            }
+        }
+
+        static void WriteToFile(string Message)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ServiceLog_" + DateTime.Now.Date.ToString("yyyyMMdd").Replace('/', '_') + ".txt";
+            using (StreamWriter sw = File.AppendText(filepath))
+            {
+                sw.WriteLine(Message);
+                sw.WriteLine(DateTime.Now.ToString("hh:mm tt"));
+                sw.WriteLine();
+            }
+
+
+        }
+
+        static void SendEmail(SqlConnection connection, string message)
+        {
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings.Get("smtpServer"));
+
+                mail.From = new MailAddress(ConfigurationManager.AppSettings.Get("mailFrom"));
+
+                string queryFetchEmail = $"SELECT [Email] FROM Users WHERE Email_Notification = 1";
+                List<string> emails = FetchSingleColumn(connection, queryFetchEmail, "Email");
+                foreach (string email in emails)
                 {
-                    if (command != null)
-                    {
-                        command.Dispose();
-                    }
+                    mail.To.Add(email);
+                }
+                mail.Subject = "Windows Service Alert!";
+                mail.Body = message;
 
-                    if (connection != null && connection.State == System.Data.ConnectionState.Open)
+                SmtpServer.Port = 587;
+                SmtpServer.UseDefaultCredentials = false;
+                SmtpServer.Credentials = new NetworkCredential(
+                                             ConfigurationManager.AppSettings.Get("smtpUsername"),
+                                             ConfigurationManager.AppSettings.Get("smtpPassword"));
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        static List<string> FetchSingleColumn(SqlConnection connection, string query, string columnName)
+        {
+            List<string> multipleData = new List<string>();
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
                     {
-                        connection.Close();
+                        while (reader.Read())
+                        {
+                            multipleData.Add(reader[columnName].ToString());
+                        }
                     }
                 }
-            }//Closing of StoreData()
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
+            return multipleData;
+        }
 
-        }//Closing of Main()
-    }//Closing of Logger class
+        static SqlConnection GetConnection()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.ConnectionString = connectionString;
+            connection.Open();
+            return connection;
+        }
+
+    }
+
 }
+
+//public sealed class DatabaseManager 
+//{
+//    private static readonly Lazy<SqlConnection> _lazyConnection = new(() => new SqlConnection());
+//    private DatabaseManager()
+//    {
+//    }
+
+//    public static SqlConnection GetConnection()
+//    {
+//        string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
+//        SqlConnection connection = _lazyConnection.Value;
+//        if (connection.State != System.Data.ConnectionState.Open)
+//        {
+//            connection.ConnectionString = connectionString;
+//            connection.Open();
+//        }
+
+//        return connection;
+//    }
+
+//    public static void OpenConnection()
+//    {
+//        SqlConnection connection = _lazyConnection.Value;
+//        string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
+//        connection.ConnectionString = connectionString;
+//        if (connection.State != System.Data.ConnectionState.Open)
+//        {
+//            connection.Open();
+//        }
+//    }
+
+//    public static void CloseConnection()
+//    {
+//        if (_lazyConnection.Value.State != System.Data.ConnectionState.Closed)
+//        {
+//            _lazyConnection.Value.Close();
+//        }
+//    }
+//}
+
+//static void SendEmail(string message)
+//{
+//    try
+//    {
+//        MailMessage mail = new();
+//        SmtpClient SmtpServer = new(ConfigurationManager.AppSettings.Get("smtpServer"));
+
+//        mail.From = new MailAddress("");
+
+//        string[] mailTos = ConfigurationManager.AppSettings.Get("mailTo").Split(" ");
+//        foreach (string s in mailTos)
+//        {
+//            if (!string.IsNullOrWhiteSpace(s))
+//                mail.To.Add(s);
+//        }
+//        mail.Subject = "Windows Service Alert";
+//        mail.Body = message;
+
+//        SmtpServer.Port = 587;
+//        SmtpServer.UseDefaultCredentials = false;
+//        SmtpServer.Credentials = new NetworkCredential(
+//                                     ConfigurationManager.AppSettings.Get("smtpUsername"),
+//                                     ConfigurationManager.AppSettings.Get("smtpPassword"));
+//        SmtpServer.EnableSsl = true;
+
+//        SmtpServer.Send(mail);
+//    }
+//    catch (Exception ex)
+//    {
+//        Console.WriteLine(ex.ToString());
+//    }
+//}//Closing of SendEmail()
+
+//static void StoreServicesMonitored(SqlConnection connection, string serviceName)
+//{
+//    try
+//    {
+//        using (var command = new SqlCommand("INSERT INTO ServicesMonitored (sm_ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM ServicesMonitored WHERE sm_ServiceName = @ServiceName)", connection))
+//        {
+//            command.Parameters.AddWithValue("@ServiceName", serviceName);
+//            command.ExecuteNonQuery();
+//        }
+//    }
+//    catch (Exception ex)
+//    {
+//        throw ex;
+//    }
+//}
+
+//static void StoreData(SqlConnection connection, string logBy, string serviceName, string lastStart, string serviceStatus, string lastLog, string actionBy)
+//{
+//    try
+//    {
+//        using (var command = new SqlCommand("sp_InsertIntoServices", connection))
+//        {
+//            command.CommandType = CommandType.StoredProcedure;
+//            command.Parameters.AddWithValue("@LogBy", logBy);
+//            command.Parameters.AddWithValue("@ServiceName", serviceName);
+//            command.Parameters.AddWithValue("@LastStart", lastStart);
+//            command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
+//            command.Parameters.AddWithValue("@LastLog", lastLog);
+//            command.Parameters.AddWithValue("@ActionBy", actionBy);
+//            command.ExecuteNonQuery();
+//        }
+//    }
+//    catch (Exception ex)
+//    {
+//        throw ex;
+//    }
+//}
 
 //EventLog eventLog = new EventLog("Application");
 

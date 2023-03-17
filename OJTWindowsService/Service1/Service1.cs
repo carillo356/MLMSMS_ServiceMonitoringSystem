@@ -84,6 +84,58 @@ namespace Service1
     }
 }
 
+//string[] servicesToMonitor = ConfigurationManager.AppSettings.Get("service").Split(' '); //Splits to fetch each services to monitors
+
+
+//string[] servicesToMonitor = ConfigurationManager.AppSettings.Get("service").Split(' '); //Splits to fetch each services to monitors
+
+//Boolean serviceMatch = false;
+
+
+//foreach (ServiceController service in services) //Access installed service
+//{
+//    //if (service.ServiceName == serviceToMonitor) //Checks if Services to monitor exist in the installed services and get its Current Status.
+//    //{
+//    //    serviceMatch = true;
+//    //}
+
+//serviceMatch = service.ServiceName == serviceToMonitor;
+
+//if (currentStatus != previousStatus) //Checks if the current status is different from previous status
+//{
+//    statusMatch = false;
+//}
+
+
+//                    try
+//            {
+
+//            }
+//            catch (Exception ex)
+//            {
+//                Console.WriteLine("An error occured while executing the query: " + ex.Message);
+//            }
+//            finally
+//            {
+//                if (command != null)
+//                {
+//                    command.Dispose();
+//                }
+
+//if (connection != null && connection.State == System.Data.ConnectionState.Open)
+//{
+//    connection.Close();
+//}
+
+
+//            }
+
+//static bool CheckMatchingStatus(string currentStatus, string previousStatus)
+//{
+//    bool statusMatch = currentStatus == previousStatus;
+
+//    return statusMatch;
+//}
 
 
 
@@ -192,5 +244,5 @@ namespace Service1
 //}
 
 
-        
-    
+
+

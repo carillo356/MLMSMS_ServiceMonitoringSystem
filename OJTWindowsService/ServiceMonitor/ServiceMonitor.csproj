@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="..\..\..\..\Downloads\ServiceMonitor.cs">
       <Link>ServiceMonitor.cs</Link>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="..\..\..\..\Downloads\ServiceMonitor.Designer.cs">
       <DependentUpon>ServiceMonitor.cs</DependentUpon>
