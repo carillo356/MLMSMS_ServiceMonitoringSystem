@@ -131,7 +131,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         [HttpPost]
         public ActionResult GetServiceLogsTB(string serviceName)
         {
-            string query = $"SELECT * FROM ServicesLogs WHERE sl_ServiceName = '{serviceName}' ORDER BY LASTSTART DESC";
+            string query = $"SELECT * FROM ServicesLogs WHERE sl_ServiceName = '{serviceName}' ORDER BY sl_LastStart DESC";
             List<Service> servicesLogsList = new List<Service>();
 
             try
