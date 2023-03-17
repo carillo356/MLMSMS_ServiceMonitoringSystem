@@ -41,7 +41,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult Index()
         {
-            InsertAllServices();
+            //InsertAllServices();
             if (Session["idUser"] != null)
             {
                 return View();
@@ -146,7 +146,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             ServiceName = reader["ServiceName"].ToString(),
                             LastStart = reader["LastStart"].ToString(),
                             ServiceStatus = reader["ServiceStatus"].ToString(),
-                            LastLog = reader["LastLog"].ToString(),
+                            LastLog = reader["LastEventLog"].ToString(),
                             ActionBy = reader["ActionBy"].ToString()
                         });
 
