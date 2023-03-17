@@ -15,8 +15,8 @@ namespace LoginAndRegisterASPMVC5.Models
 
         public string LastStart { get; set; }
         public string ServiceStatus { get; set; }
-        public string LastLog { get; set; }
+        public string LastEventLog { get; set; }
 
-        public string ActionBy { get; set; }
+        public string HostName { get; set; }
     }
 }

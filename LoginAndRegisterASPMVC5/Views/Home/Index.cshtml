@@ -102,7 +102,7 @@
                         <th scope="col" style="width: 25%;">LAST START</th>
                         <th scope="col" style="width: 20%;">LAST LOG</th>
                         <th scope="col">STATUS</th>
-                        <th scope="col" style="width: 25%;">ACTIONBY</th>
+                        <th scope="col" style="width: 25%;">HostName</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -221,7 +221,7 @@
                             resolve();
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                            reject('Error fetching service names');
+                            reject('Error Geting service names');
                         }
                     });
                 });
@@ -238,7 +238,7 @@
                             resolve();
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                            reject('Error fetching added services');
+                            reject('Error Geting added services');
                         }
                     });
                 });
@@ -444,7 +444,7 @@
         function logHistory(serviceName, limit) {
             //Viewlogs, Gets all the records of a service
             $.ajax({
-                url: "/Home/FetchServiceLogsTB",
+                url: "/Home/GetServiceLogsTB",
                 type: "POST",
                 data: { serviceName: serviceName },
                 success: function (data) {
@@ -460,11 +460,11 @@
 
                         rows += '<tr>' +
                             '<td>' + service.LastStart + '</td>' +
-                            '<td>' + service.LastLog + '</td>' +
+                            '<td>' + service.LastEventLog + '</td>' +
                             '<td class="status">' +
                             '<span class="' + statusColorClass + '">' + service.ServiceStatus + '</span>' +
                             '</td>' +
-                            '<td>' + service.ActionBy + '</td>' +
+                            '<td>' + service.HostName + '</td>' +
                             '</tr>';
                     });
 
@@ -554,9 +554,9 @@
                         var row = "<tr data-toggle='modal' data-target='#service-modal'>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastLog + "</td>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastEventLog + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ActionBy + "</td>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.HostName + "</td>";
                         row += "<td>";
 
                         if (Data.ServiceStatus === "Stopped") {
@@ -918,7 +918,7 @@
         //    });
         //});
 
-        //// Function to fetch service names and generate checkboxes
+        //// Function to Get service names and generate checkboxes
         //function generateServiceCheckboxes() {
         //    $.ajax({
         //        url: "/Home/GetServicesInController",
@@ -928,7 +928,7 @@
         //            serviceCheckboxes(serviceNames);
         //        },
         //        error: function (xhr, textStatus, errorThrown) {
-        //            alert('Error fetching service names');
+        //            alert('Error Geting service names');
         //        }
         //    });
         //}
@@ -965,7 +965,7 @@
         //            }
         //        },
         //        error: function (xhr, textStatus, errorThrown) {
-        //            alert('Error fetching monitored services');
+        //            alert('Error Geting monitored services');
         //        }
         //    });
         //}

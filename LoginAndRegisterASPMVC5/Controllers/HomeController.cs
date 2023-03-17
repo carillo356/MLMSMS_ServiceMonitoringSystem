@@ -53,13 +53,13 @@ namespace LoginAndRegisterASPMVC5.Controllers
         }
 
         [HttpPost]
-        public void AddService(Service fetchInput) //Gets the User Input for adding a service
+        public void AddService(Service GetInput) //Gets the User Input for adding a service
         {
 
-            string serviceName = fetchInput.ServiceName;
+            string serviceName = GetInput.ServiceName;
             if (!_activeServices.Any(s => s.ServiceName == serviceName))
             {
-                FetchServicesTB(serviceName);
+                GetServicesTB(serviceName);
             }
         }
 
@@ -70,16 +70,17 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 _activeServices.Remove(serviceToRemove);
         }
 
-        public void FetchServicesTB(string serviceName)
+        public void GetServicesTB(string serviceName)
         {
-            string query = $"SELECT [ServiceName],[LastStart],[ServiceStatus],[LastLog],[ActionBy] FROM Services WHERE ServiceName = '{serviceName}'";
-
             try
             {
                 using (SqlConnection connection = DatabaseManager.GetConnection())
-                using (SqlCommand commandLatestRecord = new SqlCommand(query, connection))
+                using (SqlCommand command = new SqlCommand("GetServiceLogsByServiceName", connection))
                 {
-                    SqlDataReader reader = commandLatestRecord.ExecuteReader();
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+
+                    SqlDataReader reader = command.ExecuteReader();
 
                     if (reader.HasRows)
                     {
@@ -87,11 +88,11 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         {
                             _activeServices.Add(new Service()
                             {
-                                ServiceName = reader["ServiceName"].ToString(),
-                                LastStart = reader["LastStart"].ToString(),
-                                ServiceStatus = reader["ServiceStatus"].ToString(),
-                                LastLog = reader["LastLog"].ToString(),
-                                ActionBy = reader["ActionBy"].ToString()
+                                ServiceName = reader["sl_ServiceName"].ToString(),
+                                LastStart = reader["sl_LastStart"].ToString(),
+                                ServiceStatus = reader["sl_ServiceStatus"].ToString(),
+                                LastEventLog = reader["sl_LastEventLog"].ToString(),
+                                HostName = reader["sl_HostName"].ToString()
                             });
                         }
                     }
@@ -128,9 +129,9 @@ namespace LoginAndRegisterASPMVC5.Controllers
         }
 
         [HttpPost]
-        public ActionResult FetchServiceLogsTB(string serviceName)
+        public ActionResult GetServiceLogsTB(string serviceName)
         {
-            string query = $"SELECT * FROM ServiceLogs WHERE ServiceName = '{serviceName}' ORDER BY LASTSTART DESC";
+            string query = $"SELECT * FROM ServicesLogs WHERE sl_ServiceName = '{serviceName}' ORDER BY LASTSTART DESC";
             List<Service> servicesLogsList = new List<Service>();
 
             try
@@ -143,11 +144,11 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     {
                         servicesLogsList.Add(new Service()
                         {
-                            ServiceName = reader["ServiceName"].ToString(),
-                            LastStart = reader["LastStart"].ToString(),
-                            ServiceStatus = reader["ServiceStatus"].ToString(),
-                            LastLog = reader["LastEventLog"].ToString(),
-                            ActionBy = reader["ActionBy"].ToString()
+                            ServiceName = reader["sl_ServiceName"].ToString(),
+                            LastStart = reader["sl_LastStart"].ToString(),
+                            ServiceStatus = reader["sl_ServiceStatus"].ToString(),
+                            LastEventLog = reader["sl_LastEventLog"].ToString(),
+                            HostName = reader["sl_HostName"].ToString()
                         });
 
                     }
@@ -163,40 +164,48 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public void ServiceAction(string serviceName, string command)
         {
-            string actionBy = Session["FullName"].ToString();
-            DateTime lastStart = DateTime.MinValue;
-            string lastLog = "No Record";
-            string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            string hostName = Session["FullName"].ToString();
+            DateTime lastStart = new DateTime(1900, 1, 1);
+            string lastEventLog = "No Record";
+            string logBy = "Unknown";
 
-            string queryString = $"*[System/Provider/@Name='{serviceName}']";
-            EventLogQuery eventLogQuery = new EventLogQuery("Application", PathType.LogName, queryString);
-            EventLogReader eventLogReader = new EventLogReader(eventLogQuery);
-
-            int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries"));
-            int entriesSearched = 0;
-            EventRecord latestEvent = null;
-
-            EventRecord currentEvent = eventLogReader.ReadEvent();
-            while (currentEvent != null && entriesSearched < numEntriesToSearch)
+            try
             {
-                if (latestEvent == null || currentEvent.TimeCreated > latestEvent.TimeCreated)
+                logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+
+                string queryString = $"*[System/Provider/@Name='{serviceName}']";
+                EventLogQuery eventLogQuery = new EventLogQuery("Application", PathType.LogName, queryString);
+                EventLogReader eventLogReader = new EventLogReader(eventLogQuery);
+
+                int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries"));
+                int entriesSearched = 0;
+                EventRecord latestEvent = null;
+
+                EventRecord currentEvent = eventLogReader.ReadEvent();
+                while (currentEvent != null && entriesSearched < numEntriesToSearch)
                 {
-                    latestEvent = currentEvent;
+                    if (latestEvent == null || currentEvent.TimeCreated > latestEvent.TimeCreated)
+                    {
+                        latestEvent = currentEvent;
+                    }
+                    entriesSearched++;
+                    currentEvent = eventLogReader.ReadEvent();
                 }
-                entriesSearched++;
-                currentEvent = eventLogReader.ReadEvent();
-            }
 
-            // Get the necessary information from the latest entry (if one was found)
-            if (latestEvent != null)
-            {
-                lastStart = (DateTime)latestEvent.TimeCreated;
-                lastLog = latestEvent.Properties[0].Value.ToString(); // Assumes log message is in the first property
+                // Get the necessary information from the latest entry (if one was found)
+                if (latestEvent != null)
+                {
+                    lastStart = (DateTime)latestEvent.TimeCreated;
+                    lastEventLog = latestEvent.Properties[0].Value.ToString(); // Assumes log message is in the first property
+                }
+            }
+            catch (Exception ex)
+            { 
+                throw ex;
             }
 
             using (SqlConnection connection = DatabaseManager.GetConnection())
             {
-                lastStart.ToString();
                 ServiceController[] services = ServiceController.GetServices();
                 ServiceController sc = services.FirstOrDefault(s => s.ServiceName == serviceName);
 
@@ -207,12 +216,12 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         {
                             sc.Start();
                             //MessageBox.Show("Service started.");
-                            StoreData(connection, logBy, serviceName, DateTime.Now, ServiceControllerStatus.Running.ToString(), "Started at SMS", actionBy);
+                            SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Running.ToString(), hostName, logBy, DateTime.Now, "Started at SMS");
                         }
                         else
                         {
                             //MessageBox.Show("Service is already running.");
-                            StoreData(connection, logBy, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
+                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
                         }
                         break;
 
@@ -221,12 +230,12 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         {
                             sc.Stop();
                             //MessageBox.Show("Service stopped.");
-                            StoreData(connection, logBy, serviceName, DateTime.Now, ServiceControllerStatus.Stopped.ToString(), "Stop at SMS", actionBy);
+                            SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Stopped.ToString(), hostName, logBy, DateTime.Now, "Stop at SMS");
                         }
                         else
                         {
                             //MessageBox.Show("Service is already stopped.");
-                            StoreData(connection, logBy, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
+                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
                         }
                         break;
 
@@ -237,17 +246,17 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
                             sc.Start();
                             //MessageBox.Show("Service restarted.");
-                            StoreData(connection, logBy, serviceName, DateTime.Now, ServiceControllerStatus.Running.ToString(), "Restarted at SMS", actionBy);
+                            SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Running.ToString(), hostName, logBy, DateTime.Now, "Restarted at SMS");
                         }
                         else
                         {
                             //MessageBox.Show("Service is not running.");
-                            StoreData(connection, logBy, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
+                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
                         }
                         break;
 
                     default:
-                        StoreData(connection, logBy, serviceName, lastStart, sc.Status.ToString(), lastLog, actionBy);
+                        SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
                         //MessageBox.Show("Invalid command from " + command);
                         break;
                 }
@@ -260,25 +269,25 @@ namespace LoginAndRegisterASPMVC5.Controllers
             _activeServices.Clear();
             foreach (Service service in _activeServicesCopy)
             {
-                FetchServicesTB(service.ServiceName);
+                GetServicesTB(service.ServiceName);
             }
 
             return Json(_activeServices, JsonRequestBehavior.AllowGet);
         }
 
-        static void StoreData(SqlConnection connection, string logBy, string serviceName, DateTime lastStart, string serviceStatus, string lastLog, string actionBy)
+        static void SP_UpdateServiceStatus(SqlConnection connection, string serviceName, string serviceStatus, string hostName, string logBy, DateTime lastStart, string lastEventLog)
         {
             try
             {
-                using (var command = new SqlCommand("sp_InsertIntoServices", connection))
+                using (var command = new SqlCommand("UpdateServiceStatus", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@LogBy", logBy);
                     command.Parameters.AddWithValue("@ServiceName", serviceName);
-                    command.Parameters.AddWithValue("@LastStart", lastStart.ToString());
                     command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
-                    command.Parameters.AddWithValue("@LastLog", lastLog);
-                    command.Parameters.AddWithValue("@ActionBy", actionBy);
+                    command.Parameters.AddWithValue("@HostName", hostName);
+                    command.Parameters.AddWithValue("@LogBy", logBy);
+                    command.Parameters.AddWithValue("@LastStart", lastStart);
+                    command.Parameters.AddWithValue("@LastEventLog", lastEventLog);
                     command.ExecuteNonQuery();
                 }
             }
@@ -349,7 +358,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public void FetchUsersTB()
+        public void GetUsersTB()
         {
             string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification],[IsAdmin] FROM Users";
 
@@ -386,7 +395,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult RealTimeUsersTable()
         {
-            FetchUsersTB();
+            GetUsersTB();
             return Json(_users, JsonRequestBehavior.AllowGet);
         }
 

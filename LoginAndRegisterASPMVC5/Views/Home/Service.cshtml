@@ -91,7 +91,7 @@
                     <td>@Data.ServiceName</td>
                     <td>@Data.LastStart</td>
                     <td>@Data.ServiceStatus</td>
-                    <td>@Data.LastLog</td>
+                    <td>@Data.LastEventLog</td>
                     <td>
                         <button onclick="getServices('@Data.ServiceName')">View Logs</button>
                         <button onclick="deleteServices('@Data.ServiceName')">Delete</button>
@@ -140,7 +140,7 @@
                         tr.append('<td>' + service.ServiceName + '</td>');
                         tr.append('<td>' + service.LastStart + '</td>');
                         tr.append('<td>' + service.ServiceStatus + '</td>');
-                        tr.append('<td>' + service.LastLog + '</td>');
+                        tr.append('<td>' + service.LastEventLog + '</td>');
                         tbody.append(tr);
                     });
 

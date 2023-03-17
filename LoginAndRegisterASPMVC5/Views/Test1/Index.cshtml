@@ -25,10 +25,10 @@
             @Html.DisplayNameFor(model => model.ServiceStatus)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastLog)
+            @Html.DisplayNameFor(model => model.LastEventLog)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ActionBy)
+            @Html.DisplayNameFor(model => model.HostName)
         </th>
         <th></th>
     </tr>
@@ -48,10 +48,10 @@
             @Html.DisplayFor(modelItem => item.ServiceStatus)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LastLog)
+            @Html.DisplayFor(modelItem => item.LastEventLog)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ActionBy)
+            @Html.DisplayFor(modelItem => item.HostName)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ServiceName }) |
