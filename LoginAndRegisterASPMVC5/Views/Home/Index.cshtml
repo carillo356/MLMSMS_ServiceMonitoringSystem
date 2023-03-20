@@ -65,36 +65,13 @@
         </div>
     </header>
 
-    <!-- Dropdown menu in selecting no. of rows for Log History -->
+    <!-- Dropdown menu in selecting no. of rows for Log History Table -->
     <div id="logHistory-modal" class="modal">
         <div class="modal-servicelogs">
             <span class="close">&times;</span>
             <div class="service_title">Log History</div>
             <div class="service_name mb-2 fst-italic"></div>
-            <div class="select-menu">
-                <div class="select-btn1">
-                    <span class="sBtn-text">Select row</span>
-                    <i class="bi bi-arrow-down-short"></i>
-                </div>
 
-                <ul class="options">
-                    <li class="option">
-                        <span class="option-text">10 rows</span>
-                    </li>
-                    <li class="option">
-                        <span class="option-text">20 rows</span>
-                    </li>
-                    <li class="option">
-                        <span class="option-text">30 rows</span>
-                    </li>
-                    <li class="option">
-                        <span class="option-text">40 rows</span>
-                    </li>
-                    <li class="option">
-                        <span class="option-text">All rows</span>
-                    </li>
-                </ul>
-            </div>
             <table class="table" id="popupTable">
                 <thead>
                     <tr class="border-4 border-dark">
@@ -108,22 +85,54 @@
                     <!-- table content goes here -->
                 </tbody>
             </table>
-            <div class="clearfix">
-                <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
-                <ul class="pagination m-auto mt-2" id="pagination-logs">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="select-menu">
+                            <div class="select-btn1">
+                                <span class="sBtn-text">Select row</span>
+                                <i class="bi bi-arrow-down-short"></i>
+                            </div>
+
+                            <ul class="options">
+                                <li class="option">
+                                    <span class="option-text">10 rows</span>
+                                </li>
+                                <li class="option">
+                                    <span class="option-text">20 rows</span>
+                                </li>
+                                <li class="option">
+                                    <span class="option-text">30 rows</span>
+                                </li>
+                                <li class="option">
+                                    <span class="option-text">40 rows</span>
+                                </li>
+                                <li class="option">
+                                    <span class="option-text">All rows</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="hint-text" style="margin-left: -80px;">Page <b>1</b> out of <b>5</b></div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="pagination">
+                            <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+                            <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                            <li class="page-item"><a href="#" class="page-link">2</a></li>
+                            <li class="page-item"><a href="#" class="page-link">3</a></li>
+                            <li class="page-item"><a href="#" class="page-link">4</a></li>
+                            <li class="page-item"><a href="#" class="page-link">5</a></li>
+                            <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Checkbox Modal -->
+    <!-- Adding Service with Checkbox Modal -->
     <div class="modal fade" id="displayService-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -151,7 +160,7 @@
         </div>
     </div>
 
-    <!-- Table Modal -->
+    <!-- Service Table Modal -->
     <div class="container-xl">
         <div class="table-responsive">
             <div class="table-wrapper">
@@ -195,16 +204,16 @@
 
                     <ul class="optionsRow">
                         <li class="optionRow">
+                            <span class="optionRow-text">5 rows</span>
+                        </li>
+                        <li class="optionRow">
                             <span class="optionRow-text">10 rows</span>
                         </li>
                         <li class="optionRow">
+                            <span class="optionRow-text">15 rows</span>
+                        </li>
+                        <li class="optionRow">
                             <span class="optionRow-text">20 rows</span>
-                        </li>
-                        <li class="optionRow">
-                            <span class="optionRow-text">30 rows</span>
-                        </li>
-                        <li class="optionRow">
-                            <span class="optionRow-text">40 rows</span>
                         </li>
                         <li class="optionRow">
                             <span class="optionRow-text">All rows</span>
@@ -284,9 +293,9 @@
                     $.each(servicesInController, function (i, item) {
                         var checked = _addedServices.includes(item) ? 'checked' : '';
                         var checkbox = `<li class="item"><div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
-                                                                <label class="form-check-label" for="service-${i}">${item}</label>
-                                                            </div></li>`;
+                                                            <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
+                                                            <label class="form-check-label" for="service-${i}">${item}</label>
+                                                        </div></li>`;
                         if (_addedServices.includes(item)) {
                             checkedItems.push(checkbox);
 
@@ -426,6 +435,7 @@
 
     <!-- Pagination for Log History-->
     <script>
+
         // define the number of items per page
         var ITEMS_PAR_PAGE_LOGS;
 
@@ -522,7 +532,7 @@
     <!-- Pagination for Service Table -->
     <script>
         // define the number of items per page
-        const ITEMS_PER_PAGE;
+        const ITEMS_PER_PAGE = 5;
 
         // get the table body element
         const tableBody = document.querySelector('#serviceTable tbody');
@@ -548,7 +558,6 @@
             }
         }
 
-        var pageNumber = 1;
         // handle the click event of the pagination links
         paginationLinks.forEach(link => {
             link.addEventListener('click', event => {
@@ -604,8 +613,6 @@
                         row += "</td></tr>";
                         $("#serviceTable tbody").append(row);
                     });
-                    ITEMS_PAR_PAGE = limit;
-                    showPage(1);
                 },
                 error: function () {
                     alert("Failed to refresh services.");
@@ -785,7 +792,7 @@
         const optionMenu1 = document.querySelector(".select-menu"),
             select_btn1 = optionMenu1.querySelector(".select-btn1"),
             options1 = optionMenu1.querySelectorAll(".option"),
-            sBtn_text1 = optionMenu1.querySelector(".sBtnRow");
+            sBtn_text1 = optionMenu1.querySelector(".sBtn-text");
 
         select_btn1.addEventListener("click", () => optionMenu1.classList.toggle("active"));
 
@@ -804,7 +811,7 @@
         const optionMenu2 = document.querySelector(".serviceRow"),
             select_btn2 = optionMenu2.querySelector(".btnRow"),
             options2 = optionMenu2.querySelectorAll(".optionRow"),
-            sBtn_text2 = optionMenu2.querySelector(".sBtn-text");
+            sBtn_text2 = optionMenu2.querySelector(".sBtnRow");
 
         select_btn2.addEventListener("click", () => optionMenu2.classList.toggle("active"));
 
