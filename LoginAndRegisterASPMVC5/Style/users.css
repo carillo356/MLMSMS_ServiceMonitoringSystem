@@ -160,6 +160,74 @@ table.table td:last-child i {
     margin: 0 10px;
 }
 
+/* Non Admin Select Row */
+.nonAdminRow, .adminRow {
+    width: 40%;
+    margin-top: 20px
+}
+
+    .nonAdminRow .btn_nonAdminRow, .adminRow .btn_AdminRow {
+        display: flex;
+        height: 55px;
+        background: #fff;
+        padding: 20px;
+        font-size: 18px;
+        font-weight: 400;
+        border-radius: 8px;
+        align-items: center;
+        cursor: pointer;
+        justify-content: space-between;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+.btn_nonAdminRow i, .btn_AdminRow i {
+    font-size: 25px;
+    transition: 0.3s;
+}
+
+.nonAdminRow.active .btn_nonAdminRow i, .adminRow.active .btn_AdminRow i {
+    transform: rotate(-180deg);
+}
+
+.nonAdminRow .options_nonAdminRow, .adminRow .options_AdminRow {
+    position: absolute;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    display: none;
+    width: 160px;
+}
+
+.nonAdminRow.active .options_nonAdminRow, .adminRow.active .options_AdminRow {
+    display: block;
+}
+
+.options_nonAdminRow .option_nonAdmin, .options_AdminRow .option_Admin {
+    display: flex;
+    height: 55px;
+    cursor: pointer;
+    padding: 0 16px;
+    border-radius: 8px;
+    align-items: center;
+    background: #fff;
+}
+
+    .options_nonAdminRow .option_nonAdmin:hover, .options_AdminRow .option_Admin:hover {
+        background: #F2F2F2;
+    }
+
+.option_nonAdmin i, .option_Admin i {
+    font-size: 25px;
+    margin-right: 12px;
+}
+
+.option_nonAdmin .option_nonAdmin-text, .option_Admin .option_Admin-text {
+    font-size: 18px;
+    color: #333;
+}
+
 /* Responsive */
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
 

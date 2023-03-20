@@ -98,17 +98,49 @@
             <!-- table content goes here -->
         </tbody>
     </table>
-    <div class="clearfix">
-        @*<div class="hint-text">Showing <b>0</b> out of <b>25</b> entries</div>*@
-        <ul class="pagination">
-            <li class="page-item disabled"><a href="#">Previous</a></li>
-            <li class="page-item active"><a href="#" class="page-link">1</a></li>
-            <li class="page-item"><a href="#" class="page-link">2</a></li>
-            <li class="page-item"><a href="#" class="page-link">3</a></li>
-            <li class="page-item"><a href="#" class="page-link">4</a></li>
-            <li class="page-item"><a href="#" class="page-link">5</a></li>
-            <li class="page-item"><a href="#" class="page-link">Next</a></li>
-        </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="adminRow">
+                    <div class="btn_AdminRow">
+                        <span class="sBtn_AdminRow">Select row</span>
+                        <i class="bi bi-arrow-down-short"></i>
+                    </div>
+
+                    <ul class="options_AdminRow">
+                        <li class="option_Admin">
+                            <span class="option_Admin-text">10 rows</span>
+                        </li>
+                        <li class="option_Admin">
+                            <span class="option_Admin-text">20 rows</span>
+                        </li>
+                        <li class="option_Admin">
+                            <span class="option_Admin-text">30 rows</span>
+                        </li>
+                        <li class="option_Admin">
+                            <span class="option_Admin-text">40 rows</span>
+                        </li>
+                        <li class="option_Admin">
+                            <span class="option_Admin-text">All rows</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
+            </div>
+            <div class="col-md-4">
+                <ul class="pagination">
+                    <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <!-- Add Users Modal -->
@@ -259,6 +291,25 @@
         </div>
     </div>
 
+    <!-- Selecting Rows Dropdown for Users (Admin) Table -->
+    <script>
+        const optionMenu2 = document.querySelector(".adminRow"),
+            select_btn2 = optionMenu2.querySelector(".btn_AdminRow"),
+            options2 = optionMenu2.querySelectorAll(".option_Admin"),
+            sBtn_text2 = optionMenu2.querySelector(".sBtn_AdminRow");
+
+        select_btn2.addEventListener("click", () => optionMenu2.classList.toggle("active"));
+
+        options2.forEach(option => {
+            option.addEventListener("click", () => {
+                let selectedOption = option.querySelector(".option_Admin-text").innerText;
+                sBtn_text2.innerText = selectedOption;
+
+                optionMenu2.classList.remove("active");
+            });
+        });
+    </script>
+
     <!-- Show Modal -->
     <script>
         var myModal = new bootstrap.Modal(document.getElementById('signup-modal'));
@@ -277,17 +328,17 @@
         });
 
         function DeleteUser(idUser) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/Home/DeleteUser',
-                    data: { idUser: idUser },
-                    success: function () {
-                        RealTimeUsersTable();
-                    },
-                    error: function (xhr, status, error) {
-                        alert(error);
-                    }
-                });  
+            $.ajax({
+                type: 'POST',
+                url: '/Home/DeleteUser',
+                data: { idUser: idUser },
+                success: function () {
+                    RealTimeUsersTable();
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                }
+            });
         }
 
         function editUser(idUser, firstName, lastName, email, isAdmin) {

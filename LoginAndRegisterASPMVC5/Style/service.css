@@ -232,9 +232,16 @@ table.table td:last-child i {
     margin: 0 5px;
 }
 
+.pageCenter {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
 .pagination {
     float: right;
-    margin: 20px 330px 5px;
+    margin-top: 20px;
 }
 
     .pagination li a {
@@ -271,6 +278,12 @@ table.table td:last-child i {
         font-size: 16px;
         padding-top: 6px
     }
+
+.hint-text {
+    font-size: 13px;
+    margin-top: 25px;
+    margin-left: 135px;
+} 
 
 /* Add Service modal */
 #displayService-modal .modal {

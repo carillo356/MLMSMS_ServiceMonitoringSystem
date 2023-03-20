@@ -76,8 +76,8 @@
                             <h2><b>List of Users</b></h2>
                         </div>
                         @*<div class="col-sm-6 button-container">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUsers-modal"><i class="bi bi-plus-circle"></i><span>Add Users</span></button>
-                        </div>*@
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUsers-modal"><i class="bi bi-plus-circle"></i><span>Add Users</span></button>
+                            </div>*@
                     </div>
                 </div>
             </div>
@@ -99,17 +99,69 @@
             <!-- table content goes here -->
         </tbody>
     </table>
-    <div class="clearfix">
-        <ul class="pagination">
-            <li class="page-item disabled"><a href="#">Previous</a></li>
-            <li class="page-item active"><a href="#" class="page-link">1</a></li>
-            <li class="page-item"><a href="#" class="page-link">2</a></li>
-            <li class="page-item"><a href="#" class="page-link">3</a></li>
-            <li class="page-item"><a href="#" class="page-link">4</a></li>
-            <li class="page-item"><a href="#" class="page-link">5</a></li>
-            <li class="page-item"><a href="#" class="page-link">Next</a></li>
-        </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="nonAdminRow">
+                    <div class="btn_nonAdminRow">
+                        <span class="sBtn_nonAdminRow">Select row</span>
+                        <i class="bi bi-arrow-down-short"></i>
+                    </div>
+
+                    <ul class="options_nonAdminRow">
+                        <li class="option_nonAdmin">
+                            <span class="option_nonAdmin-text">10 rows</span>
+                        </li>
+                        <li class="option_nonAdmin">
+                            <span class="option_nonAdmin-text">20 rows</span>
+                        </li>
+                        <li class="option_nonAdmin">
+                            <span class="option_nonAdmin-text">30 rows</span>
+                        </li>
+                        <li class="option_nonAdmin">
+                            <span class="option_nonAdmin-text">40 rows</span>
+                        </li>
+                        <li class="option_nonAdmin">
+                            <span class="option_nonAdmin-text">All rows</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
+            </div>
+            <div class="col-md-4">
+                <ul class="pagination">
+                    <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
+
+    <!-- Selecting Rows Dropdown for Users (Non-Admin) Table -->
+    <script>
+        const optionMenu2 = document.querySelector(".nonAdminRow"),
+            select_btn2 = optionMenu2.querySelector(".btn_nonAdminRow"),
+            options2 = optionMenu2.querySelectorAll(".option_nonAdmin"),
+            sBtn_text2 = optionMenu2.querySelector(".sBtn_nonAdminRow");
+
+        select_btn2.addEventListener("click", () => optionMenu2.classList.toggle("active"));
+
+        options2.forEach(option => {
+            option.addEventListener("click", () => {
+                let selectedOption = option.querySelector(".option_nonAdmin-text").innerText;
+                sBtn_text2.innerText = selectedOption;
+
+                optionMenu2.classList.remove("active");
+            });
+        });
+    </script>
 
     <!-- Show Modal -->
     <script>

@@ -65,9 +65,9 @@
         </div>
     </header>
 
-    <!-- Dropdown menu in selecting no. of rows -->
-    <div id="service-modal" class="modal">
-        <div class="modal-servicecontent">
+    <!-- Dropdown menu in selecting no. of rows for Log History -->
+    <div id="logHistory-modal" class="modal">
+        <div class="modal-servicelogs">
             <span class="close">&times;</span>
             <div class="service_title">Log History</div>
             <div class="service_name mb-2 fst-italic"></div>
@@ -98,17 +98,18 @@
             <table class="table" id="popupTable">
                 <thead>
                     <tr class="border-4 border-dark">
-                        @*<th scope="col">SERVICE NAME</th>*@
                         <th scope="col" style="width: 25%;">LAST START</th>
                         <th scope="col" style="width: 20%;">LAST LOG</th>
                         <th scope="col">STATUS</th>
-                        <th scope="col" style="width: 25%;">HostName</th>
+                        <th scope="col" style="width: 25%;">HOST NAME</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- table content goes here -->
                 </tbody>
             </table>
             <div class="clearfix">
+                <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
                 <ul class="pagination m-auto mt-2" id="pagination-logs">
                     <li class="page-item disabled"><a href="#">Previous</a></li>
                     <li class="page-item active"><a href="#" class="page-link" ;>1</a></li>
@@ -161,6 +162,7 @@
                         </div>
                         <div class="col-sm-6 button-container">
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
+                            <button type="button" class="btn btn-success"><i class="bi bi-arrow-clockwise"></i><span>Refresh List</span></button>
                         </div>
                     </div>
                 </div>
@@ -171,40 +173,71 @@
         <thead>
             <tr>
                 <th scope="col" style="width: 15%;">SERVICE NAME</th>
-                <th scope="col" style="width: 20%;">LAST START</th>
-                <th scope="col" style="width: 15%;">LAST LOG</th>
-                <th scope="col" style="width: 10%;">SERVICE STATUS</th>
+                <th scope="col" style="width: 15%;">LAST START</th>
+                <th scope="col" style="width: 12%;">LAST LOG</th>
+                <th scope="col" style="width: 12%;">SERVICE STATUS</th>
                 <th scope="col" style="width: 15%;">ACTION BY</th>
                 <th scope="col" style="width: 15%;">ACTION</th>
-                <th scope="col" style="width: 15%;">DELETE</th>
             </tr>
         </thead>
         <tbody>
-
             <!-- table content goes here -->
         </tbody>
     </table>
-    <div class="clearfix">
-        <ul class="pagination" id="pagination-service">
-            <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-            <li class="page-item active"><a href="#" class="page-link">1</a></li>
-            <li class="page-item"><a href="#" class="page-link">2</a></li>
-            <li class="page-item"><a href="#" class="page-link">3</a></li>
-            <li class="page-item"><a href="#" class="page-link">4</a></li>
-            <li class="page-item"><a href="#" class="page-link">5</a></li>
-            <li class="page-item"><a href="#" class="page-link">Next</a></li>
-        </ul>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="serviceRow">
+                    <div class="btnRow">
+                        <span class="sBtnRow">Select row</span>
+                        <i class="bi bi-arrow-down-short"></i>
+                    </div>
+
+                    <ul class="optionsRow">
+                        <li class="optionRow">
+                            <span class="optionRow-text">10 rows</span>
+                        </li>
+                        <li class="optionRow">
+                            <span class="optionRow-text">20 rows</span>
+                        </li>
+                        <li class="optionRow">
+                            <span class="optionRow-text">30 rows</span>
+                        </li>
+                        <li class="optionRow">
+                            <span class="optionRow-text">40 rows</span>
+                        </li>
+                        <li class="optionRow">
+                            <span class="optionRow-text">All rows</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
+            </div>
+            <div class="col-md-4">
+                <ul class="pagination" id="pagination-service">
+                    <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
+    <!-- Submit Form for Add Service -->
     <script>
         function submitForm() {
             var serviceName = $('input[name="ServiceName"]').val();
             AddService(serviceName);
         }
-
     </script>
 
-    <!--Checkbox-->
+    <!-- Checkbox Function -->
     <script>
         $(document).ready(function () {
             var _servicesInController;
@@ -251,9 +284,9 @@
                     $.each(servicesInController, function (i, item) {
                         var checked = _addedServices.includes(item) ? 'checked' : '';
                         var checkbox = `<li class="item"><div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
-                                            <label class="form-check-label" for="service-${i}">${item}</label>
-                                        </div></li>`;
+                                                                <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
+                                                                <label class="form-check-label" for="service-${i}">${item}</label>
+                                                            </div></li>`;
                         if (_addedServices.includes(item)) {
                             checkedItems.push(checkbox);
 
@@ -318,7 +351,7 @@
 
     </script>
 
-    <!-- Table -->
+    <!-- Service Table and Log History -->
     <script>
         $(document).ready(function () {
             RealTimeTable();
@@ -344,7 +377,7 @@
 
             // Set up the close button to hide the dialog when clicked
             $('.close').click(function () {
-                $('#service-modal').css('display', 'none');
+                $('#logHistory-modal').css('display', 'none');
             });
         });
 
@@ -393,7 +426,6 @@
 
     <!-- Pagination for Log History-->
     <script>
-
         // define the number of items per page
         var ITEMS_PAR_PAGE_LOGS;
 
@@ -472,12 +504,12 @@
                     tbody.append(rows);
                     activeServiceName = serviceName;
 
-                    $('#service-modal .modal-servicecontent .service_name').text(serviceName);
+                    $('#logHistory-modal .modal-servicelogs .service_name').text(serviceName);
 
                     // Show the popup dialog
                     ITEMS_PAR_PAGE_LOGS = limit;
                     logsshowPage(1);
-                    $('#service-modal').css('display', 'block');
+                    $('#logHistory-modal').css('display', 'block');
 
                 },
                 error: function () {
@@ -490,7 +522,7 @@
     <!-- Pagination for Service Table -->
     <script>
         // define the number of items per page
-        const ITEMS_PER_PAGE = 5;
+        const ITEMS_PER_PAGE;
 
         // get the table body element
         const tableBody = document.querySelector('#serviceTable tbody');
@@ -516,6 +548,7 @@
             }
         }
 
+        var pageNumber = 1;
         // handle the click event of the pagination links
         paginationLinks.forEach(link => {
             link.addEventListener('click', event => {
@@ -560,19 +593,19 @@
                         row += "<td>";
 
                         if (Data.ServiceStatus === "Stopped") {
-                            row += "<button class='action-button' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                            row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                            row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")'>Delete</button>";
                         } else if (Data.ServiceStatus === "Running") {
                             row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
                             row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
                             row += "<button class='action-button ms-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
                         } else if (Data.ServicesStatus != "Running" && Data.ServicesStatus != "Stopped")
                             row += "<button class='action-button' id='btnReload' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"reload\")'>Reload</button>";
-                        row += "</td>";
-                        row += "<td>";
-                        row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")'><i class='bi bi-trash3-fill'></i></button>";
                         row += "</td></tr>";
                         $("#serviceTable tbody").append(row);
                     });
+                    ITEMS_PAR_PAGE = limit;
+                    showPage(1);
                 },
                 error: function () {
                     alert("Failed to refresh services.");
@@ -668,7 +701,7 @@
                 data: { serviceName: serviceName },
                 success: function () {
                     $("#serviceTable tbody").empty();
- 
+
                     RealTimeTable();
                     //unchecked the remove service
                     $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
@@ -714,16 +747,6 @@
         }
     </script>
 
-    <!-- Select Service Dropdown -->
-    <script>
-        const selectBtn = document.querySelector(".select-btn"),
-            items = document.querySelectorAll(".item");
-
-        selectBtn.addEventListener("click", () => {
-            selectBtn.classList.toggle("open");
-        });
-    </script>
-
     <!-- Alert Box for all buttons in Action column -->
     <div id="alert-modal" class="modal">
         <div class="modal-content">
@@ -735,33 +758,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Select All Checkboxes -->
-    <script>
-        $(document).ready(function () {
-            // Activate tooltip
-            $('[data-toggle="tooltip"]').tooltip();
-
-            // Select/Deselect checkboxes
-            var checkbox = $('table tbody input[type="checkbox"]');
-            $("selectAll").click(function () {
-                if (this.checked) {
-                    checkbox.each(function () {
-                        this.checked = true;
-                    });
-                } else {
-                    checkbox.each(function () {
-                        this.checked = false;
-                    });
-                }
-            });
-            checkbox.click(function () {
-                if (!this.checked) {
-                    $("selectAll").prop("checked", false);
-                }
-            });
-        });
-    </script>
 
     <!-- Nav Bar Active -->
     <script>
@@ -784,21 +780,40 @@
 
     </script>
 
-    <!-- Selecting Rows Dropdwon -->
+    <!-- Selecting Rows Dropdown for Log History -->
     <script>
-        const optionMenu = document.querySelector(".select-menu"),
-            select_btn = optionMenu.querySelector(".select-btn1"),
-            options = optionMenu.querySelectorAll(".option"),
-            sBtn_text = optionMenu.querySelector(".sBtn-text");
+        const optionMenu1 = document.querySelector(".select-menu"),
+            select_btn1 = optionMenu1.querySelector(".select-btn1"),
+            options1 = optionMenu1.querySelectorAll(".option"),
+            sBtn_text1 = optionMenu1.querySelector(".sBtnRow");
 
-        select_btn.addEventListener("click", () => optionMenu.classList.toggle("active"));
+        select_btn1.addEventListener("click", () => optionMenu1.classList.toggle("active"));
 
-        options.forEach(option => {
+        options1.forEach(option => {
             option.addEventListener("click", () => {
                 let selectedOption = option.querySelector(".option-text").innerText;
-                sBtn_text.innerText = selectedOption;
+                sBtn_text1.innerText = selectedOption;
 
-                optionMenu.classList.remove("active");
+                optionMenu1.classList.remove("active");
+            });
+        });
+    </script>
+
+    <!-- Selecting Rows Dropdown for Service Table -->
+    <script>
+        const optionMenu2 = document.querySelector(".serviceRow"),
+            select_btn2 = optionMenu2.querySelector(".btnRow"),
+            options2 = optionMenu2.querySelectorAll(".optionRow"),
+            sBtn_text2 = optionMenu2.querySelector(".sBtn-text");
+
+        select_btn2.addEventListener("click", () => optionMenu2.classList.toggle("active"));
+
+        options2.forEach(option => {
+            option.addEventListener("click", () => {
+                let selectedOption = option.querySelector(".optionRow-text").innerText;
+                sBtn_text2.innerText = selectedOption;
+
+                optionMenu2.classList.remove("active");
             });
         });
     </script>
@@ -899,147 +914,5 @@
 
 </body>
 
-<script>
-            //$(document).ready(function () {
-        //    generateServiceCheckboxes();  // Call generateServiceCheckboxes on page load
-        //});
-
-        //$(document).ready(function () {
-        //    $('#searchService').on('input', function () {
-        //        var searchText = $(this).val().toLowerCase();
-        //        $('.form-check-label').each(function () {
-        //            var label = $(this).text().toLowerCase();
-        //            if (label.indexOf(searchText) === -1) {
-        //                $(this).closest('.item').hide();
-        //            } else {
-        //                $(this).closest('.item').show();
-        //            }
-        //        });
-        //    });
-        //});
-
-        //// Function to Get service names and generate checkboxes
-        //function generateServiceCheckboxes() {
-        //    $.ajax({
-        //        url: "/Home/GetServicesInController",
-        //        type: 'GET',
-        //        dataType: 'json',
-        //        success: function (serviceNames) {
-        //            serviceCheckboxes(serviceNames);
-        //        },
-        //        error: function (xhr, textStatus, errorThrown) {
-        //            alert('Error Geting service names');
-        //        }
-        //    });
-        //}
-
-        //function serviceCheckboxes(serviceNames) {
-        //    $.ajax({
-        //        url: "/Home/GetAddedServices",
-        //        type: 'GET',
-        //        dataType: 'json',
-        //        success: function (monitoredServices) {
-        //            if (serviceNames.length > 0) {
-        //                var checkboxes = '';
-        //                $.each(serviceNames, function (i, item) {
-        //                    var checkbox = '<li class="item"><div class="form-check">';
-        //                    checkbox += '<input class="form-check-input" type="checkbox" value="' + item + '" id="service-' + i + '"';
-        //                    if (monitoredServices.indexOf(item) !== -1) {
-        //                        checkbox += ' checked="checked"';
-        //                    }
-        //                    checkbox += '>';
-        //                    checkbox += '<label class="form-check-label" for="service-' + i + '">' + item + '</label>';
-        //                    checkbox += '</div></li>';
-        //                    checkboxes += checkbox;
-        //                });
-        //                $('#serviceCheckboxes').html(checkboxes);
-        //                // Add event listener for change event
-        //                $('.form-check-input').on('change', function () {
-        //                    var serviceName = $(this).val();
-        //                    if (this.checked) {
-        //                        AddService(serviceName);
-        //                    } else {
-        //                        RemoveAddedService(serviceName);
-        //                    }
-        //                });
-        //            }
-        //        },
-        //        error: function (xhr, textStatus, errorThrown) {
-        //            alert('Error Geting monitored services');
-        //        }
-        //    });
-        //}
-
-        //// Function to filter service names based on user input
-        //function filterServiceNames(input) {
-        //    var filter = input.value.toUpperCase();
-        //    var checkboxes = $('#serviceCheckboxes li');
-        //    for (var i = 0; i < checkboxes.length; i++) {
-        //        var label = checkboxes[i].getElementsByTagName("label")[0];
-        //        if (label.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        //            checkboxes[i].style.display = "";
-        //        } else {
-        //            checkboxes[i].style.display = "none";
-        //        }
-        //    }
-        //}
-
-        //// Function to add service
-        //function AddService(serviceName) {
-        //    $.ajax({
-        //        url: "/Home/AddService",
-        //        type: "POST",
-        //        data: { serviceName: serviceName },
-        //        success: function () {
-        //            RealTimeTable();
-        //            generateServiceCheckboxes();
-        //        },
-        //        error: function () {
-        //            alert("Failed to add " + serviceName);
-        //        }
-        //    });
-        //}
-
-        //// Function to delete service
-        //function RemoveAddedService(serviceName) {
-        //    $.ajax({
-        //        url: "/Home/RemoveAddedService",
-        //        type: "POST",
-        //        data: { serviceName: serviceName },
-        //        success: function () {
-        //            $("#serviceTable tbody").empty();
-        //            RealTimeTable();
-        //            generateServiceCheckboxes();
-        //        },
-        //        error: function () {
-        //            alert("Failed to delete " + serviceName);
-        //        }
-        //    });
-        //}
-
-        //// Add event listener for input event on search input
-        //$('input[name="ServiceName"]').on('input', function () {
-        //    filterServiceNames(this);
-        //});
-        //// Add event listener for click event on Add button
-        //$('.btn-primary').on('click', function () {
-        //    // Get all checked checkboxes and add each service
-        //    $('input[type="checkbox"]:checked').each(function () {
-        //        AddService($(this).val());
-        //    });
-        //    // Close the modal after adding services
-        //    $('#displayService-modal').modal('hide');
-        //});
-
-        //// Live search functionality
-        //$(document).ready(function () {
-        //    $('#ServiceName').on('keyup', function () {
-        //        var value = $(this).val().toLowerCase();
-        //        $('ul.list-group li.item').filter(function () {
-        //            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        //        });
-        //    });
-        //});
-</script>
 
 

@@ -276,7 +276,7 @@ header .mobile-toggler {
     }
 
 /* Log History */
-#service-modal {
+#logHistory-modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -288,7 +288,7 @@ header .mobile-toggler {
     background-color: rgba(0,0,0,0.4);
 }
 
-.modal-servicecontent {
+.modal-servicelogs {
     background-color: #fefefe;
     position: absolute;
     top: 50%;
@@ -323,7 +323,6 @@ header .mobile-toggler {
     font-size: 25px;
 }
 
-/* Close Button */
 .close {
     color: #aaa;
     float: right;
@@ -421,12 +420,88 @@ header .mobile-toggler {
     color: #333;
 }
 
+/* Service Table */
 #serviceTable, #usersTable {
     margin: auto;
     width: 67%;
     margin-top: -40px;
 }
 
+#btnDelete {
+    background-color: #ff4122;
+    color: white;
+}
+
+    #btnDelete:hover {
+        background-color: #db523b;
+    }
+
+.serviceRow {
+    width: 40%;
+    margin-top: 20px
+}
+
+    .serviceRow .btnRow {
+        display: flex;
+        height: 55px;
+        background: #fff;
+        padding: 20px;
+        font-size: 18px;
+        font-weight: 400;
+        border-radius: 8px;
+        align-items: center;
+        cursor: pointer;
+        justify-content: space-between;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+.btnRow i {
+    font-size: 25px;
+    transition: 0.3s;
+}
+
+.serviceRow.active .btnRow i {
+    transform: rotate(-180deg);
+}
+
+.serviceRow .optionsRow {
+    position: absolute;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    display: none;
+    width: 160px;
+}
+
+.serviceRow.active .optionsRow {
+    display: block;
+}
+
+.optionsRow .optionRow {
+    display: flex;
+    height: 55px;
+    cursor: pointer;
+    padding: 0 16px;
+    border-radius: 8px;
+    align-items: center;
+    background: #fff;
+}
+
+    .optionsRow .optionRow:hover {
+        background: #F2F2F2;
+    }
+
+.optionRow i {
+    font-size: 25px;
+    margin-right: 12px;
+}
+
+.optionRow .optionRow-text {
+    font-size: 18px;
+    color: #333;
+}
 
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
 
@@ -451,8 +526,6 @@ header .mobile-toggler {
         align-items: center;
         margin-bottom: 15px;
     }
-
-
 
     #serviceTable, #usersTable {
         width: 85%;
@@ -533,12 +606,12 @@ header .mobile-toggler {
                 color: inherit;
             }
 
-    #service-modal {
+    #logHistory-modal {
         width: 100%;
         background: transparent;
     }
 
-    .modal-servicecontent {
+    .modal-servicelogs {
         width: 85%;
     }
 
