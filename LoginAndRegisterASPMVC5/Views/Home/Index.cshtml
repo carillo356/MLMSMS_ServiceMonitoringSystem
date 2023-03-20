@@ -238,6 +238,18 @@
         </div>
     </div>
 
+    <!-- Toast Design for any ACTION-->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-info-circle"></i>
+                <strong class="me-auto">  System Message</strong>
+            </div>
+            <div class="toast-body">
+            </div>
+        </div>
+    </div>
+
     <!-- Submit Form for Add Service -->
     <script>
         function submitForm() {
@@ -293,9 +305,9 @@
                     $.each(servicesInController, function (i, item) {
                         var checked = _addedServices.includes(item) ? 'checked' : '';
                         var checkbox = `<li class="item"><div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
-                                                            <label class="form-check-label" for="service-${i}">${item}</label>
-                                                        </div></li>`;
+                                                                <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
+                                                                <label class="form-check-label" for="service-${i}">${item}</label>
+                                                            </div></li>`;
                         if (_addedServices.includes(item)) {
                             checkedItems.push(checkbox);
 
@@ -419,6 +431,24 @@
                     success: function () {
                         $("#serviceTable tbody").empty();
                         RealTimeTable();
+
+                        var commandText = command.toUpperCase();
+                        if (command === "stop") {
+                            commandText = "STOPPED";
+                        } else if (command === "start") {
+                            commandText = "STARTED";
+                        } else if (command === "restart") {
+                            commandText = "RESTARTED";
+                        }
+
+                        var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                        var toastMessage = "You " + commandText + " the service " + " ' " +serviceName + " ' " + ".";
+                        document.querySelector('.toast-body').innerHTML = toastMessage;
+                        toast.show();
+
+                        setTimeout(function () {
+                            toast.hide();
+                        }, 4000);
                     },
                     error: function () {
                         alert('Failed to ' + command + ' ' + serviceName);
@@ -623,29 +653,6 @@
 
     <!--Add or Remove Service-->
     <script>
-        //function AddService(serviceName) {
-        //    $.ajax({
-        //        url: "/Home/AddService",
-        //        type: "POST",
-        //        data: { serviceName: serviceName },
-        //        success: function () {
-        //            // Refresh the table
-        //            RealTimeTable();
-
-        //            //checked the added service
-
-        //            $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', true);
-
-        //            // Add the checkbox to the top of the list
-        //            var checkbox = $('input[type="checkbox"][value="' + serviceName + '"]').closest('.item');
-        //            checkbox.prependTo('#serviceCheckboxes');
-        //        },
-        //        error: function () {
-        //            alert("Failed to add " + serviceName);
-        //        }
-        //    });
-        //}
-
         function AddService(serviceName) {
             $.ajax({
                 url: "/Home/AddService",
@@ -666,39 +673,6 @@
                 }
             });
         }
-
-        //function AddService(serviceName) {
-        //    $.ajax({
-        //        url: "/Home/AddService",
-        //        type: "POST",
-        //        data: { serviceName: serviceName },
-        //        success: function () {
-        //            // Refresh the table
-
-        //            RealTimeTable();
-
-        //            // Checked the added service
-        //            $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', true);
-
-        //            // Add the checkbox to the top of the list
-        //            var checkbox = $('input[type="checkbox"][value="' + serviceName + '"]').closest('.item');
-        //            checkbox.prependTo('#serviceCheckboxes');
-
-        //            // Hide the checked service checkbox and remove it from the search results
-        //            var checkedCheckbox = $('#serviceCheckboxes').find('input[type="checkbox"]:checked');
-        //            checkedCheckbox.closest('.item').hide();
-        //            checkedCheckbox.prop('tabindex', '-1');
-
-        //            // Clear the search field and results
-        //            $('#searchServices').val('');
-        //            $('.item').show();
-        //        },
-        //        error: function (xhr, textStatus, errorThrown) {
-        //            alert('Error adding service');
-        //        }
-        //    });
-        //}
-
 
         function RemoveAddedService1(serviceName) {
             /*Show the confirmation box here*/
@@ -738,6 +712,16 @@
                     success: function () {
                         $("#serviceTable tbody").empty();
                         RealTimeTable();
+
+                        var commandText = command.toUpperCase();
+                        if (command === "delete") {
+                            commandText = "DELETED";
+                        }
+
+                        var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                        var toastMessage = "You " + commandText + " the service " + serviceName + ".";
+                        document.querySelector('.toast-body').innerHTML = toastMessage;
+                        toast.show();
 
                         //unchecked the remove service
                         $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);

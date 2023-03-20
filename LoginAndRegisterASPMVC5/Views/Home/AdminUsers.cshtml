@@ -86,7 +86,6 @@
     <table class="table table-hover" id="usersTable">
         <thead>
             <tr>
-                <th scope="col" style="width: 10%;">USER ID</th>
                 <th scope="col" style="width: 15%;">FIRST NAME</th>
                 <th scope="col" style="width: 15%;">LAST NAME</th>
                 <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
@@ -179,24 +178,12 @@
                             }
                         </div>
 
-                        <div class="form-group m-3">
+                        <div class="form-group m-3 position-relative">
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password1" })
+                            <span toggle="#password1" class="bi bi-eye-fill field-icon toggle-password"></span>
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                         </div>
-
-
-                        <div class="form-group m-3">
-                            <input type="checkbox" id="togglePassword" />
-                            <label for="togglePassword">Show password</label>
-                        </div>
-
-                        @*<div class="form-group m-3">
-                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "label" })
-                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", id = "confirmPass" })
-                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "badge badge-danger" })
-                            </div>*@
-
 
                         <div class="form-group m-3">
                             @Html.LabelFor(m => m.IsAdmin, "Assign User to be an admin or not:", new { @class = "label mb-2 fw-bold" })
@@ -212,7 +199,6 @@
                             </div>
                             <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Add User</button>
                         </div>
-
                     }
                 </div>
             </div>
@@ -247,16 +233,17 @@
                             <input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" value="" autocomplete="off" />
                         </div>
 
-                        <div class="form-group m-3">
+                        @*<div class="form-group m-3">
+                                @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Enter New Password", id = "password2" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                            </div>*@
+
+                        <div class="form-group m-3 position-relative">
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Enter New Password", id = "password2" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password2" })
+                            <span toggle="#password2" class="bi bi-eye-fill field-icon toggle-password"></span>
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
-                        </div>
-
-
-                        <div class="form-group m-3">
-                            <input type="checkbox" id="togglePassword2" />
-                            <label for="togglePassword2">Show password</label>
                         </div>
 
                         <div class="form-group m-3">
@@ -278,6 +265,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Toast Design for any ACTION-->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-info-circle"></i>
+                <strong class="me-auto">  System Message</strong>
+            </div>
+            <div class="toast-body">
+            </div>
+        </div>
+    </div>
+
+    <!-- Show/Hide Password with eye icon -->
+    <script>
+        $(".toggle-password").click(function () {
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+                $(this).removeClass("bi-eye-fill").addClass("bi-eye-slash-fill");
+            } else {
+                input.attr("type", "password");
+                $(this).removeClass("bi-eye-slash-fill").addClass("bi-eye-fill");
+            }
+        });
+    </script>
 
     <!-- Delete Users Modal -->
     <div id="deleteUsers-modal" class="modal">
@@ -353,28 +366,6 @@
             $('#isAdminFalse').prop('checked', isAdmin === "false");
         }
 
-        const togglePassword = document.getElementById("togglePassword");
-        const password = document.getElementById("password");
-
-        const togglePassword2 = document.getElementById("togglePassword2");
-        const password2 = document.getElementById("password2");
-
-        togglePassword.addEventListener("change", function () {
-            if (togglePassword.checked) {
-                password.type = "text";
-            } else {
-                password.type = "password";
-            }
-        });
-
-        togglePassword2.addEventListener("change", function () {
-            if (togglePassword2.checked) {
-                password2.type = "text";
-            } else {
-                password2.type = "password";
-            }
-        });
-
     </script>
 
     <!-- Pagination for Users Table -->
@@ -420,7 +411,6 @@
                             const Role = (Data.IsAdmin === true) ? '<span>Admin</span>' : '<span>Non-Admin</span>';
 
                             var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                            row += "<td>" + Data.idUser + "</td>";
                             row += "<td>" + Data.FirstName + "</td>";
                             row += "<td>" + Data.LastName + "</td>";
                             row += "<td>" + Data.Email + "</td>";

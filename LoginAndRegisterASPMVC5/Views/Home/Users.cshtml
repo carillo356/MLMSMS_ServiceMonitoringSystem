@@ -87,7 +87,6 @@
     <table class="table table-hover" id="usersTable">
         <thead>
             <tr>
-                <th scope="col" style="width: 10%;">USER ID</th>
                 <th scope="col" style="width: 15%;">FIRST NAME</th>
                 <th scope="col" style="width: 15%;">LAST NAME</th>
                 <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
@@ -179,58 +178,6 @@
         $(document).ready(function () {
             RealTimeUsersTable();
         });
-
-        //function setNotification(idUser) {
-        //    $.ajax({
-        //        type: 'POST',
-        //        url: '/Home/UpdateEmailNotification',
-        //        data: { idUser: idUser },
-        //        success: function () {
-        //            RealTimeUsersTable();
-        //        },
-        //        error: function (xhr, status, error) {
-        //            alert(error);
-        //        }
-        //    });
-        //}
-
-        //function RealTimeUsersTable() {
-        //    /*Refresh the table with the updated data*/
-        //    $.ajax({
-        //        url: "/Home/RealTimeUsersTable",
-        //        type: "GET",
-        //        dataType: 'json',
-        //        success: function (result) {
-        //            $("#usersTable tbody").empty();
-        //            // Loop through the data and append each row to the table
-        //            result.forEach(function (Data) {
-        //                const Role = (Data.IsAdmin === true) ? '<span>Admin</span>' : '<span>Non-Admin</span>';
-
-        //                var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-        //                row += "<td>" + Data.idUser + "</td>";
-        //                row += "<td>" + Data.FirstName + "</td>";
-        //                row += "<td>" + Data.LastName + "</td>";
-        //                row += "<td>" + Data.Email + "</td>";
-        //                row += "<td>" + Role + "</td>";
-        //                row += "<td>";
-        //                if (Data.Email_Notification == true) {
-        //                    row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
-        //                    row += "<i class='bi bi-envelope-check-fill'></i>";
-        //                    row += "</button>";
-        //                } else {
-        //                    row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
-        //                    row += "<i class='bi bi-envelope-x-fill'></i>";
-        //                    row += "</button>";
-        //                }
-        //                row += "</td></tr>";
-        //                $("#usersTable tbody").append(row);
-        //            });
-        //        },
-        //        error: function () {
-        //            alert("Failed to refresh users.");
-        //        }
-        //    });
-        //}
 
         const togglePassword = document.getElementById("togglePassword");
         const password = document.getElementById("password");

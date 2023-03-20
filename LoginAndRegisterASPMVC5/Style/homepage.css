@@ -503,8 +503,23 @@ header .mobile-toggler {
     color: #333;
 }
 
-@media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
+.bi.bi-info-circle {
+    margin-right: 10px;
+}
 
+.field-icon {
+    position: absolute;
+    top: 70%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.bi.bi-eye-fill, .bi.bi-eye-slash-fill {
+    font-size: 20px;
+}
+
+@media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
     .list-items {
         z-index: 999;
     }
