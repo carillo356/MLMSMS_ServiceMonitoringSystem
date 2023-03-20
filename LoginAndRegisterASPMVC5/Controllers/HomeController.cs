@@ -162,104 +162,135 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return Json(servicesLogsList, JsonRequestBehavior.AllowGet);
         }
 
+        static List<string> GetSingleColumn(SqlConnection connection, string query)
+        {
+            List<string> singleColumn = new List<string>();
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            string column = reader.GetString(0);
+                            singleColumn.Add(column);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return singleColumn;
+        }
+
+        private void GetServiceEventLog(string serviceName, out DateTime lastStart, out string lastEventLog, out string hostName)
+        {
+            lastStart = new DateTime(1900, 1, 1);
+            lastEventLog = "No Record";
+            hostName = "Unknown";
+
+            try
+            {
+                using (var eventLog = new EventLog("Application"))
+                {
+                    var serviceEvent = eventLog.Entries
+                        .Cast<EventLogEntry>()
+                        .Where(entry => entry.Source == serviceName)
+                        .OrderByDescending(entry => entry.TimeGenerated)
+                        .FirstOrDefault();
+
+                    if (serviceEvent != null)
+                    {
+                        lastStart = serviceEvent.TimeGenerated;
+                        lastEventLog = serviceEvent.Message;
+                        hostName = serviceEvent.MachineName;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public void ServiceAction(string serviceName, string command)
         {
             string hostName = Session["FullName"].ToString();
             DateTime lastStart = new DateTime(1900, 1, 1);
             string lastEventLog = "No Record";
-            string logBy = "Unknown";
+            string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
-            try
-            {
-                logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
-                string queryString = $"*[System/Provider/@Name='{serviceName}']";
-                EventLogQuery eventLogQuery = new EventLogQuery("Application", PathType.LogName, queryString);
-                EventLogReader eventLogReader = new EventLogReader(eventLogQuery);
-
-                int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries"));
-                int entriesSearched = 0;
-                EventRecord latestEvent = null;
-
-                EventRecord currentEvent = eventLogReader.ReadEvent();
-                while (currentEvent != null && entriesSearched < numEntriesToSearch)
-                {
-                    if (latestEvent == null || currentEvent.TimeCreated > latestEvent.TimeCreated)
-                    {
-                        latestEvent = currentEvent;
-                    }
-                    entriesSearched++;
-                    currentEvent = eventLogReader.ReadEvent();
-                }
-
-                // Get the necessary information from the latest entry (if one was found)
-                if (latestEvent != null)
-                {
-                    lastStart = (DateTime)latestEvent.TimeCreated;
-                    lastEventLog = latestEvent.Properties[0].Value.ToString(); // Assumes log message is in the first property
-                }
-            }
-            catch (Exception ex)
-            { 
-                throw ex;
-            }
 
             using (SqlConnection connection = DatabaseManager.GetConnection())
             {
-                ServiceController[] services = ServiceController.GetServices();
-                ServiceController sc = services.FirstOrDefault(s => s.ServiceName == serviceName);
+                List<string> ServicesAvailable = GetSingleColumn(connection, "GetServicesAvailable");
 
-                switch (command)
+                string sa_ServiceName = ServicesAvailable.FirstOrDefault(s => s == serviceName);
+
+                ServiceController sc = new ServiceController(sa_ServiceName);
+
+                if (sa_ServiceName != null)
                 {
-                    case "start":
-                        if (sc.Status == ServiceControllerStatus.Stopped)
-                        {
-                            sc.Start();
-                            //MessageBox.Show("Service started.");
-                            SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Running.ToString(), hostName, logBy, DateTime.Now, "Started at SMS");
-                        }
-                        else
-                        {
-                            //MessageBox.Show("Service is already running.");
-                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
-                        }
-                        break;
+                    switch (command)
+                    {
+                        case "start":
+                            if (sc.Status == ServiceControllerStatus.Stopped)
+                            {
+                                sc.Start();
+                                SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Running.ToString(), hostName, logBy, DateTime.Now, "Started at SMS");
+                            }
+                            else
+                            {
+                                GetServiceEventLog(serviceName, out lastStart, out lastEventLog, out hostName);
+                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
+                            }
+                            break;
 
-                    case "stop":
-                        if (sc.Status == ServiceControllerStatus.Running)
-                        {
-                            sc.Stop();
-                            //MessageBox.Show("Service stopped.");
-                            SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Stopped.ToString(), hostName, logBy, DateTime.Now, "Stop at SMS");
-                        }
-                        else
-                        {
-                            //MessageBox.Show("Service is already stopped.");
-                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
-                        }
-                        break;
+                        case "stop":
+                            if (sc.Status == ServiceControllerStatus.Running)
+                            {
+                                sc.Stop();
+                                SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Stopped.ToString(), hostName, logBy, DateTime.Now, "Stop at SMS");
+                            }
+                            else
+                            {
+                                GetServiceEventLog(serviceName, out lastStart, out lastEventLog, out hostName);
+                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
+                            }
+                            break;
 
-                    case "restart":
-                        if (sc.Status == ServiceControllerStatus.Running)
-                        {
-                            sc.Stop();
-                            sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
-                            sc.Start();
-                            //MessageBox.Show("Service restarted.");
-                            SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Running.ToString(), hostName, logBy, DateTime.Now, "Restarted at SMS");
-                        }
-                        else
-                        {
-                            //MessageBox.Show("Service is not running.");
-                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
-                        }
-                        break;
+                        case "restart":
+                            if (sc.Status == ServiceControllerStatus.Running)
+                            {
+                                sc.Stop();
+                                sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
+                                sc.Start();
+                                SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Running.ToString(), hostName, logBy, DateTime.Now, "Restarted at SMS");
+                            }
+                            else
+                            {
+                                GetServiceEventLog(serviceName, out lastStart, out lastEventLog, out hostName);
+                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
+                            }
+                            break;
 
-                    default:
-                        SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
-                        //MessageBox.Show("Invalid command from " + command);
-                        break;
+                        default:
+                            GetServiceEventLog(serviceName, out lastStart, out lastEventLog, out hostName);
+                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
+                            break;
+                    }
                 }
+
+                else throw new Exception($"Service {serviceName} is not available");
+
             }
         }
 
@@ -650,3 +681,43 @@ namespace LoginAndRegisterASPMVC5.Controllers
     }
 
 }
+
+//string hostName = Session["FullName"].ToString();
+//DateTime lastStart = new DateTime(1900, 1, 1);
+//string lastEventLog = "No Record";
+//string logBy = "Unknown";
+
+//try
+//{
+//    logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+
+//    string queryString = $"*[System/Provider/@Name='{serviceName}']";
+//    EventLogQuery eventLogQuery = new EventLogQuery("Application", PathType.LogName, queryString);
+//    EventLogReader eventLogReader = new EventLogReader(eventLogQuery);
+
+//    int numEntriesToSearch = int.Parse(ConfigurationManager.AppSettings.Get("NumOfEntries"));
+//    int entriesSearched = 0;
+//    EventRecord latestEvent = null;
+
+//    EventRecord currentEvent = eventLogReader.ReadEvent();
+//    while (currentEvent != null && entriesSearched < numEntriesToSearch)
+//    {
+//        if (latestEvent == null || currentEvent.TimeCreated > latestEvent.TimeCreated)
+//        {
+//            latestEvent = currentEvent;
+//        }
+//        entriesSearched++;
+//        currentEvent = eventLogReader.ReadEvent();
+//    }
+
+//    // Get the necessary information from the latest entry (if one was found)
+//    if (latestEvent != null)
+//    {
+//        lastStart = (DateTime)latestEvent.TimeCreated;
+//        lastEventLog = latestEvent.Properties[0].Value.ToString(); // Assumes log message is in the first property
+//    }
+//}
+//catch (Exception ex)
+//{
+//    throw ex;
+//}
