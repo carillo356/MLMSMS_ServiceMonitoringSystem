@@ -151,8 +151,10 @@
                     @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                 </div>
                 <div class="modal-body">
-                    <form id="add-user-form" method="post" action="@Url.Action("AddUser", "Home")">
-                        @*@Html.ValidationSummary()*@
+                    <form id="add-user-form" method="post" @*action="@Url.Action("AddUser", "Home")*@>
+                        <div id="validation-summary">
+                            @Html.ValidationSummary(true)
+                        </div>
                         @Html.AntiForgeryToken()
 
                         <div class="form-group m-3">
@@ -219,6 +221,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="edit-user-form" onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUser", "Home")">
+                        @Html.ValidationSummary()
                         @Html.AntiForgeryToken()
 
                         <div class="form-group m-3">
@@ -260,7 +263,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2" value="addUser">Save Changes</button>
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2" data-bs-dismiss="modal" value="addUser">Save Changes</button>
                             <button type="button" id="cancel-button" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
@@ -269,7 +272,7 @@
         </div>
     </div>
 
-    <!-- Toast Design for any ACTION-->
+    <!-- Toast Design for any Action -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
         <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -281,10 +284,103 @@
         </div>
     </div>
 
+
+
+    <script>
+    $(document).ready(function () {
+      // Handle form submission using AJAX
+      $('#add-user-form').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Send form data using AJAX
+            $.ajax({
+              url: '@Url.Action("AddUser", "Home")',
+              type: 'POST',
+              data: $(this).serialize(),
+                success: function (result) {
+                    RealTimeUsersTable();
+                    if (result.success) {
+                        // Update table with new user data
+                        $('#user-table').html(result);
+
+                        var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                        var toastMessage = "User successfully added!";
+                        document.querySelector('.toast-body').innerHTML = toastMessage;
+                        toast.show();
+
+                        setTimeout(function () {
+                            toast.hide();
+                        }, 4000);
+
+                        // Hide modal
+                        $('#addUsers-modal').modal('hide');
+
+                    } else {
+                        // Check if there is a validation summary
+                        if (result.message) {
+                            // Display validation summary
+                            $('#validation-summary').html(result.message);
+                        } else {
+                            // Display error message
+                            alert(result.message);
+                        }
+                    }
+                }
+            });
+          });
+        });
+
+    </script>
+
+    <script>
+    $(document).ready(function () {
+      // Handle form submission using AJAX
+      $('#edit-user-form').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Send form data using AJAX
+        $.ajax({
+          url: '@Url.Action("UpdateUser", "Home")',
+          type: 'POST',
+          data: $(this).serialize(),
+            success: function (result) {
+                RealTimeUsersTable();
+                if (result.success) {
+                    // Update table with new user data
+                    $('#user-table').html(result);
+
+                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    var toastMessage = result.message;
+                document.querySelector('.toast-body').innerHTML = toastMessage;
+                toast.show();
+
+                setTimeout(function () {
+                    toast.hide();
+                }, 4000);
+
+                    // Hide modal
+                    $('#editUsers-modal').modal('hide');
+
+                } else {
+                    // Display error message
+                    alert(result.message);
+                }
+            }
+        });
+      });
+    });
+    </script>
+
     <!-- Clear all field when clicking the Cancel Button for Add users -->
     <script>
         document.getElementById('cancelButton').addEventListener('click', function () {
             document.getElementById('add-user-form').reset();
+
+            document.getElementById('addUserButton').addEventListener('click', function () {
+                setTimeout(function () {
+                    document.getElementById('add-user-form').reset();
+                }, 500);
+            });
         });
     </script>
 
@@ -350,11 +446,12 @@
 
     <!-- Show Modal -->
     <script>
+
         var myModal = new bootstrap.Modal(document.getElementById('signup-modal'));
         myModal.show();
     </script>
 
-    <!-- Tooltip, Refresh Table, Show Password, etc -->
+    <!-- Tooltip, DeleteUser & EditUser -->
     <script>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -394,6 +491,9 @@
                         document.querySelector('.toast-body').innerHTML = toastMessage;
                         toast.show();
 
+                        setTimeout(function () {
+                            toast.hide();
+                        }, 4000);
                     },
                     error: function (xhr, status, error) {
                         alert(error);
@@ -469,16 +569,16 @@
                             row += "<td>" + Role + "</td>";
                             row += "<td>";
                             if (Data.Email_Notification == true) {
-                                row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
+                                row += "<button onclick='setNotification(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
                                 row += "<i class='bi bi-envelope-check-fill'></i>";
                                 row += "</button>";
                             } else {
-                                row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
+                                row += "<button onclick='setNotification(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
                                 row += "<i class='bi bi-envelope-x-fill'></i>";
                                 row += "</button>";
                             }
 
-                            row += "<button onclick='editUser(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\")' class='user-button' data-bs-toggle='modal' data-bs-target='#editUsers-modal'>";
+                            row += "<button onclick='editUser(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\", \"update\")' class='user-button' data-bs-toggle='modal' data-bs-target='#editUsers-modal'>";
                             row += "<i class='bi bi-pencil-square'></i>";
                             row += "</button>";
 
@@ -505,7 +605,7 @@
             });
         });
 
-        function setNotification(idUser) {
+        function setNotification(idUser, FirstName, LastName, command) {
             $.ajax({
                 type: 'POST',
                 url: '/Home/UpdateEmailNotification',
@@ -516,12 +616,28 @@
                             showPage(pageNumber);
                         });
                     });
+
+                    if (command === "on") {
+                        commandText = "RECEIVE";
+                    } else if (command === "off") {
+                        commandText = "NOT RECEIVE";
+                    }
+
+                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    var toastMessage = "User " + "' " + FirstName + " " + LastName + " '" + " WILL " + commandText + " email notifications.";
+                    document.querySelector('.toast-body').innerHTML = toastMessage;
+                    toast.show();
+
+                    setTimeout(function () {
+                        toast.hide();
+                    }, 4000);
                 },
                 error: function (xhr, status, error) {
                     alert(error);
                 }
             });
         }
+
         var pageNumber = 1;
         // handle the click event of the pagination links
         paginationLinks.forEach(link => {

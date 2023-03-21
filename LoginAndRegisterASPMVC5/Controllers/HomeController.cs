@@ -517,6 +517,56 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return View();
         }
 
+        //public ActionResult AddUser(User _user)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var check = _db.Users.FirstOrDefault(s => s.Email == _user.Email);
+        //        if (check == null)
+        //        {
+        //            _user.Password = GetMD5(_user.Password);
+        //            _db.Configuration.ValidateOnSaveEnabled = false;
+        //            _db.Users.Add(_user);
+        //            _db.SaveChanges();
+        //            return RedirectToAction("Users");
+        //        }
+        //        else
+        //        {
+        //            ViewBag.error = "Email already exists";
+        //        }
+
+
+        //    }
+        //    return View("AdminUsers");
+        //}
+
+        //[HttpPost]
+        //public ActionResult AddUser(User _user)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var check = _db.Users.FirstOrDefault(s => s.Email == _user.Email);
+        //        if (check == null)
+        //        {
+        //            _user.Password = GetMD5(_user.Password);
+        //            _db.Configuration.ValidateOnSaveEnabled = false;
+        //            _db.Users.Add(_user);
+        //            _db.SaveChanges();
+
+        //            // Return updated user data table as partial view
+        //            var users = _db.Users.ToList();
+        //            return PartialView("_UserTable", users);
+        //        }
+        //        else
+        //        {
+        //            ViewBag.error = "Email already exists";
+        //        }
+        //    }
+
+        //    // Return same view with validation errors
+        //    return View("AdminUsers", _user);
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddUser(User _user)
@@ -530,17 +580,23 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     _db.Configuration.ValidateOnSaveEnabled = false;
                     _db.Users.Add(_user);
                     _db.SaveChanges();
-                    return RedirectToAction("Users");
+
+                    // Return success message as JSON
+                    return Json(new { success = true, message = "User added successfully." });
                 }
                 else
                 {
-                    ViewBag.error = "Email already exists";
+                    // Return error message as JSON
+                    return Json(new { success = false, message = "Email already exists." });
                 }
-
-
             }
-            return View("AdminUsers");
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors)
+                              .Select(e => e.ErrorMessage);
+            return Json(new { success = false, message = errors });
         }
+
+
 
         [HttpPost]
         public ActionResult UpdateUser(UserUpdate _user, string Password)
@@ -550,8 +606,13 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
             if (ModelState.IsValid)
             {
+                if (userToUpdate.FirstName == _user.FirstName && userToUpdate.LastName == _user.LastName && userToUpdate.Email == _user.Email && userToUpdate.IsAdmin == _user.IsAdmin)
+                {
+                    return Json(new { success = true, message = "No changes" });
+                }
                 if (userToUpdate != null)
                 {
+
                     // Update the user's properties
                     userToUpdate.FirstName = _user.FirstName;
                     userToUpdate.LastName = _user.LastName;
@@ -568,7 +629,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     _db.Entry(userToUpdate).State = EntityState.Modified;
                     _db.SaveChanges();
 
-                    return RedirectToAction("AdminUsers");
+                    return Json(new { success = true, message = "User info updated successfully!" });
                 }
                 else
                 {
@@ -593,8 +654,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
             return byte2String;
         }
-
-
 
         public ActionResult Login()
         {
