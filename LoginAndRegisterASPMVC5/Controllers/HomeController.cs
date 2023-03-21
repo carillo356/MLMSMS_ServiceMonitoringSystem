@@ -38,7 +38,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         private DB_Entities _db = new DB_Entities();
         public static List<Service> _activeServices = new List<Service>();
         public static List<User> _users = new List<User>();
-
+        public static List<string> _servicesAvailable;
         public ActionResult Index()
         {
             //InsertAllServices();
@@ -59,6 +59,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             string serviceName = GetInput.ServiceName;
             if (!_activeServices.Any(s => s.ServiceName == serviceName))
             {
+                _servicesAvailable.Remove(serviceName); // remove the specified string element from the list
                 GetServicesTB(serviceName);
             }
         }
@@ -67,7 +68,10 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             var serviceToRemove = _activeServices.SingleOrDefault(r => r.ServiceName == serviceName);
             if (serviceToRemove != null)
+            {
+                _servicesAvailable.Add(serviceName); // Add the new service name to the list
                 _activeServices.Remove(serviceToRemove);
+            }
         }
 
         public void GetServicesTB(string serviceName)
@@ -104,17 +108,22 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
+        public void ServicesInController()
+        {
+
+            using (SqlConnection connection = DatabaseManager.GetConnection())
+            {
+                _servicesAvailable = GetSingleColumn(connection, "GetServicesAvailable");
+            }
+
+        }
+
         [HttpGet]
         public ActionResult GetServicesInController() // For the Service Checkboxes
         {
-            ServiceController[] servicesInController = ServiceController.GetServices(); // create a copy of the services list
-            List<string> servicesInControllerList = new List<string>();
 
-            foreach (ServiceController serviceInController in servicesInController)
-            {
-                servicesInControllerList.Add(serviceInController.ServiceName.ToString());
-            }
-            return Json(servicesInControllerList, JsonRequestBehavior.AllowGet);
+            return Json(_servicesAvailable, JsonRequestBehavior.AllowGet);
+
         }
 
         public ActionResult GetAddedServices()//For checkboxes as reference
@@ -358,7 +367,15 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult AdminUsers()
         {
-            return View();
+            if (Session["idUser"] != null)
+            {
+                    return View();
+
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         public void UpdateEmailNotification(int idUser)
@@ -577,17 +594,15 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return byte2String;
         }
 
-        /*
-         LOGIN
-         */
+
 
         public ActionResult Login()
         {
-            //if (Session["FullName"] != null) // check if the user is already logged in
-            //{
-            //    return RedirectToAction("Index", "Home"); // redirect to index page
-            //}
-
+            ServicesInController();
+            if (Session["FullName"] != null) // check if the user is already logged in
+            {
+                return RedirectToAction("Index", "Home"); // redirect to index page
+            }
             return View();
         }
 

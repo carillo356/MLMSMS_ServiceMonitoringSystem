@@ -142,7 +142,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex justify-content-left">
-                        <form onsubmit="event.preventDefault(); AddService(this.ServiceName.value);" class="d-flex align-items-center mb-0">
+                        <form onsubmit="event.preventDefault();" class="d-flex align-items-center mb-0">
                             <div class="form-group m-3" style="width: 100%;">
                                 <input type="text" name="ServiceName" class="form-control search-box" autocomplete="off" placeholder="Search" />
                             </div>
@@ -261,8 +261,18 @@
     <!-- Checkbox Function -->
     <script>
         $(document).ready(function () {
-            var _servicesInController;
-            var _addedServices;
+            RealTimeCheckbox();
+        });
+        var _servicesInController;
+        function RealTimeCheckbox() {
+            GetServicesInController()
+                .then(function () {
+                    Checkbox(_servicesInController);
+                })
+                .catch(function (error) {
+                    alert(error);
+                });
+        }
 
             function GetServicesInController() {
                 return new Promise(function (resolve, reject) {
@@ -281,68 +291,20 @@
                 });
             }
 
-            function GetAddedServices() {
-                return new Promise(function (resolve, reject) {
-                    $.ajax({
-                        url: "/Home/GetAddedServices",
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (result) {
-                            _addedServices = result;
-                            resolve();
-                        },
-                        error: function (xhr, textStatus, errorThrown) {
-                            reject('Error Geting added services');
-                        }
-                    });
-                });
-            }
-
-            function Checkbox(servicesInController) {
-                if (servicesInController.length > 0) {
+            function Checkbox(_servicesInController) {
+                if (_servicesInController.length > 0) {
                     var checkboxes = '';
-                    var checkedItems = [];
-                    $.each(servicesInController, function (i, item) {
-                        var checked = _addedServices.includes(item) ? 'checked' : '';
+                    $.each(_servicesInController, function (i, item) {
                         var checkbox = `<li class="item"><div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
-                                                                <label class="form-check-label" for="service-${i}">${item}</label>
-                                                            </div></li>`;
-                        if (_addedServices.includes(item)) {
-                            checkedItems.push(checkbox);
+                                        <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
+                                        <label class="form-check-label" for="service-${i}">${item}</label>
+                                    </div></li>`;
+                        checkboxes += checkbox;
 
-                        } else {
-                            checkboxes += checkbox;
-                        }
                     });
-                    $('#serviceCheckboxes').html(checkedItems.join('') + checkboxes);
-                    $('.form-check-input').on('change', function () {
-                        var serviceName = $(this).val();
-                        if (this.checked) {
-                            /*AddService(serviceName);*/
-                        } else {
-                            /*RemoveAddedService1(serviceName);*/
-                            var index = checkedItems.indexOf($(this).closest('.item'));
-                            if (index > -1) {
-                                checkedItems.splice(index, 1);
-                                checkboxes += $(this).closest('.item').prop('outerHTML');
-                                $('#serviceCheckboxes').html(checkedItems.join('') + checkboxes);
-                            }
-                        }
-                    });
+                    $('#serviceCheckboxes').html(/*checkedItems.join('') +*/ checkboxes);
                 }
             }
-
-            GetServicesInController()
-                .then(function () {
-                    return GetAddedServices();
-                })
-                .then(function () {
-                    Checkbox(_servicesInController);
-                })
-                .catch(function (error) {
-                    alert(error);
-                });
 
             $('#searchService').on('input', function () {
                 var searchText = $(this).val().toLowerCase();
@@ -361,14 +323,12 @@
                 });
             });
 
-            $('.btn-primary').on('click', function () {
-                $('input[type="checkbox"]:checked').each(function () {
-                    AddService($(this).val());
-                });
-                $('#displayService-modal').modal('hide');
-            });
-
-        });
+            //$('.btn-primary').on('click', function () {
+            //    $('input[type="checkbox"]:checked').each(function () {
+            //        AddService($(this).val());
+            //    });
+            //    $('#displayService-modal').modal('hide');
+            //});
 
     </script>
 
@@ -661,12 +621,7 @@
                 success: function () {
                     // Refresh the table
                     RealTimeTable();
-
-                    // Checked the added service
-                    $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', true);
-
-                    //Hide the checked service checkbox
-                    $('#serviceCheckboxes').find('input[type="checkbox"]:checked').closest('.item').hide();
+                    RealTimeCheckbox();
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     alert('Error adding service');
@@ -684,8 +639,7 @@
                     $("#serviceTable tbody").empty();
 
                     RealTimeTable();
-                    //unchecked the remove service
-                    $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
+                    RealTimeCheckbox();
                 },
                 error: function () {
                     alert("Failed to delete " + serviceName);
@@ -712,6 +666,7 @@
                     success: function () {
                         $("#serviceTable tbody").empty();
                         RealTimeTable();
+                        RealTimeCheckbox();
 
                         var commandText = command.toUpperCase();
                         if (command === "delete") {
@@ -723,8 +678,6 @@
                         document.querySelector('.toast-body').innerHTML = toastMessage;
                         toast.show();
 
-                        //unchecked the remove service
-                        $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
                     },
                     error: function () {
                         alert("Failed to delete " + serviceName);
@@ -742,7 +695,7 @@
     <div id="alert-modal" class="modal">
         <div class="modal-content">
             <div id="modal-title">System Message</div>
-            <div id="modal-message"> Are you sure you want to RESTART 'Service1'?</div>
+            <div id="modal-message"></div>
             <div class="modal-buttons">
                 <button type="button" id="btnYes" name="Yes" onclick="btnYes_Click" class="alert-buttons">Yes</button>
                 <button type="button" id="btnNo" name="No" onclick="btnNo_Click" class="alert-buttons">No</button>

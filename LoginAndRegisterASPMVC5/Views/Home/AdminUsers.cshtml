@@ -148,29 +148,28 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">Add user</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                 </div>
                 <div class="modal-body">
-                    @using (Html.BeginForm("AddUser", "Home", FormMethod.Post, new { id = "add-user-form" }))
-                    {
-                        //@Html.ValidationSummary()
+                    <form id="add-user-form" method="post" action="@Url.Action("AddUser", "Home")">
+                        @*@Html.ValidationSummary()*@
                         @Html.AntiForgeryToken()
 
                         <div class="form-group m-3">
                             @Html.LabelFor(m => m.FirstName, "First Name:", new { @class = "label fw-bold" })
-                            @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", @placeholder = "First Name", autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", autocomplete = "off" })
                             @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "badge badge-danger" })
                         </div>
 
                         <div class="form-group m-3">
                             @Html.LabelFor(m => m.LastName, "Last Name:", new { @class = "label fw-bold" })
-                            @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", @placeholder = "Last Name", autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", autocomplete = "off" })
                             @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "badge badge-danger" })
                         </div>
 
                         <div class="form-group m-3">
                             @Html.LabelFor(m => m.Email, "Email Address:", new { @class = "label fw-bold" })
-                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email Address", autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", autocomplete = "off" })
                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
                             @if (ViewBag.error != null)
                             {
@@ -180,13 +179,12 @@
 
                         <div class="form-group m-3 position-relative">
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password1" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "password1" })
                             <span toggle="#password1" class="bi bi-eye-fill field-icon toggle-password"></span>
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                         </div>
 
                         <div class="form-group m-3">
-                            @Html.LabelFor(m => m.IsAdmin, "Assign User to be an admin or not:", new { @class = "label mb-2 fw-bold" })
                             <div class="radio-container">
                                 <label>
                                     @Html.RadioButtonFor(m => m.IsAdmin, "True", new { onchange = "this.value = this.checked" })
@@ -196,10 +194,16 @@
                                     @Html.RadioButtonFor(m => m.IsAdmin, "False", new { onchange = "this.value = !this.checked" })
                                     <span>Not Admin</span>
                                 </label>
+                                <small class="text-muted ml-2 adminReminder">
+                                    <i class="bi bi-info-circle " data-toggle="tooltip" data-placement="bottom" title="Only an Admin can add other users and edit other users info including passwords."></i>
+                                </small>
                             </div>
-                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Add User</button>
                         </div>
-                    }
+                        <div class="form-group">
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Add User</button>
+                            <button type="button" id="cancelButton" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -211,10 +215,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">Edit user</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
                 </div>
                 <div class="modal-body">
-                    <form onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUser", "Home")">
+                    <form id="edit-user-form" onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUser", "Home")">
                         @Html.AntiForgeryToken()
 
                         <div class="form-group m-3">
@@ -233,12 +237,6 @@
                             <input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" value="" autocomplete="off" />
                         </div>
 
-                        @*<div class="form-group m-3">
-                                @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Enter New Password", id = "password2" })
-                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
-                            </div>*@
-
                         <div class="form-group m-3 position-relative">
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password2" })
@@ -247,19 +245,24 @@
                         </div>
 
                         <div class="form-group m-3">
-                            <label class="label mb-2 fw-bold">Assign User to be an admin or not:</label>
                             <div class="radio-container">
                                 <label>
                                     <input type="radio" name="IsAdmin" id="isAdminTrue" value="true" />
-                                    Admin
+                                    <span>Admin</span>
                                 </label>
                                 <label>
                                     <input type="radio" name="IsAdmin" id="isAdminFalse" value="false" />
-                                    Not Admin
+                                    <span>Non-Admin</span>
                                 </label>
+                                <small class="text-muted ml-2 adminReminder">
+                                    <i class="bi bi-info-circle " data-toggle="tooltip" data-placement="bottom" title="Only an Admin can add other users and edit other users info including passwords."></i>
+                                </small>
                             </div>
                         </div>
-                        <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2" value="addUser">Save Changes</button>
+                        <div class="form-group">
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2" value="addUser">Save Changes</button>
+                            <button type="button" id="cancel-button" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -277,6 +280,28 @@
             </div>
         </div>
     </div>
+
+    <!-- Clear all field when clicking the Cancel Button for Add users -->
+    <script>
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            document.getElementById('add-user-form').reset();
+        });
+    </script>
+
+    <!-- Clear all fields when clicking the Cancel Button for Edit users -->
+    <script>
+        $(function () {
+            // Function to clear all input fields
+            function clearFields() {
+                $('#edit-user-form input[type="text"], #edit-user-form input[type="email"], #edit-user-form input[type="password"], #edit-user-form input[type="radio"]').val('');
+            }
+
+            // Attach the clearFields function to the Cancel button click event
+            $('#cancel-button').click(function () {
+                clearFields();
+            });
+        });
+    </script>
 
     <!-- Show/Hide Password with eye icon -->
     <script>
@@ -296,7 +321,7 @@
     <div id="deleteUsers-modal" class="modal">
         <div class="modal-content">
             <div id="modal-title">System Message</div>
-            <div id="modal-message">Are you sure you want to DELETE 'Service1'?</div>
+            <div id="modal-message"></div>
             <div class="modal-buttons">
                 <button type="button" id="btnYes" name="Yes" onclick="btnYes_Click" class="alert-buttons">Yes</button>
                 <button type="button" id="btnNo" name="No" onclick="btnNo_Click" class="alert-buttons">No</button>
@@ -340,18 +365,45 @@
             RealTimeUsersTable()
         });
 
-        function DeleteUser(idUser) {
-            $.ajax({
-                type: 'POST',
-                url: '/Home/DeleteUser',
-                data: { idUser: idUser },
-                success: function () {
-                    RealTimeUsersTable();
-                },
-                error: function (xhr, status, error) {
-                    alert(error);
-                }
-            });
+        function DeleteUser(idUser, FirstName, LastName, command) {
+            /*Show the confirmation box here*/
+            var modal = document.getElementById("deleteUsers-modal");
+            var modalTitle = document.getElementById("modal-title");
+            var modalMessage = document.getElementById("modal-message");
+            var btnYes = document.getElementById("btnYes");
+            var btnNo = document.getElementById("btnNo");
+
+            modal.style.display = "block";
+            modalTitle.innerHTML = "<i class='bi bi-exclamation-triangle-fill text-warning'></i> System Message";
+            modalMessage.innerHTML = "Are you sure you want to " + command.toUpperCase() + " User" + " '" + FirstName + " " + LastName + "'?";
+            btnYes.onclick = function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/DeleteUser',
+                    data: { idUser: idUser },
+                    success: function () {
+                        RealTimeUsersTable();
+
+                        var commandText = command.toUpperCase();
+                        if (command === "delete") {
+                            commandText = "DELETED";
+                        }
+
+                        var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                        var toastMessage = "You " + commandText + " the user  " + "' " + FirstName + " " + LastName + " '" + ".";
+                        document.querySelector('.toast-body').innerHTML = toastMessage;
+                        toast.show();
+
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
+                modal.style.display = "none";
+            }
+            btnNo.onclick = function () {
+                modal.style.display = "none";
+            }
         }
 
         function editUser(idUser, firstName, lastName, email, isAdmin) {
@@ -430,13 +482,9 @@
                             row += "<i class='bi bi-pencil-square'></i>";
                             row += "</button>";
 
-                            row += "<button onclick='DeleteUser(\"" + Data.idUser + "\", \"delete\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
+                            row += "<button onclick='DeleteUser(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"delete\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
                             row += "<i class='bi bi-trash3-fill'></i>";
                             row += "</button>";
-
-                            /* row += "<button onclick='UpdateUser(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";*/
-                            /*row += "<i class='bi bi-trash3-fill'></i>";*/
-
 
                             row += "</td></tr>";
                             $("#usersTable tbody").append(row);
