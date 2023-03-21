@@ -207,115 +207,110 @@
     <!--Checkbox-->
     <script>
         $(document).ready(function () {
-            var _servicesInController;
-            var _addedServices;
+            RealTimeCheckbox();
+        });
 
-            function GetServicesInController() {
-                return new Promise(function (resolve, reject) {
-                    $.ajax({
-                        url: "/Home/GetServicesInController",
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (result) {
-                            _servicesInController = result;
-                            resolve();
-                        },
-                        error: function (xhr, textStatus, errorThrown) {
-                            reject('Error Geting service names');
-                        }
-                    });
-                });
-            }
+        var _servicesInController;
+/*            var _addedServices;*/
 
-            function GetAddedServices() {
-                return new Promise(function (resolve, reject) {
-                    $.ajax({
-                        url: "/Home/GetAddedServices",
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (result) {
-                            _addedServices = result;
-                            resolve();
-                        },
-                        error: function (xhr, textStatus, errorThrown) {
-                            reject('Error Geting added services');
-                        }
-                    });
-                });
-            }
-
-            function Checkbox(servicesInController) {
-                if (servicesInController.length > 0) {
-                    var checkboxes = '';
-                    var checkedItems = [];
-                    $.each(servicesInController, function (i, item) {
-                        var checked = _addedServices.includes(item) ? 'checked' : '';
-                        var checkbox = `<li class="item"><div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}" ${checked}>
-                                            <label class="form-check-label" for="service-${i}">${item}</label>
-                                        </div></li>`;
-                        if (_addedServices.includes(item)) {
-                            checkedItems.push(checkbox);
-
-                        } else {
-                            checkboxes += checkbox;
-                        }
-                    });
-                    $('#serviceCheckboxes').html(checkedItems.join('') + checkboxes);
-                    $('.form-check-input').on('change', function () {
-                        var serviceName = $(this).val();
-                        if (this.checked) {
-                            /*AddService(serviceName);*/
-                        } else {
-                            /*RemoveAddedService1(serviceName);*/
-                            var index = checkedItems.indexOf($(this).closest('.item'));
-                            if (index > -1) {
-                                checkedItems.splice(index, 1);
-                                checkboxes += $(this).closest('.item').prop('outerHTML');
-                                $('#serviceCheckboxes').html(checkedItems.join('') + checkboxes);
-                            }
-                        }
-                    });
-                }
-            }
-
+        function RealTimeCheckbox() {
             GetServicesInController()
-                .then(function () {
-                    return GetAddedServices();
-                })
                 .then(function () {
                     Checkbox(_servicesInController);
                 })
                 .catch(function (error) {
                     alert(error);
                 });
+        }
 
-            $('#searchService').on('input', function () {
-                var searchText = $(this).val().toLowerCase();
-                $('.form-check-label').each(function () {
-                    var label = $(this).text().toLowerCase();
-                    $(this).closest('.item').toggle(label.includes(searchText));
+        function AddService(serviceName) {
+            $.ajax({
+                url: "/Home/AddService",
+                type: "POST",
+                data: { serviceName: serviceName },
+                success: function () {
+                    // Refresh the table
+                    RealTimeTable();
+                    RealTimeCheckbox();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert('Error adding service');
+                }
+            });
+        }
+
+        function GetServicesInController() {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/Home/GetServicesInController",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (result) {
+                        _servicesInController = result;
+                        resolve();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        reject('Error Geting service names');
+                    }
                 });
             });
+        }
 
-            $('input[name="ServiceName"]').on('input', function () {
-                var filter = $(this).val().toUpperCase();
-                $('#serviceCheckboxes li').each(function () {
+        //function GetAddedServices() {
+        //    return new Promise(function (resolve, reject) {
+        //        $.ajax({
+        //            url: "/Home/GetAddedServices",
+        //            type: 'GET',
+        //            dataType: 'json',
+        //            success: function (result) {
+        //                _addedServices = result;
+        //                resolve();
+        //            },
+        //            error: function (xhr, textStatus, errorThrown) {
+        //                reject('Error Geting added services');
+        //            }
+        //        });
+        //    });
+        //}
 
-                    var label = $(this).find('label').text().toUpperCase();
-                    $(this).toggle(label.includes(filter));
+        function Checkbox(_servicesInController) {
+            if (_servicesInController.length > 0) {
+                var checkboxes = '';
+                $.each(_servicesInController, function (i, item) {
+                    var checkbox = `<li class="item"><div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
+                                        <label class="form-check-label" for="service-${i}">${item}</label>
+                                    </div></li>`;
+                    checkboxes += checkbox;
+
                 });
-            });
+                $('#serviceCheckboxes').html(/*checkedItems.join('') +*/ checkboxes);
+            }
+        }
 
-            $('.btn-primary').on('click', function () {
-                $('input[type="checkbox"]:checked').each(function () {
-                    AddService($(this).val());
-                });
-                $('#displayService-modal').modal('hide');
+        $('#searchService').on('input', function () {
+            var searchText = $(this).val().toLowerCase();
+            $('.form-check-label').each(function () {
+                var label = $(this).text().toLowerCase();
+                $(this).closest('.item').toggle(label.includes(searchText));
             });
-
         });
 
+        $('input[name="ServiceName"]').on('input', function () {
+            var filter = $(this).val().toUpperCase();
+            $('#serviceCheckboxes li').each(function () {
+
+                var label = $(this).find('label').text().toUpperCase();
+                $(this).toggle(label.includes(filter));
+            });
+        });
+
+        $('.btn-primary').on('click', function () {
+            $('input[type="checkbox"]:checked').each(function () {
+                AddService($(this).val());
+            });
+            $('#displayService-modal').modal('hide');
+        });
     </script>
 
     <!-- Table -->
@@ -583,82 +578,6 @@
 
     <!--Add or Remove Service-->
     <script>
-        //function AddService(serviceName) {
-        //    $.ajax({
-        //        url: "/Home/AddService",
-        //        type: "POST",
-        //        data: { serviceName: serviceName },
-        //        success: function () {
-        //            // Refresh the table
-        //            RealTimeTable();
-
-        //            //checked the added service
-
-        //            $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', true);
-
-        //            // Add the checkbox to the top of the list
-        //            var checkbox = $('input[type="checkbox"][value="' + serviceName + '"]').closest('.item');
-        //            checkbox.prependTo('#serviceCheckboxes');
-        //        },
-        //        error: function () {
-        //            alert("Failed to add " + serviceName);
-        //        }
-        //    });
-        //}
-
-        function AddService(serviceName) {
-            $.ajax({
-                url: "/Home/AddService",
-                type: "POST",
-                data: { serviceName: serviceName },
-                success: function () {
-                    // Refresh the table
-                    RealTimeTable();
-
-                    // Checked the added service
-                    $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', true);
-
-                    //Hide the checked service checkbox
-                    $('#serviceCheckboxes').find('input[type="checkbox"]:checked').closest('.item').hide();
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    alert('Error adding service');
-                }
-            });
-        }
-
-        //function AddService(serviceName) {
-        //    $.ajax({
-        //        url: "/Home/AddService",
-        //        type: "POST",
-        //        data: { serviceName: serviceName },
-        //        success: function () {
-        //            // Refresh the table
-
-        //            RealTimeTable();
-
-        //            // Checked the added service
-        //            $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', true);
-
-        //            // Add the checkbox to the top of the list
-        //            var checkbox = $('input[type="checkbox"][value="' + serviceName + '"]').closest('.item');
-        //            checkbox.prependTo('#serviceCheckboxes');
-
-        //            // Hide the checked service checkbox and remove it from the search results
-        //            var checkedCheckbox = $('#serviceCheckboxes').find('input[type="checkbox"]:checked');
-        //            checkedCheckbox.closest('.item').hide();
-        //            checkedCheckbox.prop('tabindex', '-1');
-
-        //            // Clear the search field and results
-        //            $('#searchServices').val('');
-        //            $('.item').show();
-        //        },
-        //        error: function (xhr, textStatus, errorThrown) {
-        //            alert('Error adding service');
-        //        }
-        //    });
-        //}
-
 
         function RemoveAddedService1(serviceName) {
             /*Show the confirmation box here*/
@@ -670,8 +589,7 @@
                     $("#serviceTable tbody").empty();
  
                     RealTimeTable();
-                    //unchecked the remove service
-                    $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
+                    RealTimeCheckbox();
                 },
                 error: function () {
                     alert("Failed to delete " + serviceName);
@@ -698,9 +616,7 @@
                     success: function () {
                         $("#serviceTable tbody").empty();
                         RealTimeTable();
-
-                        //unchecked the remove service
-                        $('input[type="checkbox"][value="' + serviceName + '"]').prop('checked', false);
+                        RealTimeCheckbox();
                     },
                     error: function () {
                         alert("Failed to delete " + serviceName);
@@ -736,32 +652,6 @@
         </div>
     </div>
 
-    <!-- Select All Checkboxes -->
-    <script>
-        $(document).ready(function () {
-            // Activate tooltip
-            $('[data-toggle="tooltip"]').tooltip();
-
-            // Select/Deselect checkboxes
-            var checkbox = $('table tbody input[type="checkbox"]');
-            $("selectAll").click(function () {
-                if (this.checked) {
-                    checkbox.each(function () {
-                        this.checked = true;
-                    });
-                } else {
-                    checkbox.each(function () {
-                        this.checked = false;
-                    });
-                }
-            });
-            checkbox.click(function () {
-                if (!this.checked) {
-                    $("selectAll").prop("checked", false);
-                }
-            });
-        });
-    </script>
 
     <!-- Nav Bar Active -->
     <script>

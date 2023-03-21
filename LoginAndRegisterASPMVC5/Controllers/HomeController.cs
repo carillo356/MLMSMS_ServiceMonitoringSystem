@@ -30,6 +30,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Data.Entity.Validation;
 using System.Text.RegularExpressions;
 using System.Diagnostics.Eventing.Reader;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace LoginAndRegisterASPMVC5.Controllers
 {
@@ -38,10 +39,10 @@ namespace LoginAndRegisterASPMVC5.Controllers
         private DB_Entities _db = new DB_Entities();
         public static List<Service> _activeServices = new List<Service>();
         public static List<User> _users = new List<User>();
+        public static List<string> _servicesAvailable;
 
         public ActionResult Index()
         {
-            //InsertAllServices();
             if (Session["idUser"] != null)
             {
                 return View();
@@ -57,17 +58,39 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
 
             string serviceName = GetInput.ServiceName;
+
             if (!_activeServices.Any(s => s.ServiceName == serviceName))
             {
+                _servicesAvailable.Remove(serviceName); // remove the specified string element from the list
                 GetServicesTB(serviceName);
             }
+
+
         }
 
         public void RemoveAddedService(string serviceName) //Removes a service row
         {
             var serviceToRemove = _activeServices.SingleOrDefault(r => r.ServiceName == serviceName);
+
             if (serviceToRemove != null)
+            {
+                _servicesAvailable.Add(serviceName); // Add the new service name to the list
                 _activeServices.Remove(serviceToRemove);
+            }
+
+   
+        }
+
+        public ActionResult RealTimeTable()
+        {
+            List<Service> _activeServicesCopy = new List<Service>(_activeServices); // create a copy of the services list
+            _activeServices.Clear();
+            foreach (Service service in _activeServicesCopy)
+            {
+                GetServicesTB(service.ServiceName);
+            }
+
+            return Json(_activeServices, JsonRequestBehavior.AllowGet);
         }
 
         public void GetServicesTB(string serviceName)
@@ -104,34 +127,47 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
+        public void ServicesInController()
+        {
+
+                using (SqlConnection connection = DatabaseManager.GetConnection())
+                {
+                    _servicesAvailable = GetSingleColumn(connection, "GetServicesAvailable");
+                }
+            
+        }
+
         [HttpGet]
         public ActionResult GetServicesInController() // For the Service Checkboxes
         {
-            ServiceController[] servicesInController = ServiceController.GetServices(); // create a copy of the services list
-            List<string> servicesInControllerList = new List<string>();
 
-            foreach (ServiceController serviceInController in servicesInController)
-            {
-                servicesInControllerList.Add(serviceInController.ServiceName.ToString());
-            }
-            return Json(servicesInControllerList, JsonRequestBehavior.AllowGet);
+            return Json(_servicesAvailable, JsonRequestBehavior.AllowGet);
+          
         }
 
-        public ActionResult GetAddedServices()//For checkboxes as reference
-        {
-            List<string> addedServicesList = new List<string>();
+        //ServiceController[] servicesInController = ServiceController.GetServices(); // create a copy of the services list
+        //List<string> servicesInControllerList = new List<string>();
 
-            foreach (Service service in _activeServices)
-            {
-                addedServicesList.Add(service.ServiceName.ToString());
-            }
-            return Json(addedServicesList, JsonRequestBehavior.AllowGet);
-        }
+        //foreach (ServiceController serviceInController in servicesInController)
+        //{
+        //    servicesInControllerList.Add(serviceInController.ServiceName.ToString());
+        //}
+
+        //public ActionResult GetAddedServices()//For checkboxes as reference
+        //{
+        //    List<string> addedServicesList = new List<string>();
+
+        //    foreach (Service service in _activeServices)
+        //    {
+        //        addedServicesList.Add(service.ServiceName.ToString());
+        //    }
+        //    return Json(addedServicesList, JsonRequestBehavior.AllowGet);
+        //}
 
         [HttpPost]
         public ActionResult GetServiceLogsTB(string serviceName)
         {
-            string query = $"SELECT * FROM ServicesLogs WHERE sl_ServiceName = '{serviceName}' ORDER BY LASTSTART DESC";
+            string query = $"SELECT * FROM ServicesLogs WHERE sl_ServiceName = '{serviceName}' ORDER BY SL_LASTSTART DESC";
             List<Service> servicesLogsList = new List<Service>();
 
             try
@@ -232,7 +268,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             using (SqlConnection connection = DatabaseManager.GetConnection())
             {
                 List<string> ServicesAvailable = GetSingleColumn(connection, "GetServicesAvailable");
-
                 string sa_ServiceName = ServicesAvailable.FirstOrDefault(s => s == serviceName);
 
                 ServiceController sc = new ServiceController(sa_ServiceName);
@@ -294,17 +329,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public ActionResult RealTimeTable()
-        {
-            List<Service> _activeServicesCopy = new List<Service>(_activeServices); // create a copy of the services list
-            _activeServices.Clear();
-            foreach (Service service in _activeServicesCopy)
-            {
-                GetServicesTB(service.ServiceName);
-            }
 
-            return Json(_activeServices, JsonRequestBehavior.AllowGet);
-        }
 
         static void SP_UpdateServiceStatus(SqlConnection connection, string serviceName, string serviceStatus, string hostName, string logBy, DateTime lastStart, string lastEventLog)
         {
@@ -583,11 +608,11 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult Login()
         {
-            //if (Session["FullName"] != null) // check if the user is already logged in
-            //{
-            //    return RedirectToAction("Index", "Home"); // redirect to index page
-            //}
-
+            ServicesInController();
+            if (Session["FullName"] != null) // check if the user is already logged in
+            {
+                return RedirectToAction("Index", "Home"); // redirect to index page
+            }
             return View();
         }
 

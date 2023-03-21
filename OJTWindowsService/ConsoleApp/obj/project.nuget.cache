@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dtDx0eiLquKfF8baiE+/7vJPA+PedAEMR2OiSPiTQ6gi2qtMe6qmnfXybH3LkQJGsEVNk+43NA/36Q7DWA0o1g==",
+  "dgSpecHash": "9RZCQyl2ub7zllfxQny//41X3c3SqxdeRK7Shzv64FaFLjriHXSidzuaq9wlNL5yEBN5VeOYqsofL+kLc0+KMQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Aaron\\source\\repos\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
+  "projectFilePath": "C:\\github repos\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Aaron\\.nuget\\packages\\coreapplib\\1.0.21\\coreapplib.1.0.21.nupkg.sha512",
     "C:\\Users\\Aaron\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",

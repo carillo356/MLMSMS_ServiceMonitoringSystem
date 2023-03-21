@@ -262,3 +262,25 @@ C:\Users\PC\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\obj\Debug\LoginAndRegis
 C:\Users\PC\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\obj\Debug\LoginAndRegisterASPMVC5.csproj.CopyComplete
 C:\Users\PC\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\obj\Debug\LoginAndRegisterASPMVC5.dll
 C:\Users\PC\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\obj\Debug\LoginAndRegisterASPMVC5.pdb
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.AspNetCore.Http.Abstractions.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.AspNetCore.Http.Features.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.AspNetCore.Mvc.Abstractions.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.AspNetCore.Routing.Abstractions.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.Extensions.Primitives.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.Net.Http.Headers.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Buffers.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Memory.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Numerics.Vectors.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Runtime.CompilerServices.Unsafe.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Text.Encodings.Web.dll
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.AspNetCore.Http.Abstractions.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.AspNetCore.Http.Features.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.AspNetCore.Mvc.Abstractions.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.AspNetCore.Routing.Abstractions.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.Extensions.Primitives.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\Microsoft.Net.Http.Headers.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Buffers.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Memory.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Numerics.Vectors.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\github repos\LoginAndRegisterASPMVC5\bin\System.Text.Encodings.Web.xml
