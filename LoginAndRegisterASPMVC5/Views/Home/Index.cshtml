@@ -171,7 +171,7 @@
                         </div>
                         <div class="col-sm-6 button-container">
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
-                            <button type="button" class="btn btn-success"><i class="bi bi-arrow-clockwise" onclick="RealTimeTable()"></i><span>Refresh List</span></button>
+                            <button type="button" class="btn btn-success"><i class="bi bi-arrow-clockwise" onclick="RealTimeTable();"></i><span>Refresh List</span></button>
                         </div>
                     </div>
                 </div>
@@ -348,7 +348,7 @@
 
                 setTimeout(function () {
                     toast.dispose();
-                }, 4000);
+                }, 2000);
             }
 
             $('#displayService-modal').modal('hide');
@@ -617,13 +617,11 @@
 
                         if (Data.ServiceStatus === "Stopped") {
                             row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
-                            row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")'>Delete</button>";
                         } else if (Data.ServiceStatus === "Running") {
                             row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
                             row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
                             row += "<button class='action-button ms-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
-                        } else if (Data.ServicesStatus != "Running" && Data.ServicesStatus != "Stopped")
-                            row += "<button class='action-button' id='btnReload' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"reload\")'>Reload</button>";
+                        } row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")'>Delete</button>";
                         row += "</td></tr>";
                         $("#serviceTable tbody").append(row);
                     });

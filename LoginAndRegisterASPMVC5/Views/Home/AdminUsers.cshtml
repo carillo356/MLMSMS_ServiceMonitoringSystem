@@ -148,7 +148,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">Add user</h5>
-                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="add-user-form" method="post" @*action="@Url.Action("AddUser", "Home")*@>
@@ -221,7 +221,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">Edit user</h5>
-                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="edit-user-form" onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUser", "Home")">
@@ -254,7 +254,7 @@
                         <div class="form-group m-3">
                             <div class="radio-container">
                                 <label>
-                                    <input type="checkbox" name="IsAdmin" id="isAdmin" />
+                                    <input type="checkbox" name="IsAdmin" id="isAdmin" value="true"/>
                                     <span>Admin</span>
                                 </label>
                                 <small class="text-muted ml-2 adminReminder">
@@ -364,12 +364,12 @@
 
                     var toast = new bootstrap.Toast(document.getElementById('liveToast'));
                     var toastMessage = result.message;
-                document.querySelector('.toast-body').innerHTML = toastMessage;
-                toast.show();
+                    document.querySelector('.toast-body').innerHTML = toastMessage;
+                    toast.show();
 
-                setTimeout(function () {
-                    toast.dispose();
-                }, 4000);
+                    setTimeout(function () {
+                        toast.dispose();
+                    }, 4000);
 
                     // Hide modal
                     $('#editUsers-modal').modal('hide');

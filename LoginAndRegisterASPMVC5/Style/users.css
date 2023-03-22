@@ -251,6 +251,10 @@ table.table td:last-child i {
         width: 80%;
     }
 
+    #deleteUsers-modal .modal-content {
+        width: 80%;
+    }
+
     #usersTable table,
     #usersTable thead,
     #usersTable tbody,
@@ -288,7 +292,7 @@ table.table td:last-child i {
             position: absolute;
             top: 6px;
             left: 6px;
-            width: 45%;
+            width: 40%;
             padding-right: 10px;
             white-space: nowrap;
             font-size: 16px;

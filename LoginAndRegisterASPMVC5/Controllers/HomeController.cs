@@ -41,7 +41,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public static List<string> _servicesAvailable;
         public ActionResult Index()
         {
-            //InsertAllServices();
+            
             if (Session["idUser"] != null)
             {
                 return View();
@@ -78,11 +78,18 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             try
             {
-                using (SqlConnection connection = DatabaseManager.GetConnection())
+                using (SqlConnection connection = GetConnection())
                 using (SqlCommand command = new SqlCommand("GetServiceLogsByServiceName", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    if (serviceName != null)
+                    {
+                        command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@ServiceName", DBNull.Value);
+                    }
 
                     SqlDataReader reader = command.ExecuteReader();
 
@@ -93,7 +100,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             _activeServices.Add(new Service()
                             {
                                 ServiceName = reader["sl_ServiceName"].ToString(),
-                                LastStart = reader["sl_LastStart"].ToString(),
+                                LastStart = (DateTime)reader["sl_LastStart"],
                                 ServiceStatus = reader["sl_ServiceStatus"].ToString(),
                                 LastEventLog = reader["sl_LastEventLog"].ToString(),
                                 HostName = reader["sl_HostName"].ToString()
@@ -108,10 +115,11 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
+
         public void ServicesInController()
         {
 
-            using (SqlConnection connection = DatabaseManager.GetConnection())
+            using (SqlConnection connection = GetConnection())
             {
                 _servicesAvailable = GetSingleColumn(connection, "GetServicesAvailable");
             }
@@ -145,7 +153,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
             try
             {
-                using (SqlConnection connection = DatabaseManager.GetConnection())
+                using (SqlConnection connection = GetConnection())
                 using (SqlCommand command = new SqlCommand(query, connection))
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -154,7 +162,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         servicesLogsList.Add(new Service()
                         {
                             ServiceName = reader["sl_ServiceName"].ToString(),
-                            LastStart = reader["sl_LastStart"].ToString(),
+                            LastStart = (DateTime)reader["sl_LastStart"],
                             ServiceStatus = reader["sl_ServiceStatus"].ToString(),
                             LastEventLog = reader["sl_LastEventLog"].ToString(),
                             HostName = reader["sl_HostName"].ToString()
@@ -238,7 +246,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
 
 
-            using (SqlConnection connection = DatabaseManager.GetConnection())
+            using (SqlConnection connection = GetConnection())
             {
                 List<string> ServicesAvailable = GetSingleColumn(connection, "GetServicesAvailable");
 
@@ -380,7 +388,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public void UpdateEmailNotification(int idUser)
         {
-            using (SqlConnection connection = DatabaseManager.GetConnectionUsers())
+            using (SqlConnection connection = GetConnection())
             {
                 using (var command = new SqlCommand("dbo.UpdateUserEmailNotification", connection))
                 {
@@ -394,7 +402,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public void DeleteUser(int idUser)
         {
-            using (SqlConnection connection = DatabaseManager.GetConnectionUsers())
+            using (SqlConnection connection = GetConnection())
             {
                 using (var command = new SqlCommand("dbo.DeleteUser", connection))
                 {
@@ -413,7 +421,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             try
             {
                 _users.Clear();
-                using (SqlConnection connection = DatabaseManager.GetConnectionUsers())
+                using (SqlConnection connection = GetConnection())
                 using (SqlCommand commandLatestRecord = new SqlCommand(query, connection))
                 {
                     SqlDataReader reader = commandLatestRecord.ExecuteReader();
@@ -451,7 +459,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             try
             {
-                using (var command = new SqlCommand("INSERT INTO Services (ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM Services WHERE ServiceName = @ServiceName)", connection))
+                using (var command = new SqlCommand("INSERT INTO ServicesMonitored (sm_ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM ServicesMonitored WHERE sm_ServiceName = @ServiceName)", connection))
                 {
                     command.Parameters.AddWithValue("@ServiceName", serviceName);
                     command.ExecuteNonQuery();
@@ -465,17 +473,15 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public static void InsertAllServices()
         {
-            using (SqlConnection connection = DatabaseManager.GetConnection())
-            {
-                // Get a list of all the installed services
-                var services = ServiceController.GetServices();
+            using (SqlConnection connection = GetConnection())
+
 
                 // Insert each service name into the Services table
-                foreach (var service in services)
+                foreach (var service in _servicesAvailable)
                 {
-                    StoreServiceName(connection, service.ServiceName);
+                    StoreServiceName(connection, service);
                 }
-            }
+
         }
 
         public ActionResult Register()
@@ -658,6 +664,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public ActionResult Login()
         {
             ServicesInController();
+            InsertAllServices();
             if (Session["FullName"] != null) // check if the user is already logged in
             {
                 return RedirectToAction("Index", "Home"); // redirect to index page
@@ -700,60 +707,15 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return RedirectToAction("Login");
         }
 
-    }
-
-    public sealed class DatabaseManager
-    {
-        private static readonly Lazy<SqlConnection> _lazyConnection = new Lazy<SqlConnection>(() => new SqlConnection());
-        private static readonly Lazy<SqlConnection> _lazyConnectionUsers = new Lazy<SqlConnection>(() => new SqlConnection());
-
-        private DatabaseManager()
-        {
-        }
-
         public static SqlConnection GetConnection()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
-            SqlConnection connection = _lazyConnection.Value;
+            SqlConnection connection = new SqlConnection(connectionString);
             connection.ConnectionString = connectionString;
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                connection.Open();
-            }
-
+            connection.Open();
             return connection;
-        }
-
-        public static SqlConnection GetConnectionUsers()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
-            SqlConnection connection = _lazyConnectionUsers.Value;
-            connection.ConnectionString = connectionString;
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                connection.Open();
-            }
-
-            return connection;
-        }
-
-        public static void CloseConnection()
-        {
-            if (_lazyConnection.Value.State != System.Data.ConnectionState.Closed)
-            {
-                _lazyConnection.Value.Close();
-            }
-        }
-
-        public static void CloseConnectionUsers()
-        {
-            if (_lazyConnectionUsers.Value.State != System.Data.ConnectionState.Closed)
-            {
-                _lazyConnectionUsers.Value.Close();
-            }
         }
     }
-
 }
 
 //string hostName = Session["FullName"].ToString();
