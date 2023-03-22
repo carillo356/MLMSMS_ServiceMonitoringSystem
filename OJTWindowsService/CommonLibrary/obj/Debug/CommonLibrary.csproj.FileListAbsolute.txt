@@ -1,0 +1,7 @@
+C:\Users\Aaron\source\repos\OJTWindowsService\CommonLibrary\bin\Debug\CommonLibrary.dll.config
+C:\Users\Aaron\source\repos\OJTWindowsService\CommonLibrary\bin\Debug\CommonLibrary.dll
+C:\Users\Aaron\source\repos\OJTWindowsService\CommonLibrary\bin\Debug\CommonLibrary.pdb
+C:\Users\Aaron\source\repos\OJTWindowsService\CommonLibrary\obj\Debug\CommonLibrary.csproj.AssemblyReference.cache
+C:\Users\Aaron\source\repos\OJTWindowsService\CommonLibrary\obj\Debug\CommonLibrary.csproj.CoreCompileInputs.cache
+C:\Users\Aaron\source\repos\OJTWindowsService\CommonLibrary\obj\Debug\CommonLibrary.dll
+C:\Users\Aaron\source\repos\OJTWindowsService\CommonLibrary\obj\Debug\CommonLibrary.pdb

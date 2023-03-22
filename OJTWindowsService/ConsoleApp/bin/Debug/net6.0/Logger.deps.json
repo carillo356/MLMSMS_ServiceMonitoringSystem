@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "Logger/1.0.0": {
         "dependencies": {
+          "CommonLibrary": "1.0.0",
           "CoreAppLib": "1.0.21",
           "System.Configuration.ConfigurationManager": "7.0.0",
           "System.Data.SqlClient": "4.8.5",
@@ -266,6 +267,11 @@
             "fileVersion": "7.0.22.51805"
           }
         }
+      },
+      "CommonLibrary/1.0.0": {
+        "runtime": {
+          "CommonLibrary.dll": {}
+        }
       }
     }
   },
@@ -400,6 +406,11 @@
       "sha512": "sha512-bR4qdCmssMMbo9Fatci49An5B1UaVJZHKNq70PRgzoLYIlitb8Tj7ns/Xt5Pz1CkERiTjcVBDU2y1AVrPBYkaw==",
       "path": "system.windows.extensions/7.0.0",
       "hashPath": "system.windows.extensions.7.0.0.nupkg.sha512"
+    },
+    "CommonLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

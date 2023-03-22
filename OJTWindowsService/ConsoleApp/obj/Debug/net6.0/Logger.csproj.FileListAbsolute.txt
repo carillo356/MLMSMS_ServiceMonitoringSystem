@@ -1,5 +1,4 @@
 C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\Logger.exe
-C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\Logger.dll.config
 C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\Logger.deps.json
 C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\Logger.runtimeconfig.json
 C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\Logger.dll
@@ -45,3 +44,7 @@ C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\obj\Debug\net6.0\refint
 C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\obj\Debug\net6.0\Logger.pdb
 C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\obj\Debug\net6.0\Logger.genruntimeconfig.cache
 C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\obj\Debug\net6.0\ref\Logger.dll
+C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\CommonLibrary.dll
+C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\CommonLibrary.pdb
+C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\CommonLibrary.dll.config
+C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\Logger.dll.config

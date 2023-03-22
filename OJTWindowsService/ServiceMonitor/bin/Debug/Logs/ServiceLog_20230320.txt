@@ -1,0 +1,15 @@
+Exception: big scopeException of type 'System.Exception' was thrown.
+07:56 am
+
+Exception: servicelogsObject reference not set to an instance of an object.
+08:13 am
+
+Exception: servicelogsObject reference not set to an instance of an object.
+08:13 am
+
+Exception: servicelogsObject reference not set to an instance of an object.
+08:13 am
+
+Exception: servicelogsObject reference not set to an instance of an object.
+08:13 am
+

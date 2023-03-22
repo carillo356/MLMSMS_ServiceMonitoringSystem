@@ -30,6 +30,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Data.Entity.Validation;
 using System.Text.RegularExpressions;
 using System.Diagnostics.Eventing.Reader;
+using System.IO;
 
 namespace LoginAndRegisterASPMVC5.Controllers
 {
@@ -41,7 +42,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public static List<string> _servicesAvailable;
         public ActionResult Index()
         {
-            //InsertAllServices();
+
             if (Session["idUser"] != null)
             {
                 return View();
@@ -451,7 +452,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             try
             {
-                using (var command = new SqlCommand("INSERT INTO Services (ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM Services WHERE ServiceName = @ServiceName)", connection))
+                using (var command = new SqlCommand("INSERT INTO ServicesMonitored (sm_ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM ServicesMonitored WHERE sm_ServiceName = @ServiceName)", connection))
                 {
                     command.Parameters.AddWithValue("@ServiceName", serviceName);
                     command.ExecuteNonQuery();
@@ -466,16 +467,14 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public static void InsertAllServices()
         {
             using (SqlConnection connection = DatabaseManager.GetConnection())
-            {
-                // Get a list of all the installed services
-                var services = ServiceController.GetServices();
+          
 
                 // Insert each service name into the Services table
-                foreach (var service in services)
+                foreach (var service in _servicesAvailable)
                 {
-                    StoreServiceName(connection, service.ServiceName);
+                    StoreServiceName(connection, service);
                 }
-            }
+            
         }
 
         public ActionResult Register()
@@ -599,6 +598,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public ActionResult Login()
         {
             ServicesInController();
+            InsertAllServices();
             if (Session["FullName"] != null) // check if the user is already logged in
             {
                 return RedirectToAction("Index", "Home"); // redirect to index page
