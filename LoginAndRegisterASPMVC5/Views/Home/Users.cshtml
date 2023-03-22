@@ -75,70 +75,78 @@
                         <div class="col-sm-6">
                             <h2><b>List of Users</b></h2>
                         </div>
-                        @*<div class="col-sm-6 button-container">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUsers-modal"><i class="bi bi-plus-circle"></i><span>Add Users</span></button>
-                            </div>*@
                     </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover" id="usersTable">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 15%;">FIRST NAME</th>
+                    <th scope="col" style="width: 15%;">LAST NAME</th>
+                    <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
+                    <th scope="col" style="width: 10%;">USER ROLE</th>
+                    <th scope="col" style="width: 15%;">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- table content goes here -->
+            </tbody>
+        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="nonAdminRow">
+                        <div class="btn_nonAdminRow">
+                            <span class="sBtn_nonAdminRow">Select row</span>
+                            <i class="bi bi-arrow-down-short"></i>
+                        </div>
+
+                        <ul class="options_nonAdminRow">
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">5 rows</span>
+                            </li>
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">10 rows</span>
+                            </li>
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">15 rows</span>
+                            </li>
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">20 rows</span>
+                            </li>
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">All rows</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
+                </div>
+                <div class="col-md-4">
+                    <ul class="pagination">
+                        <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <table class="table table-hover" id="usersTable">
-        <thead>
-            <tr>
-                <th scope="col" style="width: 15%;">FIRST NAME</th>
-                <th scope="col" style="width: 15%;">LAST NAME</th>
-                <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
-                <th scope="col" style="width: 10%;">USER ROLE</th>
-                <th scope="col" style="width: 15%;">ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- table content goes here -->
-        </tbody>
-    </table>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="nonAdminRow">
-                    <div class="btn_nonAdminRow">
-                        <span class="sBtn_nonAdminRow">Select row</span>
-                        <i class="bi bi-arrow-down-short"></i>
-                    </div>
-
-                    <ul class="options_nonAdminRow">
-                        <li class="option_nonAdmin">
-                            <span class="option_nonAdmin-text">5 rows</span>
-                        </li>
-                        <li class="option_nonAdmin">
-                            <span class="option_nonAdmin-text">10 rows</span>
-                        </li>
-                        <li class="option_nonAdmin">
-                            <span class="option_nonAdmin-text">15 rows</span>
-                        </li>
-                        <li class="option_nonAdmin">
-                            <span class="option_nonAdmin-text">20 rows</span>
-                        </li>
-                        <li class="option_nonAdmin">
-                            <span class="option_nonAdmin-text">All rows</span>
-                        </li>
-                    </ul>
-                </div>
+    <!-- Toast Design for any Action -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-info-circle"></i>
+                <strong class="me-auto">  System Message</strong>
             </div>
-            <div class="col-md-4">
-                <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
-            </div>
-            <div class="col-md-4">
-                <ul class="pagination">
-                    <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
+            <div class="toast-body">
             </div>
         </div>
     </div>
@@ -239,11 +247,11 @@
                         row += "<td>" + Role + "</td>";
                         row += "<td>";
                         if (Data.Email_Notification == true) {
-                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
+                            row += "<button onclick='setNotification(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
                             row += "<i class='bi bi-envelope-check-fill'></i>";
                             row += "</button>";
                         } else {
-                            row += "<button onclick='setNotification(\"" + Data.idUser + "\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
+                            row += "<button onclick='setNotification(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
                             row += "<i class='bi bi-envelope-x-fill'></i>";
                             row += "</button>";
                         }
@@ -264,7 +272,7 @@
             });
         });
 
-        function setNotification(idUser) {
+        function setNotification(idUser, FirstName, LastName, command) {
             $.ajax({
                 type: 'POST',
                 url: '/Home/UpdateEmailNotification',
@@ -275,6 +283,21 @@
                             showPage(pageNumber);
                         });
                     });
+
+                    if (command === "on") {
+                        commandText = "RECEIVE";
+                    } else if (command === "off") {
+                        commandText = "NOT RECEIVE";
+                    }
+
+                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    var toastMessage = "User " + "' " + FirstName + " " + LastName + " '" + " WILL " + commandText + " email notifications.";
+                    document.querySelector('.toast-body').innerHTML = toastMessage;
+                    toast.show();
+
+                    setTimeout(function () {
+                        toast.dispose();
+                    }, 4000);
                 },
                 error: function (xhr, status, error) {
                     alert(error);

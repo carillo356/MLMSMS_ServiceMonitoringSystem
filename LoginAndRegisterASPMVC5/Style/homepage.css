@@ -423,17 +423,17 @@ header .mobile-toggler {
 /* Service Table */
 #serviceTable, #usersTable {
     margin: auto;
-    width: 67%;
+    width: 100%;
     margin-top: -40px;
 }
 
 #btnDelete {
-    background-color: #ff4122;
+    background-color: #990000;
     color: white;
 }
 
     #btnDelete:hover {
-        background-color: #db523b;
+        background-color: #a80d0d;
     }
 
 .serviceRow {
@@ -523,6 +523,10 @@ header .mobile-toggler {
     font-size: 20px;
 }
 
+.toast-body {
+    color: red;
+}
+
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
     .list-items {
         z-index: 999;
@@ -539,11 +543,24 @@ header .mobile-toggler {
         margin-top: 15px;
     }
 
-    .clearfix {
-        display: flex;
+    .serviceRow {
         justify-content: center;
         align-items: center;
-        margin-bottom: 15px;
+        text-align: center;
+        margin: auto;
+        margin-top: 15px;
+        width: 43%;
+    }
+
+    .optionsRow {
+        z-index: 1;
+    }
+
+    .hint-text {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin: auto;
     }
 
     #serviceTable, #usersTable {

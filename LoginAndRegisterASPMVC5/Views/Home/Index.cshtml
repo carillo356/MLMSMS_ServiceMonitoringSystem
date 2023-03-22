@@ -114,7 +114,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="hint-text" style="margin-left: -80px;">Page <b>1</b> out of <b>5</b></div>
+                        <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
                     </div>
                     <div class="col-md-4">
                         <ul class="pagination">
@@ -171,69 +171,69 @@
                         </div>
                         <div class="col-sm-6 button-container">
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
-                            <button type="button" class="btn btn-success"><i class="bi bi-arrow-clockwise"></i><span>Refresh List</span></button>
+                            <button type="button" class="btn btn-success"><i class="bi bi-arrow-clockwise" onclick="RealTimeTable()"></i><span>Refresh List</span></button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <table class="table table-hover" id="serviceTable">
-        <thead>
-            <tr>
-                <th scope="col" style="width: 15%;">SERVICE NAME</th>
-                <th scope="col" style="width: 15%;">LAST START</th>
-                <th scope="col" style="width: 12%;">LAST LOG</th>
-                <th scope="col" style="width: 12%;">SERVICE STATUS</th>
-                <th scope="col" style="width: 15%;">ACTION BY</th>
-                <th scope="col" style="width: 15%;">ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- table content goes here -->
-        </tbody>
-    </table>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="serviceRow">
-                    <div class="btnRow">
-                        <span class="sBtnRow">Select row</span>
-                        <i class="bi bi-arrow-down-short"></i>
-                    </div>
+        <table class="table table-hover" id="serviceTable">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 15%;">SERVICE NAME</th>
+                    <th scope="col" style="width: 15%;">LAST START</th>
+                    <th scope="col" style="width: 12%;">LAST LOG</th>
+                    <th scope="col" style="width: 12%;">SERVICE STATUS</th>
+                    <th scope="col" style="width: 15%;">ACTION BY</th>
+                    <th scope="col" style="width: 15%;">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- table content goes here -->
+            </tbody>
+        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="serviceRow">
+                        <div class="btnRow">
+                            <span class="sBtnRow">Select row</span>
+                            <i class="bi bi-arrow-down-short"></i>
+                        </div>
 
-                    <ul class="optionsRow">
-                        <li class="optionRow">
-                            <span class="optionRow-text">5 rows</span>
-                        </li>
-                        <li class="optionRow">
-                            <span class="optionRow-text">10 rows</span>
-                        </li>
-                        <li class="optionRow">
-                            <span class="optionRow-text">15 rows</span>
-                        </li>
-                        <li class="optionRow">
-                            <span class="optionRow-text">20 rows</span>
-                        </li>
-                        <li class="optionRow">
-                            <span class="optionRow-text">All rows</span>
-                        </li>
+                        <ul class="optionsRow">
+                            <li class="optionRow">
+                                <span class="optionRow-text">5 rows</span>
+                            </li>
+                            <li class="optionRow">
+                                <span class="optionRow-text">10 rows</span>
+                            </li>
+                            <li class="optionRow">
+                                <span class="optionRow-text">15 rows</span>
+                            </li>
+                            <li class="optionRow">
+                                <span class="optionRow-text">20 rows</span>
+                            </li>
+                            <li class="optionRow">
+                                <span class="optionRow-text">All rows</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
+                </div>
+                <div class="col-md-4">
+                    <ul class="pagination" id="pagination-service">
+                        <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
                     </ul>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
-            </div>
-            <div class="col-md-4">
-                <ul class="pagination" id="pagination-service">
-                    <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
             </div>
         </div>
     </div>
@@ -274,61 +274,85 @@
                 });
         }
 
-            function GetServicesInController() {
-                return new Promise(function (resolve, reject) {
-                    $.ajax({
-                        url: "/Home/GetServicesInController",
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (result) {
-                            _servicesInController = result;
-                            resolve();
-                        },
-                        error: function (xhr, textStatus, errorThrown) {
-                            reject('Error Geting service names');
-                        }
-                    });
-                });
-            }
-
-            function Checkbox(_servicesInController) {
-                if (_servicesInController.length > 0) {
-                    var checkboxes = '';
-                    $.each(_servicesInController, function (i, item) {
-                        var checkbox = `<li class="item"><div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
-                                        <label class="form-check-label" for="service-${i}">${item}</label>
-                                    </div></li>`;
-                        checkboxes += checkbox;
-
-                    });
-                    $('#serviceCheckboxes').html(/*checkedItems.join('') +*/ checkboxes);
-                }
-            }
-
-            $('#searchService').on('input', function () {
-                var searchText = $(this).val().toLowerCase();
-                $('.form-check-label').each(function () {
-                    var label = $(this).text().toLowerCase();
-                    $(this).closest('.item').toggle(label.includes(searchText));
+        function GetServicesInController() {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/Home/GetServicesInController",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (result) {
+                        _servicesInController = result;
+                        resolve();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        reject('Error Geting service names');
+                    }
                 });
             });
+        }
 
-            $('input[name="ServiceName"]').on('input', function () {
-                var filter = $(this).val().toUpperCase();
-                $('#serviceCheckboxes li').each(function () {
+        function Checkbox(_servicesInController) {
+            if (_servicesInController.length > 0) {
+                var checkboxes = '';
+                $.each(_servicesInController, function (i, item) {
+                    var checkbox = `<li class="item"><div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
+                                            <label class="form-check-label" for="service-${i}">${item}</label>
+                                        </div></li>`;
+                    checkboxes += checkbox;
 
-                    var label = $(this).find('label').text().toUpperCase();
-                    $(this).toggle(label.includes(filter));
                 });
+                $('#serviceCheckboxes').html(/*checkedItems.join('') +*/ checkboxes);
+            }
+        }
+
+        $('#searchService').on('input', function () {
+            var searchText = $(this).val().toLowerCase();
+            $('.form-check-label').each(function () {
+                var label = $(this).text().toLowerCase();
+                $(this).closest('.item').toggle(label.includes(searchText));
+            });
+        });
+
+        $('input[name="ServiceName"]').on('input', function () {
+            var filter = $(this).val().toUpperCase();
+            $('#serviceCheckboxes li').each(function () {
+
+                var label = $(this).find('label').text().toUpperCase();
+                $(this).toggle(label.includes(filter));
+            });
+        });
+
+        //$('.btn-primary').on('click', function () {
+        //    $('input[type="checkbox"]:checked').each(function () {
+        //        AddService($(this).val());
+        //    });
+        //    $('#displayService-modal').modal('hide');
+        //});
+
+        $('.btn-primary').on('click', function () {
+            var checkedCount = $('input[type="checkbox"]:checked').length;
+            var servicesAdded = [];
+
+            $('input[type="checkbox"]:checked').each(function () {
+                var serviceName = $(this).val();
+                AddService(serviceName);
+                servicesAdded.push(serviceName);
             });
 
-            //$('.btn-primary').on('click', function () {
-            //    $('input[type="checkbox"]:checked').each(function () {
-            //        AddService($(this).val());
-            //    });
-            //    $('#displayService-modal').modal('hide');
-            //});
+            if (servicesAdded.length > 0) {
+                var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                var toastMessage = "You have added " + checkedCount + " service(s)";
+                document.querySelector('.toast-body').innerHTML = toastMessage;
+                toast.show();
+
+                setTimeout(function () {
+                    toast.dispose();
+                }, 4000);
+            }
+
+            $('#displayService-modal').modal('hide');
+        });
 
     </script>
 
@@ -402,12 +426,12 @@
                         }
 
                         var toast = new bootstrap.Toast(document.getElementById('liveToast'));
-                        var toastMessage = "You " + commandText + " the service " + " ' " +serviceName + " ' " + ".";
+                        var toastMessage = "You " + commandText + " the service " + " ' " + serviceName + " ' " + ".";
                         document.querySelector('.toast-body').innerHTML = toastMessage;
                         toast.show();
 
                         setTimeout(function () {
-                            toast.hide();
+                            toast.dispose();
                         }, 4000);
                     },
                     error: function () {
@@ -619,6 +643,17 @@
                 type: "POST",
                 data: { serviceName: serviceName },
                 success: function () {
+
+                    var $servicesTable = $('#servicesTable');
+                    var $tableRows = $servicesTable.find('tbody tr');
+
+                    // Add the new service(s) to the top of the table in the order they were selected
+                    var $newRows = $('input[type="checkbox"]:checked').map(function () {
+                        return `<tr><td>${$(this).val()}</td></tr>`;
+                    }).get().reverse();
+
+                    $servicesTable.find('tbody').prepend($newRows);
+
                     // Refresh the table
                     RealTimeTable();
                     RealTimeCheckbox();
@@ -674,9 +709,13 @@
                         }
 
                         var toast = new bootstrap.Toast(document.getElementById('liveToast'));
-                        var toastMessage = "You " + commandText + " the service " + serviceName + ".";
+                        var toastMessage = "You " + commandText + " the service " + "' " + serviceName + " '" + ".";
                         document.querySelector('.toast-body').innerHTML = toastMessage;
                         toast.show();
+
+                        setTimeout(function () {
+                            toast.dispose();
+                        }, 4000);
 
                     },
                     error: function () {

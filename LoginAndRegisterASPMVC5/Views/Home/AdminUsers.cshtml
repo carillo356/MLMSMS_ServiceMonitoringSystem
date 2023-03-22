@@ -82,68 +82,68 @@
                 </div>
             </div>
         </div>
-    </div>
-    <table class="table table-hover" id="usersTable">
-        <thead>
-            <tr>
-                <th scope="col" style="width: 15%;">FIRST NAME</th>
-                <th scope="col" style="width: 15%;">LAST NAME</th>
-                <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
-                <th scope="col" style="width: 10%;">USER ROLE</th>
-                <th scope="col" style="width: 15%;">ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- table content goes here -->
-        </tbody>
-    </table>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="adminRow">
-                    <div class="btn_AdminRow">
-                        <span class="sBtn_AdminRow">Select row</span>
-                        <i class="bi bi-arrow-down-short"></i>
-                    </div>
+        <table class="table table-hover" id="usersTable">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 15%;">FIRST NAME</th>
+                    <th scope="col" style="width: 15%;">LAST NAME</th>
+                    <th scope="col" style="width: 10%;">EMAIL ADDRESS</th>
+                    <th scope="col" style="width: 10%;">USER ROLE</th>
+                    <th scope="col" style="width: 15%;">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- table content goes here -->
+            </tbody>
+        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="adminRow">
+                        <div class="btn_AdminRow">
+                            <span class="sBtn_AdminRow">Select row</span>
+                            <i class="bi bi-arrow-down-short"></i>
+                        </div>
 
-                    <ul class="options_AdminRow">
-                        <li class="option_Admin">
-                            <span class="option_Admin-text">5 rows</span>
-                        </li>
-                        <li class="option_Admin">
-                            <span class="option_Admin-text">10 rows</span>
-                        </li>
-                        <li class="option_Admin">
-                            <span class="option_Admin-text">15 rows</span>
-                        </li>
-                        <li class="option_Admin">
-                            <span class="option_Admin-text">20 rows</span>
-                        </li>
-                        <li class="option_Admin">
-                            <span class="option_Admin-text">All rows</span>
-                        </li>
+                        <ul class="options_AdminRow">
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">5 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">10 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">15 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">20 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">All rows</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
+                </div>
+                <div class="col-md-4">
+                    <ul class="pagination">
+                        <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                        <li class="page-item"><a href="#" class="page-link">3</a></li>
+                        <li class="page-item"><a href="#" class="page-link">4</a></li>
+                        <li class="page-item"><a href="#" class="page-link">5</a></li>
+                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
                     </ul>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
-            </div>
-            <div class="col-md-4">
-                <ul class="pagination">
-                    <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
             </div>
         </div>
     </div>
 
     <!-- Add Users Modal -->
-    <div class="modal fade" id="addUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal" id="addUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -188,13 +188,17 @@
 
                         <div class="form-group m-3">
                             <div class="radio-container">
+                                @*<label>
+            @Html.RadioButtonFor(m => m.IsAdmin, "True", new { onchange = "this.value = this.checked" })
+            <span>Admin</span>
+        </label>
+        <label>
+            @Html.RadioButtonFor(m => m.IsAdmin, "False", new { onchange = "this.value = !this.checked" })
+            <span>Not Admin</span>
+        </label>*@
                                 <label>
-                                    @Html.RadioButtonFor(m => m.IsAdmin, "True", new { onchange = "this.value = this.checked" })
+                                    <input type="checkbox" name="IsAdmin" id="isAdminTrue" value="true" onchange = "this.value = this.checked" />
                                     <span>Admin</span>
-                                </label>
-                                <label>
-                                    @Html.RadioButtonFor(m => m.IsAdmin, "False", new { onchange = "this.value = !this.checked" })
-                                    <span>Not Admin</span>
                                 </label>
                                 <small class="text-muted ml-2 adminReminder">
                                     <i class="bi bi-info-circle " data-toggle="tooltip" data-placement="bottom" title="Only an Admin can add other users and edit other users info including passwords."></i>
@@ -250,12 +254,8 @@
                         <div class="form-group m-3">
                             <div class="radio-container">
                                 <label>
-                                    <input type="radio" name="IsAdmin" id="isAdminTrue" value="true" />
+                                    <input type="checkbox" name="IsAdmin" id="isAdmin" />
                                     <span>Admin</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="IsAdmin" id="isAdminFalse" value="false" />
-                                    <span>Non-Admin</span>
                                 </label>
                                 <small class="text-muted ml-2 adminReminder">
                                     <i class="bi bi-info-circle " data-toggle="tooltip" data-placement="bottom" title="Only an Admin can add other users and edit other users info including passwords."></i>
@@ -284,8 +284,7 @@
         </div>
     </div>
 
-
-
+    <!-- Add User Modal with Toast and Validation Message -->
     <script>
     $(document).ready(function () {
       // Handle form submission using AJAX
@@ -300,6 +299,7 @@
                 success: function (result) {
                     RealTimeUsersTable();
                     if (result.success) {
+                        RealTimeUsersTable();
                         // Update table with new user data
                         $('#user-table').html(result);
 
@@ -309,11 +309,12 @@
                         toast.show();
 
                         setTimeout(function () {
-                            toast.hide();
+                            toast.dispose();
                         }, 4000);
 
                         // Hide modal
-                        $('#addUsers-modal').modal('hide');
+                        $('#addUsers-modal').modal('dispose');
+                        $('#add-user-form')[0].reset();
 
                     } else {
                         // Check if there is a validation summary
@@ -327,11 +328,23 @@
                     }
                 }
             });
-          });
+      });
+    });
+
+        // Reset form fields when modal is hidden
+        $('#addUsers-modal').on('hidden.bs.modal', function () {
+            $('#add-user-form')[0].reset();
+            $('#validation-summary').html('');
+        });
+
+        // Close modal when "Cancel" button is clicked
+        $('#cancelButton').on('click', function () {
+            $('#addUsers-modal').modal('hide');
         });
 
     </script>
 
+    <!-- Edit User Modal with Toast and Validation Message -->
     <script>
     $(document).ready(function () {
       // Handle form submission using AJAX
@@ -355,7 +368,7 @@
                 toast.show();
 
                 setTimeout(function () {
-                    toast.hide();
+                    toast.dispose();
                 }, 4000);
 
                     // Hide modal
@@ -492,7 +505,7 @@
                         toast.show();
 
                         setTimeout(function () {
-                            toast.hide();
+                            toast.dispose();
                         }, 4000);
                     },
                     error: function (xhr, status, error) {
@@ -513,9 +526,10 @@
             $('#lastName').val(lastName);
             $('#email').val(email);
 
-            // Check the appropriate radio button
-            $('#isAdminTrue').prop('checked', isAdmin === "true");
-            $('#isAdminFalse').prop('checked', isAdmin === "false");
+            // Check the appropriate checkbox button
+            $('#isAdmin').prop('checked', isAdmin === "true");
+            $('#isAdmin').prop('unchecked', isAdmin === "false");
+           
         }
 
     </script>
@@ -629,7 +643,7 @@
                     toast.show();
 
                     setTimeout(function () {
-                        toast.hide();
+                        toast.dispose();
                     }, 4000);
                 },
                 error: function (xhr, status, error) {
