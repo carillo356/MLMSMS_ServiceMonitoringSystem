@@ -154,7 +154,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary custom-button" id="btnAddService" onclick="submitForm()" data-bs-dismiss="modal">Add</button>
-                    <button type="button" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary custom-button" id="btnCancelService" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -258,6 +258,21 @@
         }
     </script>
 
+    <!-- Clear Field in Search Filter -->
+    <script>
+        $(function () {
+            // Function to clear all input fields
+            function clearFields() {
+                $('#displayService-modal input[type="text"]').val('');
+            }
+
+            // Attach the clearFields function to the Cancel button click event
+            $('#btnCancelService, #btnAddService').click(function () {
+                clearFields();
+            });
+        });
+    </script>
+
     <!-- Checkbox Function -->
     <script>
         $(document).ready(function () {
@@ -296,9 +311,9 @@
                 var checkboxes = '';
                 $.each(_servicesInController, function (i, item) {
                     var checkbox = `<li class="item"><div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
-                                            <label class="form-check-label" for="service-${i}">${item}</label>
-                                        </div></li>`;
+                                                <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
+                                                <label class="form-check-label" for="service-${i}">${item}</label>
+                                            </div></li>`;
                     checkboxes += checkbox;
 
                 });

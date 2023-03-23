@@ -188,14 +188,6 @@
 
                         <div class="form-group m-3">
                             <div class="radio-container">
-                                @*<label>
-            @Html.RadioButtonFor(m => m.IsAdmin, "True", new { onchange = "this.value = this.checked" })
-            <span>Admin</span>
-        </label>
-        <label>
-            @Html.RadioButtonFor(m => m.IsAdmin, "False", new { onchange = "this.value = !this.checked" })
-            <span>Not Admin</span>
-        </label>*@
                                 <label>
                                     <input type="checkbox" name="IsAdmin" id="isAdminTrue" value="true" onchange = "this.value = this.checked" />
                                     <span>Admin</span>
