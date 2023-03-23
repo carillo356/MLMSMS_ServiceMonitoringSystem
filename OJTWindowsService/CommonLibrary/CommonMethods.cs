@@ -184,11 +184,9 @@ namespace CommonLibrary
                 foreach (var message in messages)
                 {
                     mail.Body = message;
-                    using (smtpServer)
-                    {
-                        smtpServer.Send(mail);
-                    }
+                    smtpServer.Send(mail);
                 }
+                smtpServer.Dispose();
             }
             catch (Exception ex)
             {

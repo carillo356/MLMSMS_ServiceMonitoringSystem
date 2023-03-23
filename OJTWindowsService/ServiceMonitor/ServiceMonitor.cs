@@ -12,6 +12,7 @@ using CommonLibrary;
 using System.Threading.Tasks;
 using System.Threading;
 using Timer = System.Timers.Timer;
+using System.Collections.Concurrent;
 
 namespace ServiceMonitor
 {
@@ -72,6 +73,7 @@ namespace ServiceMonitor
                     CommonMethods.SP_UpdateServicesAvailable(connection, serviceNamesCsv); // call SP here
 
                     List<(string ServiceName, string ServiceStatus, string HostName, string LogBy, DateTime LastStart, string LastEventLog)> servicesToUpdate = new List<(string ServiceName, string ServiceStatus, string HostName, string LogBy, DateTime LastStart, string LastEventLog)>();
+
                     List<(string ServiceName, string ServiceStatus)> servicesInMonitor = GetDoubleColumn(connection, "GetServicesStatus"); //4. Gets the services from the database that we specified to monitor.
                     List<string> emailsToSend = new List<string>();
 
@@ -104,7 +106,15 @@ namespace ServiceMonitor
                             else
                             {
                                 // If the service is not found, update its status in the database
-                                servicesToUpdate.Add((serviceInMonitor.ServiceName, "NotFound", "NotFound", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, new DateTime(1900, 1, 1), "NotFound"));
+                                try
+                                {
+                                    servicesToUpdate.Add((serviceInMonitor.ServiceName, "NotFound", "NotFound", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, new DateTime(1900, 1, 1), "NotFound"));
+                                }
+                                catch(Exception ex)
+                                {
+                                    CommonMethods.WriteToFile(ex.Message);
+                                }
+                                
                             }
                         });
 
