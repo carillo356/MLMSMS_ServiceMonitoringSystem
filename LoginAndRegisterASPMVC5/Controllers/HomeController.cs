@@ -83,7 +83,14 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 using (SqlCommand command = new SqlCommand("GetServiceLogsByServiceName", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    if (serviceName != null)
+                    {
+                        command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@ServiceName", DBNull.Value);
+                    }
 
                     SqlDataReader reader = command.ExecuteReader();
 
