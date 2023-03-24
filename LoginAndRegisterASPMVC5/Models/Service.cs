@@ -13,7 +13,7 @@ namespace LoginAndRegisterASPMVC5.Models
         public string LogDate { get; set; }
         public string LogBy { get; set; }
 
-        public DateTime LastStart { get; set; }
+        public string LastStart { get; set; }
         public string ServiceStatus { get; set; }
         public string LastEventLog { get; set; }
 

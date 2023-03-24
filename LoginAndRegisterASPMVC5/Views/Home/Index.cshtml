@@ -87,7 +87,7 @@
             </table>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="select-menu">
                             <div class="select-btn1">
                                 <span class="sBtn-text">Select row</span>
@@ -113,19 +113,13 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
                     </div>
-                    <div class="col-md-4">
-                        <ul class="pagination">
-                            <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-                            <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                            <li class="page-item"><a href="#" class="page-link">2</a></li>
-                            <li class="page-item"><a href="#" class="page-link">3</a></li>
-                            <li class="page-item"><a href="#" class="page-link">4</a></li>
-                            <li class="page-item"><a href="#" class="page-link">5</a></li>
-                            <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                        </ul>
+                    <div class="col-md-6">
+                        <div class="pagination paginationLogs">
+                            <ul> <!--pages or li are comes from javascript --> </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,7 +188,7 @@
         </table>
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="serviceRow">
                         <div class="btnRow">
                             <span class="sBtnRow">Select row</span>
@@ -223,8 +217,8 @@
                 <div class="col-md-4">
                     <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
                 </div>
-                <div class="col-md-4">
-                    <div class="pagination">
+                <div class="col-md-5">
+                    <div class="pagination paginationService">
                         <ul> <!--pages or li are comes from javascript --> </ul>
                     </div>
                 </div>
@@ -305,9 +299,9 @@
                 var checkboxes = '';
                 $.each(_servicesInController, function (i, item) {
                     var checkbox = `<li class="item"><div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
-                                                <label class="form-check-label" for="service-${i}">${item}</label>
-                                            </div></li>`;
+                                                        <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
+                                                        <label class="form-check-label" for="service-${i}">${item}</label>
+                                                    </div></li>`;
                     checkboxes += checkbox;
 
                 });
@@ -456,63 +450,126 @@
 
     </script>
 
+    <!-- Pagination Design for Service Table-->
     <script>
         // selecting required element
-        const element = document.querySelector(".pagination ul");
-        let totalPages = 20;
-        let page = 10;
+        const serviceElement = document.querySelector(".paginationService ul");
+        let serviceTotalPages = 20;
+        let servicePage = 1;
         //calling function with passing parameters and adding inside element which is ul tag
-        element.innerHTML = createPagination(totalPages, page);
-        function createPagination(totalPages, page) {
-            let liTag = '';
-            let active;
-            let beforePage = page - 1;
-            let afterPage = page + 1;
-            if (page > 1) { //show the next button if the page value is greater than 1
-                liTag += `<li class="btn prev" onclick="createPagination(totalPages, ${page - 1})"><span><i class="fas fa-angle-left"></i> Prev</span></li>`;
+        serviceElement.innerHTML = createPaginationService(serviceTotalPages, servicePage);
+        function createPaginationService(serviceTotalPages, servicePage) {
+            let serviceLiTag = '';
+            let serviceActive;
+            let serviceBeforePage = servicePage - 1;
+            let serviceAfterPage = servicePage + 1;
+            if (servicePage > 1) { //show the next button if the page value is greater than 1
+                serviceLiTag += `<li class="btn prev" onclick="createPaginationService(serviceTotalPages, ${servicePage - 1})"><span><i class="fas fa-angle-left"></i> Prev</span></li>`;
             }
-            if (page > 2) { //if page value is less than 2 then add 1 after the previous button
-                liTag += `<li class="first numb" onclick="createPagination(totalPages, 1)"><span>1</span></li>`;
-                if (page > 3) { //if page value is greater than 3 then add this (...) after the first li or page
-                    liTag += `<li class="dots"><span>...</span></li>`;
+            if (servicePage > 2) { //if page value is less than 2 then add 1 after the previous button
+                serviceLiTag += `<li class="first numb" onclick="createPaginationService(serviceTotalPages, 1)"><span>1</span></li>`;
+                if (servicePage > 3) { //if page value is greater than 3 then add this (...) after the first li or page
+                    serviceLiTag += `<li class="dots"><span>...</span></li>`;
                 }
             }
             // how many pages or li show before the current li
-            if (page == totalPages) {
-                beforePage = beforePage - 2;
-            } else if (page == totalPages - 1) {
-                beforePage = beforePage - 1;
+            if (servicePage == serviceTotalPages) {
+                serviceBeforePage = serviceBeforePage - 2;
+            } else if (servicePage == serviceTotalPages - 1) {
+                serviceBeforePage = serviceBeforePage - 1;
             }
             // how many pages or li show after the current li
-            if (page == 1) {
-                afterPage = afterPage + 2;
-            } else if (page == 2) {
-                afterPage = afterPage + 1;
+            if (servicePage == 1) {
+                serviceAfterPage = serviceAfterPage + 2;
+            } else if (servicePage == 2) {
+                serviceAfterPage = serviceAfterPage + 1;
             }
-            for (var plength = beforePage; plength <= afterPage; plength++) {
-                if (plength > totalPages) { //if plength is greater than totalPage length then continue
+            for (var plengthService = serviceBeforePage; plengthService <= serviceAfterPage; plengthService++) {
+                if (plengthService > serviceTotalPages) { //if plength is greater than totalPage length then continue
                     continue;
                 }
-                if (plength == 0) { //if plength is 0 than add +1 in plength value
-                    plength = plength + 1;
+                if (plengthService == 0) { //if plength is 0 than add +1 in plength value
+                    plengthService = plengthService + 1;
                 }
-                if (page == plength) { //if page is equal to plength than assign active string in the active variable
-                    active = "active";
+                if (servicePage == plengthService) { //if page is equal to plength than assign active string in the active variable
+                    serviceActive = "active";
                 } else { //else leave empty to the active variable
-                    active = "";
+                    serviceActive = "";
                 }
-                liTag += `<li class="numb ${active}" onclick="createPagination(totalPages, ${plength})"><span>${plength}</span></li>`;
+                serviceLiTag += `<li class="numb ${serviceActive}" onclick="createPaginationService(serviceTotalPages, ${plengthService})"><span>${plengthService}</span></li>`;
             }
-            if (page < totalPages - 1) { //if page value is less than totalPage value by -1 then show the last li or page
-                if (page < totalPages - 2) { //if page value is less than totalPage value by -2 then add this (...) before the last li or page
-                    liTag += `<li class="dots"><span>...</span></li>`;
+            if (servicePage < serviceTotalPages - 1) { //if page value is less than totalPage value by -1 then show the last li or page
+                if (servicePage < serviceTotalPages - 2) { //if page value is less than totalPage value by -2 then add this (...) before the last li or page
+                    serviceLiTag += `<li class="dots"><span>...</span></li>`;
                 }
-                liTag += `<li class="last numb" onclick="createPagination(totalPages, ${totalPages})"><span>${totalPages}</span></li>`;
+                serviceLiTag += `<li class="last numb" onclick="createPaginationService(serviceTotalPages, ${serviceTotalPages})"><span>${serviceTotalPages}</span></li>`;
             }
-            if (page < totalPages) { //show the next button if the page value is less than totalPage(20)
-                liTag += `<li class="btn next" onclick="createPagination(totalPages, ${page + 1})"><span>Next <i class="fas fa-angle-right"></i></span></li>`;
+            if (servicePage < serviceTotalPages) { //show the next button if the page value is less than totalPage(20)
+                serviceLiTag += `<li class="btn next" onclick="createPaginationService(serviceTotalPages, ${servicePage + 1})"><span>Next <i class="fas fa-angle-right"></i></span></li>`;
             }
-            element.innerHTML = liTag; //add li tag inside ul tag
+            serviceElement.innerHTML = serviceLiTag; //add li tag inside ul tag
+            return serviceLiTag; //reurn the li tag
+        }
+    </script>
+
+    <!-- Pagination Design for Log History Table-->
+    <script>
+        // selecting required element
+        const logsElement = document.querySelector(".paginationLogs ul");
+        let logsTotalPages = 20;
+        let logsPage = 1;
+        //calling function with passing parameters and adding inside element which is ul tag
+        logsElement.innerHTML = createPaginationLogs(logsTotalPages, logsPage);
+        function createPaginationLogs(logsTotalPages, logsPage) {
+            let logsLiTag = '';
+            let logsActive;
+            let logsBeforePage = logsPage - 1;
+            let logsAfterPage = logsPage + 1;
+            if (logsPage > 1) { //show the next button if the page value is greater than 1
+                logsLiTag += `<li class="btn prev" onclick="createPaginationLogs(logsTotalPages, ${logsPage - 1})"><span><i class="fas fa-angle-left"></i> Prev</span></li>`;
+            }
+            if (logsPage > 2) { //if page value is less than 2 then add 1 after the previous button
+                logsLiTag += `<li class="first numb" onclick="createPaginationLogs(logsTotalPages, 1)"><span>1</span></li>`;
+                if (logsPage > 3) { //if page value is greater than 3 then add this (...) after the first li or page
+                    logsLiTag += `<li class="dots"><span>...</span></li>`;
+                }
+            }
+            // how many pages or li show before the current li
+            if (logsPage == logsTotalPages) {
+                logsBeforePage = logsBeforePage - 2;
+            } else if (logsPage == logsTotalPages - 1) {
+                logsBeforePage = logsBeforePage - 1;
+            }
+            // how many pages or li show after the current li
+            if (logsPage == 1) {
+                logsAfterPage = logsAfterPage + 2;
+            } else if (logsPage == 2) {
+                logsAfterPage = logsAfterPage + 1;
+            }
+            for (var plengthLogs = logsBeforePage; plengthLogs <= logsAfterPage; plengthLogs++) {
+                if (plengthLogs > logsTotalPages) { //if plength is greater than totalPage length then continue
+                    continue;
+                }
+                if (plengthLogs == 0) { //if plength is 0 than add +1 in plength value
+                    plengthLogs = plengthLogs + 1;
+                }
+                if (logsPage == plengthLogs) { //if page is equal to plength than assign active string in the active variable
+                    logsActive = "active";
+                } else { //else leave empty to the active variable
+                    logsActive = "";
+                }
+                logsLiTag += `<li class="numb ${logsActive}" onclick="createPaginationLogs(logsTotalPages, ${plengthLogs})"><span>${plengthLogs}</span></li>`;
+            }
+            if (logsPage < logsTotalPages - 1) { //if page value is less than totalPage value by -1 then show the last li or page
+                if (logsPage < logsTotalPages - 2) { //if page value is less than totalPage value by -2 then add this (...) before the last li or page
+                    logsLiTag += `<li class="dots"><span>...</span></li>`;
+                }
+                logsLiTag += `<li class="last numb" onclick="createPaginationLogs(logsTotalPages, ${logsTotalPages})"><span>${logsTotalPages}</span></li>`;
+            }
+            if (logsPage < logsTotalPages) { //show the next button if the page value is less than totalPage(20)
+                logsLiTag += `<li class="btn next" onclick="createPaginationLogs(logsTotalPages, ${logsPage + 1})"><span>Next <i class="fas fa-angle-right"></i></span></li>`;
+            }
+            logsElement.innerHTML = logsLiTag; //add li tag inside ul tag
             return liTag; //reurn the li tag
         }
     </script>
@@ -527,7 +584,7 @@
         const logstableBody = document.querySelector('#popupTable tbody');
 
         // get the pagination links
-        const logspaginationLinks = document.querySelectorAll('#pagination-logs .page-link');
+        const logspaginationLinks = document.querySelectorAll('.paginationLogs ul');
 
         // define a function to show the items for the selected page
         function logsshowPage(logs_pageNumber) {
@@ -567,7 +624,7 @@
         });
 
         // Log History Modal
-        function logHistory(serviceName, limit) {
+        function logHistory(serviceName/*, limit*/) {
             //Viewlogs, Gets all the records of a service
             $.ajax({
                 url: "/Home/GetServiceLogsTB",
@@ -600,9 +657,9 @@
 
                     $('#logHistory-modal .modal-servicelogs .service_name').text(serviceName);
 
-                    // Show the popup dialog
-                    ITEMS_PAR_PAGE_LOGS = limit;
-                    logsshowPage(1);
+                    //// Show the popup dialog
+                    //ITEMS_PAR_PAGE_LOGS = limit;
+                    //logsshowPage(1);
                     $('#logHistory-modal').css('display', 'block');
 
                 },
@@ -615,50 +672,50 @@
 
     <!-- Pagination for Service Table -->
     <script>
-        //// define the number of items per page
-        //const ITEMS_PER_PAGE = 5;
+        // define the number of items per page
+        const ITEMS_PER_PAGE = 5;
 
-        //// get the table body element
-        //const tableBody = document.querySelector('#serviceTable tbody');
+        // get the table body element
+        const tableBody = document.querySelector('#serviceTable tbody');
 
-        //// get the pagination links
-        //const paginationLinks = document.querySelectorAll('#pagination-service .page-link');
+        // get the pagination links
+        const paginationLinks = document.querySelectorAll('.paginationService ul');
 
-        //// define a function to show the items for the selected page
-        //function showPage(pageNumber) {
-        //    // calculate the start and end indexes of the items to show
-        //    const startIndex = (pageNumber - 1) * ITEMS_PER_PAGE;
-        //    const endIndex = startIndex + ITEMS_PER_PAGE;
+        // define a function to show the items for the selected page
+        function showPage(pageNumber) {
+            // calculate the start and end indexes of the items to show
+            const startIndex = (pageNumber - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
 
-        //    // hide all rows in the table
-        //    const rows = tableBody.querySelectorAll('tr');
-        //    rows.forEach(row => {
-        //        row.style.display = 'none';
-        //    });
+            // hide all rows in the table
+            const rows = tableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                row.style.display = 'none';
+            });
 
-        //    // show the rows for the current page
-        //    for (let i = startIndex; i < endIndex && i < rows.length; i++) {
-        //        rows[i].style.display = '';
-        //    }
-        //}
+            // show the rows for the current page
+            for (let i = startIndex; i < endIndex && i < rows.length; i++) {
+                rows[i].style.display = '';
+            }
+        }
 
-        //// handle the click event of the pagination links
-        //paginationLinks.forEach(link => {
-        //    link.addEventListener('click', event => {
-        //        event.preventDefault();
-        //        // get the selected page number from the link's text
-        //        const pageNumber = parseInt(link.innerText);
+        // handle the click event of the pagination links
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                // get the selected page number from the link's text
+                const pageNumber = parseInt(link.innerText);
 
-        //        // show the items for the selected page
-        //        showPage(pageNumber);
+                // show the items for the selected page
+                showPage(pageNumber);
 
-        //        // mark the selected page as active
-        //        paginationLinks.forEach(link => {
-        //            link.parentElement.classList.remove('active');
-        //        });
-        //        link.parentElement.classList.add('active');
-        //    });
-        //});
+                // mark the selected page as active
+                paginationLinks.forEach(link => {
+                    link.parentElement.classList.remove('active');
+                });
+                link.parentElement.classList.add('active');
+            });
+        });
 
         function RealTimeTable() {
             $.ajax({

@@ -100,7 +100,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             _activeServices.Add(new Service()
                             {
                                 ServiceName = reader["sl_ServiceName"].ToString(),
-                                LastStart = (DateTime)reader["sl_LastStart"],
+                                LastStart = reader["sl_LastStart"].ToString(),
                                 ServiceStatus = reader["sl_ServiceStatus"].ToString(),
                                 LastEventLog = reader["sl_LastEventLog"].ToString(),
                                 HostName = reader["sl_HostName"].ToString()
@@ -162,7 +162,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         servicesLogsList.Add(new Service()
                         {
                             ServiceName = reader["sl_ServiceName"].ToString(),
-                            LastStart = (DateTime)reader["sl_LastStart"],
+                            LastStart = reader["sl_LastStart"].ToString(),
                             ServiceStatus = reader["sl_ServiceStatus"].ToString(),
                             LastEventLog = reader["sl_LastEventLog"].ToString(),
                             HostName = reader["sl_HostName"].ToString()
