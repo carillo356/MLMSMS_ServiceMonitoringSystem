@@ -589,6 +589,7 @@
                             row += "</td></tr>";
                             $("#usersTable tbody").append(row);
                         });
+                        showPage(pageNumber);
                         resolve();
                     },
                     error: function () {
