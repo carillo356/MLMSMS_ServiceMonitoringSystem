@@ -589,7 +589,6 @@
                             row += "</td></tr>";
                             $("#usersTable tbody").append(row);
                         });
-                        showPage(pageNumber);
                         resolve();
                     },
                     error: function () {
@@ -598,13 +597,6 @@
                 });
             });
         }
-
-        // show the first page by default
-        $(document).ready(function () {
-            RealTimeUsersTable().then(function () {
-                showPage(pageNumber);
-            });
-        });
 
         function setNotification(idUser, FirstName, LastName, command) {
             $.ajax({
@@ -639,7 +631,7 @@
             });
         }
 
-        var pageNumber = 1;
+        let pageNumber = 1;
         // handle the click event of the pagination links
         paginationLinks.forEach(link => {
             link.addEventListener('click', event => {
@@ -657,6 +649,14 @@
                 link.parentElement.classList.add('active');
             });
         });
+
+        // show the first page by default
+        $(document).ready(function () {
+            RealTimeUsersTable().then(function () {
+                showPage(pageNumber);
+            });
+        });
+
     </script>
 
     <!-- Pagination Design for Admin Users Table -->
@@ -720,6 +720,7 @@
             return liTag; //reurn the li tag
         }
     </script>
+
 </body>
 
 
