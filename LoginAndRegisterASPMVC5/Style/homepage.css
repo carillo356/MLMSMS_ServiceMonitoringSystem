@@ -535,6 +535,7 @@ header .mobile-toggler {
 }
 
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
+    
     .list-items {
         z-index: 999;
     }
