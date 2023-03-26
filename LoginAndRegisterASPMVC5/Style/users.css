@@ -197,7 +197,7 @@ table.table td:last-child i {
     background: #fff;
     box-shadow: 0 0 3px rgba(0,0,0,0.1);
     display: none;
-    width: 160px;
+    width: 165px;
 }
 
 .nonAdminRow.active .options_nonAdminRow, .adminRow.active .options_AdminRow {

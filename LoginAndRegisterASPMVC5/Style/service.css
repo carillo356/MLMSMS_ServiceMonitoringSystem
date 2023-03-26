@@ -241,41 +241,6 @@ table.table td:last-child i {
     margin-top: 0px;
 }
 
-    /*.pagination li a {
-        border: none;
-        font-size: 13px;
-        min-width: 30px;
-        min-height: 30px;
-        padding: 0 10px;
-        color: #999;
-        margin: 0 5px;
-        line-height: 30px;
-        border-radius: 30px !important;
-        text-align: center;
-    }
-
-        .pagination li a:hover {
-            color: #666;
-        }
-
-    .pagination li.active a, .pagination li.active a.page-link {
-        background: deeppink;
-        z-index: 0;
-    }
-
-        .pagination li.active a:hover {
-            background: deeppink;
-        }
-
-    .pagination li.disabled i {
-        color: #ccc;
-    }
-
-    .pagination li i {
-        font-size: 16px;
-        padding-top: 6px
-    }*/
-
 .pagination ul  {
     width: 100%;
     display: flex;
@@ -335,10 +300,9 @@ table.table td:last-child i {
 
 .hint-text {
     font-size: 13px;
-    margin-top: 25px;
+    margin-top: 32px;
     text-align: center;
 } 
-
 
 /* Add Service modal */
 #displayService-modal .modal {
@@ -433,7 +397,4 @@ table.table td:last-child i {
         width: 90%;
     }
 
-    .pagination {
-        margin-right: 30px;
-    }
 }

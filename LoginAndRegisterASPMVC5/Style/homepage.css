@@ -384,7 +384,7 @@ header .mobile-toggler {
 .select-menu .options {
     position: absolute;
     padding: 20px;
-    margin-top: -375px;
+    margin-top: -380px;
     border-radius: 8px;
     background: #fff;
     box-shadow: 0 0 3px rgba(0,0,0,0.1);
@@ -472,7 +472,7 @@ header .mobile-toggler {
     background: #fff;
     box-shadow: 0 0 3px rgba(0,0,0,0.1);
     display: none;
-    width: 160px;
+    width: 165px;
 }
 
 .serviceRow.active .optionsRow {
@@ -509,6 +509,7 @@ header .mobile-toggler {
 
 .adminReminder .bi.bi-info-circle {
     font-size: 15px;
+    cursor: pointer;
 }
 
 .field-icon {
@@ -523,8 +524,14 @@ header .mobile-toggler {
     font-size: 20px;
 }
 
+#liveToast {
+    height: 40%;
+}
+
 .toast-body {
-    color: red;
+    text-align: center;
+    font-size: 15px;
+    color: white;
 }
 
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
@@ -728,4 +735,9 @@ header .mobile-toggler {
         #popupTable td:nth-of-type(4)::before {
             content: "ACTION BY";
         }
+
+    .pagination {
+        width: 100%;
+ 
+    }
 }
