@@ -125,17 +125,43 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
+                    <div class="hint-text">Page <b id="current-page"></b> out of <b id="total-pages"></b></div>
+
                 </div>
                 <div class="col-md-5">
-                    <div class="pagination">
-                        <ul> <!--pages or li are comes from javascript --> </ul>
-                    </div>
+
+                    <ul class="pagination">
+                    </ul>
+
                 </div>
             </div>
         </div>
     </div>
+    <!--<div class="pagination">
+    <ul>-->
+    @*pages or li are comes from javascript*@
+    <!--</ul>
+    </div>-->
+    @*<ul class="pagination">
+            <li class="page-item" id="previous-link"><a href="#" class="page-link">Previous</a></li>
+            <li class="page-item active"><a href="#" class="page-link">1</a></li>
+            <li class="page-item"><a href="#" class="page-link">2</a></li>
+            <li class="page-item"><a href="#" class="page-link">3</a></li>
+            <li class="page-item"><a href="#" class="page-link">4</a></li>
+            <li class="page-item"><a href="#" class="page-link">5</a></li>
+            <li class="page-item" id="next-link"><a href="#" class="page-link">Next</a></li>
+        </ul>*@
 
+    <!--<ul class="pagination">
+    <li class="page-item" id="previous-link"><a href="#" class="page-link">Previous</a></li>-->
+    <!-- Generate page numbers -->
+    <!--<script>
+            for (let i = 1; i <= 5; i++) {
+                document.write(`<li class="page-item"><a href="#" class="page-link">${i}</a></li>`);
+            }
+        </script>
+        <li class="page-item" id="next-link"><a href="#" class="page-link">Next</a></li>
+    </ul>-->
     <!-- Add Users Modal -->
     <div class="modal" id="addUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -176,7 +202,7 @@
                         <div class="form-group m-3 position-relative">
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "password1" })
-                            <span toggle="#password1" class="bi bi-eye-fill field-icon toggle-password"></span>
+                            <span toggle="#password1" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                         </div>
 
@@ -233,7 +259,7 @@
                         <div class="form-group m-3 position-relative">
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password2" })
-                            <span toggle="#password2" class="bi bi-eye-fill field-icon toggle-password"></span>
+                            <span toggle="#password2" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                         </div>
 
@@ -262,9 +288,9 @@
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
         <div id="liveToast" class="toast hide text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
             @*<div class="toast-header">
-                <i class="bi bi-info-circle"></i>
-                <strong class="me-auto">  System Message</strong>
-            </div>*@
+                    <i class="bi bi-info-circle"></i>
+                    <strong class="me-auto">  System Message</strong>
+                </div>*@
             <div class="toast-body">
             </div>
         </div>
@@ -389,4 +415,54 @@
 
 </body>
 
+<script>
+    var indexPage = 1;
+    let pagination = document.querySelector('.pagination');
+
+    function generatePageNumbers() {
+        pagination.innerHTML = '';
+        for (let i = indexPage; i < indexPage + 5; i++) {
+            pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
+        }
+        pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
+
+        if (indexPage > 1) {
+            pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + pagination.innerHTML;
+        }
+
+        // Event listener for "Next" link
+        document.getElementById("next-link").addEventListener("click", function () {
+            indexPage = indexPage + 1; // Set current page to next page number
+            showPage(indexPage);
+            document.getElementById('current-page').textContent = indexPage;
+            document.getElementById('total-pages').textContent = indexPage + 4;
+            generatePageNumbers(); // Generate new page numbers
+        });
+
+        // Event listener for "Previous" link
+        document.getElementById("previous-link").addEventListener("click", function () {
+            if (indexPage > 1) { // Check if current page is greater than 1
+                indexPage = indexPage - 1;
+                showPage(indexPage);
+                document.getElementById('current-page').textContent = indexPage;
+                document.getElementById('total-pages').textContent = indexPage + 4;
+                generatePageNumbers(); // Generate new page numbers
+            }
+        });
+    }
+    let page = 1;
+    $('.pagination').on('click', '.page-link', function () {
+        let page = parseInt($(this).data('page'));
+        document.getElementById('current-page').textContent = page;
+        indexPage = page;
+        document.getElementById('total-pages').textContent = indexPage + 4;
+        showPage(page);
+    });
+
+    document.getElementById('current-page').textContent = page;
+    document.getElementById('total-pages').textContent = indexPage + 4;
+    generatePageNumbers();
+
+
+</script>
 

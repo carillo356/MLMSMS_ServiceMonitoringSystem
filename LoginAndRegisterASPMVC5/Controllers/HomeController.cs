@@ -664,7 +664,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public ActionResult Login()
         {
             ServicesInController();
-            InsertAllServices();
+            //InsertAllServices();
             if (Session["FullName"] != null) // check if the user is already logged in
             {
                 return RedirectToAction("Index", "Home"); // redirect to index page

@@ -6,27 +6,7 @@ $(document).ready(function () {
 
 var activeServiceName;
 
-//Event Listener for Selecting no. of Rows
-$(document).ready(function () {
-    // Set up the event listener for options
-    $('.options li').click(function () {
-        var optionText = $(this).find('.option-text').text();
-        switch (optionText) {
-            case "All rows":
-                limit = -1;
-                break;
-            default:
-                limit = parseInt(optionText);
-                break;
-        }
-        logHistory(activeServiceName, limit);
-    });
 
-    // Set up the close button to hide the dialog when clicked
-    $('.close').click(function () {
-        $('#logHistory-modal').css('display', 'none');
-    });
-});
 
 function handleRowClick(serviceName, limit) {
     logHistory(serviceName, limit);

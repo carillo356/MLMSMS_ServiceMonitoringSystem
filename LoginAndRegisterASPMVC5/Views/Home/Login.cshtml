@@ -28,7 +28,7 @@
                                 <div class="form-group mb-4 position-relative">
                                     @Html.LabelFor(m => m.Password, new { @class = "form-label my-2" })
                                     @Html.PasswordFor(m => m.Password, new { @class = "form-control my-1", @placeholder = "Password", id = "password" })
-                                    <span toggle="#password" class="bi bi-eye-fill mt-1 field-icon toggle-password"></span>
+                                    <span toggle="#password" class="bi bi-eye-slash-fill mt-1 field-icon toggle-password"></span>
                                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                                 </div>
                                 <div class="form-group text-center">
@@ -49,10 +49,10 @@
         var input = $($(this).attr("toggle"));
         if (input.attr("type") == "password") {
             input.attr("type", "text");
-            $(this).removeClass("bi-eye-fill").addClass("bi-eye-slash-fill");
+            $(this).removeClass("bi-eye-slash-fill").addClass("bi-eye-fill");
         } else {
             input.attr("type", "password");
-            $(this).removeClass("bi-eye-slash-fill").addClass("bi-eye-fill");
+            $(this).removeClass("bi-eye-fill").addClass("bi-eye-slash-fill");
         }
     });
 </script>

@@ -4,10 +4,6 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
-$(document).ready(function () {
-    RealTimeUsersTable()
-});
-
 function DeleteUser(idUser, FirstName, LastName, command) {
     /*Show the confirmation box here*/
     var modal = document.getElementById("deleteUsers-modal");

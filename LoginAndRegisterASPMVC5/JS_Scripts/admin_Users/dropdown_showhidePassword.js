@@ -20,9 +20,9 @@ $(".toggle-password").click(function () {
     var input = $($(this).attr("toggle"));
     if (input.attr("type") == "password") {
         input.attr("type", "text");
-        $(this).removeClass("bi-eye-fill").addClass("bi-eye-slash-fill");
+        $(this).removeClass("bi-eye-slash-fill").addClass("bi-eye-fill");
     } else {
         input.attr("type", "password");
-        $(this).removeClass("bi-eye-slash-fill").addClass("bi-eye-fill");
+        $(this).removeClass("bi-eye-fill").addClass("bi-eye-slash-fill");
     }
 });
