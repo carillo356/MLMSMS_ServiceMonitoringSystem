@@ -10,32 +10,68 @@ Exception: storedata One or more errors occurred.
 Exception: storedata One or more errors occurred.
 08:16 am
 
-Exception: big scopeA network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)
-01:25 PM
-
-Exception: big scopeA network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)
-01:27 PM
-
-Exception: big scopeA network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)
-01:29 PM
+Exception: storedata Procedure or function 'UpdateServiceStatus' expects parameter '@LastEventLog', which was not supplied.
+03:07 pm
 
 Exception: email Cannot access a disposed object.
 Object name: 'System.Net.Mail.SmtpClient'.
-01:30 PM
+03:07 pm
+
+Exception: storedata Procedure or function 'UpdateServiceStatus' expects parameter '@LastEventLog', which was not supplied.
+03:08 pm
 
 Exception: email Cannot access a disposed object.
 Object name: 'System.Net.Mail.SmtpClient'.
-02:03 PM
+03:08 pm
+
+Exception: storedata Procedure or function 'UpdateServiceStatus' expects parameter '@LastEventLog', which was not supplied.
+03:09 pm
 
 Exception: email Cannot access a disposed object.
 Object name: 'System.Net.Mail.SmtpClient'.
-02:13 PM
+03:09 pm
+
+Exception: storedata Procedure or function 'UpdateServiceStatus' expects parameter '@LastEventLog', which was not supplied.
+03:10 pm
 
 Exception: email Cannot access a disposed object.
 Object name: 'System.Net.Mail.SmtpClient'.
-02:14 PM
+03:10 pm
+
+Exception: storedata Procedure or function 'UpdateServiceStatus' expects parameter '@LastEventLog', which was not supplied.
+03:11 pm
 
 Exception: email Cannot access a disposed object.
 Object name: 'System.Net.Mail.SmtpClient'.
-03:28 PM
+03:11 pm
+
+Exception: storedata Procedure or function 'UpdateServiceStatus' expects parameter '@LastEventLog', which was not supplied.
+03:12 pm
+
+Exception: email Cannot access a disposed object.
+Object name: 'System.Net.Mail.SmtpClient'.
+03:12 pm
+
+Exception: storedata Procedure or function 'UpdateServiceStatus' expects parameter '@LastEventLog', which was not supplied.
+03:14 pm
+
+Exception: email Cannot access a disposed object.
+Object name: 'System.Net.Mail.SmtpClient'.
+03:14 pm
+
+Exception: email Cannot access a disposed object.
+Object name: 'System.Net.Mail.SmtpClient'.
+03:14 pm
+
+Exception: email Cannot access a disposed object.
+Object name: 'System.Net.Mail.SmtpClient'.
+03:19 pm
+
+Exception: email Cannot access a disposed object.
+Object name: 'System.Net.Mail.SmtpClient'.
+03:24 pm
+
+Exception: email Cannot access a disposed object.
+Object name: 'System.Net.Mail.SmtpClient'.
+03:29 pm
 

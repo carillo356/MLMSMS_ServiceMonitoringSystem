@@ -16,8 +16,14 @@ namespace Logger
     {
         static void Main(string[] args)
         {
+            if (args.Length == 0)
+            {
+                CommonMethods.WriteToFile("Error: No service name provided in command line arguments.");
+                return;
+            }
             // Get the service name from the command line arguments
             string serviceName = args[0];
+            string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
             try
             {
@@ -39,7 +45,7 @@ namespace Logger
                     CommonMethods.SP_UpdateServicesAvailable(connection, serviceNamesCsv);
 
                     // Update the status of the current service in the database
-                    CommonMethods.GetServiceLogs(serviceInController, out ServiceControllerStatus serviceStatus, out string hostName, out string logBy, out DateTime lastStart, out string lastEventLog);
+                    CommonMethods.GetServiceLogs(serviceInController, out ServiceControllerStatus serviceStatus, out string hostName, out DateTime lastStart, out string lastEventLog);
                     CommonMethods.SP_UpdateServiceStatus(connection, serviceName, serviceStatus.ToString(), hostName, logBy, lastStart, lastEventLog);
 
                     // Send an email if the service is stopped
