@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Timers;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Collections.Generic;
-using System.IO;
 using CommonLibrary;
-using System.Threading.Tasks;
-using System.Threading;
 using Timer = System.Timers.Timer;
-using System.Collections.Concurrent;
 
 namespace ServiceMonitor
 {
@@ -51,6 +46,7 @@ namespace ServiceMonitor
 
         protected override void OnStop()
         {
+            timer.Dispose();
         }
 
         private void OnElapsedTime(object source, ElapsedEventArgs e)
@@ -61,6 +57,7 @@ namespace ServiceMonitor
         public void CheckServices()
         {
             timer.Stop(); //1. Stopped the timer to ensure that the timer is stopped when checkservices is running.
+            string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
             try
             {
@@ -69,17 +66,18 @@ namespace ServiceMonitor
                     if (connection == null) return;
 
                     ServiceController[] servicesInController = ServiceController.GetServices(); //3. Gets the installed services and stored it in services array
-                    string serviceNamesCsv = string.Join("/", servicesInController.Select(s => s.ServiceName).ToArray()); // here, update all services list in database with values from servicesInController
+                    string serviceNamesCsv = string.Join("/", servicesInController.Select(s => s.ServiceName)); // here, update all services list in database with values from servicesInController
                     CommonMethods.SP_UpdateServicesAvailable(connection, serviceNamesCsv); // call SP here
 
                     List<(string ServiceName, string ServiceStatus, string HostName, string LogBy, DateTime LastStart, string LastEventLog)> servicesToUpdate = new List<(string ServiceName, string ServiceStatus, string HostName, string LogBy, DateTime LastStart, string LastEventLog)>();
-
-                    List<(string ServiceName, string ServiceStatus)> servicesInMonitor = GetDoubleColumn(connection, "GetServicesStatus"); //4. Gets the services from the database that we specified to monitor.
                     List<string> emailsToSend = new List<string>();
+
+                    (string ServiceName, string ServiceStatus)[] servicesInMonitor = CommonMethods.GetDoubleColumn(connection, "GetServicesStatus").ToArray(); //4. Gets the services from the database that we specified to monitor.
 
                     try
                     {
-                        Parallel.ForEach(servicesInMonitor, (serviceInMonitor, state) =>
+
+                        foreach (var serviceInMonitor in servicesInMonitor)
                         {
                             // Check if the service to monitor exists
                             ServiceController serviceInController = servicesInController.FirstOrDefault(ctr => ctr.ServiceName == serviceInMonitor.ServiceName);
@@ -93,7 +91,7 @@ namespace ServiceMonitor
                                 if (currentStatus != previousStatus)
                                 {
                                     // If not, get the latest entry, last start, and last log from the event logs, and record it in the database using StoreData(), then if the current status is false, send email to the registered users in the website.
-                                    CommonMethods.GetServiceLogs(serviceInController, out ServiceControllerStatus serviceStatus, out string hostName, out string logBy, out DateTime lastStart, out string lastEventLog);
+                                    CommonMethods.GetServiceLogs(serviceInController, out ServiceControllerStatus serviceStatus, out string hostName, out DateTime lastStart, out string lastEventLog);
                                     servicesToUpdate.Add((serviceInController.ServiceName, serviceStatus.ToString(), hostName, logBy, lastStart, lastEventLog));
 
                                     if (serviceInController.Status == ServiceControllerStatus.Stopped)
@@ -103,29 +101,29 @@ namespace ServiceMonitor
                                     }
                                 }
                             }
-                            else
+                            else 
                             {
-                                // If the service is not found, update its status in the database
+                                // If the service to monitor do not exist, update status "NotFound" in the database
                                 try
                                 {
-                                    servicesToUpdate.Add((serviceInMonitor.ServiceName, "NotFound", "NotFound", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, new DateTime(1900, 1, 1), "NotFound"));
+                                    servicesToUpdate.Add((serviceInMonitor.ServiceName, "NotFound", "NotFound", logBy, new DateTime(1900, 1, 1), "NotFound")); //BUG 
                                 }
-                                catch(Exception ex)
+                                catch (Exception ex)
                                 {
                                     CommonMethods.WriteToFile(ex.Message);
                                 }
-                                
+
                             }
-                        });
+                        }
 
                         //Bulk UpdateServiceStatus
                         if (servicesToUpdate.Any())
                         {
-                            CommonMethods.SP_UpdateServiceStatus(connection, servicesToUpdate);
+                            CommonMethods.SP_UpdateServiceStatus(connection, servicesToUpdate.ToArray());
                         }//Bulk SendEmail when ServiceStatus is Stopped
                         if (emailsToSend.Any())
                         {
-                            CommonMethods.SendEmail(connection, emailsToSend);
+                            CommonMethods.SendEmail(connection, emailsToSend.ToArray());
                         }
 
                     }
@@ -152,35 +150,6 @@ namespace ServiceMonitor
                 timer.Start();
             }
         }
-
-        static List<(string, string)> GetDoubleColumn(SqlConnection connection, string query)
-        {
-            List<(string, string)> doubleColumn = new List<(string, string)>();
-
-            try
-            {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            string Column1 = reader.GetString(0);
-                            string Column2 = reader.IsDBNull(1) ? "" : reader.GetString(1);
-                            doubleColumn.Add((Column1, Column2));
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                CommonMethods.WriteToFile("Exception: double" + ex.Message);
-            }
-
-            return doubleColumn;
-        }
-
     }
 }
 
