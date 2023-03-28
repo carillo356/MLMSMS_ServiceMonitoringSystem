@@ -73,6 +73,13 @@ function RemoveAddedService(serviceName, command) {
                 var toast = new bootstrap.Toast(document.getElementById('liveToast'));
                 var toastMessage = "You " + commandText + " the service " + "' " + serviceName + " '" + ".";
                 document.querySelector('.toast-body').innerHTML = toastMessage;
+
+                if (commandText === "DELETED") {
+                    // set background color to red if commandText is Deleted
+                    toast._element.classList.remove("bg-success");
+                    toast._element.classList.add("bg-danger");
+                }
+
                 toast.show();
 
                 setTimeout(function () {

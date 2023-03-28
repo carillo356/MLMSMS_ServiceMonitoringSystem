@@ -360,10 +360,10 @@ header .mobile-toggler {
 
     .select-menu .select-btn1 {
         display: flex;
-        height: 55px;
+        height: 50px;
         background: #fff;
         padding: 20px;
-        font-size: 18px;
+        font-size: 15px;
         font-weight: 400;
         border-radius: 8px;
         align-items: center;
@@ -373,7 +373,7 @@ header .mobile-toggler {
     }
 
 .select-btn1 i {
-    font-size: 25px;
+    font-size: 20px;
     transition: 0.3s;
 }
 
@@ -384,7 +384,7 @@ header .mobile-toggler {
 .select-menu .options {
     position: absolute;
     padding: 20px;
-    margin-top: -380px;
+    margin-top: -275px;
     border-radius: 8px;
     background: #fff;
     box-shadow: 0 0 3px rgba(0,0,0,0.1);
@@ -398,9 +398,9 @@ header .mobile-toggler {
 
 .options .option {
     display: flex;
-    height: 55px;
+    height: 35px;
     cursor: pointer;
-    padding: 0 16px;
+    padding: 0 10px;
     border-radius: 8px;
     align-items: center;
     background: #fff;
@@ -411,12 +411,12 @@ header .mobile-toggler {
     }
 
 .option i {
-    font-size: 25px;
+    font-size: 20px;
     margin-right: 12px;
 }
 
 .option .option-text {
-    font-size: 18px;
+    font-size: 15px;
     color: #333;
 }
 
@@ -443,10 +443,10 @@ header .mobile-toggler {
 
     .serviceRow .btnRow {
         display: flex;
-        height: 55px;
+        height: 50px;
         background: #fff;
         padding: 20px;
-        font-size: 18px;
+        font-size: 15px;
         font-weight: 400;
         border-radius: 8px;
         align-items: center;
@@ -456,7 +456,7 @@ header .mobile-toggler {
     }
 
 .btnRow i {
-    font-size: 25px;
+    font-size: 20px;
     transition: 0.3s;
 }
 
@@ -481,9 +481,9 @@ header .mobile-toggler {
 
 .optionsRow .optionRow {
     display: flex;
-    height: 55px;
+    height: 35px;
     cursor: pointer;
-    padding: 0 16px;
+    padding: 0 10px;
     border-radius: 8px;
     align-items: center;
     background: #fff;
@@ -494,22 +494,17 @@ header .mobile-toggler {
     }
 
 .optionRow i {
-    font-size: 25px;
+    font-size: 20px;
     margin-right: 12px;
 }
 
 .optionRow .optionRow-text {
-    font-size: 18px;
+    font-size: 15px;
     color: #333;
 }
 
 .bi.bi-info-circle {
     margin-right: 10px;
-}
-
-.adminReminder .bi.bi-info-circle {
-    font-size: 15px;
-    cursor: pointer;
 }
 
 .field-icon {
@@ -560,15 +555,36 @@ header .mobile-toggler {
         width: 43%;
     }
 
-    .optionsRow {
-        z-index: 1;
+        .serviceRow .optionsRow {
+            z-index: 1;
+            width: 160px;
+            margin-top: -275px;
+        }
+
+    .select-menu {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin: auto;
+        margin-top: 15px;
+        margin-bottom: -20px;
+        width: 43%;
     }
+
 
     .hint-text {
         justify-content: center;
         align-items: center;
         text-align: center;
         margin: auto;
+        margin-bottom: 10px;
+    }
+
+    .hint-logText {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 10px;
     }
 
     #serviceTable, #usersTable {
@@ -668,7 +684,7 @@ header .mobile-toggler {
     .select-menu {
         width: 140px;
         height: 50px;
-        margin-bottom: 25px;
+        margin-bottom: 10px;
     }
 
         .select-menu .sBtn-text {
@@ -739,6 +755,5 @@ header .mobile-toggler {
 
     .pagination {
         width: 100%;
- 
     }
 }

@@ -42,7 +42,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public ActionResult Index()
         {
             
-            if (Session["idUser"] != null)
+            if (Session["IdUser"] != null)
             {
                 return View();
             }
@@ -114,7 +114,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 throw ex;
             }
         }
-
 
         public void ServicesInController()
         {
@@ -347,7 +346,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult Users()
         {
-            if (Session["idUser"] != null)
+            if (Session["IdUser"] != null)
             {
 
                 bool isAdmin = false;
@@ -375,7 +374,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult AdminUsers()
         {
-            if (Session["idUser"] != null)
+            if (Session["IdUser"] != null)
             {
                     return View();
 
@@ -386,28 +385,28 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public void UpdateEmailNotification(int idUser)
+        public void UpdateEmailNotification(int IdUser)
         {
             using (SqlConnection connection = GetConnection())
             {
                 using (var command = new SqlCommand("dbo.UpdateUserEmailNotification", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@idUser", idUser);
+                    command.Parameters.AddWithValue("@IdUser", IdUser);
 
                     command.ExecuteNonQuery();
                 }
             }
         }
 
-        public void DeleteUser(int idUser)
+        public void DeleteUser(int IdUser)
         {
             using (SqlConnection connection = GetConnection())
             {
                 using (var command = new SqlCommand("dbo.DeleteUser", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@idUser", idUser);
+                    command.Parameters.AddWithValue("@IdUser", IdUser);
 
                     command.ExecuteNonQuery();
                 }
@@ -416,7 +415,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public void GetUsersTB()
         {
-            string query = $"SELECT [idUser],[FirstName],[LastName],[Email],[Email_Notification],[IsAdmin] FROM Users";
+            string query = $"SELECT [IdUser],[FirstName],[LastName],[Email],[Email_Notification],[IsAdmin] FROM Users";
 
             try
             {
@@ -432,7 +431,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         {
                             _users.Add(new User()
                             {
-                                idUser = (int)reader["idUser"],
+                                IdUser = (int)reader["IdUser"],
                                 FirstName = reader["FirstName"].ToString(),
                                 LastName = reader["LastName"].ToString(),
                                 Email = reader["Email"].ToString(),
@@ -608,7 +607,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public ActionResult UpdateUser(UserUpdate _user, string Password)
         {
             // Retrieve the user from the database
-            var userToUpdate = _db.Users.FirstOrDefault(u => u.idUser == _user.idUser);
+            var userToUpdate = _db.Users.FirstOrDefault(u => u.IdUser == _user.IdUser);
 
             if (ModelState.IsValid)
             {
@@ -687,7 +686,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     Session["FirstName"] = data.FirstOrDefault().FirstName;
                     Session["LastName"] = data.FirstOrDefault().LastName;
                     Session["Email"] = data.FirstOrDefault().Email;
-                    Session["idUser"] = data.FirstOrDefault().idUser;
+                    Session["IdUser"] = data.FirstOrDefault().IdUser;
                     Session["IsAdmin"] = data.FirstOrDefault().IsAdmin;
                     return RedirectToAction("Index");
                 }

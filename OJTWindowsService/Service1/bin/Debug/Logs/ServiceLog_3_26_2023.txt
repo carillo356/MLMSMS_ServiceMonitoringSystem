@@ -1,5 +1,0 @@
-Service is started at 3/26/2023 11:47:20 AM
-Service is recall at 3/26/2023 11:47:23 AM My Counter: 
-Service is recall at 3/26/2023 11:47:26 AM My Counter: 
-Service is recall at 3/26/2023 11:47:29 AM My Counter: 
-Service is stopped at 3/26/2023 11:47:29 AM

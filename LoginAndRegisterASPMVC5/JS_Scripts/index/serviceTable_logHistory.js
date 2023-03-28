@@ -6,8 +6,6 @@ $(document).ready(function () {
 
 var activeServiceName;
 
-
-
 function handleRowClick(serviceName, limit) {
     logHistory(serviceName, limit);
 }
@@ -50,6 +48,17 @@ function ServiceActions(serviceName, command) {
                 var toast = new bootstrap.Toast(document.getElementById('liveToast'));
                 var toastMessage = "You " + commandText + " the service " + " ' " + serviceName + " ' " + ".";
                 document.querySelector('.toast-body').innerHTML = toastMessage;
+
+                if (commandText === "STOPPED") {
+                    // set background color to red if commandText is Stopped
+                    toast._element.classList.remove("bg-success");
+                    toast._element.classList.add("bg-danger");
+                } else {
+                    // set background color to green for any other commandText
+                    toast._element.classList.remove("bg-danger");
+                    toast._element.classList.add("bg-success");
+                }
+
                 toast.show();
 
                 setTimeout(function () {

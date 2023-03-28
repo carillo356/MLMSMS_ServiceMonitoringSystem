@@ -4,7 +4,7 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
-function DeleteUser(idUser, FirstName, LastName, command) {
+function DeleteUser(IdUser, FirstName, LastName, command) {
     /*Show the confirmation box here*/
     var modal = document.getElementById("deleteUsers-modal");
     var modalTitle = document.getElementById("modal-title");
@@ -19,7 +19,7 @@ function DeleteUser(idUser, FirstName, LastName, command) {
         $.ajax({
             type: 'POST',
             url: '/Home/DeleteUser',
-            data: { idUser: idUser },
+            data: { IdUser: IdUser },
             success: function () {
                 RealTimeUsersTable();
 
@@ -31,6 +31,13 @@ function DeleteUser(idUser, FirstName, LastName, command) {
                 var toast = new bootstrap.Toast(document.getElementById('liveToast'));
                 var toastMessage = "You " + commandText + " the user  " + "' " + FirstName + " " + LastName + " '" + ".";
                 document.querySelector('.toast-body').innerHTML = toastMessage;
+
+                if (commandText === "DELETED") {
+                    // set background color to red if commandText is Stopped
+                    toast._element.classList.remove("bg-success");
+                    toast._element.classList.add("bg-danger");
+                }
+
                 toast.show();
 
                 setTimeout(function () {
@@ -48,9 +55,9 @@ function DeleteUser(idUser, FirstName, LastName, command) {
     }
 }
 
-function editUser(idUser, firstName, lastName, email, isAdmin) {
+function editUser(IdUser, firstName, lastName, email, isAdmin) {
     // Set the values of the input fields in the modal
-    $('#idUser').val(idUser);
+    $('#idUser').val(IdUser);
     $('#firstName').val(firstName);
     $('#lastName').val(lastName);
     $('#email').val(email);

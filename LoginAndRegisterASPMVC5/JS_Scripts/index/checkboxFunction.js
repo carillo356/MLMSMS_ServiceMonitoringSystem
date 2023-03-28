@@ -83,6 +83,10 @@ $('.btn-primary').on('click', function () {
         var toast = new bootstrap.Toast(document.getElementById('liveToast'));
         var toastMessage = "You have added " + checkedCount + " service(s)";
         document.querySelector('.toast-body').innerHTML = toastMessage;
+        // set background color to green if service/s has been added.
+        toast._element.classList.remove("text-bg-danger");
+        toast._element.classList.add("bg-success");
+
         toast.show();
 
         setTimeout(function () {

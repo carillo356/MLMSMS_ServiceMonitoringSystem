@@ -12,7 +12,7 @@ namespace LoginAndRegisterASPMVC5.Models
     {
         [Key, Column(Order = 1)]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int idUser { get; set; }
+        public int IdUser { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 3)]
         public string FirstName { get; set; }

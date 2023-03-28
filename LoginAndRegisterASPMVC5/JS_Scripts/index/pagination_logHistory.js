@@ -93,66 +93,16 @@ function logHistory(serviceName/*, limit*/) {
     });
 }
 
+  // Get the modal element
+    var logHistoryModal = document.getElementById("logHistory-modal");
+
+    // Get the close button element
+    var closeButton = logHistoryModal.querySelector(".close");
+
+    // Add event listener to the close button
+    closeButton.addEventListener("click", function() {
+        // Hide the modal when close button is clicked
+        logHistoryModal.style.display = "none";
+  });
 
 
-// Pagination Design for Log History Table
-
-
-// selecting required element
-const logsElement = document.querySelector(".paginationLogs ul");
-let logsTotalPages = 20;
-let logsPage = 1;
-//calling function with passing parameters and adding inside element which is ul tag
-logsElement.innerHTML = createPaginationLogs(logsTotalPages, logsPage);
-function createPaginationLogs(logsTotalPages, logsPage) {
-    let logsLiTag = '';
-    let logsActive;
-    let logsBeforePage = logsPage - 1;
-    let logsAfterPage = logsPage + 1;
-    if (logsPage > 1) { //show the next button if the page value is greater than 1
-        logsLiTag += `<li class="btn prev" onclick="createPaginationLogs(logsTotalPages, ${logsPage - 1})"><span><i class="fas fa-angle-left"></i> Prev</span></li>`;
-    }
-    if (logsPage > 2) { //if page value is less than 2 then add 1 after the previous button
-        logsLiTag += `<li class="first numb" onclick="createPaginationLogs(logsTotalPages, 1)"><span>1</span></li>`;
-        if (logsPage > 3) { //if page value is greater than 3 then add this (...) after the first li or page
-            logsLiTag += `<li class="dots"><span>...</span></li>`;
-        }
-    }
-    // how many pages or li show before the current li
-    if (logsPage == logsTotalPages) {
-        logsBeforePage = logsBeforePage - 2;
-    } else if (logsPage == logsTotalPages - 1) {
-        logsBeforePage = logsBeforePage - 1;
-    }
-    // how many pages or li show after the current li
-    if (logsPage == 1) {
-        logsAfterPage = logsAfterPage + 2;
-    } else if (logsPage == 2) {
-        logsAfterPage = logsAfterPage + 1;
-    }
-    for (var plengthLogs = logsBeforePage; plengthLogs <= logsAfterPage; plengthLogs++) {
-        if (plengthLogs > logsTotalPages) { //if plength is greater than totalPage length then continue
-            continue;
-        }
-        if (plengthLogs == 0) { //if plength is 0 than add +1 in plength value
-            plengthLogs = plengthLogs + 1;
-        }
-        if (logsPage == plengthLogs) { //if page is equal to plength than assign active string in the active variable
-            logsActive = "active";
-        } else { //else leave empty to the active variable
-            logsActive = "";
-        }
-        logsLiTag += `<li class="numb ${logsActive}" onclick="createPaginationLogs(logsTotalPages, ${plengthLogs})"><span>${plengthLogs}</span></li>`;
-    }
-    if (logsPage < logsTotalPages - 1) { //if page value is less than totalPage value by -1 then show the last li or page
-        if (logsPage < logsTotalPages - 2) { //if page value is less than totalPage value by -2 then add this (...) before the last li or page
-            logsLiTag += `<li class="dots"><span>...</span></li>`;
-        }
-        logsLiTag += `<li class="last numb" onclick="createPaginationLogs(logsTotalPages, ${logsTotalPages})"><span>${logsTotalPages}</span></li>`;
-    }
-    if (logsPage < logsTotalPages) { //show the next button if the page value is less than totalPage(20)
-        logsLiTag += `<li class="btn next" onclick="createPaginationLogs(logsTotalPages, ${logsPage + 1})"><span>Next <i class="fas fa-angle-right"></i></span></li>`;
-    }
-    logsElement.innerHTML = logsLiTag; //add li tag inside ul tag
-    return liTag; //reurn the li tag
-}

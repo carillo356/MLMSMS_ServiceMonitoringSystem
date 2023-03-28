@@ -38,7 +38,7 @@ function RealTimeUsersTable() {
             $("#usersTable tbody").empty();
             // Loop through the data and append each row to the table
             result.forEach(function (Data) {
-                const Role = (Data.IsAdmin === true) ? '<span>Admin</span>' : '<span>Non-Admin</span>';
+                const Role = (Data.IsAdmin === true) ? '<span><i class="bi bi-person-gear"></i></span>' : '<span></span>';
 
                 var row = "<tr data-toggle='modal' data-target='#service-modal'>";
                 row += "<td>" + Data.FirstName + "</td>";
@@ -47,11 +47,11 @@ function RealTimeUsersTable() {
                 row += "<td>" + Role + "</td>";
                 row += "<td>";
                 if (Data.Email_Notification == true) {
-                    row += "<button onclick='setNotification(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
+                    row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
                     row += "<i class='bi bi-envelope-check-fill'></i>";
                     row += "</button>";
                 } else {
-                    row += "<button onclick='setNotification(\"" + Data.idUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
+                    row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
                     row += "<i class='bi bi-envelope-x-fill'></i>";
                     row += "</button>";
                 }
@@ -72,11 +72,11 @@ $(document).ready(function () {
     });
 });
 
-function setNotification(idUser, FirstName, LastName, command) {
+function setNotification(IdUser, FirstName, LastName, command) {
     $.ajax({
         type: 'POST',
         url: '/Home/UpdateEmailNotification',
-        data: { idUser: idUser },
+        data: { IdUser: IdUser },
         success: function () {
             $(document).ready(function () {
                 RealTimeUsersTable().then(function () {
@@ -93,6 +93,17 @@ function setNotification(idUser, FirstName, LastName, command) {
             var toast = new bootstrap.Toast(document.getElementById('liveToast'));
             var toastMessage = "User " + "' " + FirstName + " " + LastName + " '" + " WILL " + commandText + " email notifications.";
             document.querySelector('.toast-body').innerHTML = toastMessage;
+
+            if (commandText === "NOT RECEIVE") {
+                // set background color to red if commandText is Stopped
+                toast._element.classList.remove("bg-success");
+                toast._element.classList.add("bg-danger");
+            } else {
+                // set background color to green for any other commandText
+                toast._element.classList.remove("bg-danger");
+                toast._element.classList.add("bg-success");
+            }
+
             toast.show();
 
             setTimeout(function () {
@@ -123,65 +134,3 @@ paginationLinks.forEach(link => {
         link.parentElement.classList.add('active');
     });
 });
-
-
-// Pagination Design
-
-// selecting required element
-const element = document.querySelector(".pagination ul");
-let totalPages = 20;
-let page = 1;
-//calling function with passing parameters and adding inside element which is ul tag
-element.innerHTML = createPagination(totalPages, page);
-function createPagination(totalPages, page) {
-    let liTag = '';
-    let active;
-    let beforePage = page - 1;
-    let afterPage = page + 1;
-    if (page > 1) { //show the next button if the page value is greater than 1
-        liTag += `<li class="btn prev" onclick="createPagination(totalPages, ${page - 1})"><span><i class="fas fa-angle-left"></i> Prev</span></li>`;
-    }
-    if (page > 2) { //if page value is less than 2 then add 1 after the previous button
-        liTag += `<li class="first numb" onclick="createPagination(totalPages, 1)"><span>1</span></li>`;
-        if (page > 3) { //if page value is greater than 3 then add this (...) after the first li or page
-            liTag += `<li class="dots"><span>...</span></li>`;
-        }
-    }
-    // how many pages or li show before the current li
-    if (page == totalPages) {
-        beforePage = beforePage - 2;
-    } else if (page == totalPages - 1) {
-        beforePage = beforePage - 1;
-    }
-    // how many pages or li show after the current li
-    if (page == 1) {
-        afterPage = afterPage + 2;
-    } else if (page == 2) {
-        afterPage = afterPage + 1;
-    }
-    for (var plength = beforePage; plength <= afterPage; plength++) {
-        if (plength > totalPages) { //if plength is greater than totalPage length then continue
-            continue;
-        }
-        if (plength == 0) { //if plength is 0 than add +1 in plength value
-            plength = plength + 1;
-        }
-        if (page == plength) { //if page is equal to plength than assign active string in the active variable
-            active = "active";
-        } else { //else leave empty to the active variable
-            active = "";
-        }
-        liTag += `<li class="numb ${active}" onclick="createPagination(totalPages, ${plength})"><span>${plength}</span></li>`;
-    }
-    if (page < totalPages - 1) { //if page value is less than totalPage value by -1 then show the last li or page
-        if (page < totalPages - 2) { //if page value is less than totalPage value by -2 then add this (...) before the last li or page
-            liTag += `<li class="dots"><span>...</span></li>`;
-        }
-        liTag += `<li class="last numb" onclick="createPagination(totalPages, ${totalPages})"><span>${totalPages}</span></li>`;
-    }
-    if (page < totalPages) { //show the next button if the page value is less than totalPage(20)
-        liTag += `<li class="btn next" onclick="createPagination(totalPages, ${page + 1})"><span>Next <i class="fas fa-angle-right"></i></span></li>`;
-    }
-    element.innerHTML = liTag; //add li tag inside ul tag
-    return liTag; //reurn the li tag
-}

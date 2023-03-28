@@ -20,12 +20,10 @@
 
 .radio-container {
     display: flex;
-    align-items: center;
 }
 
     .radio-container label {
         display: flex;
-        align-items: center;
         margin-right: 10px;
     }
 
@@ -110,6 +108,14 @@ table.table td:last-child i {
     overflow-y: auto;
 }
 
+.adminReminder {
+    font-size: 12px;
+}
+
+    .adminReminder .bi.bi-info-circle {
+        font-size: 12px;
+    }
+
 /* Delete Users Modal */
 #deleteUsers-modal .modal {
     display: none;
@@ -168,10 +174,10 @@ table.table td:last-child i {
 
     .nonAdminRow .btn_nonAdminRow, .adminRow .btn_AdminRow {
         display: flex;
-        height: 55px;
+        height: 50px;
         background: #fff;
         padding: 20px;
-        font-size: 18px;
+        font-size: 15px;
         font-weight: 400;
         border-radius: 8px;
         align-items: center;
@@ -181,7 +187,7 @@ table.table td:last-child i {
     }
 
 .btn_nonAdminRow i, .btn_AdminRow i {
-    font-size: 25px;
+    font-size: 20px;
     transition: 0.3s;
 }
 
@@ -206,9 +212,9 @@ table.table td:last-child i {
 
 .options_nonAdminRow .option_nonAdmin, .options_AdminRow .option_Admin {
     display: flex;
-    height: 55px;
+    height: 35px;
     cursor: pointer;
-    padding: 0 16px;
+    padding: 0 10px;
     border-radius: 8px;
     align-items: center;
     background: #fff;
@@ -219,12 +225,12 @@ table.table td:last-child i {
     }
 
 .option_nonAdmin i, .option_Admin i {
-    font-size: 25px;
+    font-size: 20px;
     margin-right: 12px;
 }
 
 .option_nonAdmin .option_nonAdmin-text, .option_Admin .option_Admin-text {
-    font-size: 18px;
+    font-size: 15px;
     color: #333;
 }
 
@@ -333,9 +339,11 @@ table.table td:last-child i {
         width: 43%;
     }
 
-    options_AdminRow {
-        z-index: 1;
-    }
+        .adminRow .options_AdminRow {
+            z-index: 1;
+            margin-top: -275px;
+            width: 160px;
+        }
 
     .nonAdminRow {
         justify-content: center;
@@ -346,7 +354,9 @@ table.table td:last-child i {
         width: 43%;
     }
 
-    options_nonAdminRow {
-        z-index: 1;
-    }
+        .nonAdminRow .options_nonAdminRow {
+            z-index: 1;
+            margin-top: -275px;
+            width: 160px;
+        }
 }

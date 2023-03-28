@@ -68,7 +68,7 @@
     <!-- Dropdown menu in selecting no. of rows for Log History Table -->
     <div id="logHistory-modal" class="modal">
         <div class="modal-servicelogs">
-            <span class="close" data-bs-dismiss="modal">&times;</span>
+            <span class="close">&times;</span>
             <div class="service_title">Log History</div>
             <div class="service_name mb-2 fst-italic"></div>
 
@@ -113,12 +113,14 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="hint-text mt-3 ms-2">Page <b>1</b> out of <b>5</b></div>
+                    <div class="col-md-4">
+                        <div class="hint-logText">Page <b id="current-logPage"></b> out of <b id="total-logPages"></b></div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="pagination paginationLogs">
-                            <ul> <!--pages or li are comes from javascript --> </ul>
+                            <ul>
+                                <!--pages or li are comes from javascript -->
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -214,12 +216,14 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="hint-text">Page <b>1</b> out of <b>5</b></div>
+                <div class="col-md-4 text-center">
+                    <div class="hint-text">Page <b id="current-page"></b> out of <b id="total-pages"></b></div>
                 </div>
                 <div class="col-md-5">
                     <div class="pagination paginationService">
-                        <ul> <!--pages or li are comes from javascript --> </ul>
+                        <ul>
+                            <!--pages or li are comes from javascript -->
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -228,15 +232,12 @@
 
     <!-- Toast Design for any ACTION-->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="liveToast" class="toast hide text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
-            @*<div class="toast-header">
-                <i class="bi bi-info-circle"></i>
-                <strong class="me-auto">  System Message</strong>
-            </div>*@
+        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-body">
             </div>
         </div>
     </div>
+
 
     <!-- Alert Box for all buttons in Action column -->
     <div id="alert-modal" class="modal">
@@ -250,7 +251,7 @@
         </div>
     </div>
 
-    
+
     <script src="~/JS_Scripts/index/restart_delete_modal.js"></script>
     <script src="~/JS_Scripts/index/dropdown_logHistory_serviceTable.js"></script>
     <script src="~/JS_Scripts/index/navBar_active.js"></script>
@@ -262,6 +263,108 @@
     <script src="~/JS_Scripts/index/clearField_submitForm.js"></script>
 
 </body>
+
+<!-- Pagination for Service Table -->
+<script>
+    var indexPage = 1;
+    let pagination = document.querySelector('.paginationService ul');
+
+    function generatePageNumbers() {
+        pagination.innerHTML = '';
+        for (let i = indexPage; i < indexPage + 5; i++) {
+            pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
+        }
+        pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
+
+        if (indexPage > 1) {
+            pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + pagination.innerHTML;
+        }
+
+        // Event listener for "Next" link
+        document.getElementById("next-link").addEventListener("click", function () {
+            indexPage = indexPage + 1; // Set current page to next page number
+            showPage(indexPage);
+            document.getElementById('current-page').textContent = indexPage;
+            document.getElementById('total-pages').textContent = indexPage + 4;
+            generatePageNumbers(); // Generate new page numbers
+        });
+
+        // Event listener for "Previous" link
+        document.getElementById("previous-link").addEventListener("click", function () {
+            if (indexPage > 1) { // Check if current page is greater than 1
+                indexPage = indexPage - 1;
+                showPage(indexPage);
+                document.getElementById('current-page').textContent = indexPage;
+                document.getElementById('total-pages').textContent = indexPage + 4;
+                generatePageNumbers(); // Generate new page numbers
+            }
+        });
+    }
+    let page = 1;
+    $('.paginationService ul').on('click', '.page-link', function () {
+        let page = parseInt($(this).data('page'));
+        document.getElementById('current-page').textContent = page;
+        indexPage = page;
+        document.getElementById('total-pages').textContent = indexPage + 4;
+        showPage(page);
+    });
+
+    document.getElementById('current-page').textContent = page;
+    document.getElementById('total-pages').textContent = indexPage + 4;
+    generatePageNumbers();
+
+</script>
+
+<!-- Pagination for Log History Table -->
+<script>
+    var indexLogPage = 1;
+    let paginationLog = document.querySelector('.paginationLogs ul');
+
+    function generateLogPageNumbers() {
+        paginationLog.innerHTML = '';
+        for (let i = indexLogPage; i < indexLogPage + 5; i++) {
+            paginationLog.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
+        }
+        paginationLog.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
+
+        if (indexLogPage > 1) {
+            paginationLog.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + paginationLog.innerHTML;
+        }
+
+        // Event listener for "Next" link
+        document.getElementById("next-link").addEventListener("click", function () {
+            indexLogPage = indexLogPage + 1; // Set current page to next page number
+            logsshowPage(indexLogPage);
+            document.getElementById('current-logPage').textContent = indexLogPage;
+            document.getElementById('total-logPages').textContent = indexLogPage + 4;
+            generateLogPageNumbers(); // Generate new page numbers
+        });
+
+        // Event listener for "Previous" link
+        document.getElementById("previous-link").addEventListener("click", function () {
+            if (indexLogPage > 1) { // Check if current page is greater than 1
+                indexLogPage = indexLogPage - 1;
+                logsshowPage(indexLogPage);
+                document.getElementById('current-logPage').textContent = indexLogPage;
+                document.getElementById('total-logPages').textContent = indexLogPage + 4;
+                generateLogPageNumbers(); // Generate new page numbers
+            }
+        });
+    }
+    let logPage = 1;
+    $('.paginationLogs ul').on('click', '.page-link', function () {
+        let logPage = parseInt($(this).data('logPage'));
+        document.getElementById('current-logPage').textContent = logPage;
+        indexLogPage = logPage;
+        document.getElementById('total-logPages').textContent = indexLogPage + 4;
+        logsshowPage(logPage);
+    });
+
+    document.getElementById('current-logPage').textContent = logPage;
+    document.getElementById('total-logPages').textContent = indexLogPage + 4;
+    generateLogPageNumbers();
+
+</script>
 
 
 
