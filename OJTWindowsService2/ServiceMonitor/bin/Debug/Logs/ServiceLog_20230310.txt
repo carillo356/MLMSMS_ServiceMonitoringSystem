@@ -1,0 +1,30 @@
+Exception: A recipient must be specified.
+09:57 am
+
+Exception: SqlDateTime overflow. Must be between 1/1/1753 12:00:00 AM and 12/31/9999 11:59:59 PM.
+09:57 am
+
+Exception: SqlDateTime overflow. Must be between 1/1/1753 12:00:00 AM and 12/31/9999 11:59:59 PM.
+09:58 am
+
+Exception: A recipient must be specified.
+09:58 am
+
+Exception: Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+09:59 am
+
+Exception: Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+10:03 am
+
+Exception: Failure sending mail.
+11:28 am
+
+Exception: Failure sending mail.
+11:29 am
+
+Exception: Failure sending mail.
+11:29 am
+
+Exception: Failure sending mail.
+11:29 am
+

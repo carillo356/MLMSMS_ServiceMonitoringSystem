@@ -17,7 +17,7 @@ namespace ServicesTaskScheduler
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new TaskSchedulerService()
             };
             ServiceBase.Run(ServicesToRun);
         }

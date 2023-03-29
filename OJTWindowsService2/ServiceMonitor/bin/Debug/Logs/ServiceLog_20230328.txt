@@ -1,0 +1,36 @@
+Exception: email Service not available, closing transmission channel. The server response was: 4.7.0 Try again later, closing connection. (MAIL) a21-20020a62bd15000000b005895f9657ebsm19555526pff.70 - gsmtp
+08:01 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+08:52 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+08:57 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+09:01 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+09:02 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+09:03 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+09:04 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+09:05 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+09:07 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+09:08 am
+
+Exception: storedata Violation of PRIMARY KEY constraint 'PK__Services__B519CF2450C1F04F'. Cannot insert duplicate key in object 'dbo.ServicesMonitored'. The duplicate key value is ().
+09:09 am
+
+Exception: email Service not available, closing transmission channel. The server response was: 4.7.0 Try again later, closing connection. (MAIL) g12-20020a170902c38c00b001990028c0c9sm19873102plg.68 - gsmtp
+09:40 am
+

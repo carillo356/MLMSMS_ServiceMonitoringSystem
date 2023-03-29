@@ -20,7 +20,7 @@ namespace Logger
             {
                 CommonMethods.WriteToFile("Error: No service name provided in command line arguments.");
                 return;
-            }
+            }   
             // Get the service name from the command line arguments
             string serviceName = args[0];
             string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
