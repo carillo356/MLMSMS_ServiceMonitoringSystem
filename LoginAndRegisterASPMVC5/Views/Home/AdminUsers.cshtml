@@ -99,54 +99,41 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <!--<div class="adminRow">-->
-                        @*<div class="btn_AdminRow">
-                <span class="sBtn_AdminRow">Select row</span>
-                <i class="bi bi-arrow-down-short"></i>
-            </div>
-
-            <ul class="options_AdminRow">
-                <li class="option_Admin">
-                    <span class="option_Admin-text">5 rows</span>
-                </li>
-                <li class="option_Admin">
-                    <span class="option_Admin-text">10 rows</span>
-                </li>
-                <li class="option_Admin">
-                    <span class="option_Admin-text">15 rows</span>
-                </li>
-                <li class="option_Admin">
-                    <span class="option_Admin-text">20 rows</span>
-                </li>
-                <li class="option_Admin">
-                    <span class="option_Admin-text">All rows</span>
-                </li>
-            </ul>
-        </div>*@
-                    <div class="box options">
-                            <label>Requests Per Page: </label>
-                            <select id="req_per_page" onchange="filter_requests()">
-                                <option>5</option>
-                                <option>10</option>
-                                <option>ALL</option>
-                            </select>
+                    <div class="adminRow">
+                        <div class="btn_AdminRow">
+                            <span class="sBtn_AdminRow">Select row</span>
+                            <i class="bi bi-arrow-down-short"></i>
                         </div>
-                        <div class="box pagination">
-                            <ul>
 
-                            </ul>
-                        </div>
+                        <ul class="options_AdminRow">
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">5 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">10 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">15 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">20 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">All rows</span>
+                            </li>
+                        </ul>
                     </div>
-                <!--<div class="col-md-4">
+                </div>
+                <div class="col-md-4">
                     <div class="hint-text">Page <b id="current-page"></b> out of <b id="total-pages"></b></div>
                 </div>
                 <div class="col-md-5">
                     <div class="pagination">
-                        <ul>-->
-                            <!--pages or li are comes from javascript -->
-                        <!--</ul>
+                        <ul>
+                            pages or li are comes from javascript 
+                        </ul>
                     </div>
-                </div>-->
+                </div>
             </div>
         </div>
     </div>
@@ -409,183 +396,53 @@
 
 <!-- Pagination for Admin User Table -->
 <script>
-//    var indexPage = 1;
-//    let pagination = document.querySelector('.pagination');
+    var indexPage = 1;
+    let pagination = document.querySelector('.pagination');
 
-//    function generatePageNumbers(totalItems) {
-//        pagination.innerHTML = '';
-//        for (let i = indexPage; i < indexPage + 1; i++) {
-//            pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
-//        }
-//        pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
-
-//        if (indexPage > 1) {
-//            pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + pagination.innerHTML;
-//        }
-
-//        // Event listener for "Next" link
-//        document.getElementById("next-link").addEventListener("click", function () {
-//            indexPage = indexPage + 1; // Set current page to next page number
-//            showPage(indexPage);
-//            document.getElementById('current-page').textContent = indexPage;
-//            document.getElementById('total-pages').textContent = indexPage;
-// /*           generatePageNumbers(); // Generate new page numbers*/
-//        });
-
-//        // Event listener for "Previous" link
-//        document.getElementById("previous-link").addEventListener("click", function () {
-//            if (indexPage > 1) { // Check if current page is greater than 1
-//                indexPage = indexPage - 1;
-//                showPage(indexPage);
-//                document.getElementById('current-page').textContent = indexPage;
-//                document.getElementById('total-pages').textContent = indexPage;
-///*                generatePageNumbers(); // Generate new page numbers*/
-//            }
-//        });
-//    }
-//    let page = 1;
-//    $('.pagination').on('click', '.page-link', function () {
-//        let page = parseInt($(this).data('page'));
-//        document.getElementById('current-page').textContent = page;
-//        indexPage = page;
-//        document.getElementById('total-pages').textContent = indexPage;
-//        showPage(page);
-//    });
-
-//    document.getElementById('current-page').textContent = page;
-//    document.getElementById('total-pages').textContent = indexPage;
-//    generatePageNumbers();
-
-</script>
-
-<script>
-    // on page load collect data to load pagination as well as table
-    const data = { "req_per_page": document.getElementById("req_per_page").value, "page_no": 1 };
-
-    // At a time maximum allowed pages to be shown in pagination div
-    const pagination_visible_pages = 4;
-
-
-    // hide pages from pagination from beginning if more than pagination_visible_pages
-    function hide_from_beginning(element) {
-        if (element.style.display === "" || element.style.display === "block") {
-            element.style.display = "none";
-        } else {
-            hide_from_beginning(element.nextSibling);
+    function generatePageNumbers(totalItems) {
+        pagination.innerHTML = '';
+        for (let i = indexPage; i < indexPage + 1; i++) {
+            pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
         }
-    }
+        pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
 
-    // hide pages from pagination ending if more than pagination_visible_pages
-    function hide_from_end(element) {
-        if (element.style.display === "" || element.style.display === "block") {
-            element.style.display = "none";
-        } else {
-            hide_from_beginning(element.previousSibling);
+        if (indexPage > 1) {
+            pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + pagination.innerHTML;
         }
-    }
 
-    // load data and style for active page
-    function active_page(element, rows, req_per_page) {
-        var current_page = document.getElementsByClassName('active');
-        var next_link = document.getElementById('next_link');
-        var prev_link = document.getElementById('prev_link');
-        var next_tab = current_page[0].nextSibling;
-        var prev_tab = current_page[0].previousSibling;
-        current_page[0].className = current_page[0].className.replace("active", "");
-        if (element === "next") {
-            if (parseInt(next_tab.text).toString() === 'NaN') {
-                next_tab.previousSibling.className += " active";
-                next_tab.setAttribute("onclick", "return false");
-            } else {
-                next_tab.className += " active"
-                render_table_rows(rows, parseInt(req_per_page), parseInt(next_tab.text));
-                if (prev_link.getAttribute("onclick") === "return false") {
-                    prev_link.setAttribute("onclick", `active_page('prev',\"${rows}\",${req_per_page})`);
-                }
-                if (next_tab.style.display === "none") {
-                    next_tab.style.display = "block";
-                    hide_from_beginning(prev_link.nextSibling)
-                }
-            }
-        } else if (element === "prev") {
-            if (parseInt(prev_tab.text).toString() === 'NaN') {
-                prev_tab.nextSibling.className += " active";
-                prev_tab.setAttribute("onclick", "return false");
-            } else {
-                prev_tab.className += " active";
-                render_table_rows(rows, parseInt(req_per_page), parseInt(prev_tab.text));
-                if (next_link.getAttribute("onclick") === "return false") {
-                    next_link.setAttribute("onclick", `active_page('next',\"${rows}\",${req_per_page})`);
-                }
-                if (prev_tab.style.display === "none") {
-                    prev_tab.style.display = "block";
-                    hide_from_end(next_link.previousSibling)
-                }
-            }
-        } else {
-            element.className += "active";
-            render_table_rows(rows, parseInt(req_per_page), parseInt(element.text));
-            if (prev_link.getAttribute("onclick") === "return false") {
-                prev_link.setAttribute("onclick", `active_page('prev',\"${rows}\",${req_per_page})`);
-            }
-            if (next_link.getAttribute("onclick") === "return false") {
-                next_link.setAttribute("onclick", `active_page('next',\"${rows}\",${req_per_page})`);
-            }
-        }
-    }
+        // Event listener for "Next" link
+        document.getElementById("next-link").addEventListener("click", function () {
+            indexPage = indexPage + 1; // Set current page to next page number
+            showPage(indexPage);
+            document.getElementById('current-page').textContent = indexPage;
+            document.getElementById('total-pages').textContent = indexPage;
+ /*           generatePageNumbers(); // Generate new page numbers*/
+        });
 
-    // Render the table's row in table request-table
-    function render_table_rows(rows, req_per_page, page_no) {
-        const response = JSON.parse(window.atob(rows));
-        const resp = response.slice(req_per_page * (page_no - 1), req_per_page * page_no)
-        $('#usersTable').empty()
-        $('#usersTable').append('<tr><th>Index</th><th>Request No</th><th>Title</th></tr>');
-        resp.forEach(function (element, index) {
-            if (Object.keys(element).length > 0) {
-                const { req_no, title } = element;
-                const td = `<tr><td>${++index}</td><td>${req_no}</td><td>${title}</td></tr>`;
-                $('#usersTable').append(td)
+        // Event listener for "Previous" link
+        document.getElementById("previous-link").addEventListener("click", function () {
+            if (indexPage > 1) { // Check if current page is greater than 1
+                indexPage = indexPage - 1;
+                showPage(indexPage);
+                document.getElementById('current-page').textContent = indexPage;
+                document.getElementById('total-pages').textContent = indexPage;
+/*                generatePageNumbers(); // Generate new page numbers*/
             }
         });
     }
+    let page = 1;
+    $('.pagination').on('click', '.page-link', function () {
+        let page = parseInt($(this).data('page'));
+        document.getElementById('current-page').textContent = page;
+        indexPage = page;
+        document.getElementById('total-pages').textContent = indexPage;
+        showPage(page);
+    });
 
-    // Pagination logic implementation
-    function pagination(data, myarr) {
-        const all_data = window.btoa(JSON.stringify(myarr));
-        $(".pagination ul").empty();
-        if (data.req_per_page !== 'ALL') {
-            let pager = `<a href="#" id="prev_link" onclick=active_page('prev',\"${all_data}\",${data.req_per_page})>&laquo;</a>` +
-                `<a href="#" class="active" onclick=active_page(this,\"${all_data}\",${data.req_per_page})>1</a>`;
-            const total_page = Math.ceil(parseInt(myarr.length) / parseInt(data.req_per_page));
-            if (total_page < pagination_visible_pages) {
-                render_table_rows(all_data, data.req_per_page, data.page_no);
-                for (let num = 2; num <= total_page; num++) {
-                    pager += `<a href="#" onclick=active_page(this,\"${all_data}\",${data.req_per_page})>${num}</a>`;
-                }
-            } else {
-                render_table_rows(all_data, data.req_per_page, data.page_no);
-                for (let num = 2; num <= pagination_visible_pages; num++) {
-                    pager += `<a href="#" onclick=active_page(this,\"${all_data}\",${data.req_per_page})>${num}</a>`;
-                }
-                for (let num = pagination_visible_pages + 1; num <= total_page; num++) {
-                    pager += `<a href="#" style="display:none;" onclick=active_page(this,\"${all_data}\",${data.req_per_page})>${num}</a>`;
-                }
-            }
-            pager += `<a href="#" id="next_link" onclick=active_page('next',\"${all_data}\",${data.req_per_page})>&raquo;</a>`;
-            $(".pagination ul").append(pager);
-        } else {
-            render_table_rows(all_data, myarr.length, 1);
-        }
-    }
+    document.getElementById('current-page').textContent = page;
+    document.getElementById('total-pages').textContent = indexPage;
+    generatePageNumbers();
 
-    //calling pagination function
-    pagination(data, RealTimeUserTable())
-
-
-    // trigger when requests per page dropdown changes
-    function filter_requests() {
-        const data = { "req_per_page": document.getElementById("req_per_page").value, "page_no": 1 };
-        pagination(data, myarr);
-    }
 </script>
+
 

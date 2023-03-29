@@ -1,73 +1,63 @@
 ﻿//Pagination for Users Table
 
 // define the number of items per page
-//let ITEMS_PER_PAGE = 999;
+let ITEMS_PER_PAGE = 999;
 
-//    // Set up the event listener for options
-//    $('.options_AdminRow li').click(function () {
-//        var optionText = $(this).find('.option_Admin-text').text();
-//        switch (optionText) {
-//            case "All rows":
-//                ITEMS_PER_PAGE = -1;
-//                break;
-//            default:
-//                ITEMS_PER_PAGE = parseInt(optionText);
-//                break;
-//        }
+    // Set up the event listener for options
+    $('.options_AdminRow li').click(function () {
+        var optionText = $(this).find('.option_Admin-text').text();
+        switch (optionText) {
+            case "All rows":
+                ITEMS_PER_PAGE = -1;
+                break;
+            default:
+                ITEMS_PER_PAGE = parseInt(optionText);
+                break;
+        }
 
-//        showPage(1); // show the first page of the updated table
-//    });
-
-
-//// get the table body element
-//const tableBody = document.querySelector('#usersTable tbody');
-
-//// get the pagination links
-//const paginationLinks = document.querySelectorAll('.pagination li');
-
-//// define a function to show the items for the selected page
-//function showPage(pageNumber) {
-//    // calculate the start and end indexes of the items to show
-//    const startIndex = (pageNumber - 1) * ITEMS_PER_PAGE;
-//    const endIndex = startIndex + ITEMS_PER_PAGE;
-
-//    // hide all rows in the table
-//    const rows = tableBody.querySelectorAll('tr');
-//    rows.forEach(row => {
-//        row.style.display = 'none';
-//    });
-
-//    // show the rows for the current page
-//    for (let i = startIndex; i < endIndex && i < rows.length; i++) {
-//        rows[i].style.display = '';
-//    }
-//}
+        showPage(1); // show the first page of the updated table
+    });
 
 
-//$(document).ready(function () {
-//    Synch();
-//});
+// get the table body element
+const tableBody = document.querySelector('#usersTable tbody');
 
+// get the pagination links
+const paginationLinks = document.querySelectorAll('.pagination li');
 
-//function Synch() {
-//    RealTimeUsersTable();
-//        //.then(function () {
-//        //    showPage(1); // call showPage after reloading the table
-//        //})
-//        //.catch(function (error) {
-//        //    alert(error);
-//        //});
-//}
+// define a function to show the items for the selected page
+function showPage(pageNumber) {
+    // calculate the start and end indexes of the items to show
+    const startIndex = (pageNumber - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+
+    // hide all rows in the table
+    const rows = tableBody.querySelectorAll('tr');
+    rows.forEach(row => {
+        row.style.display = 'none';
+    });
+
+    // show the rows for the current page
+    for (let i = startIndex; i < endIndex && i < rows.length; i++) {
+        rows[i].style.display = '';
+    }
+}
+
 
 $(document).ready(function () {
-    RealTimeUsersTable().then(function (result) {
-        const data = { "req_per_page": document.getElementById("req_per_page").value, "page_no": 1 };
-        pagination(data, result);
-    }).catch(function (error) {
-        alert(error);
-    });
+    Synch();
 });
 
+
+function Synch() {
+    RealTimeUsersTable()
+        .then(function () {
+            showPage(1); // call showPage after reloading the table
+        })
+        .catch(function (error) {
+            alert(error);
+        });
+}
 
 
 function RealTimeUsersTable() {
@@ -110,7 +100,7 @@ function RealTimeUsersTable() {
                     row += "</td></tr>";
                     $("#usersTable tbody").append(row);
                 });
-                resolve();
+                resolve(result);
             },
             error: function () {
                 reject("Failed to refresh users.");
@@ -162,4 +152,6 @@ function setNotification(IdUser, FirstName, LastName, command) {
         }
     });
 }
+
+
       

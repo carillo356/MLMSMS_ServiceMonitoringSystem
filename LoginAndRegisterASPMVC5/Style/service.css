@@ -232,7 +232,7 @@ table.table td:last-child i {
     margin: 0 5px;
 }
 
-/*.pagination {
+.pagination {
     display: flex;
     justify-content: center;
     margin: 20px 0;
@@ -263,42 +263,7 @@ table.table td:last-child i {
             .pagination li a:hover {
                 background-color: deeppink;
                 color: #fff;
-            }*/
-
-.box {
-    float: left;
-    padding: 50px 0px;
-}
-
-.options {
-    margin: 5px 0px 0px 0px;
-    float: left;
-}
-
-.pagination {
-    float: right;
-}
-
-    .pagination a {
-        color: black;
-        float: left;
-        padding: 8px 16px;
-        text-decoration: none;
-        transition: background-color .3s;
-        border: 1px solid #ddd;
-        margin: 0 4px;
-    }
-
-        .pagination a.active {
-            background-color: #4CAF50;
-            color: white;
-            border: 1px solid #4CAF50;
-        }
-
-        .pagination a:hover:not(.active) {
-            background-color: #ddd;
-        }
-
+            }
 
 .hint-text {
     font-size: 13px;
