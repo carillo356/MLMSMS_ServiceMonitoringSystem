@@ -115,7 +115,7 @@ namespace ServicesTaskScheduler
                     Enabled = true
                 });
 
-                string loggerPath = @"C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\Logger.exe";
+                string loggerPath = ConfigurationManager.AppSettings.Get("LoggerPath");
 
                 // Add escaped double quotes around the serviceName
                 td.Actions.Add(new ExecAction(loggerPath, $"\"{serviceName}\""));

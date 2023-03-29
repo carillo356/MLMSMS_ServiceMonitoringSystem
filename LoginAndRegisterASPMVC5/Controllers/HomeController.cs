@@ -182,7 +182,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     Enabled = true
                 });
 
-                string loggerPath = @"C:\Users\Aaron\source\repos\OJTWindowsService\ConsoleApp\bin\Debug\net6.0\Logger.exe";
+                string loggerPath = ConfigurationManager.AppSettings.Get("LoggerPath");
 
                 // Add escaped double quotes around the serviceName
                 td.Actions.Add(new ExecAction(loggerPath, $"\"{serviceName}\""));
@@ -710,6 +710,13 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 }
             }
             return View("AdminUsers");
+        }
+
+        [HttpGet]
+        public ActionResult GetTotalUsersCount()
+        {
+            int totalUsers = _db.Users.Count();
+            return Json(new { totalUsers }, JsonRequestBehavior.AllowGet);
         }
 
         //create a string MD5

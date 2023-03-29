@@ -2,7 +2,7 @@
 
 // define the number of items per page
  
-let ITEMS_PER_PAGE = 5;
+let ITEMS_PER_PAGE = 2;
 
 
     // Set up the event listener for options
@@ -16,7 +16,8 @@ let ITEMS_PER_PAGE = 5;
                 ITEMS_PER_PAGE = parseInt(optionText);
                 break;
         }
-        showPage(1); // show the first page of the updated table
+        generatePageNumbers();
+           // show the first page of the updated table
     });
 
 

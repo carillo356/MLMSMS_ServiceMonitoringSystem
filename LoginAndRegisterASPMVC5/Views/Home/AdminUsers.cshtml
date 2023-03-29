@@ -395,52 +395,74 @@
 
 <!-- Pagination for Admin User Table -->
 <script>
-    var indexPage = 1;
+    let indexPage = 1;
+    let page = 1;
     let pagination = document.querySelector('.pagination');
 
-    function generatePageNumbers() {
-        pagination.innerHTML = '';
-        for (let i = indexPage; i < indexPage + 5; i++) {
-            pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
+        function getTotalUsersCount() {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/Home/GetTotalUsersCount",
+                    type: "GET",
+                    dataType: 'json',
+                    success: function (result) {
+                        resolve(result.totalUsers);
+                    },
+                    error: function () {
+                        reject("Failed to get the total number of users.");
+                    }
+                });
+            });
         }
-        pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
 
-        if (indexPage > 1) {
-            pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + pagination.innerHTML;
+        let totalPages;
+        function generatePageNumbers() {
+        getTotalUsersCount()
+            .then(function (totalUsers) {
+                totalPages = Math.ceil(totalUsers / ITEMS_PER_PAGE);
+                pagination.innerHTML = '';
+                for (let i = indexPage; i <= totalPages; i++) {
+                    pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
+                }
+                pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
+
+                if (indexPage > 1) {
+                    pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + pagination.innerHTML;
+                }
+
+                document.getElementById("next-link").addEventListener("click", function () {
+                    showPage(2);
+                });
+
+                document.getElementById('current-page').textContent = page;
+                document.getElementById('total-pages').textContent = totalPages;
+                showPage(1);
+            })
+            .catch(function (error) {
+                alert(error);
+            });
+
+
         }
 
-        // Event listener for "Next" link
-        document.getElementById("next-link").addEventListener("click", function () {
-            indexPage = indexPage + 1; // Set current page to next page number
-            showPage(indexPage);
-            document.getElementById('current-page').textContent = indexPage;
-            document.getElementById('total-pages').textContent = indexPage + 4;
-            generatePageNumbers(); // Generate new page numbers
-        });
+        generatePageNumbers();
 
-        // Event listener for "Previous" link
-        document.getElementById("previous-link").addEventListener("click", function () {
-            if (indexPage > 1) { // Check if current page is greater than 1
-                indexPage = indexPage - 1;
-                showPage(indexPage);
-                document.getElementById('current-page').textContent = indexPage;
-                document.getElementById('total-pages').textContent = indexPage + 4;
-                generatePageNumbers(); // Generate new page numbers
-            }
-        });
-    }
-    let page = 1;
-    $('.pagination').on('click', '.page-link', function () {
-        let page = parseInt($(this).data('page'));
+        document.getElementById('current-page').textContent = indexPage;
+        document.getElementById('total-pages').textContent = totalPages;
+
+        $('.pagination').on('click', '.page-link', function () {
+        page = parseInt($(this).data('page'));
         document.getElementById('current-page').textContent = page;
-        indexPage = page;
-        document.getElementById('total-pages').textContent = indexPage + 4;
         showPage(page);
-    });
+        });
 
-    document.getElementById('current-page').textContent = page;
-    document.getElementById('total-pages').textContent = indexPage + 4;
-    generatePageNumbers();
+                                    // Add event listener for "Next" link
+        document.getElementById("next-link").addEventListener("click", function () {
+            showPage(2);
+        });
+
+
+
 
 </script>
 

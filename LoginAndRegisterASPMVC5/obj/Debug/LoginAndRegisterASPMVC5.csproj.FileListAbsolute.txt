@@ -260,3 +260,13 @@ C:\github repos\LoginAndRegisterASPMVC5\bin\pl\Microsoft.Win32.TaskScheduler.res
 C:\github repos\LoginAndRegisterASPMVC5\bin\ru\Microsoft.Win32.TaskScheduler.resources.dll
 C:\github repos\LoginAndRegisterASPMVC5\bin\zh-CN\Microsoft.Win32.TaskScheduler.resources.dll
 C:\github repos\LoginAndRegisterASPMVC5\bin\zh-Hant\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\Microsoft.Win32.TaskScheduler.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\Microsoft.Win32.TaskScheduler.xml
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\de\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\es\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\fr\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\it\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\pl\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\ru\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\zh-CN\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\LoginAndRegisterASPMVC5\bin\zh-Hant\Microsoft.Win32.TaskScheduler.resources.dll
