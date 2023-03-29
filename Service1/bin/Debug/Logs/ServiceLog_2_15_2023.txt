@@ -1,0 +1,16 @@
+Service is started at 2/15/2023 8:26:45 AM
+Service is stopped at 2/15/2023 8:26:48 AM
+Service is started at 2/15/2023 8:28:56 AM
+Service is recall at 2/15/2023 8:28:59 AM My Counter: 3
+Service is recall at 2/15/2023 8:29:02 AM My Counter: 2
+Service is recall at 2/15/2023 8:29:05 AM My Counter: 1
+Service is started at 2/15/2023 8:31:39 AM
+Service is stopped at 2/15/2023 8:31:41 AM
+Service is started at 2/15/2023 8:41:26 AM
+Service is stopped at 2/15/2023 8:41:29 AM
+Service is started at 2/15/2023 8:45:55 AM
+Service is stopped at 2/15/2023 8:45:56 AM
+Service is started at 2/15/2023 8:46:33 AM
+Service is recall at 2/15/2023 8:46:36 AM My Counter: 3
+Service is recall at 2/15/2023 8:46:39 AM My Counter: 2
+Service is recall at 2/15/2023 8:46:42 AM My Counter: 1
