@@ -149,8 +149,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary custom-button" id="btnAddService" onclick="submitForm()" data-bs-dismiss="modal">Add</button>
-                    <button type="button" class="btn btn-primary custom-button" id="btnCancelService" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary custom-button" id="btnAddService" onclick="submitForm()" data-bs-dismiss="modal">Add</button>
+                    <button type="button" class="btn btn-secondary custom-button" id="btnCancelService" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -167,7 +167,7 @@
                         </div>
                         <div class="col-sm-6 button-container">
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
-                            <button type="button" class="btn btn-success"><i class="bi bi-arrow-clockwise" onclick="RealTimeTable();"></i><span>Refresh List</span></button>
+                            <button type="button" class="btn btn-success" onclick="ServicesInMonitor();"><i class="bi bi-arrow-clockwise"></i><span>Refresh List</span></button>
                         </div>
                     </div>
                 </div>
@@ -366,5 +366,216 @@
 
 </script>
 
+<script>
+    function ServicesInMonitor() {
+        $.ajax({
+            url: '/Home/ServicesInMonitor',
+            type: 'GET',
+            dataType: 'json',
+            success: function (result) {
+                $("#serviceTable tbody").empty();
+
+                // Loop through the data and append each row to the table
+                result.forEach(function (Data) {
+                    var limit = 999;
+                    if (Data.ServiceStatus === "Running")
+                        statusText = '<span style="color:green">Running</span>'
+                    else if (Data.ServiceStatus === "Stopped")
+                        statusText = '<span style="color:red">Stopped</span>'
+                    else
+                        statusText = "";
+
+                    var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                    row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
+                    row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
+                    row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastEventLog + "</td>";
+                    row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
+                    row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.HostName + "</td>";
+                    row += "<td>";
+
+                    if (Data.ServiceStatus === "Stopped") {
+                        row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                    } else if (Data.ServiceStatus === "Running") {
+                        row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                        row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
+                        row += "<button class='action-button ms-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
+                    } row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")'>Delete</button>";
+                    row += "</td></tr>";
+                    $("#serviceTable tbody").append(row);
+                });
+            },
+            error: function () {
+                alert("Failed to refresh services.");
+            }
+        });
+    }
+
+        // Service Table and Log History
+        ServicesInMonitor();
+</script>
+
+<script>
+    $(document).ready(function () {
+        ServicesAvailable();
+    });
+
+    function ServicesAvailable() {
+        GetServicesInController()
+            .then(function (servicesInController) {
+                Checkbox(servicesInController);
+            })
+            .catch(function (error) {
+                alert(error);
+            });
+    }
+
+    function GetServicesInController() {
+        var servicesInTable = [];
+        $('#servicesTable tbody tr').each(function () {
+            servicesInTable.push($(this).find('td:first').text());
+        });
+
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/Home/GetServicesInController",
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(servicesInTable),
+                success: function (result) {
+                    resolve(result);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    reject('Error getting service names');
+                }
+            });
+        });
+    }
+
+    function Checkbox(servicesInController) {
+        if (servicesInController.length > 0) {
+            var checkboxes = '';
+            $.each(servicesInController, function (i, item) {
+                if (!$('#servicesTable td:contains(' + item + ')').length) { // Check if the service is already in the table
+                    var checkbox = `<li class="item"><div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
+                                    <label class="form-check-label" for="service-${i}">${item}</label>
+                                    </div></li>`;
+                    checkboxes += checkbox;
+                }
+            });
+            $('#serviceCheckboxes').html(checkboxes);
+        }
+    }
+
+    $('#searchService').on('input', function () {
+        var searchText = $(this).val().toLowerCase();
+        $('.form-check-label').each(function () {
+            var label = $(this).text().toLowerCase();
+            $(this).closest('.item').toggle(label.includes(searchText));
+        });
+    });
+
+    $('input[name="ServiceName"]').on('input', function () {
+        var filter = $(this).val().toUpperCase();
+        $('#serviceCheckboxes li').each(function () {
+
+            var label = $(this).find('label').text().toUpperCase();
+            $(this).toggle(label.includes(filter));
+        });
+    });
+</script>
+
+<script>
+    /* Add and Remove Service*/
+    function AddService(serviceName) {
+        $.ajax({
+            url: "/Home/AddService",
+            type: "POST",
+            data: { serviceName: serviceName },
+            success: function () {
+                var $servicesTable = $('#servicesTable');
+                $servicesTable.find('tbody').prepend($newRows);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Error adding service');
+            }
+        }).then(function () {
+            ServicesInMonitor();
+            ServicesAvailable();
+        });
+    }
 
 
+    function RemoveAddedService1(serviceName) {
+        /*Show the confirmation box here*/
+        $.ajax({
+            url: "/Home/DeleteAddedService",
+            type: "POST",
+            data: { serviceName: serviceName },
+            success: function () {
+                ServicesInMonitor();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert("Failed to delete " + serviceName);
+            }
+        }).then(function () {
+            ServicesAvailable();
+        });
+    }
+</script>
+
+<script>
+    function RemoveAddedService(serviceName, command) {
+        /*Show the confirmation box here*/
+        var modal = document.getElementById("alert-modal");
+        var modalTitle = document.getElementById("modal-title");
+        var modalMessage = document.getElementById("modal-message");
+        var btnYes = document.getElementById("btnYes");
+        var btnNo = document.getElementById("btnNo");
+
+        modal.style.display = "block";
+        modalTitle.innerHTML = "<i class='bi bi-exclamation-triangle-fill text-warning'></i> System Message";
+        modalMessage.innerHTML = "Are you sure you want to " + command.toUpperCase() + " '" + serviceName + "'?";
+        btnYes.onclick = function () {
+            $.ajax({
+                url: "/Home/DeleteAddedService",
+                type: "POST",
+                data: { serviceName: serviceName, command: command },
+                success: function () {
+                    ServicesInMonitor();
+                    var commandText = command.toUpperCase();
+                    if (command === "delete") {
+                        commandText = "DELETED";
+                    }
+
+                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    var toastMessage = "You " + commandText + " the service " + "' " + serviceName + " '" + ".";
+                    document.querySelector('.toast-body').innerHTML = toastMessage;
+
+                    if (commandText === "DELETED") {
+                        // set background color to red if commandText is Deleted
+                        toast._element.classList.remove("bg-success");
+                        toast._element.classList.add("bg-danger");
+                    }
+
+                    toast.show();
+
+                    setTimeout(function () {
+                        toast.dispose();
+                    }, 4000);
+                },
+                error: function () {
+                    alert("Failed to delete " + serviceName);
+                }
+            }).then(function () {
+                ServicesAvailable();
+            });
+            modal.style.display = "none";
+        }
+        btnNo.onclick = function () {
+            modal.style.display = "none";
+        }
+    }
+
+</script>

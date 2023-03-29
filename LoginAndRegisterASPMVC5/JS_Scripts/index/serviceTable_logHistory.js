@@ -1,10 +1,4 @@
-﻿
-// Service Table and Log History
-$(document).ready(function () {
-    RealTimeTable();
-});
-
-var activeServiceName;
+﻿var activeServiceName;
 
 function handleRowClick(serviceName, limit) {
     logHistory(serviceName, limit);
@@ -34,7 +28,6 @@ function ServiceActions(serviceName, command) {
             data: { serviceName: serviceName, command: command },
             success: function () {
                 $("#serviceTable tbody").empty();
-                RealTimeTable();
 
                 var commandText = command.toUpperCase();
                 if (command === "stop") {
@@ -64,6 +57,7 @@ function ServiceActions(serviceName, command) {
                 setTimeout(function () {
                     toast.dispose();
                 }, 4000);
+                ServicesInMonitor();
             },
             error: function () {
                 alert('Failed to ' + command + ' ' + serviceName);
