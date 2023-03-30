@@ -38,7 +38,7 @@ function RealTimeUsersTable() {
             $("#usersTable tbody").empty();
             // Loop through the data and append each row to the table
             result.forEach(function (Data) {
-                const Role = (Data.IsAdmin === true) ? '<span><i class="bi bi-person-gear"></i></span>' : '<span></span>';
+                const Role = (Data.IsAdmin === true) ? '<span><i class="bi bi-person-gear"></i></span>' : '<span><i class="bi bi-person"></i></span>';
 
                 var row = "<tr data-toggle='modal' data-target='#service-modal'>";
                 row += "<td>" + Data.FirstName + "</td>";
