@@ -21,7 +21,7 @@ function DeleteUser(IdUser, FirstName, LastName, command) {
             url: '/Home/DeleteUser',
             data: { IdUser: IdUser },
             success: function () {
-                RealTimeUsersTable();
+                Synch();
 
                 var commandText = command.toUpperCase();
                 if (command === "delete") {

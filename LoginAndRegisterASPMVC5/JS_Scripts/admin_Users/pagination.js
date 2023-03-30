@@ -1,24 +1,28 @@
 ﻿//Pagination for Users Table
 
 // define the number of items per page
- 
-let ITEMS_PER_PAGE = 2;
 
 
-    // Set up the event listener for options
-    $('.options_AdminRow li').click(function () {
-        var optionText = $(this).find('.option_Admin-text').text();
-        switch (optionText) {
-            case "All rows":
-                ITEMS_PER_PAGE = -1;
-                break;
-            default:
-                ITEMS_PER_PAGE = parseInt(optionText);
-                break;
-        }
-        generatePageNumbers();
-           // show the first page of the updated table
-    });
+
+// Set up the event listener for options
+$('.options_AdminRow li').click(function () {
+    var optionText = $(this).find('.option_Admin-text').text();
+    switch (optionText) {
+        case "All rows":
+            getTotalUsersCount().then(function (totalUsers) {
+                ITEMS_PER_PAGE = totalUsers;
+                Synch(); // show the first page of the updated table
+            }).catch(function (error) {
+                console.error('Failed to get the total number of users.', error);
+            });
+            break;
+        default:
+            ITEMS_PER_PAGE = parseInt(optionText);
+            Synch(); // show the first page of the updated table
+            break;
+    }
+});
+
 
 
 // get the table body element
@@ -43,6 +47,7 @@ function showPage(pageNumber) {
     for (let i = startIndex; i < endIndex && i < rows.length; i++) {
         rows[i].style.display = '';
     }
+    generatePageNumbers();
 }
 
 
@@ -85,7 +90,7 @@ $(document).ready(function () {
 function Synch() {
     RealTimeUsersTable()
         .then(function () {
-            showPage(1); // call showPage after reloading the table
+            showPage(1);
         })
         .catch(function (error) {
             alert(error);
