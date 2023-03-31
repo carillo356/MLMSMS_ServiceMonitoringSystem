@@ -281,24 +281,20 @@
     </div>
 
     <!-- Add User Modal with Toast and Validation Message -->
-    <script>
+<script>
     $(document).ready(function () {
       // Handle form submission using AJAX
       $('#add-user-form').submit(function (event) {
         event.preventDefault(); // Prevent default form submission behavior
-
         // Send form data using AJAX
             $.ajax({
               url: '@Url.Action("AddUser", "Home")',
               type: 'POST',
               data: $(this).serialize(),
                 success: function (result) {
-                    RealTimeUsersTable();
                     if (result.success) {
-                        RealTimeUsersTable();
                         // Update table with new user data
                         $('#user-table').html(result);
-
                         var toast = new bootstrap.Toast(document.getElementById('liveToast'));
                         var toastMessage = "User successfully added!";
                         document.querySelector('.toast-body').innerHTML = toastMessage;
@@ -306,15 +302,12 @@
                         toast._element.classList.remove("text-bg-danger");
                         toast._element.classList.add("bg-success");
                         toast.show();
-
                         setTimeout(function () {
                             toast.dispose();
                         }, 4000);
-
                         // Hide modal
                         $('#addUsers-modal').modal('dispose');
                         $('#add-user-form')[0].reset();
-
                     } else {
                         // Check if there is a validation summary
                         if (result.message) {
@@ -325,42 +318,37 @@
                             alert(result.message);
                         }
                     }
+                    Synch();
                 }
             });
       });
     });
-
         // Reset form fields when modal is hidden
         $('#addUsers-modal').on('hidden.bs.modal', function () {
             $('#add-user-form')[0].reset();
             $('#validation-summary').html('');
         });
-
         // Close modal when "Cancel" button is clicked
         $('#cancelButton').on('click', function () {
             $('#addUsers-modal').modal('hide');
         });
-
-    </script>
+</script>
 
     <!-- Edit User Modal with Toast and Validation Message -->
-    <script>
+<script>
     $(document).ready(function () {
       // Handle form submission using AJAX
       $('#edit-user-form').submit(function (event) {
         event.preventDefault(); // Prevent default form submission behavior
-
         // Send form data using AJAX
         $.ajax({
           url: '@Url.Action("UpdateUser", "Home")',
           type: 'POST',
           data: $(this).serialize(),
             success: function (result) {
-                RealTimeUsersTable();
                 if (result.success) {
                     // Update table with new user data
                     $('#user-table').html(result);
-
                     var toast = new bootstrap.Toast(document.getElementById('liveToast'));
                     var toastMessage = result.message;
                     document.querySelector('.toast-body').innerHTML = toastMessage;
@@ -368,23 +356,21 @@
                     toast._element.classList.remove("text-bg-danger");
                     toast._element.classList.add("bg-success");
                     toast.show();
-
                     setTimeout(function () {
                         toast.dispose();
                     }, 4000);
-
                     // Hide modal
                     $('#editUsers-modal').modal('hide');
-
                 } else {
                     // Display error message
                     alert(result.message);
                 }
+                Synch();
             }
         });
       });
     });
-    </script>
+</script>
 
     <script src="~/JS_Scripts/admin_Users/pagination.js"></script>
     <script src="~/JS_Scripts/admin_Users/tooltip_deleteUser_editUser_modal.js"></script>
@@ -396,70 +382,80 @@
 <!-- Pagination for Admin User Table -->
 <script>
     let indexPage = 1;
-    let page = 1;
     let pagination = document.querySelector('.pagination');
-
-        function getTotalUsersCount() {
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: "/Home/GetTotalUsersCount",
-                    type: "GET",
-                    dataType: 'json',
-                    success: function (result) {
-                        resolve(result.totalUsers);
-                    },
-                    error: function () {
-                        reject("Failed to get the total number of users.");
-                    }
-                });
+    let totalPages;
+    function getTotalUsersCount() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/Home/GetTotalUsersCount",
+                type: "GET",
+                dataType: 'json',
+                success: function (result) {
+                    resolve(result.totalUsers);
+                },
+                error: function () {
+                    reject("Failed to get the total number of users.");
+                }
             });
-        }
-
-        let totalPages;
-        function generatePageNumbers() {
+        });
+    }
+    let ITEMS_PER_PAGE = 5;
+    function generatePageNumbers() {
         getTotalUsersCount()
             .then(function (totalUsers) {
                 totalPages = Math.ceil(totalUsers / ITEMS_PER_PAGE);
                 pagination.innerHTML = '';
-                for (let i = indexPage; i <= totalPages; i++) {
+                let maxVisiblePages = 5;
+                let startPage = indexPage - Math.floor(maxVisiblePages / 2);
+                let endPage = startPage + maxVisiblePages - 1;
+                if (startPage < 1) {
+                    startPage = 1;
+                    endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                }
+                if (endPage > totalPages) {
+                    endPage = totalPages;
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+                if (indexPage > 1) {
+                    pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>`;
+                }
+                for (let i = startPage; i <= endPage; i++) {
                     pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
                 }
-                pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
-
-                if (indexPage > 1) {
-                    pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + pagination.innerHTML;
+                if (indexPage < totalPages) {
+                    pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
                 }
-
-                document.getElementById("next-link").addEventListener("click", function () {
-                    showPage(2);
+                if (indexPage < totalPages) {
+                    document.getElementById("next-link").addEventListener("click", function () {
+                        indexPage = indexPage + 1;
+                        showPage(indexPage);
+                        generatePageNumbers();
+                    });
+                }
+                if (indexPage > 1) {
+                    document.getElementById("previous-link").addEventListener("click", function () {
+                        indexPage = indexPage - 1;
+                        showPage(indexPage);
+                        generatePageNumbers();
+                    });
+                }
+                // Add click event listener to the page number elements
+                document.querySelectorAll(".pagination .page-link").forEach(function (pageLink) {
+                    const pageNumber = parseInt(pageLink.getAttribute("data-page"));
+                    if (pageNumber) {
+                        pageLink.addEventListener("click", function () {
+                            indexPage = pageNumber;
+                            showPage(indexPage);
+                            generatePageNumbers();
+                        });
+                    }
                 });
-
-                document.getElementById('current-page').textContent = page;
+                document.getElementById('current-page').textContent = indexPage;
                 document.getElementById('total-pages').textContent = totalPages;
-                showPage(1);
             })
             .catch(function (error) {
                 alert(error);
             });
-
-
-        }
-
-        generatePageNumbers();
-
-        document.getElementById('current-page').textContent = indexPage;
-        document.getElementById('total-pages').textContent = totalPages;
-
-        $('.pagination').on('click', '.page-link', function () {
-        page = parseInt($(this).data('page'));
-        document.getElementById('current-page').textContent = page;
-        showPage(page);
-        });
-
-        // Add event listener for "Next" link
-        document.getElementById("next-link").addEventListener("click", function () {
-            showPage(2);
-        });
-
+    }
 </script>
 

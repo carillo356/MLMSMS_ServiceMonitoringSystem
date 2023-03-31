@@ -1,14 +1,31 @@
-﻿//Pagination for Non-Admin in Users Table
-
+﻿//Pagination for Non- Admin Users Table
 
 // define the number of items per page
-const ITEMS_PER_PAGE = 5;
+
+// Set up the event listener for options
+$('.options_nonAdminRow li').click(function () {
+    var optionText = $(this).find('.option_nonAdmin-text').text();
+    switch (optionText) {
+        case "All rows":
+            getTotalUsersCount().then(function (totalUsers) {
+                ITEMS_PER_PAGE = totalUsers;
+                Synch(); // show the first page of the updated table
+            }).catch(function (error) {
+                console.error('Failed to get the total number of users.', error);
+            });
+            break;
+        default:
+            ITEMS_PER_PAGE = parseInt(optionText);
+            Synch(); // show the first page of the updated table
+            break;
+    }
+});
 
 // get the table body element
 const tableBody = document.querySelector('#usersTable tbody');
 
 // get the pagination links
-const paginationLinks = document.querySelectorAll('.pagination ul');
+const paginationLinks = document.querySelectorAll('.pagination li');
 
 // define a function to show the items for the selected page
 function showPage(pageNumber) {
@@ -26,51 +43,63 @@ function showPage(pageNumber) {
     for (let i = startIndex; i < endIndex && i < rows.length; i++) {
         rows[i].style.display = '';
     }
+    generatePageNumbers();
+}
+
+$(document).ready(function () {
+    Synch();
+});
+
+
+function Synch() {
+    RealTimeUsersTable()
+        .then(function () {
+            showPage(1);
+        })
+        .catch(function (error) {
+            alert(error);
+        });
 }
 
 function RealTimeUsersTable() {
-    /*Refresh the table with the updated data*/
-    $.ajax({
-        url: "/Home/RealTimeUsersTable",
-        type: "GET",
-        dataType: 'json',
-        success: function (result) {
-            $("#usersTable tbody").empty();
-            // Loop through the data and append each row to the table
-            result.forEach(function (Data) {
-                const Role = (Data.IsAdmin === true) ? '<span><i class="bi bi-person-gear"></i></span>' : '<span><i class="bi bi-person"></i></span>';
+    return new Promise(function (resolve, reject) {
+        /*Refresh the table with the updated data*/
+        $.ajax({
+            url: "/Home/RealTimeUsersTable",
+            type: "GET",
+            dataType: 'json',
+            success: function (result) {
+                $("#usersTable tbody").empty();
+                // Loop through the data and append each row to the table
+                result.forEach(function (Data) {
+                    const Role = (Data.IsAdmin === true) ? '<span><i class="bi bi-person-gear"></i></span>' : '<span><i class="bi bi-person"></i></span>';
 
-                var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                row += "<td>" + Data.FirstName + "</td>";
-                row += "<td>" + Data.LastName + "</td>";
-                row += "<td>" + Data.Email + "</td>";
-                row += "<td>" + Role + "</td>";
-                row += "<td>";
-                if (Data.Email_Notification == true) {
-                    row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
-                    row += "<i class='bi bi-envelope-check-fill'></i>";
-                    row += "</button>";
-                } else {
-                    row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
-                    row += "<i class='bi bi-envelope-x-fill'></i>";
-                    row += "</button>";
-                }
-                row += "</td></tr>";
-                $("#usersTable tbody").append(row);
-            });
-        },
-        error: function () {
-            alert("Failed to refresh users.");
-        }
+                    var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                    row += "<td>" + Data.FirstName + "</td>";
+                    row += "<td>" + Data.LastName + "</td>";
+                    row += "<td>" + Data.Email + "</td>";
+                    row += "<td>" + Role + "</td>";
+                    row += "<td>";
+                    if (Data.Email_Notification == true) {
+                        row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
+                        row += "<i class='bi bi-envelope-check-fill'></i>";
+                        row += "</button>";
+                    } else {
+                        row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
+                        row += "<i class='bi bi-envelope-x-fill'></i>";
+                        row += "</button>";
+                    }
+                    row += "</td></tr>";
+                    $("#usersTable tbody").append(row);
+                });
+                resolve();
+            },
+            error: function () {
+                reject("Failed to refresh users.");
+            }
+        });
     });
 }
-
-// show the first page by default
-$(document).ready(function () {
-    RealTimeUsersTable().then(function () {
-        showPage(pageNumber);
-    });
-});
 
 function setNotification(IdUser, FirstName, LastName, command) {
     $.ajax({
@@ -115,22 +144,3 @@ function setNotification(IdUser, FirstName, LastName, command) {
         }
     });
 }
-
-var pageNumber = 1;
-// handle the click event of the pagination links
-paginationLinks.forEach(link => {
-    link.addEventListener('click', event => {
-        event.preventDefault();
-        // get the selected page number from the link's text
-        pageNumber = parseInt(link.innerText);
-
-        // show the items for the selected page
-        showPage(pageNumber);
-
-        // mark the selected page as active
-        paginationLinks.forEach(link => {
-            link.parentElement.classList.remove('active');
-        });
-        link.parentElement.classList.add('active');
-    });
-});
