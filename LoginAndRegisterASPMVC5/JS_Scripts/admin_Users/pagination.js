@@ -1,8 +1,19 @@
 ﻿//Pagination for Users Table
 
 // define the number of items per page
+$(document).ready(function () {
+    Synch();
+});
 
-
+function Synch() {
+    RealTimeUsersTable()
+        .then(function () {
+            showPage(1);
+        })
+        .catch(function (error) {
+            alert(error);
+        });
+}
 
 // Set up the event listener for options
 $('.options_AdminRow li').click(function () {
@@ -11,16 +22,16 @@ $('.options_AdminRow li').click(function () {
         case "All rows":
             getTotalUsersCount().then(function (totalUsers) {
                 ITEMS_PER_PAGE = totalUsers;
-                Synch(); // show the first page of the updated table
+
             }).catch(function (error) {
                 console.error('Failed to get the total number of users.', error);
             });
             break;
         default:
             ITEMS_PER_PAGE = parseInt(optionText);
-            Synch(); // show the first page of the updated table
             break;
     }
+    Synch(); // show the first page of the updated table
 });
 
 
@@ -49,54 +60,6 @@ function showPage(pageNumber) {
     }
     generatePageNumbers();
 }
-
-
-//Event Listener for Selecting no. of Rows
-
-
-
-// /*handle the click event of the pagination links*/
-//paginationLinks.forEach(link => {
-//    link.addEventListener('click', event => {
-//        event.preventDefault();
-//        // get the selected page number from the link's text
-//        pageNumber = parseInt(link.innerText);
-
-//        // show the items for the selected page
-//        showPage(pageNumber);
-
-//        // mark the selected page as active
-//        paginationLinks.forEach(link => {
-//            link.parentElement.classList.remove('active');
-//        });
-//        link.parentElement.classList.add('active');
-//    });
-
-
-//// show the first page by default
-//$(document).ready(function () {
-//    //RealTimeUsersTable().then(function () {
-//    //    showPage(1);
-//    /*    });*/
-//    Synch();
-//});
-
-
-$(document).ready(function () {
-    Synch();
-});
-
-
-function Synch() {
-    RealTimeUsersTable()
-        .then(function () {
-            showPage(1);
-        })
-        .catch(function (error) {
-            alert(error);
-        });
-}
-
 
 function RealTimeUsersTable() {
     return new Promise(function (resolve, reject) {

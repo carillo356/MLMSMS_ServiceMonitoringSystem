@@ -2,7 +2,7 @@
 
 
 // define the number of items per page
-var ITEMS_PAR_PAGE_LOGS;
+var ITEMS_PAR_PAGE_LOGS = 5;
 
 // get the table body element
 const logstableBody = document.querySelector('#popupTable tbody');

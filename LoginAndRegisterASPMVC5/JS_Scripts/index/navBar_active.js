@@ -1,5 +1,4 @@
 ﻿// Nav Bar Active
-$(document).ready(function () {
     // Get the current URL path
     var currentPath = window.location.pathname;
 
@@ -14,4 +13,3 @@ $(document).ready(function () {
         // Add the "active" class to the clicked link
         $(this).addClass('active');
     });
-});

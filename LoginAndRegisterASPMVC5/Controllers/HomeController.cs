@@ -25,6 +25,20 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public static List<string> _servicesAvailable;
         public static List<Service> _servicesInMonitor = new List<Service>();
 
+        [HttpGet]
+        public ActionResult GetMonitoredServicesCount()
+        {
+            int totalMonitoredServices = _servicesInMonitor.Count;
+            return Json(new { totalMonitoredServices }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetTotalUsersCount()
+        {
+            int totalUsers = _db.Users.Count();
+            return Json(new { totalUsers }, JsonRequestBehavior.AllowGet);
+        }
+
         public void DeleteAddedService(string serviceName) //Removes a service row
         {
             try
@@ -57,18 +71,18 @@ namespace LoginAndRegisterASPMVC5.Controllers
             {
                 try
                 {
-                    GetServiceLogs(serviceName, out ServiceControllerStatus serviceStatus, out string hostName, out DateTime lastStart, out string lastEventLog);
+                    GetServiceLogs(serviceName, out string serviceStatus, out string hostName, out DateTime lastStart, out string lastEventLog);
 
                     using (SqlConnection connection = GetConnection())
                     using (SqlCommand command = new SqlCommand("UpdateServiceStatus", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.AddWithValue("@ServiceName", serviceName);
-                        command.Parameters.AddWithValue("@ServiceStatus", serviceStatus.ToString());
-                        command.Parameters.AddWithValue("@HostName", hostName);
-                        command.Parameters.AddWithValue("@LogBy", Session["FullName"].ToString());
+                        command.Parameters.AddWithValue("@ServiceStatus", serviceStatus ?? "NotFound");
+                        command.Parameters.AddWithValue("@HostName", hostName ?? "NotFound");
+                        command.Parameters.AddWithValue("@LogBy", Session["FullName"]?.ToString() ?? "NotFound");
                         command.Parameters.AddWithValue("@LastStart", lastStart);
-                        command.Parameters.AddWithValue("@LastEventLog", lastEventLog);
+                        command.Parameters.AddWithValue("@LastEventLog", string.IsNullOrEmpty(lastEventLog) ? "NotFound" : lastEventLog);   
                         command.ExecuteNonQuery();
                     }
 
@@ -89,45 +103,51 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public static void GetServiceLogs(string serviceName, out ServiceControllerStatus serviceStatus, out string hostName, out DateTime lastStart, out string lastEventLog)
+        public static void GetServiceLogs(string serviceName, out string serviceStatus, out string hostName, out DateTime lastStart, out string lastEventLog)
         {
             ServiceController[] servicesInController = ServiceController.GetServices();
             ServiceController serviceInController = servicesInController.FirstOrDefault(ctr => ctr.ServiceName == serviceName);
-            serviceStatus = serviceInController.Status;
+
+            // Default values
+            serviceStatus = "NotFound";
             hostName = "NotFound";
             lastStart = new DateTime(1900, 1, 1);
             lastEventLog = "NotFound";
 
-            try
+            if (serviceInController != null)
             {
+                serviceStatus = serviceInController.Status.ToString();
                 hostName = Environment.MachineName;
 
-                using (var eventLog = new EventLog("Application"))
+                try
                 {
-                    var query = new EventLogQuery("Application", PathType.LogName, $"*[System/Provider/@Name='{serviceName}']")
+                    using (var eventLog = new EventLog("Application"))
                     {
-                        ReverseDirection = true, // Sort by descending time
-                    };
-
-
-                    using (var reader = new EventLogReader(query))
-                    {
-                        using (var eventRecord = reader.ReadEvent())
+                        var query = new EventLogQuery("Application", PathType.LogName, $"*[System/Provider/@Name='{serviceName}']")
                         {
-                            if (eventRecord != null)
+                            ReverseDirection = true, // Sort by descending time
+                        };
+
+                        using (var reader = new EventLogReader(query))
+                        {
+                            using (var eventRecord = reader.ReadEvent())
                             {
-                                lastStart = eventRecord.TimeCreated.GetValueOrDefault();
-                                lastEventLog = eventRecord.FormatDescription();
+                                if (eventRecord != null)
+                                {
+                                    lastStart = eventRecord.TimeCreated.GetValueOrDefault();
+                                    lastEventLog = eventRecord.FormatDescription();
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
+
 
         public static List<T> GetColumns<T>(SqlConnection connection, string query, Func<SqlDataReader, T> readColumns)
         {
@@ -710,13 +730,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 }
             }
             return View("AdminUsers");
-        }
-
-        [HttpGet]
-        public ActionResult GetTotalUsersCount()
-        {
-            int totalUsers = _db.Users.Count();
-            return Json(new { totalUsers }, JsonRequestBehavior.AllowGet);
         }
 
         //create a string MD5
