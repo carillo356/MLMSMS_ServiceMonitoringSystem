@@ -88,36 +88,36 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="select-menu">
-                            <div class="select-btn1">
-                                <span class="sBtn-text">Select row</span>
+                        <div class="logHistoryRow">
+                            <div class="btnLogHistoryRow">
+                                <span class="sBtnLogHistoryRow">Select row</span>
                                 <i class="bi bi-arrow-down-short"></i>
                             </div>
 
-                            <ul class="options_ServiceRow">
-                                <li class="option">
-                                    <span class="option-text">10 rows</span>
+                            <ul class="options_LogHistoryRow">
+                                <li class="option_LogHistory">
+                                    <span class="option_LogHistory-text">5 rows</span>
                                 </li>
-                                <li class="option">
-                                    <span class="option-text">20 rows</span>
+                                <li class="option_LogHistory">
+                                    <span class="option_LogHistory-text">10 rows</span>
                                 </li>
-                                <li class="option">
-                                    <span class="option-text">30 rows</span>
+                                <li class="option_LogHistory">
+                                    <span class="option_LogHistory-text">15 rows</span>
                                 </li>
-                                <li class="option">
-                                    <span class="option-text">40 rows</span>
+                                <li class="option_LogHistory">
+                                    <span class="option_LogHistory-text">20 rows</span>
                                 </li>
-                                <li class="option">
-                                    <span class="option-text">All rows</span>
+                                <li class="option_LogHistory">
+                                    <span class="option_LogHistory-text">All rows</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="hint-logText">Page <b id="current-logPage"></b> out of <b id="total-logPages"></b></div>
+                        <div class="hint-logText">Page <b id="current-page-log-history"></b> out of <b id="total-pages-log-history"></b></div>
                     </div>
                     <div class="col-md-5">
-                        <div class="paginationLogs">
+                        <div class="pagination paginationLogs">
                             <ul>
                                 <!--pages or li are comes from javascript -->
                             </ul>
@@ -250,380 +250,53 @@
             </div>
         </div>
     </div>
-
-    <script src="~/JS_Scripts/index/clearField_submitForm.js"></script>
-    <script src="~/JS_Scripts/index/dropdown_logHistory_serviceTable.js"></script>
-    @*<script src="~/JS_Scripts/index/pagination_serviceTable.js"></script>
-    <script src="~/JS_Scripts/index/restart_delete_modal.js"></script>
-    <script src="~/JS_Scripts/index/navBar_active.js"></script>
-    <script src="~/JS_Scripts/index/add_remove_service.js"></script>
-    <script src="~/JS_Scripts/index/pagination_logHistory.js"></script>
+    <script src="~/JS_Scripts/index/pagination_serviceTable.js"></script>
     <script src="~/JS_Scripts/index/serviceTable_logHistory.js"></script>
-    <script src="~/JS_Scripts/index/checkboxFunction.js"></script>*@
+    <script src="~/JS_Scripts/index/add_remove_service.js"></script>
+    <script src="~/JS_Scripts/index/clearField_submitForm.js"></script>
+    @*<script src="~/JS_Scripts/index/dropdown_logHistory_serviceTable.js"></script>*@
+    @*<script src="~/JS_Scripts/index/restart_delete_modal.js"></script>
+        <script src="~/JS_Scripts/index/navBar_active.js"></script>
+        <script src="~/JS_Scripts/index/pagination_logHistory.js"></script>
+        <script src="~/JS_Scripts/index/checkboxFunction.js"></script>*@
+
 
 
 </body>
+       
+ <script>
 
-<script>
-    let ITEMS_PER_PAGE = 5;
+// Selecting Rows Dropdown for Service Table
+const optionMenu2 = document.querySelector(".serviceRow"),
+    select_btn2 = optionMenu2.querySelector(".btnRow"),
+    options2 = optionMenu2.querySelectorAll(".optionRow"),
+    sBtn_text2 = optionMenu2.querySelector(".sBtnRow");
 
-    $(document).ready(SynchServiceTB);
+select_btn2.addEventListener("click", () => optionMenu2.classList.toggle("active"));
 
-    function ServicesAvailable() {
-        return GetServicesInController()
-            .then(function (servicesInController) {
-                Checkbox(servicesInController);
-            })
-            .catch(function (error) {
-                alert(error);
-            });
-    }
+options2.forEach(option => {
+    option.addEventListener("click", () => {
+        let selectedOption = option.querySelector(".optionRow-text").innerText;
+        sBtn_text2.innerText = selectedOption;
 
-
-    function SynchServiceTB() {
-        ServicesInMonitor()
-            .then(function () {
-                return ServicesAvailable();
-            })
-            .then(function () {
-                var optionText = $(this).find('.optionRow-text').text();
-                if (optionText === "All rows") {
-                    getMonitoredServicesCount().then(function (totalMonitoredServices) {
-                        ITEMS_PER_PAGE = totalMonitoredServices;
-                    })
-                }
-            })
-            .then(function () {
-                showPageServiceTB(1);
-            })
-            .catch(function (error) {
-                alert(error);
-            });
-    }
-
-    // Set up the event listener for options
-    $('.optionsRow li').click(function () {
-        var optionText = $(this).find('.optionRow-text').text();
-        if (optionText === "All rows") {
-            getMonitoredServicesCount().then(function (totalMonitoredServices) {
-                ITEMS_PER_PAGE = totalMonitoredServices;
-                SynchServiceTB();
-            }).catch(function (error) {
-                alert('Failed to get the total number of monitored services.', error);
-            });
-        } else {
-            ITEMS_PER_PAGE = parseInt(optionText);
-            SynchServiceTB();
-        }
-    })
-
-    function ServicesInMonitor() {
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: '/Home/ServicesInMonitor',
-                type: 'GET',
-                dataType: 'json',
-                success: function (result) {
-                    $("#serviceTable tbody").empty();
-
-                    // Loop through the data and append each row to the table
-                    result.forEach(function (Data) {
-                        var limit = 999;
-                        if (Data.ServiceStatus === "Running")
-                            statusText = '<span style="color:green">Running</span>'
-                        else if (Data.ServiceStatus === "Stopped")
-                            statusText = '<span style="color:red">Stopped</span>'
-                        else
-                            statusText = "";
-
-                        var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastEventLog + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.HostName + "</td>";
-                        row += "<td>";
-
-                        if (Data.ServiceStatus === "Stopped") {
-                            row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
-                        } else if (Data.ServiceStatus === "Running") {
-                            row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
-                            row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
-                            row += "<button class='action-button ms-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
-                        } row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")'>Delete</button>";
-                        row += "</td></tr>";
-                        $("#serviceTable tbody").append(row);
-                    });
-                    resolve();
-                },
-                error: function () {
-                    reject("Failed to refresh services.");
-                }
-            });
-        });
-
-    }
-
-    function GetServicesInController() {
-        var servicesInTable = [];
-        $('#servicesTable tbody tr').each(function () {
-            servicesInTable.push($(this).find('td:first').text());
-        });
-
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: "/Home/GetServicesInController",
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(servicesInTable),
-                success: function (result) {
-                    resolve(result);
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    reject('Error getting service names');
-                }
-            });
-        });
-    }
-
-    function Checkbox(servicesInController) {
-        if (servicesInController.length > 0) {
-            var checkboxes = '';
-            $.each(servicesInController, function (i, item) {
-                if (!$('#servicesTable td:contains(' + item + ')').length) { // Check if the service is already in the table
-                    var checkbox = `<li class="item"><div class="form-check">
-            <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
-                <label class="form-check-label" for="service-${i}">${item}</label>
-        </div></li>`;
-                    checkboxes += checkbox;
-                }
-            });
-            $('#serviceCheckboxes').html(checkboxes);
-        }
-    }
-
-    $('#searchService').on('input', function () {
-        var searchText = $(this).val().toLowerCase();
-        $('.form-check-label').each(function () {
-            var label = $(this).text().toLowerCase();
-            $(this).closest('.item').toggle(label.includes(searchText));
-        });
+        optionMenu2.classList.remove("active");
     });
+});
 
-    $('input[name="ServiceName"]').on('input', function () {
-        var filter = $(this).val().toUpperCase();
-        $('#serviceCheckboxes li').each(function () {
+const optionMenuLogHistory = document.querySelector(".logHistoryRow"),
+    selectBtnLogHistory = optionMenuLogHistory.querySelector(".btnLogHistoryRow"),
+    optionsLogHistory = optionMenuLogHistory.querySelectorAll(".option_LogHistory"),
+    sBtnTextLogHistory = optionMenuLogHistory.querySelector(".sBtnLogHistoryRow");
 
-            var label = $(this).find('label').text().toUpperCase();
-            $(this).toggle(label.includes(filter));
-        });
+selectBtnLogHistory.addEventListener("click", () => optionMenuLogHistory.classList.toggle("active"));
+
+optionsLogHistory.forEach(option => {
+    option.addEventListener("click", () => {
+        let selectedOption = option.querySelector(".option_LogHistory-text").innerText;
+        sBtnTextLogHistory.innerText = selectedOption;
+
+        optionMenuLogHistory.classList.remove("active");
     });
-
-    /* Add and Remove Service*/
-    function AddService(serviceName) {
-        $.ajax({
-            url: "/Home/AddService",
-            type: "POST",
-            data: { serviceName: serviceName },
-            success: function () {
-                var $servicesTable = $('#servicesTable');
-                $servicesTable.find('tbody').prepend($newRows);
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                alert('Error adding service');
-            }
-        }).then(function () {
-            SynchServiceTB();
-        }).catch(function (error) {
-            console.error('Failed to get the total number of monitored services.', error);
-        });
-    }
-
-
-    function RemoveAddedService1(serviceName) {
-        /*Show the confirmation box here*/
-        $.ajax({
-            url: "/Home/DeleteAddedService",
-            type: "POST",
-            data: { serviceName: serviceName },
-            success: function () {
-                ServicesInMonitor();
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                alert("Failed to delete " + serviceName);
-            }
-        }).then(function () {
-            SynchServiceTB();
-        });
-    }
-
-    function RemoveAddedService(serviceName, command) {
-        /*Show the confirmation box here*/
-        var modal = document.getElementById("alert-modal");
-        var modalTitle = document.getElementById("modal-title");
-        var modalMessage = document.getElementById("modal-message");
-        var btnYes = document.getElementById("btnYes");
-        var btnNo = document.getElementById("btnNo");
-
-        modal.style.display = "block";
-        modalTitle.innerHTML = "<i class='bi bi-exclamation-triangle-fill text-warning'></i> System Message";
-        modalMessage.innerHTML = "Are you sure you want to " + command.toUpperCase() + " '" + serviceName + "'?";
-        btnYes.onclick = function () {
-            $.ajax({
-                url: "/Home/DeleteAddedService",
-                type: "POST",
-                data: { serviceName: serviceName, command: command },
-                success: function () {
-                    ServicesInMonitor();
-                    var commandText = command.toUpperCase();
-                    if (command === "delete") {
-                        commandText = "DELETED";
-                    }
-
-                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
-                    var toastMessage = "You " + commandText + " the service " + "' " + serviceName + " '" + ".";
-                    document.querySelector('.toast-body').innerHTML = toastMessage;
-
-                    if (commandText === "DELETED") {
-                        // set background color to red if commandText is Deleted
-                        toast._element.classList.remove("bg-success");
-                        toast._element.classList.add("bg-danger");
-                    }
-
-                    toast.show();
-
-                    setTimeout(function () {
-                        toast.dispose();
-                    }, 4000);
-                },
-                error: function () {
-                    alert("Failed to delete " + serviceName);
-                }
-            }).then(function () {
-                ServicesAvailable();
-            });
-            modal.style.display = "none";
-        }
-        btnNo.onclick = function () {
-            modal.style.display = "none";
-        }
-    }
-</script>
-
-<script>
-    let indexPage = 1;
-    let paginationService = document.querySelector(".paginationService ul");
-    let totalPages;
-
-    function getMonitoredServicesCount() {
-        return new Promise((resolve, reject) => {
-            $.ajax({
-                url: '/Home/GetMonitoredServicesCount',
-                type: 'GET',
-                dataType: 'json',
-                success: function (result) {
-                    resolve(result.totalMonitoredServices);
-                },
-                error: function () {
-                    reject("Failed to get the total number of monitored services.");
-                }
-            });
-        });
-    }
-    
-    function generatePageNumbers() {
-        getMonitoredServicesCount()
-            .then(function (totalMonitoredServices) {
-                totalPages = Math.ceil(totalMonitoredServices / ITEMS_PER_PAGE);
-                paginationService.innerHTML = '';
-
-                let maxVisiblePages = 5;
-                let startPage = indexPage - Math.floor(maxVisiblePages / 2);
-                let endPage = startPage + maxVisiblePages - 1;
-
-                if (startPage < 1) {
-                    startPage = 1;
-                    endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-                }
-
-                if (endPage > totalPages) {
-                    endPage = totalPages;
-                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
-                }
-
-                if (indexPage > 1) {
-                    paginationService.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>`;
-                }
-
-                for (let i = startPage; i <= endPage; i++) {
-                    paginationService.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
-                }
-
-                if (indexPage < totalPages) {
-
-                    paginationService.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
-                }
-
-                if (indexPage < totalPages) {
-                    document.getElementById("next-link").addEventListener("click", function () {
-                        indexPage = indexPage + 1;
-                        showPageServiceTB(indexPage);
-                        generatePageNumbers();
-                    });
-                }
-
-                if (indexPage > 1) {
-                    document.getElementById("previous-link").addEventListener("click", function () {
-                        indexPage = indexPage - 1;
-                        showPageServiceTB(indexPage);
-                        generatePageNumbers();
-                    });
-                }
-
-                // Add click event listener to the page number elements
-                document.querySelectorAll(".paginationService .page-link").forEach(function (pageLink) {
-                    const pageNumber = parseInt(pageLink.getAttribute("data-page"));
-                    if (pageNumber) {
-                        pageLink.addEventListener("click", function () {
-                            indexPage = pageNumber;
-                            showPageServiceTB(indexPage);
-                            generatePageNumbers();
-                        });
-                    }
-                });
-
-                document.getElementById('current-page').textContent = indexPage;
-                document.getElementById('total-pages').textContent = totalPages;
-            })
-            .catch(function (error) {
-                alert(error);
-            });
-    }
-
-    // get the table body element
-    const tableBody = document.querySelector('#serviceTable tbody');
-
-    // get the pagination links
-    const paginationLinks = document.querySelectorAll('.paginationService li');
-
-    // define a function to show the items for the selected page
-    function showPageServiceTB(pageNumber) {
-        // calculate the start and end indexes of the items to show
-        const startIndex = (pageNumber - 1) * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
-
-        // hide all rows in the table
-        const rows = tableBody.querySelectorAll('tr');
-        rows.forEach(row => {
-            row.style.display = 'none';
-        });
-
-        // show the rows for the current page
-        for (let i = startIndex; i < endIndex && i < rows.length; i++) {
-            rows[i].style.display = '';
-        }
-        generatePageNumbers();
-    }
+});
 
 </script>

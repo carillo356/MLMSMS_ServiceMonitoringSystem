@@ -2,7 +2,7 @@
 
 
 // define the number of items per page
-var ITEMS_PAR_PAGE_LOGS = 5;
+var ITEMS_PER_PAGE_LOGS = 5;
 
 // get the table body element
 const logstableBody = document.querySelector('#popupTable tbody');
@@ -13,8 +13,8 @@ const logspaginationLinks = document.querySelectorAll('.paginationLogs ul');
 // define a function to show the items for the selected page
 function logsshowPage(logs_pageNumber) {
     // calculate the start and end indexes of the items to show
-    const logsstartIndex = (logs_pageNumber - 1) * ITEMS_PAR_PAGE_LOGS;
-    const logsendIndex = logsstartIndex + ITEMS_PAR_PAGE_LOGS;
+    const logsstartIndex = (logs_pageNumber - 1) * ITEMS_PER_PAGE_LOGS;
+    const logsendIndex = logsstartIndex + ITEMS_PER_PAGE_LOGS;
 
     // hide all rows in the table
     const logs_rows = logstableBody.querySelectorAll('tr');
@@ -28,27 +28,27 @@ function logsshowPage(logs_pageNumber) {
     }
 }
 
-var logs_pageNumber = 1;
-// handle the click event of the pagination links
-logspaginationLinks.forEach(link => {
-    link.addEventListener('click', event => {
-        event.preventDefault();
-        // get the selected page number from the link's text
-        logs_pageNumber = parseInt(link.innerText);
+//var logs_pageNumber = 1;
+//// handle the click event of the pagination links
+//logspaginationLinks.forEach(link => {
+//    link.addEventListener('click', event => {
+//        event.preventDefault();
+//        // get the selected page number from the link's text
+//        logs_pageNumber = parseInt(link.innerText);
 
-        // show the items for the selected page
-        logsshowPage(logs_pageNumber);
+//        // show the items for the selected page
+//        logsshowPage(logs_pageNumber);
 
-        // mark the selected page as active
-        logspaginationLinks.forEach(link => {
-            link.parentElement.classList.remove('active');
-        });
-        link.parentElement.classList.add('active');
-    });
-});
+//        // mark the selected page as active
+//        logspaginationLinks.forEach(link => {
+//            link.parentElement.classList.remove('active');
+//        });
+//        link.parentElement.classList.add('active');
+//    });
+//});
 
 // Log History Modal
-function logHistory(serviceName/*, limit*/) {
+function logHistory(serviceName, limit) {
     //Viewlogs, Gets all the records of a service
     $.ajax({
         url: "/Home/GetServiceLogsTB",

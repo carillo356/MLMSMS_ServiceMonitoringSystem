@@ -23,6 +23,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         private DB_Entities _db = new DB_Entities();
         public static List<User> _users = new List<User>();
         public static List<string> _servicesAvailable;
+        private List<Service> _servicesLogsList = new List<Service>();
         public static List<Service> _servicesInMonitor = new List<Service>();
 
         [HttpGet]
@@ -38,6 +39,14 @@ namespace LoginAndRegisterASPMVC5.Controllers
             int totalUsers = _db.Users.Count();
             return Json(new { totalUsers }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public ActionResult GetLogHistoryCount()
+        {
+            int totalLogHistory = _servicesLogsList.Count;
+            return Json(new { totalLogHistory }, JsonRequestBehavior.AllowGet);
+        }
+
 
         public void DeleteAddedService(string serviceName) //Removes a service row
         {
@@ -354,7 +363,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public ActionResult GetServiceLogsTB(string serviceName)
         {
             string query = $"SELECT * FROM ServicesLogs WHERE sl_ServiceName = '{serviceName}' ORDER BY sl_LastStart DESC";
-            List<Service> servicesLogsList = new List<Service>();
+            _servicesLogsList.Clear();
 
             try
             {
@@ -364,7 +373,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 {
                     while (reader.Read())
                     {
-                        servicesLogsList.Add(new Service()
+                        _servicesLogsList.Add(new Service()
                         {
                             ServiceName = reader["sl_ServiceName"].ToString(),
                             LastStart = reader["sl_LastStart"].ToString(),
@@ -381,7 +390,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 throw ex;
             }
 
-            return Json(servicesLogsList, JsonRequestBehavior.AllowGet);
+            return Json(_servicesLogsList, JsonRequestBehavior.AllowGet);
         }
 
         private void GetServiceEventLog(string serviceName, out DateTime lastStart, out string lastEventLog, out string hostName)
