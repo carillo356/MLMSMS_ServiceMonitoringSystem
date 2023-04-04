@@ -105,7 +105,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 if (!TaskExists($"Watcher {serviceName}"))
                 {
                     // If not, create a task for the service
-                    CreateTasksForMonitoredServices(serviceName);
+                    //CreateTasksForMonitoredServices(serviceName);
                 }
                 // Call RemoveUnmonitoredTasks method
                 RemoveUnmonitoredTasks();
@@ -329,21 +329,25 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        public List<string> GetServicesAvailable()
+        public void GetServicesAvailable()
         {
+            if(_servicesAvailable != null)
+            {
+                _servicesAvailable.Clear();
+            }
             using (SqlConnection connection = GetConnection())
             {
-                return GetSingleColumn(connection, "GetServicesAvailable");
+                _servicesAvailable = GetSingleColumn(connection, "GetServicesAvailable");
             }
         }
         [HttpPost]
         public ActionResult GetServicesInController()
         {
             // Get the list of available services from the database
-            List<string> servicesAvailable = GetServicesAvailable();
+            GetServicesAvailable();
 
             // Filter out the services that are already being monitored
-            List<string> servicesToDisplay = servicesAvailable.Where(service => !_servicesInMonitor.Any(s => s.ServiceName == service)).ToList();
+            List<string> servicesToDisplay = _servicesAvailable.Where(service => !_servicesInMonitor.Any(s => s.ServiceName == service)).ToList();
 
             return Json(servicesToDisplay);
         }
@@ -757,6 +761,34 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return byte2String;
         }
 
+        public void InsertAllServices()
+        {
+            GetServicesAvailable();
+            using (SqlConnection connection = GetConnection())
+                // Insert each service name into the Services table
+                foreach (var service in _servicesAvailable)
+                {
+                    StoreServiceName(connection, service);
+                }
+
+        }
+
+        static void StoreServiceName(SqlConnection connection, string serviceName)
+        {
+            try
+            {
+                using (var command = new SqlCommand("INSERT INTO ServicesMonitored (sm_ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM ServicesMonitored WHERE sm_ServiceName = @ServiceName)", connection))
+                {
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public ActionResult Login()
         {
             //InsertAllServices();
@@ -795,6 +827,76 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return View();
         }
 
+        public ActionResult LoginWithSSOToken(string ssoToken)
+        {
+            if (string.IsNullOrEmpty(ssoToken))
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Validate the ssoToken, for example by checking it against your database
+            // If the token is valid, get the corresponding user email
+            string userEmail = ValidateSSOTokenAndGetUserEmail(ssoToken);
+
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                var user = _db.Users.SingleOrDefault(u => u.Email == userEmail);
+                if (user != null)
+                {
+                    // Add session values
+                    Session["FullName"] = user.FirstName + " " + user.LastName;
+                    Session["FirstName"] = user.FirstName;
+                    Session["LastName"] = user.LastName;
+                    Session["Email"] = user.Email;
+                    Session["IdUser"] = user.IdUser;
+                    Session["IsAdmin"] = user.IsAdmin;
+
+                    DeleteServiceToken(ssoToken);
+                    return RedirectToAction("Index");
+                }
+            }
+
+            ViewBag.error = "Invalid SSO token";
+            return RedirectToAction("Login");
+        }
+
+
+        private string ValidateSSOTokenAndGetUserEmail(string ssoToken)
+        {
+
+            using (SqlConnection connection = GetConnection())
+            {
+                using (var command = new SqlCommand("GetUserEmailBySSOToken", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Token", ssoToken);
+
+                    SqlParameter emailParam = new SqlParameter("@Email", SqlDbType.NVarChar, 100);
+                    emailParam.Direction = ParameterDirection.Output;
+                    command.Parameters.Add(emailParam);
+
+                    command.ExecuteNonQuery();
+
+                    string userEmail = emailParam.Value as string;
+                    return userEmail;
+                }
+            }
+        }
+
+        private void DeleteServiceToken(string ssoToken)
+        {
+            using (SqlConnection connection = GetConnection())
+            {
+                using (var command = new SqlCommand("DeleteServiceToken", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Token", ssoToken);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         //Logout
         public ActionResult Logout()
         {
@@ -813,34 +915,8 @@ namespace LoginAndRegisterASPMVC5.Controllers
     }
 }
 
-//static void StoreServiceName(SqlConnection connection, string serviceName)
-//{
-//    try
-//    {
-//        using (var command = new SqlCommand("INSERT INTO ServicesMonitored (sm_ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM ServicesMonitored WHERE sm_ServiceName = @ServiceName)", connection))
-//        {
-//            command.Parameters.AddWithValue("@ServiceName", serviceName);
-//            command.ExecuteNonQuery();
-//        }
-//    }
-//    catch (Exception ex)
-//    {
-//        throw ex;
-//    }
-//}
-
-//public static void InsertAllServices()
-//{
-//    using (SqlConnection connection = GetConnection())
 
 
-//        // Insert each service name into the Services table
-//        foreach (var service in _servicesAvailable)
-//        {
-//            StoreServiceName(connection, service);
-//        }
-
-//}
 
 //string hostName = Session["FullName"].ToString();
 //DateTime lastStart = new DateTime(1900, 1, 1);
