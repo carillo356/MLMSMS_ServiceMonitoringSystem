@@ -244,6 +244,7 @@ table.table td:last-child i {
     margin-bottom: 0;
 }
 
+/* Add and Edit Users (Text Field and Button) */
 .form-control :where(.input-box input, .select-box) {
     position: relative;
     height: 50px;
