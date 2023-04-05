@@ -79,7 +79,7 @@
                 </div>
             </div>
         </div>
-        <table class="table table-hover" id="usersTable">
+        <table class="table" id="usersTable">
             <thead>
                 <tr>
                     <th scope="col" style="width: 15%;">FIRST NAME</th>
@@ -121,11 +121,10 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="hint-text">Page <b id="
-                                                   "></b> out of <b id="total-pages"></b></div>
+                <div class="col-md-6">
+                    <div class="hint-text">Page <b id="current-page"></b> out of <b id="total-pages"></b></div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <div class="pagination">
                         <ul>
                             <!--pages or li are comes from javascript -->
@@ -150,54 +149,4 @@
 
 </body>
 
-<!-- Pagination for Non-Admin User Table -->
-<script>
-    var indexPage = 1;
-    let pagination = document.querySelector('.pagination');
-
-    function generatePageNumbers() {
-        pagination.innerHTML = '';
-        for (let i = indexPage; i < indexPage + 5; i++) {
-            pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
-        }
-        pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
-
-        if (indexPage > 1) {
-            pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + pagination.innerHTML;
-        }
-
-        // Event listener for "Next" link
-        document.getElementById("next-link").addEventListener("click", function () {
-            indexPage = indexPage + 1; // Set current page to next page number
-            showPage(indexPage);
-            document.getElementById('current-page').textContent = indexPage;
-            document.getElementById('total-pages').textContent = indexPage + 4;
-            generatePageNumbers(); // Generate new page numbers
-        });
-
-        // Event listener for "Previous" link
-        document.getElementById("previous-link").addEventListener("click", function () {
-            if (indexPage > 1) { // Check if current page is greater than 1
-                indexPage = indexPage - 1;
-                showPage(indexPage);
-                document.getElementById('current-page').textContent = indexPage;
-                document.getElementById('total-pages').textContent = indexPage + 4;
-                generatePageNumbers(); // Generate new page numbers
-            }
-        });
-    }
-    let page = 1;
-    $('.pagination').on('click', '.page-link', function () {
-        let page = parseInt($(this).data('page'));
-        document.getElementById('current-page').textContent = page;
-        indexPage = page;
-        document.getElementById('total-pages').textContent = indexPage + 4;
-        showPage(page);
-    });
-
-    document.getElementById('current-page').textContent = page;
-    document.getElementById('total-pages').textContent = indexPage + 4;
-    generatePageNumbers();
-
-</script>
 

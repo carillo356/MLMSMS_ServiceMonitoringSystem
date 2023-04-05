@@ -1,14 +1,34 @@
 ﻿//Pagination for Non-Admin in Users Table
 
 
+let totalUserCount;
+let indexPage = 1;
+let pagination = document.querySelector('.pagination');
+let totalPages;
+
+let ITEMS_PER_PAGE = 5;
+
 // define the number of items per page
-const ITEMS_PER_PAGE = 5;
+$(document).ready(function () {
+    Synch();
+});
+
+function Synch() {
+    RealTimeUsersTable()
+        .then(function () {
+            showPage(1);
+        })
+        .catch(function (error) {
+            alert(error);
+        });
+}
+
 
 // get the table body element
 const tableBody = document.querySelector('#usersTable tbody');
 
 // get the pagination links
-const paginationLinks = document.querySelectorAll('.pagination ul');
+const paginationLinks = document.querySelectorAll('.pagination li');
 
 // define a function to show the items for the selected page
 function showPage(pageNumber) {
@@ -26,50 +46,62 @@ function showPage(pageNumber) {
     for (let i = startIndex; i < endIndex && i < rows.length; i++) {
         rows[i].style.display = '';
     }
+    generatePageNumbers();
 }
 
 function RealTimeUsersTable() {
-    /*Refresh the table with the updated data*/
-    $.ajax({
-        url: "/Home/RealTimeUsersTable",
-        type: "GET",
-        dataType: 'json',
-        success: function (result) {
-            $("#usersTable tbody").empty();
-            // Loop through the data and append each row to the table
-            result.forEach(function (Data) {
-                const Role = (Data.IsAdmin === true) ? '<span><i class="bi bi-person-gear"></i></span>' : '<span></span>';
+    return new Promise(function (resolve, reject) {
+        /*Refresh the table with the updated data*/
+        $.ajax({
+            url: "/Home/RealTimeUsersTable",
+            type: "GET",
+            dataType: 'json',
+            success: function (result) {
+                $("#usersTable tbody").empty();
+                // Loop through the data and append each row to the table
+                result.forEach(function (Data) {
+                    const Role = (Data.IsAdmin === true) ? '<span><i class="bi bi-person-gear"></i></span>' : '<span><i class="bi bi-person"></i></span>';
 
-                var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                row += "<td>" + Data.FirstName + "</td>";
-                row += "<td>" + Data.LastName + "</td>";
-                row += "<td>" + Data.Email + "</td>";
-                row += "<td>" + Role + "</td>";
-                row += "<td>";
-                if (Data.Email_Notification == true) {
-                    row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
-                    row += "<i class='bi bi-envelope-check-fill'></i>";
-                    row += "</button>";
-                } else {
-                    row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
-                    row += "<i class='bi bi-envelope-x-fill'></i>";
-                    row += "</button>";
-                }
-                row += "</td></tr>";
-                $("#usersTable tbody").append(row);
-            });
-        },
-        error: function () {
-            alert("Failed to refresh users.");
-        }
+                    var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                    row += "<td>" + Data.FirstName + "</td>";
+                    row += "<td>" + Data.LastName + "</td>";
+                    row += "<td>" + Data.Email + "</td>";
+                    row += "<td>" + Role + "</td>";
+                    row += "<td>";
+                    if (Data.Email_Notification == true) {
+                        row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
+                        row += "<i class='bi bi-envelope-check-fill'></i>";
+                        row += "</button>";
+                    } else {
+                        row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
+                        row += "<i class='bi bi-envelope-x-fill'></i>";
+                        row += "</button>";
+                    }
+                    row += "</td></tr>";
+                    $("#usersTable tbody").append(row);
+                });
+                totalUserCount = result.length;
+                resolve();
+            },
+            error: function () {
+                reject("Failed to refresh users.");
+            }
+        });
     });
 }
 
-// show the first page by default
-$(document).ready(function () {
-    RealTimeUsersTable().then(function () {
-        showPage(pageNumber);
-    });
+// Set up the event listener for options
+$('.options_nonAdminRow li').click(function () {
+    var optionText = $(this).find('.option_nonAdmin-text').text();
+    switch (optionText) {
+        case "All rows":
+            ITEMS_PER_PAGE = totalUserCount;
+            break;
+        default:
+            ITEMS_PER_PAGE = parseInt(optionText);
+            break;
+    }
+    Synch(); // show the first page of the updated table
 });
 
 function setNotification(IdUser, FirstName, LastName, command) {
@@ -116,21 +148,64 @@ function setNotification(IdUser, FirstName, LastName, command) {
     });
 }
 
-var pageNumber = 1;
-// handle the click event of the pagination links
-paginationLinks.forEach(link => {
-    link.addEventListener('click', event => {
-        event.preventDefault();
-        // get the selected page number from the link's text
-        pageNumber = parseInt(link.innerText);
 
-        // show the items for the selected page
-        showPage(pageNumber);
+function generatePageNumbers() {
+    totalPages = Math.ceil(totalUserCount / ITEMS_PER_PAGE);
+    pagination.innerHTML = '';
 
-        // mark the selected page as active
-        paginationLinks.forEach(link => {
-            link.parentElement.classList.remove('active');
+    let maxVisiblePages = 5;
+    let startPage = indexPage - Math.floor(maxVisiblePages / 2);
+    let endPage = startPage + maxVisiblePages - 1;
+
+    if (startPage < 1) {
+        startPage = 1;
+        endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    }
+
+    if (endPage > totalPages) {
+        endPage = totalPages;
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    if (indexPage > 1) {
+        pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>`;
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
+    }
+
+    if (indexPage < totalPages) {
+        pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
+    }
+
+    if (indexPage < totalPages) {
+        document.getElementById("next-link").addEventListener("click", function () {
+            indexPage = indexPage + 1;
+            showPage(indexPage);
+            generatePageNumbers();
         });
-        link.parentElement.classList.add('active');
-    });
-});
+    }
+
+    if (indexPage > 1) {
+        document.getElementById("previous-link").addEventListener("click", function () {
+            indexPage = indexPage - 1;
+            showPage(indexPage);
+            generatePageNumbers();
+        });
+    }
+
+    // Add click event listener to the page number elements
+    document.querySelectorAll(".pagination .page-link").forEach(function (pageLink) {
+        const pageNumber = parseInt(pageLink.getAttribute("data-page"));
+        if (pageNumber) {
+            pageLink.addEventListener("click", function () {
+                indexPage = pageNumber;
+                showPage(indexPage);
+                generatePageNumbers();
+            });
+        }
+        document.getElementById('current-page').textContent = indexPage;
+        document.getElementById('total-pages').textContent = totalPages;
+    })
+}

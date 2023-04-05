@@ -113,10 +113,10 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="hint-logText">Page <b id="current-page-log-history"></b> out of <b id="total-pages-log-history"></b></div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="pagination paginationLogs">
                             <ul>
                                 <!--pages or li are comes from javascript -->
@@ -216,10 +216,10 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4 text-center">
+                <div class="col-md-6">
                     <div class="hint-text">Page <b id="current-page"></b> out of <b id="total-pages"></b></div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <div class="pagination paginationService">
                         <ul>
                             <!--pages or li are comes from javascript -->
@@ -254,18 +254,11 @@
     <script src="~/JS_Scripts/index/serviceTable_logHistory.js"></script>
     <script src="~/JS_Scripts/index/add_remove_service.js"></script>
     <script src="~/JS_Scripts/index/clearField_submitForm.js"></script>
-    @*<script src="~/JS_Scripts/index/dropdown_logHistory_serviceTable.js"></script>*@
-    @*<script src="~/JS_Scripts/index/restart_delete_modal.js"></script>
-        <script src="~/JS_Scripts/index/navBar_active.js"></script>
-        <script src="~/JS_Scripts/index/pagination_logHistory.js"></script>
-        <script src="~/JS_Scripts/index/checkboxFunction.js"></script>*@
-
-
 
 </body>
-       
+   
+<!-- Selecting Rows Dropdown -->    
  <script>
-
 // Selecting Rows Dropdown for Service Table
 const optionMenu2 = document.querySelector(".serviceRow"),
     select_btn2 = optionMenu2.querySelector(".btnRow"),
@@ -283,6 +276,7 @@ options2.forEach(option => {
     });
 });
 
+// Selecting Rows Dropdown for Log History Table
 const optionMenuLogHistory = document.querySelector(".logHistoryRow"),
     selectBtnLogHistory = optionMenuLogHistory.querySelector(".btnLogHistoryRow"),
     optionsLogHistory = optionMenuLogHistory.querySelectorAll(".option_LogHistory"),

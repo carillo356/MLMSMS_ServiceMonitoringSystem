@@ -14,38 +14,6 @@
     margin-top: 20px;
 }
 
-.action-button {
-    width: 40%;
-    padding: 4px;
-    border-radius: 5px;
-    font-size: 15px;
-    margin-top: 3px;
-    cursor: pointer;
-    margin-left: 0px;
-    color: black;
-    display: inline-block;
-}
-
-    .action-button:hover {
-        background-color: #dbd5d5;
-    }
-
-.alert-buttons {
-    width: 20%;
-    padding: 5px;
-    font-size: 20px;
-    margin-top: 15px;
-    border-radius: 7px;
-    cursor: pointer;
-    border: 2px solid black;
-    color: black;
-}
-
-    .alert-buttons:hover {
-        color: white;
-        background-color: #990000;
-    }
-
 /* Nav Bar */
 li, a, button {
     font-family: "Trebuchet MS", sans-serif;
@@ -62,6 +30,40 @@ header {
     padding: 30px 10%;
     background-color: #24252A;
 }
+
+/* All action button design in service table */
+.action-button {
+    width: 40%;
+    padding: 4px;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-top: 3px;
+    cursor: pointer;
+    margin-left: 0px;
+    color: black;
+    display: inline-block;
+}
+
+    .action-button:hover {
+        background-color: #dbd5d5;
+    }
+
+/* Alert Modal */
+.alert-buttons {
+    width: 20%;
+    padding: 5px;
+    font-size: 20px;
+    margin-top: 15px;
+    border-radius: 7px;
+    cursor: pointer;
+    border: 2px solid black;
+    color: black;
+}
+
+    .alert-buttons:hover {
+        color: white;
+        background-color: #990000;
+    }
 
 #alert-modal .modal {
     display: none;
@@ -116,7 +118,7 @@ header {
     font-size: 25px;
 }
 
-/* Table */
+/* Table (Service, Log History, Admin and Non-Admin Table) */
 .table-responsive {
     margin: 30px 0;
 }
@@ -232,6 +234,7 @@ table.table td:last-child i {
     margin: 0 5px;
 }
 
+/* Pagination (Service, Log History, Admin and Non-Admin Table) */
 .pagination {
     display: flex;
     justify-content: center;
@@ -272,7 +275,7 @@ table.table td:last-child i {
 }
 
 .paginationLogs {
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .hint-logText {
@@ -349,6 +352,7 @@ table.table td:last-child i {
     width: 415px;
 }
 
+/* Responsive */
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
 
     .action-button {
