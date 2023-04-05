@@ -1,0 +1,9 @@
+Exception: storedata Error converting data type nvarchar to datetime.
+11:09 am
+
+Exception: main Invalid column name 'sm_ServiceName'.
+11:28 am
+
+Exception: main Invalid column name 'sm_ServiceName'.
+11:28 am
+

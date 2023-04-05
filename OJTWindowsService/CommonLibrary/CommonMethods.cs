@@ -14,23 +14,6 @@ namespace CommonLibrary
 {
     public class CommonMethods
     {
-        public static void SP_UpdateServicesAvailable(SqlConnection connection, string updateServicesAvailable)
-        {
-            try
-            {
-                using (var command = new SqlCommand("UpdateServicesAvailable", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@ServiceNameList", updateServicesAvailable);
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                CommonMethods.WriteToFile("Exception: storeservicesavailable " + ex.Message);
-            }
-        }
-
         public static void SP_UpdateServiceStatus(SqlConnection connection, string serviceName, string serviceStatus, string hostName, string logBy, DateTime lastStart, string lastEventLog)
         {
             try
@@ -60,7 +43,7 @@ namespace CommonLibrary
             }
         }
 
-        public static void SP_UpdateServiceStatus(SqlConnection connection, (string ServiceName, string ServiceStatus, string HostName, string LogBy, DateTime LastStart, string LastEventLog)[] servicesToUpdate)
+        public static void SP_UpdateServiceStatus(SqlConnection connection, (string ServiceName, string ServiceStatus, string HostName, string LogBy)[] servicesToUpdate)
         {
             try
             {
@@ -72,9 +55,13 @@ namespace CommonLibrary
                 dt.Columns.Add("LastStart", typeof(DateTime));
                 dt.Columns.Add("LastEventLog", typeof(string));
 
+                string lastEventLog = "";
+                DateTime lastStart = new DateTime(1900, 1, 1);
+
+
                 foreach (var service in servicesToUpdate)
                 {
-                    dt.Rows.Add(service.ServiceName, service.ServiceStatus, service.HostName, service.LogBy, service.LastStart, service.LastEventLog);
+                    dt.Rows.Add(service.ServiceName, service.ServiceStatus, service.HostName, service.LogBy, lastStart, lastEventLog);
                 }
 
                 using (var command = new SqlCommand("UpdateServiceStatusBulk", connection))
@@ -90,26 +77,42 @@ namespace CommonLibrary
             }
         }
 
-
-        public static void GetServiceLogs(ServiceController serviceInController, out ServiceControllerStatus serviceStatus, out string hostName, out DateTime lastStart, out string lastEventLog)
+        public static void SP_UpdateServiceEventLogInfo(SqlConnection connection, string serviceName, DateTime lastStart, string lastEventLog)
         {
-            string serviceName = serviceInController.ServiceName;
-            serviceStatus = serviceInController.Status;
-            hostName = "NotFound";
+            try
+            {
+                if (lastEventLog == null) lastEventLog = "NotFound";
+                if (lastStart == null) lastStart = new DateTime(1900, 1, 1);
+
+                using (SqlCommand command = new SqlCommand("UpdateServiceEventLogInfo", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.Parameters.AddWithValue("@LastStart", lastStart);
+                    command.Parameters.AddWithValue("@LastEventLog", lastEventLog);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonMethods.WriteToFile("Exception: " + ex.Message);
+            }
+        }
+
+        public static void GetServiceLogs(string serviceName, out DateTime lastStart, out string lastEventLog)
+        {
             lastStart = new DateTime(1900, 1, 1);
             lastEventLog = "NotFound";
 
             try
             {
-                hostName = Environment.MachineName;
-
                 using (var eventLog = new EventLog("Application"))
                 {
                     var query = new EventLogQuery("Application", PathType.LogName, $"*[System/Provider/@Name='{serviceName}']")
                     {
                         ReverseDirection = true, // Sort by descending time
+                        
                     };
-
 
                     using (var reader = new EventLogReader(query))
                     {
@@ -130,6 +133,31 @@ namespace CommonLibrary
             }
         }
 
+        private static string GenerateSSOTokenForUser(SqlConnection connection, string userEmail)
+        {
+            // Generate a new GUID as the SSO token
+            string ssoToken = Guid.NewGuid().ToString();
+
+            // Set the expiration time for the token
+            DateTime expirationTime = DateTime.UtcNow.AddHours(1);
+
+            // Store the SSO token in your database along with the user's email and expiration time
+            using (connection)
+            {
+                using (var command = new SqlCommand("InsertServicesToken", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Email", userEmail);
+                    command.Parameters.AddWithValue("@Token", ssoToken);
+                    command.Parameters.AddWithValue("@ExpirationTime", expirationTime);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            return ssoToken;
+        }
+
         public static void SendEmail(SqlConnection connection, string[] messages)
         {
             try
@@ -145,18 +173,20 @@ namespace CommonLibrary
                                                  ConfigurationManager.AppSettings["smtpPassword"]);
                     smtpServer.EnableSsl = true;
 
-                    using (var mail = new MailMessage())
+                    foreach (var userEmail in recipients)
                     {
-                        mail.From = new MailAddress(ConfigurationManager.AppSettings["mailFrom"]);
-                        mail.Subject = "Windows Service Alert!";
-                        mail.Body = string.Join("\n\n", messages);
+                        string ssoToken = GenerateSSOTokenForUser(connection, userEmail);
+                        string ssoLoginUrl = $"{ConfigurationManager.AppSettings["appUrl"]}?ssoToken={ssoToken}";
 
-                        foreach (var email in recipients)
+                        using (var mail = new MailMessage())
                         {
-                            mail.To.Add(email);
-                        }
+                            mail.From = new MailAddress(ConfigurationManager.AppSettings["mailFrom"]);
+                            mail.Subject = "Windows Service Alert!";
+                            mail.Body = string.Join("\n\n", messages) + $"\n\nLog in with your Single Sign-On token: {ssoLoginUrl}";
+                            mail.To.Add(userEmail);
 
-                        smtpServer.Send(mail);
+                            smtpServer.Send(mail);
+                        }
                     }
                 }
             }
@@ -165,6 +195,7 @@ namespace CommonLibrary
                 WriteToFile("Exception: email " + ex.Message);
             }
         }
+
 
         public static void SendEmail(SqlConnection connection, string message)
         {
@@ -220,6 +251,11 @@ namespace CommonLibrary
             return columns;
         }
 
+        public static string GetServicesStatusQuery(string tableName, string columnNamePrefix)
+        {
+            return $"SELECT [{columnNamePrefix}_ServiceName], [{columnNamePrefix}_ServiceStatus] FROM {tableName}";
+        }
+
         public static List<string> GetSingleColumn(SqlConnection connection, string query)
         {
             return GetColumns(connection, query, reader => reader.GetString(0));
@@ -242,6 +278,104 @@ namespace CommonLibrary
             return connection;
         }
 
+        public static void SP_UpdateServiceStatus(SqlConnection connection, string serviceName, string serviceStatus, string hostName, string logBy)
+        {
+            try
+            {
+                // Set default values for null inputs
+                serviceStatus = serviceStatus ?? "NotFound";
+                hostName = hostName ?? "NotFound";
+                logBy = logBy ?? "NotFound";
+                string lastEventLog = "NotFound";
+                DateTime lastStart = new DateTime(1900, 1, 1);
+
+                using (var command = new SqlCommand("UpdateServiceStatus", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
+                    command.Parameters.AddWithValue("@HostName", hostName);
+                    command.Parameters.AddWithValue("@LogBy", logBy);
+                    command.Parameters.AddWithValue("@LastStart", lastStart);
+                    command.Parameters.AddWithValue("@LastEventLog", lastEventLog);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonMethods.WriteToFile("Exception: storedata " + ex.Message);
+            }
+        }
+
+        public static void SP_UpdateServicesAvailable(SqlConnection connection, DataTable serviceInfoTable, string hostName)
+        {
+            try
+            {
+                using (var command = new SqlCommand("UpdateServicesAvailable", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    var serviceInfoParam = new SqlParameter("@ServiceInfo", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.ServiceInfoTableType",
+                        Value = serviceInfoTable
+                    };
+                    command.Parameters.Add(serviceInfoParam);
+                    command.Parameters.AddWithValue("@HostName", hostName);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonMethods.WriteToFile("Exception: storeservicesavailable " + ex.Message);
+            }
+        }
+
+        public static DataTable CreateServiceInfoTable(ServiceController[] servicesInController)
+        {
+            DataTable serviceInfoTable = new DataTable();
+            serviceInfoTable.Columns.Add("ServiceName", typeof(string));
+            serviceInfoTable.Columns.Add("ServiceStatus", typeof(string));
+
+            foreach (var service in servicesInController)
+            {
+                serviceInfoTable.Rows.Add(service.ServiceName, service.Status.ToString());
+            }
+
+            return serviceInfoTable;
+        }
 
     }
 }
+
+
+
+//public static void SP_UpdateServiceStatus(SqlConnection connection, (string ServiceName, string ServiceStatus, string HostName, string LogBy, DateTime LastStart, string LastEventLog)[] servicesToUpdate)
+//{
+//    try
+//    {
+//        DataTable dt = new DataTable();
+//        dt.Columns.Add("ServiceName", typeof(string));
+//        dt.Columns.Add("ServiceStatus", typeof(string));
+//        dt.Columns.Add("HostName", typeof(string));
+//        dt.Columns.Add("LogBy", typeof(string));
+//        dt.Columns.Add("LastStart", typeof(DateTime));
+//        dt.Columns.Add("LastEventLog", typeof(string));
+
+//        foreach (var service in servicesToUpdate)
+//        {
+//            dt.Rows.Add(service.ServiceName, service.ServiceStatus, service.HostName, service.LogBy, service.LastStart, service.LastEventLog);
+//        }
+
+//        using (var command = new SqlCommand("UpdateServiceStatusBulk", connection))
+//        {
+//            command.CommandType = CommandType.StoredProcedure;
+//            command.Parameters.AddWithValue("@Updates", dt);
+//            command.ExecuteNonQuery();
+//        }
+//    }
+//    catch (Exception ex)
+//    {
+//        CommonMethods.WriteToFile("Exception: storedata " + ex.Message);
+//    }
+//}
+

@@ -1,0 +1,29 @@
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:30 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:33 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:36 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:38 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:40 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:45 pm
+
+Exception: storeservicesavailable Procedure or function UpdateServicesAvailable has too many arguments specified.
+01:01 pm
+
+Exception: Invalid column name 'ServiceName'.
+Invalid column name 'ServiceStatus'.
+01:30 pm
+
+Exception: Invalid column name 'ServiceName'.
+Invalid column name 'ServiceStatus'.
+01:30 pm
+

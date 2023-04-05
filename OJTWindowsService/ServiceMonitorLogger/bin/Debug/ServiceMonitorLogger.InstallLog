@@ -1,0 +1,13 @@
+﻿Installing assembly 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorLogger.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorLogger.InstallLog
+   assemblypath = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorLogger.exe
+Installing service ServiceMonitorLogger...
+Service ServiceMonitorLogger has been successfully installed.
+Creating EventLog source ServiceMonitorLogger in log Application...
+Committing assembly 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorLogger.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorLogger.InstallLog
+   assemblypath = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorLogger.exe

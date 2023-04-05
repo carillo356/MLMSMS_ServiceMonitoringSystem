@@ -1,0 +1,10 @@
+Exception: big scopeLogin failed for user 'sa2'.  Reason: The password of the account has expired.
+02:33 pm
+
+Exception: big scopeLogin failed for user 'sa2'.  Reason: The password of the account has expired.
+02:34 pm
+
+Exception: email Cannot access a disposed object.
+Object name: 'System.Net.Mail.SmtpClient'.
+02:35 pm
+
