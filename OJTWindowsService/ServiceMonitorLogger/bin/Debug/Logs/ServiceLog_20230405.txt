@@ -1,0 +1,42 @@
+ServiceMonitorLogger has started.
+03:57 PM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+03:57 PM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+03:57 PM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+03:58 PM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+03:59 PM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+04:00 PM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+04:02 PM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+04:02 PM
+
+ServiceMonitorLogger has stopped.
+04:04 PM
+
+ServiceMonitorLogger has started.
+04:05 PM
+
+Service: ServiceMonitorLogger, Status: Running
+04:05 PM
+
+Service: Service1, Status: Running
+04:05 PM
+
+Service: WpnUserService_77d65, Status: Running
+04:06 PM
+
+ServiceMonitorLogger has stopped.
+04:06 PM
+
