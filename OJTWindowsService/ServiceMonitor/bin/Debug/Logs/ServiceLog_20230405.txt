@@ -1,0 +1,83 @@
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:30 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:33 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:36 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:38 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:40 pm
+
+Exception: storeservicesavailable Violation of PRIMARY KEY constraint 'PK_ServicesAvailable'. Cannot insert duplicate key in object 'dbo.ServicesAvailable'. The duplicate key value is (AdobeARMservice, LAPTOP-F2U9549V).
+12:45 pm
+
+Exception: storeservicesavailable Procedure or function UpdateServicesAvailable has too many arguments specified.
+01:01 pm
+
+Exception: Invalid column name 'ServiceName'.
+Invalid column name 'ServiceStatus'.
+01:30 pm
+
+Exception: Invalid column name 'ServiceName'.
+Invalid column name 'ServiceStatus'.
+01:30 pm
+
+Exception: Cannot open Service Control Manager on computer 'LAPTOP-B22COIMH'. This operation might require other privileges.
+01:58 pm
+
+Exception: Cannot open Service Control Manager on computer 'LAPTOP-B22COIMH'. This operation might require other privileges.
+02:19 pm
+
+Exception: Cannot open Service Control Manager on computer 'LAPTOP-B22C0IMH'. This operation might require other privileges.
+02:20 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+02:22 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+02:24 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+02:26 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+02:27 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+02:28 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+02:29 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+02:45 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+03:07 pm
+
+Exception: Cannot open Service Control Manager on computer 'LAPTOP-B22C0IMH'. This operation might require other privileges.
+03:08 pm
+
+Exception: Cannot open Service Control Manager on computer 'LAPTOP-B22C0IMH'. This operation might require other privileges.
+03:11 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+03:12 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+03:16 pm
+
+Exception: Cannot open Service Control Manager on computer 'LAPTOP-B22C0IMH'. This operation might require other privileges.
+03:17 pm
+
+Exception: Cannot open Service Control Manager on computer 'LAPTOP-B22C0IMH'. This operation might require other privileges.
+03:19 pm
+
+Exception: Cannot open Service Control Manager on computer '192.168.50.29'. This operation might require other privileges.
+03:20 pm
+

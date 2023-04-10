@@ -1,0 +1,431 @@
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:23 am
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:23 am
+
+Exception: email Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+10:24 am
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+10:25 am
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+10:32 am
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:36 am
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:36 am
+
+Exception: email Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+10:36 am
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:56 am
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:56 am
+
+Exception: email Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+10:57 am
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+12:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+12:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+12:39 pm
+
+Exception: email Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+12:39 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+12:50 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+12:52 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+12:52 pm
+
+Exception: email Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+12:53 pm
+
+Exception: servicelogsThe specified channel path is invalid
+01:32 pm
+
+Exception: servicelogsThe specified channel path is invalid
+01:32 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+01:42 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+01:42 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:38 pm
+
+Exception: email Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+10:38 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+10:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+10:39 pm
+
+Exception: email Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+10:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+11:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+11:39 pm
+
+Exception: storedata There is already an open DataReader associated with this Command which must be closed first.
+11:39 pm
+
+Exception: email There is already an open DataReader associated with this Command which must be closed first.
+11:39 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Operation cancelled by user.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:44 pm
+
+Exception: storedata Invalid operation. The connection is closed.
+11:44 pm
+
+Exception: storedata Invalid operation. The connection is closed.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:44 pm
+
+Exception: storedata Invalid operation. The connection is closed.
+11:44 pm
+
+Exception: localscope The process cannot access the file 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\bin\Debug\Logs\ServiceLog_20230321.txt' because it is being used by another process.
+11:44 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:46 pm
+
+Exception: storedata Invalid operation. The connection is closed.
+11:46 pm
+
+Exception: localscope The process cannot access the file 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\bin\Debug\Logs\ServiceLog_20230321.txt' because it is being used by another process.
+11:46 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:47 pm
+
+Exception: storedata Invalid operation. The connection is closed.
+11:47 pm
+
+Exception: localscope The process cannot access the file 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitor\bin\Debug\Logs\ServiceLog_20230321.txt' because it is being used by another process.
+11:47 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:49 pm
+
+Exception: storedata Invalid operation. The connection is closed.
+11:49 pm
+
+Exception: storedata Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+11:50 pm
+
+Exception: storedata Invalid operation. The connection is closed.
+11:50 pm
+

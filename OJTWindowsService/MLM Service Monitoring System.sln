@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrary", "CommonLibr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesTaskScheduler", "ServicesTaskScheduler\ServicesTaskScheduler.csproj", "{CFE0A453-E990-43B1-9FA3-3B1F42C5B1E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceMonitorLogger", "ServiceMonitorLogger\ServiceMonitorLogger.csproj", "{0B266549-1361-49D6-BA40-F3AD20474305}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CFE0A453-E990-43B1-9FA3-3B1F42C5B1E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFE0A453-E990-43B1-9FA3-3B1F42C5B1E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFE0A453-E990-43B1-9FA3-3B1F42C5B1E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B266549-1361-49D6-BA40-F3AD20474305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B266549-1361-49D6-BA40-F3AD20474305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B266549-1361-49D6-BA40-F3AD20474305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B266549-1361-49D6-BA40-F3AD20474305}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
