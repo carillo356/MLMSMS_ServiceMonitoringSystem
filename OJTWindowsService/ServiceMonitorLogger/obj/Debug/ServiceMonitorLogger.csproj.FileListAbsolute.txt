@@ -26,3 +26,17 @@ C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debu
 C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.csproj.CopyComplete
 C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.exe
 C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.pdb
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorLogger.exe.config
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorLogger.exe
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorLogger.pdb
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\bin\Debug\CommonLibrary.dll
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\bin\Debug\CommonLibrary.pdb
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\bin\Debug\CommonLibrary.dll.config
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.csproj.AssemblyReference.cache
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.csproj.SuggestedBindingRedirects.cache
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.ProjectInstaller.resources
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.csproj.GenerateResource.cache
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.csproj.CoreCompileInputs.cache
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.csproj.CopyComplete
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.exe
+C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\ServiceMonitorLogger\obj\Debug\ServiceMonitorLogger.pdb
