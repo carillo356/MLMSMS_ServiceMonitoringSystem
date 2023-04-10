@@ -18,48 +18,35 @@
 }
 
 hr {
-    border: 1px solid black; 
+    border: 1px solid black;
     width: 100%;
 }
 
 .btn.btn-secondary {
-    background-color: #0da2ff;
+    background-color: deeppink;
     width: 100%;
     border-radius: 5px;
-    border: 2px solid #0da2ff;
+    border: 2px solid deeppink;
 }
 
     .btn.btn-secondary:hover {
-        background-color: black;
+        background-color: #e83596;
         color: white;
-        border: 2px solid black;
+        border: 2px solid #e83596;
     }
 
-.pass {
-    margin: -20px 0 20px 5px;
-    color: #a6a6a6;
-    cursor: pointer;
+.btn.btn-primary {
+    background-color: deeppink;
+    border-radius: 5px;
+    width: 100%;
+    border: 2px solid deeppink;
 }
 
-    .pass:hover {
-        text-decoration: underline;
+    .btn.btn-primary:hover {
+        background-color: #e83596;
+        color: white;
+        border: 2px solid #e83596;
     }
-
-.signup_link {
-    margin: 30px 0;
-    text-align: center;
-    font-size: 16px;
-    color: #666666;
-}
-
-.signup_link a {
-    color: #2691d9;
-    text-decoration: none;
-}
-
-.signup_link a:hover {
-    text-decoration: underline;
-}
 
 .form-control {
     position: relative;
@@ -75,9 +62,9 @@ hr {
     margin-bottom: 15px;
 }
 
-.form-control:focus {
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-}
+    .form-control:focus {
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    }
 
 @media only screen and (max-width: 375px) {
     .card {

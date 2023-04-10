@@ -20,6 +20,7 @@ a {
         color: currentColor;
     }
 
+/* Nav Bar */
 header {
     width: 100vw;
     height: 100px;
@@ -105,27 +106,8 @@ header .menu-item a:hover {
 }
 
 header .item-button a:hover {
-    background-color: #64d6f4;
+    background-color: #e83596;
 }
-
-.item-button .custom-button {
-    background-color: deeppink;
-    width: 50px;
-    height: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all .5s ease;
-    border-radius: 5px;
-    margin: 17px auto;
-    border: none;
-    margin-top: 0px;
-}
-
-    .item-button .custom-button:hover {
-        background-color: #64d6f4;
-        color: white;
-    }
 
 .bi.bi-plus-circle-fill {
     font-size: 20px;
@@ -237,7 +219,7 @@ header .mobile-toggler {
     color: currentColor;
     font-size: 30px;
     width: 35px;
-    margin-right: 15px;
+    margin-right: 10px;
     padding: 0 0 3px 3px;
 }
 
@@ -317,6 +299,7 @@ header .mobile-toggler {
     padding: 20px;
     border: 2px solid #888;
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .service_name {
@@ -354,11 +337,11 @@ header .mobile-toggler {
         background-color: #e7edfe;
     }
 
-.select-menu {
+.logHistoryRow {
     width: 160px;
 }
 
-    .select-menu .select-btn1 {
+    .logHistoryRow .btnLogHistoryRow {
         display: flex;
         height: 50px;
         background: #fff;
@@ -372,16 +355,16 @@ header .mobile-toggler {
         box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
 
-.select-btn1 i {
+.btnLogHistoryRow i {
     font-size: 20px;
     transition: 0.3s;
 }
 
-.select-menu.active .select-btn1 i {
+.logHistoryRow.active .btnLogHistoryRow i {
     transform: rotate(-180deg);
 }
 
-.select-menu .options {
+.logHistoryRow .options_LogHistoryRow {
     position: absolute;
     padding: 20px;
     margin-top: -275px;
@@ -392,11 +375,11 @@ header .mobile-toggler {
     width: 160px;
 }
 
-.select-menu.active .options {
+.logHistoryRow.active .options_LogHistoryRow {
     display: block;
 }
 
-.options .option {
+.options_LogHistoryRow .option_LogHistory {
     display: flex;
     height: 35px;
     cursor: pointer;
@@ -406,16 +389,16 @@ header .mobile-toggler {
     background: #fff;
 }
 
-    .options .option:hover {
+    .options_LogHistoryRow .option_LogHistory:hover {
         background: #F2F2F2;
     }
 
-.option i {
+.option_LogHistory i {
     font-size: 20px;
     margin-right: 12px;
 }
 
-.option .option-text {
+.option_LogHistory .option_LogHistory-text {
     font-size: 15px;
     color: #333;
 }
@@ -503,10 +486,7 @@ header .mobile-toggler {
     color: #333;
 }
 
-.bi.bi-info-circle {
-    margin-right: 10px;
-}
-
+/* Show/Hide Password (Eye Icon) */
 .field-icon {
     position: absolute;
     top: 70%;
@@ -519,6 +499,7 @@ header .mobile-toggler {
     font-size: 20px;
 }
 
+/* All Toast */
 #liveToast {
     height: 40%;
 }
@@ -529,8 +510,9 @@ header .mobile-toggler {
     color: white;
 }
 
+/* Responsive */
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
-    
+
     .list-items {
         z-index: 999;
     }
@@ -561,7 +543,7 @@ header .mobile-toggler {
             margin-top: -275px;
         }
 
-    .select-menu {
+    .logHistoryRow {
         justify-content: center;
         align-items: center;
         text-align: center;
@@ -584,7 +566,7 @@ header .mobile-toggler {
         justify-content: center;
         align-items: center;
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
 
     #serviceTable, #usersTable {
@@ -661,7 +643,6 @@ header .mobile-toggler {
                 content: "Delete";
             }
 
-            /* override color of status name in responsive mode */
             #serviceTable td.status span {
                 color: inherit;
             }
@@ -681,17 +662,17 @@ header .mobile-toggler {
         text-align: center;
     }
 
-    .select-menu {
+    .logHistoryRow {
         width: 140px;
         height: 50px;
         margin-bottom: 10px;
     }
 
-        .select-menu .sBtn-text {
+        .logHistoryRow .sBtnLogHistoryRow {
             font-size: 15px;
         }
 
-        .select-menu .options {
+        .logHistoryRow .options_LogHistoryRow {
             z-index: 999;
             width: 140px;
         }

@@ -6,6 +6,7 @@
     font-family: "Trebuchet MS", sans-serif;
 }
 
+/* All button design in users page */
 .user-button {
     width: 25%;
     padding: 4px;
@@ -18,6 +19,7 @@
     display: inline;
 }
 
+/* Admin Radio Button (Add & Edit User) */
 .radio-container {
     display: flex;
 }
@@ -31,7 +33,7 @@
             margin-left: 5px;
         }
 
-
+/* Set Notification */
 .btn-green {
     background-color: #39e76f;
 }
@@ -114,6 +116,7 @@ table.table td:last-child i {
 
     .adminReminder .bi.bi-info-circle {
         font-size: 12px;
+        margin-right: 10px;
     }
 
 /* Delete Users Modal */
@@ -166,7 +169,7 @@ table.table td:last-child i {
     margin: 0 10px;
 }
 
-/* Non Admin Select Row */
+/* Non Admin & Admin Users Table (Select Row Dropdown) */
 .nonAdminRow, .adminRow {
     width: 55%;
     margin-top: 20px
@@ -239,6 +242,34 @@ table.table td:last-child i {
     font-size: 14px;
     margin-top: 8px;
     margin-bottom: 0;
+}
+
+/* Add and Edit Users (Text Field and Button) */
+.form-control :where(.input-box input, .select-box) {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    outline: none;
+    font-size: 1rem;
+    color: #707070;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 15px;
+}
+
+.form-control:focus {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.bi {
+    border: none;
+    color: black;
+    font-size: 2em;
+}
+
+.badge {
+    color: red;
 }
 
 /* Responsive */

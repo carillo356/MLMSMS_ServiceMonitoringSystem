@@ -1,0 +1,42 @@
+ServiceMonitorLogger has started.
+07:27 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:27 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:27 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:27 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:28 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:28 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:31 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:31 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:31 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:33 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+07:33 AM
+
+Exception: email Could not find stored procedure 'InsertServicesToken'.
+07:37 AM
+
+Service: Service1, Status: Stopped
+07:37 AM
+
+ServiceMonitorLogger has stopped.
+07:37 AM
+

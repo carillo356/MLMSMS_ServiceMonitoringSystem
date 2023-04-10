@@ -1125,25 +1125,30 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Aaron\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\MultisoftOJT\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Aaron\\source\\repos\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
+      "projectUniqueName": "C:\\Users\\MultisoftOJT\\Documents\\GitHub\\OJT\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
       "projectName": "Logger",
-      "projectPath": "C:\\Users\\Aaron\\source\\repos\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
-      "packagesPath": "C:\\Users\\Aaron\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Aaron\\source\\repos\\OJTWindowsService\\ConsoleApp\\obj\\",
+      "projectPath": "C:\\Users\\MultisoftOJT\\Documents\\GitHub\\OJT\\OJTWindowsService\\ConsoleApp\\Logger.csproj",
+      "packagesPath": "C:\\Users\\MultisoftOJT\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\MultisoftOJT\\Documents\\GitHub\\OJT\\OJTWindowsService\\ConsoleApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Aaron\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\MultisoftOJT\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -1157,8 +1162,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Aaron\\source\\repos\\OJTWindowsService\\CommonLibrary\\CommonLibrary.csproj": {
-              "projectPath": "C:\\Users\\Aaron\\source\\repos\\OJTWindowsService\\CommonLibrary\\CommonLibrary.csproj"
+            "C:\\Users\\MultisoftOJT\\Documents\\GitHub\\OJT\\OJTWindowsService\\CommonLibrary\\CommonLibrary.csproj": {
+              "projectPath": "C:\\Users\\MultisoftOJT\\Documents\\GitHub\\OJT\\OJTWindowsService\\CommonLibrary\\CommonLibrary.csproj"
             }
           }
         }
@@ -1214,7 +1219,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   },
