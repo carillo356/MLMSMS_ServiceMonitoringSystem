@@ -53,13 +53,6 @@
 
                             <a href="@Url.Action("Logout","Home")" class="navb-button" type="button">Logout</a>
                         </div>
-
-                        <div class="mobile-modal-footer">
-                            <a target="_blank" href="#"><i class="bi bi-instagram"></i></a>
-                            <a target="_blank" href="#"><i class="bi bi-linkedin"></i></a>
-                            <a target="_blank" href="#"><i class="bi bi-youtube"></i></a>
-                            <a target="_blank" href="#"><i class="bi bi-facebook"></i></a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -149,54 +142,4 @@
 
 </body>
 
-<!-- Pagination for Non-Admin User Table -->
-<script>
-    var indexPage = 1;
-    let pagination = document.querySelector('.pagination');
-
-    function generatePageNumbers() {
-        pagination.innerHTML = '';
-        for (let i = indexPage; i < indexPage + 5; i++) {
-            pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
-        }
-        pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
-
-        if (indexPage > 1) {
-            pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>` + pagination.innerHTML;
-        }
-
-        // Event listener for "Next" link
-        document.getElementById("next-link").addEventListener("click", function () {
-            indexPage = indexPage + 1; // Set current page to next page number
-            showPage(indexPage);
-            document.getElementById('current-page').textContent = indexPage;
-            document.getElementById('total-pages').textContent = indexPage + 4;
-            generatePageNumbers(); // Generate new page numbers
-        });
-
-        // Event listener for "Previous" link
-        document.getElementById("previous-link").addEventListener("click", function () {
-            if (indexPage > 1) { // Check if current page is greater than 1
-                indexPage = indexPage - 1;
-                showPage(indexPage);
-                document.getElementById('current-page').textContent = indexPage;
-                document.getElementById('total-pages').textContent = indexPage + 4;
-                generatePageNumbers(); // Generate new page numbers
-            }
-        });
-    }
-    let page = 1;
-    $('.pagination').on('click', '.page-link', function () {
-        let page = parseInt($(this).data('page'));
-        document.getElementById('current-page').textContent = page;
-        indexPage = page;
-        document.getElementById('total-pages').textContent = indexPage + 4;
-        showPage(page);
-    });
-
-    document.getElementById('current-page').textContent = page;
-    document.getElementById('total-pages').textContent = indexPage + 4;
-    generatePageNumbers();
-
-</script>
 
