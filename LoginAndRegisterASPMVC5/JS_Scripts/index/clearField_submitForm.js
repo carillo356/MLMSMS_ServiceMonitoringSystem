@@ -1,5 +1,4 @@
 ﻿// Submit Form for Add Service
-
 function submitForm() {
     var serviceNames = [];
 
@@ -32,8 +31,6 @@ function submitForm() {
             toast.dispose();
         }, 2000);
     }
-
-
     $('#displayService-modal').modal('hide');
 }
 

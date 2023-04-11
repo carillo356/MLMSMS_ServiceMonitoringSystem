@@ -1,6 +1,4 @@
-﻿
-
-/* Add and Remove Service*/
+﻿/* Add and Remove Service*/
 function AddService(serviceName) {
     $.ajax({
         url: "/Home/AddService",
@@ -19,7 +17,6 @@ function AddService(serviceName) {
         console.error('Failed to get the total number of monitored services.', error);
     });
 }
-
 
 function RemoveAddedService1(serviceName) {
     /*Show the confirmation box here*/

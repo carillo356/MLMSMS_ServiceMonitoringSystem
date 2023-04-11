@@ -22,7 +22,6 @@ function Synch() {
         });
 }
 
-
 // get the table body element
 const tableBody = document.querySelector('#usersTable tbody');
 
@@ -155,7 +154,6 @@ function setNotification(IdUser, FirstName, LastName, command) {
         }
     });
 }
-
 
 function generatePageNumbers() {
     totalPages = Math.ceil(totalUserCount / ITEMS_PER_PAGE);

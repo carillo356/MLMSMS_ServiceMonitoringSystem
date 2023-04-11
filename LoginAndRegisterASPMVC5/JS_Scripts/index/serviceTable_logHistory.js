@@ -44,7 +44,6 @@
             });
     }
 
-
     // Set up the event listener for options
     $('.optionsRow li').click(function () {
         let currentPage = parseInt(document.getElementById('current-page').textContent);
@@ -112,7 +111,6 @@
                 }
             });
         });
-
     }
 
     function GetServicesInController() {
@@ -342,17 +340,17 @@
         });
     }
 
-    // Get the modal element
-    var logHistoryModal = document.getElementById("logHistory-modal");
+// Get the modal element
+var logHistoryModal = document.getElementById("logHistory-modal");
 
-    // Get the close button element
-    var closeButton = logHistoryModal.querySelector(".close");
+// Get the close button element
+var closeButton = logHistoryModal.querySelector(".close");
 
-    // Add event listener to the close button
-    closeButton.addEventListener("click", function () {
-        // Hide the modal when close button is clicked
-        logHistoryModal.style.display = "none";
-    });
+// Add event listener to the close button
+closeButton.addEventListener("click", function () {
+    // Hide the modal when close button is clicked
+    logHistoryModal.style.display = "none";
+});
 
 function generatePageNumbersLogHistory() {
     totalPagesLogHistory = Math.ceil(logHistoryTableBody.querySelectorAll('tr').length / itemsPerPageLogHistory);
@@ -417,8 +415,6 @@ function generatePageNumbersLogHistory() {
     document.getElementById('current-page-log-history').textContent = indexPageLogHistory;
     document.getElementById('total-pages-log-history').textContent = totalPagesLogHistory;
 }
-
-
 
     let indexPage = 1;
     let paginationService = document.querySelector(".paginationService ul");
@@ -528,79 +524,3 @@ function generatePageNumbersLogHistory() {
             document.getElementById('total-pages').textContent = totalPages;
         })
     }
-
-
-
-
-
-
-//function generatePageNumbersLogHistory() {
-//    getLogHistoryCount()
-//        .then(function (totalLogHistory) {
-//            totalPagesLogHistory = Math.ceil(totalLogHistory / itemsPerPageLogHistory);
-//            paginationLogHistory.innerHTML = '';
-
-//            let maxVisiblePagesLogHistory = 5;
-//            let startPageLogHistory = indexPageLogHistory - Math.floor(maxVisiblePagesLogHistory / 2);
-//            let endPageLogHistory = startPageLogHistory + maxVisiblePagesLogHistory - 1;
-
-//            if (startPageLogHistory < 1) {
-//                startPageLogHistory = 1;
-//                endPageLogHistory = Math.min(totalPagesLogHistory, startPageLogHistory + maxVisiblePagesLogHistory - 1);
-//            }
-
-//            if (endPageLogHistory > totalPagesLogHistory) {
-//                endPageLogHistory = totalPagesLogHistory;
-//                startPageLogHistory = Math.max(1, endPageLogHistory - maxVisiblePagesLogHistory + 1);
-//            }
-
-//            if (indexPageLogHistory > 1) {
-//                paginationLogHistory.innerHTML = `<li class="page-item" id="previous-link-logs"><a class="page-link">Previous</a></li>`;
-//            }
-
-//            for (let i = startPageLogHistory; i <= endPageLogHistory; i++) {
-//                paginationLogHistory.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
-//            }
-
-//            if (indexPageLogHistory < totalPagesLogHistory) {
-//                paginationLogHistory.innerHTML += `<li class="page-item" id="next-link-logs"><a class="page-link">Next</a></li>`;
-//            }
-
-//            if (indexPageLogHistory < totalPagesLogHistory) {
-//                document.getElementById("next-link-logs").addEventListener("click", function () {
-//                    indexPageLogHistory = indexPageLogHistory + 1;
-//                    showPageLogHistory(indexPageLogHistory);
-//                    generatePageNumbersLogHistory();
-//                });
-//            }
-
-//            if (indexPageLogHistory > 1) {
-//                document.getElementById("previous-link-logs").addEventListener("click", function () {
-//                    indexPageLogHistory = indexPageLogHistory - 1;
-//                    showPageLogHistory(indexPageLogHistory);
-//                    generatePageNumbersLogHistory();
-//                });
-//            }
-
-//            // Add click event listener to the page number elements
-//            document.querySelectorAll(".paginationLogs .page-link").forEach(function (pageLink) {
-//                const pageNumberLogHistory = parseInt(pageLink.getAttribute("data-page"));
-//                if (pageNumberLogHistory) {
-//                    pageLink.addEventListener("click", function () {
-//                        indexPageLogHistory = pageNumberLogHistory;
-//                        showPageLogHistory(indexPageLogHistory);
-//                        generatePageNumbersLogHistory();
-//                    });
-//                }
-//            });
-
-//            document.getElementById('current-page-logs').textContent = indexPageLogHistory;
-//            document.getElementById('total-pages-logs').textContent = totalPagesLogHistory;
-//        }).catch(function (error) {
-//            alert(error);
-//        });
-//}
-
-// Call the functions to display log history data and generate page numbers when the page loads
-/*showPageLogHistory(indexPageLogHistory);*/
-//generatePageNumbersLogHistory();
