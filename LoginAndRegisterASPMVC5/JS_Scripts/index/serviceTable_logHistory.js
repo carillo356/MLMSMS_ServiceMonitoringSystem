@@ -16,7 +16,6 @@
             });
     }
 
-
     function SynchServiceTB() {
         ServicesInMonitor()
             .then(function () {
@@ -87,12 +86,21 @@
                         row += "<td>";
 
                         if (Data.ServiceStatus === "Stopped") {
-                            row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                            row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Run Service'>";
+                            row += "<i class='bi bi-caret-right-fill'></i>";
+                            row += "</button>";
                         } else if (Data.ServiceStatus === "Running") {
                             row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
-                            row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")'>Stop</button>";
-                            row += "<button class='action-button ms-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")'>Restart</button>";
-                        } row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")'>Delete</button>";
+                            row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Stop Service'>";
+                            row += "<i class='bi bi-stop-fill'></i>";
+                            row += "</button>";
+                            row += "<button class='action-button mx-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Restart Service'>"
+                            row += "<i class='bi bi-bootstrap-reboot'></i>";
+                            row += "</button>";
+                        }
+                        row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete Service'>";
+                        row += "<i class='bi bi-trash3-fill'></i>";
+                        row += "</button>";
                         row += "</td></tr>";
                         $("#serviceTable tbody").append(row);
                     });
@@ -369,7 +377,10 @@ function generatePageNumbersLogHistory() {
     }
 
     for (let i = startPage; i <= endPage; i++) {
-        paginationLogHistory.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
+        // Check if the current iteration is the active page
+        const isActive = i === indexPageLogHistory;
+
+        paginationLogHistory.innerHTML += `<li class="page-item${isActive ? " active" : ""}"><a class="page-link" data-page="${i}">${i}</a></li>`;
     }
 
     if (indexPageLogHistory < totalPagesLogHistory) {
@@ -476,7 +487,10 @@ function generatePageNumbersLogHistory() {
         }
 
         for (let i = startPage; i <= endPage; i++) {
-            paginationService.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
+            // Check if the current iteration is the active page
+            const isActive = i === indexPage;
+
+            paginationService.innerHTML += `<li class="page-item${isActive ? " active" : ""}"><a class="page-link" data-page="${i}">${i}</a></li>`;
         }
 
         if (indexPage < totalPages) {

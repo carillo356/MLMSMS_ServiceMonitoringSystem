@@ -261,7 +261,7 @@ header .mobile-toggler {
 #logHistory-modal {
     display: none;
     position: fixed;
-    z-index: 1;
+/*    z-index: 1;*/
     left: 0;
     top: 0;
     width: 100%;
@@ -411,12 +411,12 @@ header .mobile-toggler {
 }
 
 #btnDelete {
-    background-color: #990000;
+    background-color: #ff4122;
     color: white;
 }
 
     #btnDelete:hover {
-        background-color: #a80d0d;
+        background-color: #db4c35;
     }
 
 .serviceRow {

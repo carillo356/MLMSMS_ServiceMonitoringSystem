@@ -140,7 +140,6 @@
     <Content Include="JS_Scripts\admin_Users\tooltip_deleteUser_editUser_modal.js" />
     <Content Include="JS_Scripts\index\add_remove_service.js" />
     <Content Include="JS_Scripts\index\clearField_submitForm.js" />
-    <Content Include="JS_Scripts\index\pagination_serviceTable.js" />
     <Content Include="JS_Scripts\index\serviceTable_logHistory.js" />
     <Content Include="JS_Scripts\nonAdmin_Users\dropdown.js" />
     <Content Include="JS_Scripts\nonAdmin_Users\pagination.js" />

@@ -40,3 +40,21 @@ Service: Service1, Status: Stopped
 ServiceMonitorLogger has stopped.
 07:37 AM
 
+ServiceMonitorLogger has started.
+08:00 AM
+
+Service: ServiceMonitorLogger, Status: Running
+08:00 AM
+
+Service: Service1, Status: Running
+08:01 AM
+
+Exception: email Could not find stored procedure 'InsertServicesToken'.
+08:01 AM
+
+Service: Service1, Status: Stopped
+08:01 AM
+
+ServiceMonitorLogger has stopped.
+08:01 AM
+

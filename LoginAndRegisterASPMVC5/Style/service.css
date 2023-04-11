@@ -33,7 +33,7 @@ header {
 
 /* All action button design in service table */
 .action-button {
-    width: 40%;
+    width: 25%;
     padding: 4px;
     border-radius: 5px;
     font-size: 15px;
@@ -267,6 +267,12 @@ table.table td:last-child i {
                 background-color: deeppink;
                 color: #fff;
             }
+
+.page-item.active .page-link {
+    background-color: deeppink;
+    border-color: deeppink;
+    color: #fff;
+}
 
 .hint-text {
     font-size: 13px;

@@ -244,6 +244,20 @@ table.table td:last-child i {
     margin-bottom: 0;
 }
 
+.validation-summary-list {
+    list-style: disc;
+    margin: 10px 0;
+    padding-left: 20px;
+    color: red;
+}
+
+    .validation-summary-list li {
+        margin: 5px 10px;
+        color: red;
+        font-size: 12px;
+    }
+
+
 /* Add and Edit Users (Text Field and Button) */
 .form-control :where(.input-box input, .select-box) {
     position: relative;

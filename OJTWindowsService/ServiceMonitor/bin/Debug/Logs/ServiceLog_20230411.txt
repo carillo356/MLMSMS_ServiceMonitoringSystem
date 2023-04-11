@@ -1,0 +1,6 @@
+Exception: storeservicesavailable The procedure "UpdateServicesAvailable" has no parameter named "@ServiceInfo".
+08:01 AM
+
+Exception: Invalid column name 'sa_ServiceStatus'.
+08:01 AM
+

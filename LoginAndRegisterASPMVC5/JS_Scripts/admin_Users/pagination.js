@@ -77,11 +77,11 @@ function RealTimeUsersTable() {
                         row += "</button>";
                     }
 
-                    row += "<button onclick='editUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\", \"update\")' class='user-button' data-bs-toggle='modal' data-bs-target='#editUsers-modal'>";
+                    row += "<button onclick='editUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\", \"update\")' class='user-button' data-bs-toggle='modal' data-bs-target='#editUsers-modal' data-bs-toggle='tooltip' data-bs-placement='top' title='Edit User'>";
                     row += "<i class='bi bi-pencil-square'></i>";
                     row += "</button>";
 
-                    row += "<button onclick='DeleteUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"delete\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete'>";
+                    row += "<button onclick='DeleteUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"delete\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete User'>";
                     row += "<i class='bi bi-trash3-fill'></i>";
                     row += "</button>";
 
@@ -180,7 +180,10 @@ function generatePageNumbers() {
     }
 
     for (let i = startPage; i <= endPage; i++) {
-        pagination.innerHTML += `<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`;
+        // Check if the current iteration is the active page
+        const isActive = i === indexPage;
+
+        pagination.innerHTML += `<li class="page-item${isActive ? " active" : ""}"><a class="page-link" data-page="${i}">${i}</a></li>`;
     }
 
     if (indexPage < totalPages) {
