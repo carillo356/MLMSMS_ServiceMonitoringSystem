@@ -569,7 +569,7 @@ header .mobile-toggler {
     }
 
     #serviceTable, #usersTable {
-        width: 90%;
+        width: 95%;
         background: transparent;
     }
 
@@ -652,7 +652,7 @@ header .mobile-toggler {
     }
 
     .modal-servicelogs {
-        width: 85%;
+        width: 90%;
     }
 
     .service_title {

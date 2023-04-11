@@ -15,7 +15,7 @@ $(document).ready(function () {
 function Synch() {
     RealTimeUsersTable()
         .then(function () {
-            showPage(1);
+            showPage(indexPage);
         })
         .catch(function (error) {
             alert(error);
