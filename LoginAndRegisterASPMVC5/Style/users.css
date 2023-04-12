@@ -186,7 +186,7 @@ table.table td:last-child i {
 
 .nonAdminRow .options_nonAdminRow, .adminRow .options_AdminRow {
     position: absolute;
-    padding: 20px;
+    padding: 15px;
     margin-top: 10px;
     border-radius: 8px;
     background: #fff;
@@ -201,7 +201,7 @@ table.table td:last-child i {
 
 .options_nonAdminRow .option_nonAdmin, .options_AdminRow .option_Admin {
     display: flex;
-    height: 35px;
+    height: 30px;
     cursor: pointer;
     padding: 0 10px;
     border-radius: 8px;
@@ -212,11 +212,6 @@ table.table td:last-child i {
     .options_nonAdminRow .option_nonAdmin:hover, .options_AdminRow .option_Admin:hover {
         background: #F2F2F2;
     }
-
-.option_nonAdmin i, .option_Admin i {
-    font-size: 20px;
-    margin-right: 12px;
-}
 
 .option_nonAdmin .option_nonAdmin-text, .option_Admin .option_Admin-text {
     font-size: 15px;
@@ -349,17 +344,15 @@ table.table td:last-child i {
     }
 
     .adminRow, .nonAdminRow {
-/*        justify-content: center;
-        align-items: center;*/
         text-align: center;
-        /*margin: auto;*/
+        margin: auto;
         margin-top: 15px;
         width: 43%;
     }
 
         .adminRow .options_AdminRow, .nonAdminRow .options_nonAdminRow {
             z-index: 1;
-            margin-top: -275px;
+            margin-top: -240px;
             width: 160px;
         }
 }

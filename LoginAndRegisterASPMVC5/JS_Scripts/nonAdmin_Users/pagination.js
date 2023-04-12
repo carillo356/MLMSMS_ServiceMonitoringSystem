@@ -166,18 +166,18 @@ function generatePageNumbers() {
     }
 
     if (indexPage > 1) {
-        pagination.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>`;
+        pagination.innerHTML = `<li class="page-item" id="previous-link"><button type="button" class="page-link">Previous</button></li>`;
     }
 
     for (let i = startPage; i <= endPage; i++) {
         // Check if the current iteration is the active page
         const isActive = i === indexPage;
 
-        pagination.innerHTML += `<li class="page-item${isActive ? " active" : ""}"><a class="page-link" data-page="${i}">${i}</a></li>`;
+        pagination.innerHTML += `<li class="page-item${isActive ? " active" : ""}"><button type="button" class="page-link" data-page="${i}">${i}</button></li>`;
     }
 
     if (indexPage < totalPages) {
-        pagination.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
+        pagination.innerHTML += `<li class="page-item" id="next-link"><button type="button" class="page-link">Next</button></li>`;
     }
 
     if (indexPage < totalPages) {

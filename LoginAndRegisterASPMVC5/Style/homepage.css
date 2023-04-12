@@ -365,8 +365,8 @@ header .mobile-toggler {
 
 .logHistoryRow .options_LogHistoryRow {
     position: absolute;
-    padding: 20px;
-    margin-top: -275px;
+    padding: 15px;
+    margin-top: -240px;
     border-radius: 8px;
     background: #fff;
     box-shadow: 0 0 3px rgba(0,0,0,0.1);
@@ -380,7 +380,7 @@ header .mobile-toggler {
 
 .options_LogHistoryRow .option_LogHistory {
     display: flex;
-    height: 35px;
+    height: 30px;
     cursor: pointer;
     padding: 0 10px;
     border-radius: 8px;
@@ -391,11 +391,6 @@ header .mobile-toggler {
     .options_LogHistoryRow .option_LogHistory:hover {
         background: #F2F2F2;
     }
-
-.option_LogHistory i {
-    font-size: 20px;
-    margin-right: 12px;
-}
 
 .option_LogHistory .option_LogHistory-text {
     font-size: 15px;
@@ -448,7 +443,7 @@ header .mobile-toggler {
 
 .serviceRow .optionsRow {
     position: absolute;
-    padding: 20px;
+    padding: 15px;
     margin-top: 10px;
     border-radius: 8px;
     background: #fff;
@@ -463,7 +458,7 @@ header .mobile-toggler {
 
 .optionsRow .optionRow {
     display: flex;
-    height: 35px;
+    height: 30px;
     cursor: pointer;
     padding: 0 10px;
     border-radius: 8px;
@@ -474,11 +469,6 @@ header .mobile-toggler {
     .optionsRow .optionRow:hover {
         background: #F2F2F2;
     }
-
-.optionRow i {
-    font-size: 20px;
-    margin-right: 12px;
-}
 
 .optionRow .optionRow-text {
     font-size: 15px;
@@ -528,8 +518,6 @@ header .mobile-toggler {
     }
 
     .serviceRow {
-        justify-content: center;
-        align-items: center;
         text-align: center;
         margin: auto;
         margin-top: 15px;
@@ -539,32 +527,13 @@ header .mobile-toggler {
         .serviceRow .optionsRow {
             z-index: 1;
             width: 160px;
-            margin-top: -275px;
+            margin-top: -240px;
         }
 
-    .logHistoryRow {
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        margin: auto;
-        margin-top: 15px;
-        margin-bottom: -20px;
-        width: 43%;
-    }
-
     .hint-text {
-        justify-content: center;
-        align-items: center;
         text-align: center;
         margin: auto;
         margin-bottom: 10px;
-    }
-
-    .hint-logText {
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        margin-bottom: 20px;
     }
 
     #serviceTable, #usersTable {
@@ -661,6 +630,14 @@ header .mobile-toggler {
     }
 
     .logHistoryRow {
+        text-align: center;
+        margin: auto;
+        margin-top: 15px;
+        margin-bottom: -20px;
+        width: 43%;
+    }
+
+    .logHistoryRow {
         width: 140px;
         height: 50px;
         margin-bottom: 10px;
@@ -674,6 +651,11 @@ header .mobile-toggler {
             z-index: 999;
             width: 140px;
         }
+
+    .hint-logText {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
     #popupTable table,
     #popupTable thead,
@@ -729,11 +711,11 @@ header .mobile-toggler {
         }
 
         #popupTable td:nth-of-type(4)::before {
-            content: "Host Name";
+            content: "HOST NAME";
         }
 
         #popupTable td:nth-of-type(5)::before {
-            content: "Log By";
+            content: "LOG BY";
         }
 
     .pagination {

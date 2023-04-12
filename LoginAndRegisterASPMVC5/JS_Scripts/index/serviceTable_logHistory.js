@@ -373,18 +373,18 @@ function generatePageNumbersLogHistory() {
     }
 
     if (indexPageLogHistory > 1) {
-        paginationLogHistory.innerHTML = `<li class="page-item" id="previous-link-log-history"><a class="page-link">Previous</a></li>`;
+        paginationLogHistory.innerHTML = `<li class="page-item" id="previous-link-log-history"><button type="button" class="page-link">Previous</button></li>`;
     }
 
     for (let i = startPage; i <= endPage; i++) {
         // Check if the current iteration is the active page
         const isActive = i === indexPageLogHistory;
 
-        paginationLogHistory.innerHTML += `<li class="page-item${isActive ? " active" : ""}"><a class="page-link" data-page="${i}">${i}</a></li>`;
+        paginationLogHistory.innerHTML += `<li class="page-item${isActive ? " active" : ""}"><button type="button" class="page-link" data-page="${i}">${i}</button></li>`;
     }
 
     if (indexPageLogHistory < totalPagesLogHistory) {
-        paginationLogHistory.innerHTML += `<li class="page-item" id="next-link-log-history"><a class="page-link">Next</a></li>`;
+        paginationLogHistory.innerHTML += `<li class="page-item" id="next-link-log-history"><button type="button" class="page-link">Next</button></li>`;
     }
 
     if (indexPageLogHistory < totalPagesLogHistory) {
@@ -481,19 +481,19 @@ function generatePageNumbersLogHistory() {
         }
 
         if (indexPage > 1) {
-            paginationService.innerHTML = `<li class="page-item" id="previous-link"><a class="page-link">Previous</a></li>`;
+            paginationService.innerHTML = `<li class="page-item" id="previous-link"><button type="button" class="page-link">Previous</button></li>`;
         }
 
         for (let i = startPage; i <= endPage; i++) {
             // Check if the current iteration is the active page
             const isActive = i === indexPage;
 
-            paginationService.innerHTML += `<li class="page-item${isActive ? " active" : ""}"><a class="page-link" data-page="${i}">${i}</a></li>`;
+            paginationService.innerHTML += `<li class="page-item${isActive ? " active" : ""}"><button type="button" class="page-link" data-page="${i}">${i}</button></li>`;
         }
 
         if (indexPage < totalPages) {
 
-            paginationService.innerHTML += `<li class="page-item" id="next-link"><a class="page-link">Next</a></li>`;
+            paginationService.innerHTML += `<li class="page-item" id="next-link"><button type="button" class="page-link">Next</button></li>`;
         }
 
         if (indexPage < totalPages) {

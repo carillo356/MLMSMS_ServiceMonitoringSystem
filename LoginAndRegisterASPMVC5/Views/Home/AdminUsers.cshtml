@@ -1,6 +1,6 @@
 ﻿@model LoginAndRegisterASPMVC5.Models.User
 @{
-    ViewBag.Title = "Users";
+    ViewBag.Title = "MLM Admin Users";
     Layout = "~/Views/Shared/_LayoutPage1.cshtml";
 }
 
@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        <table class="table table-hover" id="usersTable">
+        <table class="table" id="usersTable">
             <thead>
                 <tr>
                     <th scope="col" style="width: 15%;">FIRST NAME</th>
@@ -273,8 +273,15 @@
         </div>
     </div>
 
-    <!-- Add User Modal with Toast and Validation Message -->
-    <script>
+    <script src="~/JS_Scripts/admin_Users/pagination.js"></script>
+    <script src="~/JS_Scripts/admin_Users/tooltip_deleteUser_editUser_modal.js"></script>
+    <script src="~/JS_Scripts/admin_Users/dropdown_showhidePassword.js"></script>
+    <script src="~/JS_Scripts/admin_Users/clearFields.js"></script>
+
+</body>
+
+<!-- Add User Modal with Toast and Validation Message -->
+<script>
     $(document).ready(function () {
         // Handle form submission using AJAX
         $('#add-user-form').submit(function (event) {
@@ -337,11 +344,10 @@
         $('#cancelButton').on('click', function () {
             $('#addUsers-modal').modal('hide');
         });
+</script>
 
-    </script>
-
-    <!-- Edit User Modal with Toast and Validation Message -->
-    <script>
+<!-- Edit User Modal with Toast and Validation Message -->
+<script>
     $(document).ready(function () {
       // Handle form submission using AJAX
       $('#edit-user-form').submit(function (event) {
@@ -381,11 +387,4 @@
         });
       });
     });
-    </script>
-
-    <script src="~/JS_Scripts/admin_Users/pagination.js"></script>
-    <script src="~/JS_Scripts/admin_Users/tooltip_deleteUser_editUser_modal.js"></script>
-    <script src="~/JS_Scripts/admin_Users/dropdown_showhidePassword.js"></script>
-    <script src="~/JS_Scripts/admin_Users/clearFields.js"></script>
-
-</body>
+</script>
