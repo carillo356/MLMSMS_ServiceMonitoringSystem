@@ -1,3 +1,0 @@
-Exception: main A connection was successfully established with the server, but then an error occurred during the login process. (provider: Shared Memory Provider, error: 0 - No process is on the other end of the pipe.)
-08:41 am
-
