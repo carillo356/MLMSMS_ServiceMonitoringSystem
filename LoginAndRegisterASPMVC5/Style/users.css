@@ -52,20 +52,6 @@ table.table td:last-child i {
     margin: 0 0px
 }
 
-/* Add Users */
-.btn.btn-dark {
-    background-color: deeppink;
-    width: 8%;
-    padding: 7px;
-    border: none;
-    border-radius: 4px;
-}
-
-    .btn.btn-dark:hover {
-        background-color: #64d6f4;
-        color: black;
-    }
-
 /* Add Users modal */
 #addUsers-modal .modal {
     display: flex;
@@ -289,20 +275,7 @@ table.table td:last-child i {
 /* Responsive */
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
 
-    .btn.btn-dark {
-        width: 30%;
-        padding: 5px;
-    }
-
-    #addUsers-modal .modal-dialog {
-        width: 80%;
-    }
-
-    #editUsers-modal .modal-dialog {
-        width: 80%;
-    }
-
-    #deleteUsers-modal .modal-content {
+    #addUsers-modal .modal-dialog, #editUsers-modal .modal-dialog, #deleteUsers-modal .modal-content {
         width: 80%;
     }
 
@@ -375,31 +348,16 @@ table.table td:last-child i {
         font-size: 15px;
     }
 
-    .adminRow {
-        justify-content: center;
-        align-items: center;
+    .adminRow, .nonAdminRow {
+/*        justify-content: center;
+        align-items: center;*/
         text-align: center;
-        margin: auto;
+        /*margin: auto;*/
         margin-top: 15px;
         width: 43%;
     }
 
-        .adminRow .options_AdminRow {
-            z-index: 1;
-            margin-top: -275px;
-            width: 160px;
-        }
-
-    .nonAdminRow {
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        margin: auto;
-        margin-top: 15px;
-        width: 43%;
-    }
-
-        .nonAdminRow .options_nonAdminRow {
+        .adminRow .options_AdminRow, .nonAdminRow .options_nonAdminRow {
             z-index: 1;
             margin-top: -275px;
             width: 160px;

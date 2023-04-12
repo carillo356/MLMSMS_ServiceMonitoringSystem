@@ -80,7 +80,7 @@ function RealTimeUsersTable() {
                     row += "<i class='bi bi-pencil-square'></i>";
                     row += "</button>";
 
-                    row += "<button onclick='DeleteUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"delete\")' class='user-button' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete User'>";
+                    row += "<button onclick='DeleteUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"delete\")' class='user-button' id='btnDelete' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete User'>";
                     row += "<i class='bi bi-trash3-fill'></i>";
                     row += "</button>";
 

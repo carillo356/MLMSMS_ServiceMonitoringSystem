@@ -261,7 +261,6 @@ header .mobile-toggler {
 #logHistory-modal {
     display: none;
     position: fixed;
-/*    z-index: 1;*/
     left: 0;
     top: 0;
     width: 100%;
@@ -631,15 +630,15 @@ header .mobile-toggler {
             }
 
             #serviceTable td:nth-of-type(5)::before {
-                content: "Action By";
+                content: "Host Name";
             }
 
             #serviceTable td:nth-of-type(6)::before {
-                content: "Action";
+                content: "Log By";
             }
 
             #serviceTable td:nth-of-type(7)::before {
-                content: "Delete";
+                content: "Action";
             }
 
             #serviceTable td.status span {
@@ -730,7 +729,11 @@ header .mobile-toggler {
         }
 
         #popupTable td:nth-of-type(4)::before {
-            content: "ACTION BY";
+            content: "Host Name";
+        }
+
+        #popupTable td:nth-of-type(5)::before {
+            content: "Log By";
         }
 
     .pagination {

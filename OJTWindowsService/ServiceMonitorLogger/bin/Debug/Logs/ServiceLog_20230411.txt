@@ -58,3 +58,69 @@ Service: Service1, Status: Stopped
 ServiceMonitorLogger has stopped.
 08:01 AM
 
+ServiceMonitorLogger has started.
+03:36 PM
+
+Service: ServiceMonitorLogger, Status: Running
+03:36 PM
+
+Service: AppXSvc, Status: Running
+03:36 PM
+
+Service: ClipSVC, Status: Running
+03:36 PM
+
+Service: Service1, Status: Running
+03:36 PM
+
+Service: Service1, Status: Running
+03:36 PM
+
+Service: Service1, Status: Stopped
+03:36 PM
+
+Service: TrustedInstaller, Status: Running
+03:37 PM
+
+Service: Service1, Status: Running
+03:37 PM
+
+Service: Service1, Status: Stopped
+03:37 PM
+
+Service: Service1, Status: Running
+03:38 PM
+
+Service: Service1, Status: Stopped
+03:38 PM
+
+Service: gpsvc, Status: Stopped
+03:38 PM
+
+Service: TrustedInstaller, Status: Stopped
+03:39 PM
+
+Service: Service1, Status: Running
+03:39 PM
+
+Service: Service1, Status: Stopped
+03:39 PM
+
+Service: ClipSVC, Status: Stopped
+03:44 PM
+
+Service: VSStandardCollectorService150, Status: Stopped
+03:45 PM
+
+Service: ClipSVC, Status: Running
+03:48 PM
+
+Service: wmiApSrv, Status: Running
+03:55 PM
+
+Service: TrustedInstaller, Status: Running
+03:55 PM
+
+ServiceMonitorLogger has stopped.
+03:56 PM
+

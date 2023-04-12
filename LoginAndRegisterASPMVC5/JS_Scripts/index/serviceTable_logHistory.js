@@ -82,6 +82,7 @@
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastEventLog + "</td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
                         row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.HostName + "</td>";
+                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LogBy + "</td>";
                         row += "<td>";
 
                         if (Data.ServiceStatus === "Stopped") {
@@ -94,7 +95,7 @@
                             row += "<i class='bi bi-stop-fill'></i>";
                             row += "</button>";
                             row += "<button class='action-button mx-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Restart Service'>"
-                            row += "<i class='bi bi-bootstrap-reboot'></i>";
+                            row += "<i class='bi bi-arrow-repeat'></i>";
                             row += "</button>";
                         }
                         row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete Service'>";
@@ -317,6 +318,7 @@
                         '<span class="' + statusColorClass + '">' + service.ServiceStatus + '</span>' +
                         '</td>' +
                         '<td>' + service.HostName + '</td>' +
+                        '<td>' + service.LogBy + '</td>' +
                         '</tr>';
                 });
 

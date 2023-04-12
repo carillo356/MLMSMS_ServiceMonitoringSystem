@@ -25,6 +25,7 @@ hr {
 .btn.btn-secondary {
     background-color: deeppink;
     width: 100%;
+    color: white;
     border-radius: 5px;
     border: 2px solid deeppink;
 }
@@ -37,6 +38,7 @@ hr {
 
 .btn.btn-primary {
     background-color: deeppink;
+    color: white;
     border-radius: 5px;
     width: 100%;
     border: 2px solid deeppink;

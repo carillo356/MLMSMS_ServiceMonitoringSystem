@@ -149,25 +149,6 @@ header {
         float: right;
     }
 
-    .table-title .btn.btn-danger {
-        background: #e03636;
-        color: white;
-        float: right;
-        font-size: 13px;
-        border: none;
-        min-width: 50px;
-        border-radius: 5px;
-        border: none;
-        outline: none !important;
-        margin-left: 10px;
-        font-family: "Trebuchet MS", sans-serif;
-    }
-
-        .table-title .btn.btn-danger:hover {
-            background-color: #c75a5a;
-            color: white;
-        }
-
     .table-title .btn.btn-success {
         background: #35db4b;
         color: white;
@@ -339,20 +320,13 @@ table.table td:last-child i {
         }
 
 #displayService-modal .modal-footer .btn.btn-primary {
-    background-color: deeppink;
     justify-content: center;
     align-items: center;
     font-size: 15px;
     font-weight: 700;
-    color: white;
     letter-spacing: 2px;
     border: none
 }
-
-    #displayService-modal .modal-footer .btn.btn-primary:hover {
-        background-color: #274d8a;
-        color: #fefefe;
-    }
 
 #displayService-modal .search-box {
     width: 415px;

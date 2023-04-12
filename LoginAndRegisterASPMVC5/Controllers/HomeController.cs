@@ -293,7 +293,8 @@ namespace LoginAndRegisterASPMVC5.Controllers
                                 LastStart = reader["sl_LastStart"] == DBNull.Value ? "" : reader["sl_LastStart"].ToString(),
                                 ServiceStatus = reader["sl_ServiceStatus"] == DBNull.Value ? "" : reader["sl_ServiceStatus"].ToString(),
                                 LastEventLog = reader["sl_LastEventLog"] == DBNull.Value ? "" : reader["sl_LastEventLog"].ToString(),
-                                HostName = reader["sl_HostName"] == DBNull.Value ? "" : reader["sl_HostName"].ToString()
+                                HostName = reader["sl_HostName"] == DBNull.Value ? "" : reader["sl_HostName"].ToString(),
+                                LogBy = reader["sl_LogBy"] == DBNull.Value ? "" : reader["sl_LogBy"].ToString()
                             });
                         }
                     }
@@ -383,7 +384,8 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             LastStart = reader["sl_LastStart"].ToString(),
                             ServiceStatus = reader["sl_ServiceStatus"].ToString(),
                             LastEventLog = reader["sl_LastEventLog"].ToString(),
-                            HostName = reader["sl_HostName"].ToString()
+                            HostName = reader["sl_HostName"].ToString(),
+                            LogBy = reader["sl_LogBy"].ToString()
                         });
 
                     }
@@ -430,10 +432,10 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public void ServiceAction(string serviceName, string command)
         {
-            string hostName = Session["FullName"].ToString();
+            string hostName = Environment.MachineName;
             DateTime lastStart = new DateTime(1900, 1, 1);
             string lastEventLog = "No Record";
-            string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            string logBy = Session["FullName"].ToString();
 
 
 
