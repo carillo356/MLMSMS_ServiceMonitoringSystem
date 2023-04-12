@@ -1,0 +1,177 @@
+Service: lmhosts, Status: Running
+12:20 am
+
+Service: lmhosts, Status: Stopped
+12:20 am
+
+Service: StiSvc, Status: Running
+12:20 am
+
+Service: lmhosts, Status: Running
+12:20 am
+
+Service: XblAuthManager, Status: Running
+12:20 am
+
+Service: cbdhsvc_1011e066, Status: Running
+12:20 am
+
+Service: UdkUserSvc_1011e066, Status: Running
+12:20 am
+
+Service: NPSMSvc_1011e066, Status: Running
+12:20 am
+
+Service: gupdate, Status: Running
+12:20 am
+
+Service: WdiSystemHost, Status: Running
+12:20 am
+
+Service: gupdate, Status: Stopped
+12:20 am
+
+Service: PimIndexMaintenanceSvc_1011e066, Status: Running
+12:20 am
+
+Service: UnistoreSvc_1011e066, Status: Running
+12:20 am
+
+Service: UserDataSvc_1011e066, Status: Running
+12:20 am
+
+Service: BITS, Status: Running
+12:20 am
+
+Service: dbupdate, Status: Running
+12:20 am
+
+Service: dbupdate, Status: Stopped
+12:20 am
+
+Service: FrameServer, Status: Running
+12:20 am
+
+Service: FrameServerMonitor, Status: Stopped
+12:20 am
+
+Service: AarSvc_1011e066, Status: Running
+12:20 am
+
+Service: FrameServer, Status: Stopped
+12:20 am
+
+Service: AppReadiness, Status: Running
+12:20 am
+
+Service: AppXSvc, Status: Running
+12:20 am
+
+Service: AppXSvc, Status: Running
+12:20 am
+
+Service: FrameServer, Status: Running
+12:20 am
+
+Service: FrameServer, Status: Stopped
+12:21 am
+
+Service: FrameServerMonitor, Status: Start Pending
+12:21 am
+
+Service: FrameServerMonitor, Status: Running
+12:21 am
+
+Service: FrameServerMonitor, Status: Stopped
+12:21 am
+
+Service: InventorySvc, Status: Running
+12:22 am
+
+Service: FrameServerMonitor, Status: Running
+12:22 am
+
+Service: TrustedInstaller, Status: Stopped
+12:22 am
+
+Service: StiSvc, Status: Paused
+12:28 am
+
+Service: FrameServer, Status: Running
+12:28 am
+
+Service: lmhosts, Status: Stopped
+12:28 am
+
+Service: StiSvc, Status: Running
+12:28 am
+
+Service: lmhosts, Status: Running
+12:28 am
+
+Service: OneSyncSvc_1011e066, Status: Running
+12:28 am
+
+Service: GoogleChromeElevationService, Status: Start Pending
+12:29 am
+
+Service: GoogleChromeElevationService, Status: Stopped
+12:29 am
+
+Service: WerSvc, Status: Stopped
+12:29 am
+
+Service: FrameServerMonitor, Status: Stopped
+12:29 am
+
+Service: FrameServer, Status: Running
+12:29 am
+
+Service: FrameServer, Status: Stopped
+12:29 am
+
+Service: AppReadiness, Status: Stopped
+12:29 am
+
+Service: WerSvc, Status: Running
+12:30 am
+
+Service: BITS, Status: Stopped
+12:30 am
+
+Service: XblAuthManager, Status: Stopped
+12:31 am
+
+Service: WerSvc, Status: Stopped
+12:32 am
+
+Service: WerSvc, Status: Running
+12:33 am
+
+Service: ClipSVC, Status: Stopped
+12:33 am
+
+Service: InventorySvc, Status: Stopped
+12:33 am
+
+Service: gpsvc, Status: Stopped
+12:34 am
+
+Service: WerSvc, Status: Stopped
+12:35 am
+
+Service: wuauserv, Status: Stop Pending
+12:37 am
+
+Service: wuauserv, Status: Stopped
+12:37 am
+
+Service: FrameServer, Status: Running
+12:40 am
+
+Service: FrameServer, Status: Stopped
+12:40 am
+
+ServiceMonitorRealTimeLogger has stopped.
+12:42 am
+

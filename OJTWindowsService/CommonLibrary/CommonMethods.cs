@@ -45,6 +45,7 @@ namespace CommonLibrary
 
         public static void SP_UpdateServiceStatus(SqlConnection connection, (string ServiceName, string ServiceStatus, string HostName, string LogBy)[] servicesToUpdate)
         {
+      
             try
             {
                 DataTable dt = new DataTable();
@@ -73,7 +74,7 @@ namespace CommonLibrary
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: storedata " + ex.Message);
+                CommonMethods.WriteToFile("Exception: storedatabulk " + ex.Message);
             }
         }
 
@@ -225,6 +226,33 @@ namespace CommonLibrary
 
         }
 
+        public static string GetServicesStatusQuery(string tableName, string columnNamePrefix)
+        {
+            return $"SELECT [{columnNamePrefix}_ServiceName], [{columnNamePrefix}_ServiceStatus], [{columnNamePrefix}_HostName] FROM {tableName}";
+        }
+
+        public static List<string> GetSingleColumn(SqlConnection connection, string query)
+        {
+            return GetColumns(connection, query, reader => reader.GetString(0));
+        }
+
+        public static List<(string, string)> GetDoubleColumn(SqlConnection connection, string query)
+        {
+            return GetColumns(connection, query, reader => (
+                reader.IsDBNull(0) ? "" : reader.GetString(0),
+                reader.IsDBNull(1) ? "" : reader.GetString(1)
+            ));
+        }
+
+        public static List<(string, string, string)> GetTripleColumn(SqlConnection connection, string query)
+        {
+            return GetColumns(connection, query, reader => (
+                reader.IsDBNull(0) ? "" : reader.GetString(0),
+                reader.IsDBNull(1) ? "" : reader.GetString(1),
+                reader.IsDBNull(2) ? "" : reader.GetString(2)
+            ));
+        }
+
         public static List<T> GetColumns<T>(SqlConnection connection, string query, Func<SqlDataReader, T> readColumns)
         {
             var columns = new List<T>();
@@ -249,24 +277,6 @@ namespace CommonLibrary
             }
 
             return columns;
-        }
-
-        public static string GetServicesStatusQuery(string tableName, string columnNamePrefix)
-        {
-            return $"SELECT [{columnNamePrefix}_ServiceName], [{columnNamePrefix}_ServiceStatus] FROM {tableName}";
-        }
-
-        public static List<string> GetSingleColumn(SqlConnection connection, string query)
-        {
-            return GetColumns(connection, query, reader => reader.GetString(0));
-        }
-
-        public static List<(string, string)> GetDoubleColumn(SqlConnection connection, string query)
-        {
-            return GetColumns(connection, query, reader => (
-                reader.IsDBNull(0) ? "" : reader.GetString(0),
-                reader.IsDBNull(1) ? "" : reader.GetString(1)
-            ));
         }
 
         public static SqlConnection GetConnection()

@@ -1,0 +1,27 @@
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+12:42 am
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+12:43 am
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+12:47 am
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+12:50 am
+
+Exception: Cannot insert duplicate key row in object 'dbo.ServicesMonitored' with unique index 'IX_ServicesMonitored'. The duplicate key value is (93519).
+12:50 am
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+12:53 am
+
+Exception: Cannot insert duplicate key row in object 'dbo.ServicesMonitored' with unique index 'IX_ServicesMonitored'. The duplicate key value is (93523).
+12:53 am
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+12:59 am
+
+Exception: Cannot insert duplicate key row in object 'dbo.ServicesMonitored' with unique index 'IX_ServicesMonitored'. The duplicate key value is (93527).
+12:59 am
+

@@ -1,0 +1,31 @@
+﻿Installing assembly 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.InstallLog
+   assemblypath = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe
+Installing service Service1...
+Creating EventLog source Service1 in log Application...
+Rolling back assembly 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.InstallLog
+   assemblypath = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe
+Restoring event log to previous state for source Service1.
+Installing assembly 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.InstallLog
+   assemblypath = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe
+Installing assembly 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.InstallLog
+   assemblypath = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe
+Installing service ServiceMonitorRealTimeLogger...
+Service ServiceMonitorRealTimeLogger has been successfully installed.
+Creating EventLog source ServiceMonitorRealTimeLogger in log Application...
+Committing assembly 'C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.InstallLog
+   assemblypath = C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorLogger\bin\Debug\ServiceMonitorRealTimeLogger.exe
