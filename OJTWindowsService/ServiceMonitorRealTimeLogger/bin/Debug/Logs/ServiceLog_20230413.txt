@@ -175,3 +175,246 @@ Service: FrameServer, Status: Stopped
 ServiceMonitorRealTimeLogger has stopped.
 12:42 am
 
+ServiceMonitorRealTimeLogger has started.
+09:00 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:00 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:01 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:01 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:01 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:02 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:02 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:02 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:02 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:03 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:03 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:03 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:03 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:03 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:04 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:05 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:05 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:05 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:06 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:06 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:06 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:07 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:07 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:08 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:08 AM
+
+ServiceMonitorRealTimeLogger has stopped.
+09:08 AM
+
+ServiceMonitorRealTimeLogger has started.
+09:14 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:14 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:14 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:15 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:15 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:15 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:15 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:15 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:15 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:16 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:16 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:17 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:18 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:18 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:18 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:18 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:19 AM
+
+ServiceMonitorRealTimeLogger has stopped.
+09:19 AM
+
+ServiceMonitorRealTimeLogger has started.
+09:19 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:19 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:19 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:19 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:19 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:19 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:19 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:20 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:20 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:21 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:21 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:21 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:21 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:22 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:22 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:23 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:23 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:24 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:24 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:24 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:24 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:26 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:26 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:26 AM
+
+Exception in OnServiceStatusChanged: Login failed for user 'sa2'.
+09:26 AM
+
+ServiceMonitorRealTimeLogger has stopped.
+09:27 AM
+
