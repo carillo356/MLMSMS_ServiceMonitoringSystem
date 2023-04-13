@@ -400,3 +400,504 @@ Service: wlidsvc, Status: Stopped
 Service: gpsvc, Status: Stopped
 12:11 PM
 
+Service: TrustedInstaller, Status: Running
+12:17 PM
+
+Service: AppXSvc, Status: Running
+12:17 PM
+
+Service: TrustedInstaller, Status: Stopped
+12:19 PM
+
+Service: BITS, Status: Running
+12:20 PM
+
+Service: wmiApSrv, Status: Running
+12:20 PM
+
+Service: ClipSVC, Status: Running
+12:21 PM
+
+Service: wmiApSrv, Status: Stopped
+12:22 PM
+
+Service: wmiApSrv, Status: Running
+12:23 PM
+
+Service: NetSetupSvc, Status: Running
+12:25 PM
+
+Service: TrustedInstaller, Status: Running
+12:25 PM
+
+Service: WaaSMedicSvc, Status: Running
+12:25 PM
+
+Service: wuauserv, Status: Running
+12:25 PM
+
+Service: NetSetupSvc, Status: Stopped
+12:26 PM
+
+Service: WaaSMedicSvc, Status: Stopped
+12:26 PM
+
+Service: ClipSVC, Status: Stopped
+12:27 PM
+
+Service: TrustedInstaller, Status: Stopped
+12:27 PM
+
+Service: wmiApSrv, Status: Running
+12:28 PM
+
+Service: wmiApSrv, Status: Stopped
+12:28 PM
+
+Service: BITS, Status: Stopped
+12:30 PM
+
+Service: AppXSvc, Status: Stopped
+12:31 PM
+
+Service: gpsvc, Status: Running
+12:32 PM
+
+Service: TrustedInstaller, Status: Running
+12:32 PM
+
+Service: WaaSMedicSvc, Status: Running
+12:32 PM
+
+Service: WaaSMedicSvc, Status: Stopped
+12:33 PM
+
+Service: AppXSvc, Status: Running
+12:33 PM
+
+Service: TrustedInstaller, Status: Stopped
+12:34 PM
+
+Service: wlidsvc, Status: Running
+12:36 PM
+
+Service: AppXSvc, Status: Stopped
+12:38 PM
+
+Service: wlidsvc, Status: Stopped
+12:39 PM
+
+Service: gpsvc, Status: Stopped
+12:42 PM
+
+Service: wuauserv, Status: Stop Pending
+12:42 PM
+
+Service: wuauserv, Status: Stopped
+12:42 PM
+
+Service: AppXSvc, Status: Running
+12:47 PM
+
+Service: ClipSVC, Status: Running
+12:47 PM
+
+Service: BITS, Status: Running
+12:50 PM
+
+Service: NetSetupSvc, Status: Running
+12:50 PM
+
+Service: wmiApSrv, Status: Running
+12:50 PM
+
+Service: NetSetupSvc, Status: Stopped
+12:51 PM
+
+Service: wmiApSrv, Status: Stopped
+12:52 PM
+
+Service: wmiApSrv, Status: Running
+12:53 PM
+
+Service: AppXSvc, Status: Stopped
+12:55 PM
+
+Service: ClipSVC, Status: Stopped
+12:55 PM
+
+Service: wmiApSrv, Status: Stopped
+12:58 PM
+
+Service: smphost, Status: Running
+12:58 PM
+
+Service: BITS, Status: Stopped
+01:00 PM
+
+Service: gpsvc, Status: Running
+01:01 PM
+
+Service: AppXSvc, Status: Running
+01:02 PM
+
+Service: ClipSVC, Status: Running
+01:04 PM
+
+Service: wlidsvc, Status: Running
+01:06 PM
+
+Service: AppXSvc, Status: Stopped
+01:09 PM
+
+Service: ClipSVC, Status: Running
+01:10 PM
+
+Service: ClipSVC, Status: Stopped
+01:10 PM
+
+Service: wlidsvc, Status: Stopped
+01:11 PM
+
+Service: gpsvc, Status: Stopped
+01:11 PM
+
+Service: TrustedInstaller, Status: Running
+01:13 PM
+
+Service: WaaSMedicSvc, Status: Running
+01:13 PM
+
+Service: wuauserv, Status: Running
+01:13 PM
+
+Service: smphost, Status: Stopped
+01:13 PM
+
+Service: WaaSMedicSvc, Status: Stopped
+01:14 PM
+
+Service: TrustedInstaller, Status: Stopped
+01:15 PM
+
+Service: VSStandardCollectorService150, Status: Running
+01:16 PM
+
+Service: Service1, Status: Running
+01:17 PM
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+01:17 PM
+
+Service: Service1, Status: Stopped
+01:17 PM
+
+Service: BITS, Status: Running
+01:20 PM
+
+Service: wmiApSrv, Status: Running
+01:20 PM
+
+Service: wmiApSrv, Status: Stopped
+01:22 PM
+
+Service: VSStandardCollectorService150, Status: Stopped
+01:22 PM
+
+Service: wmiApSrv, Status: Running
+01:23 PM
+
+Service: wuauserv, Status: Stop Pending
+01:24 PM
+
+Service: wuauserv, Status: Stopped
+01:24 PM
+
+Service: wmiApSrv, Status: Stopped
+01:28 PM
+
+Service: BITS, Status: Stopped
+01:30 PM
+
+Service: AppXSvc, Status: Running
+01:32 PM
+
+Service: ClipSVC, Status: Running
+01:32 PM
+
+Service: gpsvc, Status: Running
+01:36 PM
+
+Service: AppXSvc, Status: Stopped
+01:37 PM
+
+Service: wlidsvc, Status: Running
+01:37 PM
+
+Service: ClipSVC, Status: Stopped
+01:38 PM
+
+Service: wlidsvc, Status: Running
+01:41 PM
+
+Service: wlidsvc, Status: Stopped
+01:41 PM
+
+Service: wlidsvc, Status: Running
+01:42 PM
+
+Service: AppXSvc, Status: Running
+01:45 PM
+
+Service: ClipSVC, Status: Running
+01:45 PM
+
+Service: gpsvc, Status: Stopped
+01:46 PM
+
+Service: wlidsvc, Status: Stopped
+01:46 PM
+
+Service: NetSetupSvc, Status: Running
+01:50 PM
+
+Service: BITS, Status: Running
+01:50 PM
+
+Service: wmiApSrv, Status: Running
+01:50 PM
+
+Service: NetSetupSvc, Status: Stopped
+01:51 PM
+
+Service: wmiApSrv, Status: Running
+01:52 PM
+
+Service: wmiApSrv, Status: Stopped
+01:52 PM
+
+Service: wmiApSrv, Status: Running
+01:53 PM
+
+Service: AppXSvc, Status: Stopped
+01:55 PM
+
+Service: ClipSVC, Status: Stopped
+01:56 PM
+
+Service: wmiApSrv, Status: Stopped
+01:58 PM
+
+Service: TrustedInstaller, Status: Running
+01:59 PM
+
+Service: BITS, Status: Stopped
+02:00 PM
+
+Service: AppXSvc, Status: Running
+02:02 PM
+
+Service: seclogon, Status: Running
+02:03 PM
+
+Service: msiserver, Status: Running
+02:03 PM
+
+Service: WdiSystemHost, Status: Running
+02:03 PM
+
+Service: TrustedInstaller, Status: Stopped
+02:03 PM
+
+Service: msiserver, Status: Running
+02:03 PM
+
+Service: msiserver, Status: Running
+02:03 PM
+
+Service: ClipSVC, Status: Running
+02:04 PM
+
+Service: msiserver, Status: Running
+02:04 PM
+
+Service: msiserver, Status: Running
+02:04 PM
+
+Service: msiserver, Status: Running
+02:05 PM
+
+Service: msiserver, Status: Running
+02:05 PM
+
+Service: msiserver, Status: Running
+02:05 PM
+
+Service: msiserver, Status: Running
+02:05 PM
+
+Service: msiserver, Status: Running
+02:06 PM
+
+Service: msiserver, Status: Running
+02:06 PM
+
+Service: msiserver, Status: Running
+02:06 PM
+
+Service: msiserver, Status: Running
+02:06 PM
+
+Service: msiserver, Status: Running
+02:06 PM
+
+Service: msiserver, Status: Running
+02:06 PM
+
+Service: msiserver, Status: Running
+02:06 PM
+
+Service: msiserver, Status: Running
+02:06 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:07 PM
+
+Service: msiserver, Status: Running
+02:08 PM
+
+Service: msiserver, Status: Running
+02:08 PM
+
+Service: msiserver, Status: Running
+02:08 PM
+
+Service: msiserver, Status: Running
+02:08 PM
+
+Service: msiserver, Status: Running
+02:08 PM
+
+Service: VSS, Status: Running
+02:10 PM
+
+Service: ClipSVC, Status: Running
+02:10 PM
+
+Service: swprv, Status: Running
+02:10 PM
+
+Service: ClipSVC, Status: Stopped
+02:10 PM
+
+Service: wlidsvc, Status: Running
+02:12 PM
+
+Service: gpsvc, Status: Running
+02:13 PM
+
+Service: msiserver, Status: Stopped
+02:13 PM
+
+Service: TrustedInstaller, Status: Running
+02:16 PM
+
+Service: TrustedInstaller, Status: Running
+02:16 PM
+
+Service: wlidsvc, Status: Stopped
+02:16 PM
+
+Service: IISADMIN, Status: Stop Pending
+02:16 PM
+
+Service: IISADMIN, Status: Running
+02:16 PM
+
+Service: TrustedInstaller, Status: Running
+02:17 PM
+
+Service: wlidsvc, Status: Running
+02:18 PM
+
+Service: TrustedInstaller, Status: Stopped
+02:20 PM
+
+Service: BITS, Status: Running
+02:20 PM
+
+Service: wmiApSrv, Status: Running
+02:20 PM
+
+Service: wlidsvc, Status: Stopped
+02:22 PM
+
+Service: wmiApSrv, Status: Stopped
+02:22 PM
+
+Service: AppXSvc, Status: Stopped
+02:22 PM
+
+Service: wmiApSrv, Status: Running
+02:22 PM
+
+Service: gpsvc, Status: Stopped
+02:23 PM
+
+Service: VSS, Status: Stopped
+02:26 PM
+
+Service: wmiApSrv, Status: Stopped
+02:28 PM
+
+Service: swprv, Status: Stopped
+02:29 PM
+
+Service: BITS, Status: Stopped
+02:30 PM
+
