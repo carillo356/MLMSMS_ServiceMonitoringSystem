@@ -1,0 +1,402 @@
+ServiceMonitorLogger has started.
+10:34 AM
+
+Service: ServiceMonitorLogger, Status: Running
+10:34 AM
+
+ServiceMonitorLogger has stopped.
+10:38 AM
+
+ServiceMonitorLogger has started.
+10:38 AM
+
+Service: ServiceMonitorLogger, Status: Running
+10:38 AM
+
+Service: Service1, Status: Running
+10:38 AM
+
+Service: AppXSvc, Status: Stopped
+10:39 AM
+
+Service: wlidsvc, Status: Running
+10:40 AM
+
+Service: gpsvc, Status: Running
+10:40 AM
+
+Service: ClipSVC, Status: Stopped
+10:40 AM
+
+Service: wlidsvc, Status: Stopped
+10:44 AM
+
+Service: wlidsvc, Status: Start Pending
+10:45 AM
+
+Service: wlidsvc, Status: Running
+10:45 AM
+
+Service: AppXSvc, Status: Running
+10:45 AM
+
+Service: wlidsvc, Status: Stop Pending
+10:49 AM
+
+Service: wlidsvc, Status: Stopped
+10:49 AM
+
+Service: gpsvc, Status: Stopped
+10:50 AM
+
+Service: ClipSVC, Status: Running
+10:50 AM
+
+Service: BITS, Status: Running
+10:50 AM
+
+Service: NetSetupSvc, Status: Running
+10:50 AM
+
+Service: wmiApSrv, Status: Running
+10:50 AM
+
+Service: NetSetupSvc, Status: Stopped
+10:51 AM
+
+Service: gpsvc, Status: Running
+10:51 AM
+
+Service: wmiApSrv, Status: Stopped
+10:52 AM
+
+Service: wmiApSrv, Status: Running
+10:53 AM
+
+Service: AppXSvc, Status: Stopped
+10:55 AM
+
+Service: ClipSVC, Status: Stopped
+10:56 AM
+
+Service: wmiApSrv, Status: Stopped
+10:58 AM
+
+Service: smphost, Status: Running
+10:58 AM
+
+Service: BITS, Status: Stopped
+11:00 AM
+
+Service: AppXSvc, Status: Running
+11:02 AM
+
+Service: ClipSVC, Status: Running
+11:04 AM
+
+Service: AppXSvc, Status: Stopped
+11:09 AM
+
+Service: ClipSVC, Status: Stopped
+11:10 AM
+
+Service: gpsvc, Status: Stopped
+11:11 AM
+
+Service: smphost, Status: Running
+11:13 AM
+
+Service: smphost, Status: Stopped
+11:13 AM
+
+Service: wlidsvc, Status: Running
+11:15 AM
+
+Service: gpsvc, Status: Running
+11:15 AM
+
+Service: AppXSvc, Status: Running
+11:17 AM
+
+Service: wlidsvc, Status: Stopped
+11:19 AM
+
+Service: VSStandardCollectorService150, Status: Running
+11:19 AM
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+11:20 AM
+
+Service: Service1, Status: Stopped
+11:20 AM
+
+Service: ClipSVC, Status: Running
+11:20 AM
+
+Service: BITS, Status: Running
+11:20 AM
+
+Service: wmiApSrv, Status: Running
+11:20 AM
+
+Service: wmiApSrv, Status: Stopped
+11:22 AM
+
+Service: wmiApSrv, Status: Running
+11:23 AM
+
+Service: AppXSvc, Status: Stopped
+11:25 AM
+
+Service: VSStandardCollectorService150, Status: Stopped
+11:25 AM
+
+Service: gpsvc, Status: Stopped
+11:25 AM
+
+Service: ClipSVC, Status: Stopped
+11:26 AM
+
+Service: AppXSvc, Status: Running
+11:26 AM
+
+Service: NgcCtnrSvc, Status: Running
+11:26 AM
+
+Service: NgcSvc, Status: Running
+11:26 AM
+
+Service: ClipSVC, Status: Running
+11:27 AM
+
+Service: TrustedInstaller, Status: Running
+11:27 AM
+
+Service: wlidsvc, Status: Running
+11:27 AM
+
+Service: wuauserv, Status: Running
+11:27 AM
+
+Service: dcsvc, Status: Running
+11:27 AM
+
+Service: defragsvc, Status: Running
+11:27 AM
+
+Service: DsSvc, Status: Running
+11:27 AM
+
+Service: gpsvc, Status: Running
+11:27 AM
+
+Service: sppsvc, Status: Running
+11:27 AM
+
+Service: W32Time, Status: Running
+11:27 AM
+
+Service: WaaSMedicSvc, Status: Running
+11:27 AM
+
+Service: wisvc, Status: Running
+11:27 AM
+
+Service: AppXSvc, Status: Running
+11:27 AM
+
+Service: WdiSystemHost, Status: Running
+11:27 AM
+
+Service: AppXSvc, Status: Running
+11:27 AM
+
+Service: W32Time, Status: Stopped
+11:27 AM
+
+Service: WPDBusEnum, Status: Running
+11:28 AM
+
+Service: WaaSMedicSvc, Status: Running
+11:28 AM
+
+Service: WaaSMedicSvc, Status: Stopped
+11:28 AM
+
+Service: wisvc, Status: Running
+11:28 AM
+
+Service: wisvc, Status: Stopped
+11:28 AM
+
+Service: wmiApSrv, Status: Stopped
+11:28 AM
+
+Service: dcsvc, Status: Stopped
+11:29 AM
+
+Service: TrustedInstaller, Status: Stopped
+11:29 AM
+
+Service: WPDBusEnum, Status: Stopped
+11:30 AM
+
+Service: defragsvc, Status: Stopped
+11:30 AM
+
+Service: BITS, Status: Stopped
+11:30 AM
+
+Service: wlidsvc, Status: Stopped
+11:31 AM
+
+Service: ClipSVC, Status: Stopped
+11:32 AM
+
+Service: AppXSvc, Status: Stopped
+11:36 AM
+
+Service: AppXSvc, Status: Running
+11:37 AM
+
+Service: ClipSVC, Status: Running
+11:37 AM
+
+Service: TrustedInstaller, Status: Running
+11:37 AM
+
+Service: WaaSMedicSvc, Status: Running
+11:37 AM
+
+Service: wlidsvc, Status: Running
+11:37 AM
+
+Service: gpsvc, Status: Stopped
+11:37 AM
+
+Service: gpsvc, Status: Running
+11:37 AM
+
+Service: WaaSMedicSvc, Status: Stopped
+11:38 AM
+
+Service: swprv, Status: Running
+11:38 AM
+
+Service: VSS, Status: Running
+11:38 AM
+
+Service: TrustedInstaller, Status: Stopped
+11:39 AM
+
+Service: wlidsvc, Status: Stopped
+11:41 AM
+
+Service: VSS, Status: Stopped
+11:41 AM
+
+Service: AppXSvc, Status: Stopped
+11:42 AM
+
+Service: ClipSVC, Status: Stopped
+11:43 AM
+
+Service: swprv, Status: Stopped
+11:44 AM
+
+Service: wlidsvc, Status: Running
+11:45 AM
+
+Service: wuauserv, Status: Stop Pending
+11:47 AM
+
+Service: gpsvc, Status: Running
+11:47 AM
+
+Service: wuauserv, Status: Stopped
+11:47 AM
+
+Service: gpsvc, Status: Stopped
+11:47 AM
+
+Service: AppXSvc, Status: Running
+11:47 AM
+
+Service: wlidsvc, Status: Stopped
+11:49 AM
+
+Service: ClipSVC, Status: Running
+11:50 AM
+
+Service: BITS, Status: Running
+11:50 AM
+
+Service: NetSetupSvc, Status: Running
+11:50 AM
+
+Service: wmiApSrv, Status: Running
+11:50 AM
+
+Service: NetSetupSvc, Status: Stopped
+11:51 AM
+
+Service: wmiApSrv, Status: Stopped
+11:52 AM
+
+Service: wmiApSrv, Status: Running
+11:53 AM
+
+Service: brave, Status: Running
+11:54 AM
+
+Service: brave, Status: Stopped
+11:54 AM
+
+Service: AppXSvc, Status: Stopped
+11:55 AM
+
+Service: ClipSVC, Status: Stopped
+11:56 AM
+
+Service: WdiSystemHost, Status: Stopped
+11:57 AM
+
+Service: wmiApSrv, Status: Stopped
+11:58 AM
+
+Service: BITS, Status: Stopped
+12:00 PM
+
+Service: AppXSvc, Status: Running
+12:01 PM
+
+Service: gpsvc, Status: Running
+12:01 PM
+
+Service: NgcSvc, Status: Running
+12:03 PM
+
+Service: NgcSvc, Status: Stopped
+12:03 PM
+
+Service: ClipSVC, Status: Running
+12:04 PM
+
+Service: wlidsvc, Status: Running
+12:06 PM
+
+Service: NgcCtnrSvc, Status: Stopped
+12:08 PM
+
+Service: AppXSvc, Status: Stopped
+12:09 PM
+
+Service: ClipSVC, Status: Stopped
+12:10 PM
+
+Service: wlidsvc, Status: Stopped
+12:10 PM
+
+Service: gpsvc, Status: Stopped
+12:11 PM
+
