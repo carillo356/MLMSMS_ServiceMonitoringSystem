@@ -90,7 +90,7 @@
                             row += "<i class='bi bi-caret-right-fill'></i>";
                             row += "</button>";
                         } else if (Data.ServiceStatus === "Running") {
-                            row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                            /*//row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";*/
                             row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Stop Service'>";
                             row += "<i class='bi bi-stop-fill'></i>";
                             row += "</button>";
