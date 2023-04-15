@@ -6,10 +6,8 @@ using System.Timers;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Collections.Generic;
-using CommonLibrary;
 using Timer = System.Timers.Timer;
 using System.Threading;
-using System.Text;
 
 namespace ServiceMonitorPeriodicLogger
 {
@@ -30,11 +28,11 @@ namespace ServiceMonitorPeriodicLogger
         {
             if (int.TryParse(ConfigurationManager.AppSettings.Get("CheckServicesEveryXMinute"), out int interval))
             {
-                checkServicesTimer.Interval = interval * 60 * 1000;
+                checkServicesTimer.Interval = 5000;
             }
             else
             {
-                checkServicesTimer.Interval = 60 * 60 * 1000;
+                checkServicesTimer.Interval = (60) * 60 * 1000; //1 Hour
             }
 
             processQueueTimer.Interval = checkServicesTimer.Interval;
@@ -45,18 +43,21 @@ namespace ServiceMonitorPeriodicLogger
             {
                 if (runOnStart)
                 {
-                    CheckServices(); ProcessQueue();
+                    CheckServices(); 
+                    ProcessQueue();
                 }
                 else if (!runOnStart)
                 {
-                    checkServicesTimer.Start(); processQueueTimer.Start();
+                    checkServicesTimer.Start(); 
+                    processQueueTimer.Start();
                 }
             }
         }
 
         protected override void OnStop()
         {
-            checkServicesTimer.Dispose(); processQueueTimer.Dispose();
+            checkServicesTimer.Dispose(); 
+            processQueueTimer.Dispose();
         }
 
         private void OnCheckServicesElapsedTime(object source, ElapsedEventArgs e)
@@ -67,7 +68,7 @@ namespace ServiceMonitorPeriodicLogger
         {
             while (isCheckServicesRunning)
             {
-                Thread.Sleep(1000); // wait 1 second before checking again
+                Thread.Sleep(500); 
             }
             ProcessQueue();
         }
@@ -82,19 +83,20 @@ namespace ServiceMonitorPeriodicLogger
 
             try
             {
-                using (SqlConnection connection = CommonMethods.GetConnection()) // Opened a connection and wrapped it in the using statement to ensure the connection is disposed properly after executing the code inside its body.
+                using (SqlConnection connection = GetConnection()) // Opened a connection and wrapped it in the using statement to ensure the connection is disposed properly after executing the code inside its body.
                 {
                     if (connection == null) return;
-                    string hostName = Environment.MachineName, logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    string hostName = Environment.MachineName;
+                    string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
                     ServiceController[] servicesInController = ServiceController.GetServices(hostName);
-                    DataTable serviceInfoTable = CommonMethods.CreateServiceInfoTable(servicesInController);
-                    CommonMethods.SP_UpdateServicesAvailable(connection, serviceInfoTable, hostName);
+                    DataTable serviceInfoTable = CreateServiceInfoTable(servicesInController);
+                    SP_UpdateServicesAvailable(connection, serviceInfoTable, hostName);
 
-                    var servicesInstalled = CommonMethods.GetTripleColumn(connection, CommonMethods.GetServicesStatusQuery("ServicesAvailable", "sa")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
-                    var servicesInMonitor = CommonMethods.GetTripleColumn(connection, CommonMethods.GetServicesStatusQuery("ServicesMonitored", "sm")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
+                    var servicesInstalled = GetTripleColumn(connection, GetServicesStatusQuery("ServicesAvailable", "sa")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
+                    var _servicesInMonitor = GetTripleColumn(connection, GetServicesStatusQuery("ServicesMonitored", "sm")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
 
-                    foreach (var serviceInMonitor in servicesInMonitor)
+                    foreach (var serviceInMonitor in _servicesInMonitor)
                     {
                         var serviceInstalled = servicesInstalled.FirstOrDefault(s => s.ServiceName == serviceInMonitor.ServiceName && s.HostName == serviceInMonitor.HostName);
 
@@ -110,8 +112,11 @@ namespace ServiceMonitorPeriodicLogger
 
                                 if (currentStatus == ServiceControllerStatus.Stopped.ToString())
                                 {
-                                    string emailBody = "Service Name: " + serviceInMonitor.ServiceName + "\nStatus: " + currentStatus + "\nHostName: " + serviceInMonitor.HostName + "\nLogBy: " + logBy;
-                                    emailsToSend.Add(emailBody);
+                                    // Read the email body template from the app.config
+                                    string emailBodyTemplate = ConfigurationManager.AppSettings["bulkEmail"];
+
+                                    // Format the email body with the required values
+                                    string emailBody = string.Format(emailBodyTemplate, serviceInMonitor.ServiceName, currentStatus, serviceInMonitor.HostName, logBy);
 
                                     qGetEventLogList.Enqueue(serviceInMonitor.ServiceName);
                                 }
@@ -125,11 +130,11 @@ namespace ServiceMonitorPeriodicLogger
 
                     if (servicesToUpdate.Any())
                     {
-                        CommonMethods.SP_UpdateServiceStatus(connection, servicesToUpdate.ToArray());
+                        SP_UpdateServiceStatus(connection, servicesToUpdate.ToArray());
                     }
                     if (emailsToSend.Any())
                     {
-                        CommonMethods.SendEmail(connection, emailsToSend.ToArray());
+                        SendEmail(connection, emailsToSend.ToArray());
                     }
 
                     if (connection.State != ConnectionState.Closed) connection.Close();
@@ -139,7 +144,7 @@ namespace ServiceMonitorPeriodicLogger
 
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: " + ex.Message);
+                WriteToFile("Exception: " + ex.Message);
 
             }
             finally
@@ -154,18 +159,18 @@ namespace ServiceMonitorPeriodicLogger
 
             try
             {
-                using (SqlConnection connection = CommonMethods.GetConnection())
+                using (SqlConnection connection = GetConnection())
                 {
                     if (qGetEventLogList.Count > 0)
                     {
                         string serviceName = qGetEventLogList.Dequeue();
-                        CommonMethods.GetServiceLogs(serviceName, out DateTime lastStart, out string lastEventLog);
-                        CommonMethods.SP_UpdateServiceEventLogInfo(connection, serviceName, lastStart, lastEventLog);
+                        GetServiceLogs(serviceName, out DateTime lastStart, out string lastEventLog);
+                        SP_UpdateServiceEventLogInfo(connection, serviceName, lastStart, lastEventLog);
 
                     }
 
                     if (qGetEventLogList.Count > 0)
-                        processQueueTimer.Interval = 2000; // if there's more, set interval to 5 seconds
+                        processQueueTimer.Interval = 1500;
                     else
                         processQueueTimer.Interval = checkServicesTimer.Interval; // if none, set to the same interval as the other timer
                 }
@@ -173,15 +178,17 @@ namespace ServiceMonitorPeriodicLogger
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: " + ex.Message);
+                WriteToFile("Exception: " + ex.Message);
             }
             finally
             {
-                checkServicesTimer.Start(); processQueueTimer.Start();
+                checkServicesTimer.Start(); 
+                processQueueTimer.Start();
             }
         }
 
     }
+
 }
 
 

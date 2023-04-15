@@ -1,0 +1,510 @@
+ServiceMonitorRealTimeLogger has started.
+10:49 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+10:49 am
+
+Service: Service1, Status: Running
+10:49 am
+
+ServiceMonitorRealTimeLogger has stopped.
+10:49 am
+
+ServiceMonitorRealTimeLogger has started.
+11:25 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+11:25 am
+
+Service: Service1, Status: Running
+11:25 am
+
+Service: Service1, Status: Stopped
+11:25 am
+
+ServiceMonitorRealTimeLogger has stopped.
+11:26 am
+
+ServiceMonitorRealTimeLogger has started.
+11:31 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+11:31 am
+
+Service: Service1, Status: Running
+11:31 am
+
+Service: Service1, Status: Stopped
+11:31 am
+
+ServiceMonitorRealTimeLogger has stopped.
+11:31 am
+
+ServiceMonitorRealTimeLogger has started.
+11:33 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+11:33 am
+
+Service: Service1, Status: Running
+11:33 am
+
+Service: Service1, Status: Stopped
+11:33 am
+
+Service: FrameServerMonitor, Status: Running
+11:43 am
+
+Service: TrustedInstaller, Status: Running
+11:43 am
+
+Service: WaaSMedicSvc, Status: Running
+11:43 am
+
+Service: wlidsvc, Status: Running
+11:43 am
+
+Service: wuauserv, Status: Running
+11:43 am
+
+Service: StiSvc, Status: Paused
+11:44 am
+
+Service: lmhosts, Status: Stopped
+11:58 am
+
+Service: Browser, Status: Running
+11:58 am
+
+Service: gpsvc, Status: Running
+11:58 am
+
+Service: StiSvc, Status: Running
+11:58 am
+
+Service: lmhosts, Status: Running
+11:58 am
+
+Service: WdiSystemHost, Status: Running
+11:58 am
+
+Service: FrameServerMonitor, Status: Stopped
+11:58 am
+
+Service: Browser, Status: Stopped
+11:58 am
+
+Service: WaaSMedicSvc, Status: Stopped
+11:59 am
+
+Service: WaaSMedicSvc, Status: Running
+11:59 am
+
+Service: TrustedInstaller, Status: Stopped
+12:00 pm
+
+Service: WaaSMedicSvc, Status: Running
+12:00 pm
+
+Service: WaaSMedicSvc, Status: Stopped
+12:00 pm
+
+Service: Browser, Status: Running
+12:00 pm
+
+Service: Browser, Status: Stopped
+12:00 pm
+
+Service: wlidsvc, Status: Stopped
+12:02 pm
+
+Service: sppsvc, Status: Running
+12:03 pm
+
+Service: wlidsvc, Status: Running
+12:03 pm
+
+Service: wlidsvc, Status: Stopped
+12:06 pm
+
+Service: ClipSVC, Status: Running
+12:07 pm
+
+Service: wuauserv, Status: Stop Pending
+12:08 pm
+
+Service: wuauserv, Status: Stopped
+12:08 pm
+
+Service: gpsvc, Status: Stopped
+12:08 pm
+
+Service: StiSvc, Status: Paused
+12:08 pm
+
+Service: Browser, Status: Running
+01:02 pm
+
+Service: lmhosts, Status: Stopped
+01:02 pm
+
+Service: WaaSMedicSvc, Status: Running
+01:02 pm
+
+Service: FrameServerMonitor, Status: Running
+01:02 pm
+
+Service: gpsvc, Status: Running
+01:02 pm
+
+Service: StiSvc, Status: Running
+01:02 pm
+
+Service: lmhosts, Status: Running
+01:02 pm
+
+Service: LxpSvc, Status: Running
+01:02 pm
+
+Service: TrustedInstaller, Status: Running
+01:02 pm
+
+Service: dbupdate, Status: Running
+01:02 pm
+
+Service: dbupdate, Status: Stopped
+01:02 pm
+
+Service: LxpSvc, Status: Stopped
+01:02 pm
+
+Service: wlidsvc, Status: Running
+01:02 pm
+
+Service: FrameServerMonitor, Status: Stopped
+01:02 pm
+
+Service: Browser, Status: Stopped
+01:02 pm
+
+Service: WaaSMedicSvc, Status: Stopped
+01:03 pm
+
+Service: TrustedInstaller, Status: Stopped
+01:04 pm
+
+Service: Browser, Status: Running
+01:04 pm
+
+Service: Browser, Status: Stopped
+01:04 pm
+
+Service: ClipSVC, Status: Stopped
+01:05 pm
+
+Service: BITS, Status: Running
+01:06 pm
+
+Service: WaaSMedicSvc, Status: Start Pending
+01:07 pm
+
+Service: WaaSMedicSvc, Status: Running
+01:07 pm
+
+Service: wlidsvc, Status: Stopped
+01:08 pm
+
+Service: WaaSMedicSvc, Status: Stopped
+01:08 pm
+
+Service: BITS, Status: Stopped
+01:09 pm
+
+Service: gpsvc, Status: Stopped
+01:12 pm
+
+Service: wlidsvc, Status: Running
+01:17 pm
+
+Service: WaaSMedicSvc, Status: Running
+01:19 pm
+
+Service: WaaSMedicSvc, Status: Stopped
+01:20 pm
+
+Service: InventorySvc, Status: Stopped
+01:20 pm
+
+Service: wlidsvc, Status: Stopped
+01:20 pm
+
+Service: FrameServerMonitor, Status: Running
+01:21 pm
+
+Service: WaaSMedicSvc, Status: Running
+01:21 pm
+
+Service: FrameServerMonitor, Status: Stopped
+01:21 pm
+
+ServiceMonitorRealTimeLogger has stopped.
+01:21 pm
+
+ServiceMonitorRealTimeLogger has started.
+01:47 pm
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+01:47 pm
+
+ServiceMonitorRealTimeLogger has stopped.
+01:47 pm
+
+ServiceMonitorRealTimeLogger has started.
+01:51 pm
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+01:51 pm
+
+ServiceMonitorRealTimeLogger has stopped.
+01:51 pm
+
+ServiceMonitorRealTimeLogger has started.
+02:03 pm
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+02:03 pm
+
+Service: Service1, Status: Running
+02:03 pm
+
+Service: Service2, Status: Running
+02:03 pm
+
+Service: Service2, Status: Stopped
+02:03 pm
+
+Service: Service1, Status: Stopped
+02:03 pm
+
+Service: Service1, Status: Running
+02:03 pm
+
+Service: Service1, Status: Stopped
+02:03 pm
+
+Service: wlidsvc, Status: Running
+02:13 pm
+
+ServiceMonitorRealTimeLogger has stopped.
+02:14 pm
+
+ServiceMonitorRealTimeLogger has started.
+02:16 pm
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+02:16 pm
+
+Service: Service1, Status: Running
+02:16 pm
+
+ServiceMonitorRealTimeLogger has stopped.
+02:16 pm
+
+ServiceMonitorRealTimeLogger has started.
+02:16 pm
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+02:17 pm
+
+Service: Service1, Status: Running
+02:17 pm
+
+Service: BITS, Status: Running
+02:17 pm
+
+Service: wlidsvc, Status: Stopped
+02:19 pm
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+02:19 pm
+
+Service: Service1, Status: Stopped
+02:19 pm
+
+Service: Service1, Status: Running
+02:19 pm
+
+ServiceMonitorRealTimeLogger has stopped.
+02:20 pm
+
+ServiceMonitorRealTimeLogger has started.
+02:36 pm
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+02:36 pm
+
+Service: Service1, Status: Running
+02:36 pm
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+02:37 pm
+
+Service: Service1, Status: Stopped
+02:37 pm
+
+ServiceMonitorRealTimeLogger has stopped.
+02:37 pm
+
+ServiceMonitorRealTimeLogger has started.
+07:15 pm
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+07:15 pm
+
+Service: Service1, Status: Running
+07:15 pm
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+07:15 pm
+
+Service: Service1, Status: Stopped
+07:15 pm
+
+ServiceMonitorRealTimeLogger has stopped.
+07:16 pm
+
+ServiceMonitorRealTimeLogger has started.
+07:20 pm
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+07:20 pm
+
+Service: WdiSystemHost, Status: Running
+07:20 pm
+
+Service: WdiSystemHost, Status: Stopped
+07:20 pm
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+07:20 pm
+
+Service: Service1, Status: Stopped
+07:20 pm
+
+Service: Service1, Status: Running
+07:21 pm
+
+Service: Service1, Status: Running
+07:21 pm
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+07:21 pm
+
+Service: Service1, Status: Stopped
+07:21 pm
+
+ServiceMonitorRealTimeLogger has stopped.
+07:22 pm
+
+ServiceMonitorRealTimeLogger has started.
+11:15 pm
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+11:15 pm
+
+Service: Service1, Status: Running
+11:16 pm
+
+Service: BITS, Status: Running
+11:16 pm
+
+Exception: email ExecuteNonQuery requires an open and available Connection. The connection's current state is closed.
+11:16 pm
+
+Service: Service1, Status: Stopped
+11:16 pm
+
+Service: BITS, Status: Stopped
+11:18 pm
+
+Service: wlidsvc, Status: Running
+11:18 pm
+
+Service: ClipSVC, Status: Stopped
+11:19 pm
+
+Service: Service1, Status: Running
+11:21 pm
+
+Service: WdiSystemHost, Status: Running
+11:23 pm
+
+Service: WdiSystemHost, Status: Stopped
+11:23 pm
+
+Service: wlidsvc, Status: Stopped
+11:24 pm
+
+Service: WPDBusEnum, Status: Running
+11:28 pm
+
+Service: wlidsvc, Status: Running
+11:28 pm
+
+Service: InventorySvc, Status: Running
+11:28 pm
+
+Service: WPDBusEnum, Status: Running
+11:30 pm
+
+Service: WPDBusEnum, Status: Stopped
+11:30 pm
+
+Service: wlidsvc, Status: Stopped
+11:32 pm
+
+Service: wlidsvc, Status: Running
+11:32 pm
+
+Service: InventorySvc, Status: Stopped
+11:33 pm
+
+Service: wlidsvc, Status: Stopped
+11:35 pm
+
+Service: BITS, Status: Running
+11:43 pm
+
+Service: BITS, Status: Stopped
+11:45 pm
+
+Service: wlidsvc, Status: Running
+11:46 pm
+
+Service: gpsvc, Status: Running
+11:46 pm
+
+Service: NcdAutoSetup, Status: Stopped
+11:46 pm
+
+Service: WerSvc, Status: Running
+11:48 pm
+
+Service: FrameServerMonitor, Status: Start Pending
+11:48 pm
+
+Service: FrameServerMonitor, Status: Running
+11:49 pm
+
+Service: ClipSVC, Status: Running
+11:49 pm
+
+Service: StiSvc, Status: Paused
+11:49 pm
+
+Service: wuauserv, Status: Running
+11:49 pm
+
+Service: TrustedInstaller, Status: Running
+11:49 pm
+

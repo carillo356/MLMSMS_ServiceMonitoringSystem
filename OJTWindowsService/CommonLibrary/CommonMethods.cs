@@ -112,7 +112,6 @@ namespace CommonLibrary
                     var query = new EventLogQuery("Application", PathType.LogName, $"*[System/Provider/@Name='{serviceName}']")
                     {
                         ReverseDirection = true, // Sort by descending time
-                        
                     };
 
                     using (var reader = new EventLogReader(query))
@@ -140,7 +139,7 @@ namespace CommonLibrary
             string ssoToken = Guid.NewGuid().ToString();
 
             // Set the expiration time for the token
-            DateTime expirationTime = DateTime.UtcNow.AddHours(1);
+            DateTime expirationTime = DateTime.UtcNow.AddHours(24);
 
             // Store the SSO token in your database along with the user's email and expiration time
             using (connection)
@@ -161,13 +160,14 @@ namespace CommonLibrary
 
         public static void SendEmail(SqlConnection connection, string[] messages)
         {
+
             try
             {
                 var recipients = GetEmailRecipients(connection);
 
                 using (var smtpServer = new SmtpClient(ConfigurationManager.AppSettings["smtpServer"]))
                 {
-                    smtpServer.Port = 587;
+                    smtpServer.Port = Convert.ToInt32(ConfigurationManager.AppSettings.Get("smtpPort"));
                     smtpServer.UseDefaultCredentials = false;
                     smtpServer.Credentials = new NetworkCredential(
                                                  ConfigurationManager.AppSettings["smtpUsername"],
@@ -182,7 +182,7 @@ namespace CommonLibrary
                         using (var mail = new MailMessage())
                         {
                             mail.From = new MailAddress(ConfigurationManager.AppSettings["mailFrom"]);
-                            mail.Subject = "Windows Service Alert!";
+                            mail.Subject = ConfigurationManager.AppSettings["mailSubject"];
                             mail.Body = string.Join("\n\n", messages) + $"\n\nLog in with your Single Sign-On token: {ssoLoginUrl}";
                             mail.To.Add(userEmail);
 
@@ -356,36 +356,3 @@ namespace CommonLibrary
 
     }
 }
-
-
-
-//public static void SP_UpdateServiceStatus(SqlConnection connection, (string ServiceName, string ServiceStatus, string HostName, string LogBy, DateTime LastStart, string LastEventLog)[] servicesToUpdate)
-//{
-//    try
-//    {
-//        DataTable dt = new DataTable();
-//        dt.Columns.Add("ServiceName", typeof(string));
-//        dt.Columns.Add("ServiceStatus", typeof(string));
-//        dt.Columns.Add("HostName", typeof(string));
-//        dt.Columns.Add("LogBy", typeof(string));
-//        dt.Columns.Add("LastStart", typeof(DateTime));
-//        dt.Columns.Add("LastEventLog", typeof(string));
-
-//        foreach (var service in servicesToUpdate)
-//        {
-//            dt.Rows.Add(service.ServiceName, service.ServiceStatus, service.HostName, service.LogBy, service.LastStart, service.LastEventLog);
-//        }
-
-//        using (var command = new SqlCommand("UpdateServiceStatusBulk", connection))
-//        {
-//            command.CommandType = CommandType.StoredProcedure;
-//            command.Parameters.AddWithValue("@Updates", dt);
-//            command.ExecuteNonQuery();
-//        }
-//    }
-//    catch (Exception ex)
-//    {
-//        CommonMethods.WriteToFile("Exception: storedata " + ex.Message);
-//    }
-//}
-

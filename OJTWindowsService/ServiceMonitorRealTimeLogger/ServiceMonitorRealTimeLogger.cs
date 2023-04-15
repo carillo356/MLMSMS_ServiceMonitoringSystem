@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Management;
 using System.ServiceProcess;
@@ -10,74 +11,30 @@ namespace ServiceMonitorRealTimeLogger
 {
     public partial class ServiceMonitorRealTimeLogger : ServiceBase
     {
-        private List<ManagementEventWatcher> _eventWatcher;
+        private ManagementEventWatcher _eventWatcher;
+        private List<(string ServiceName, string ServiceStatus, string HostName)> _servicesInMonitor;
+        private string _connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
         public ServiceMonitorRealTimeLogger()
         {
             InitializeComponent();
+            _servicesInMonitor = new List<(string ServiceName, string ServiceStatus, string HostName)>();
         }
 
         protected override void OnStart(string[] args)
         {
-            _eventWatcher = new List<ManagementEventWatcher>();
-            // Create WQL Event Query
-            var query = new WqlEventQuery("SELECT * FROM __InstanceModificationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service'");
+            GetServicesInMonitor();
 
-            // Future development - error "Access De currently
-            //var remoteMachines = ConfigurationManager.AppSettings.Get("RemoteMachines").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            //var remoteUsername = ConfigurationManager.AppSettings.Get("RemoteUsername");
-            //var remotePassword = ConfigurationManager.AppSettings.Get("RemotePassword");
+            SqlDependency.Start(_connectionString);
+            ServicesMonitoredListener();
 
-            // Add local machine to the list of machines
-            List<string> machines = new List<string> { Environment.MachineName };
-            //machines.AddRange(remoteMachines);
-
-            foreach (string machine in machines)
-            {
-                try
-                {
-                    //ConnectionOptions options = null;
-                    //if (!string.IsNullOrEmpty(remoteUsername) && !string.IsNullOrEmpty(remotePassword) && !machine.Equals(Environment.MachineName, StringComparison.OrdinalIgnoreCase))
-                    //{
-                    //    options = new ConnectionOptions
-                    //    {
-                    //        Username = remoteUsername,
-                    //        Password = remotePassword,
-                    //        Impersonation = ImpersonationLevel.Impersonate,
-                    //        Authentication = AuthenticationLevel.Packet
-                    //    };
-                    //}
-
-                    ManagementScope scope = new ManagementScope($"\\\\{machine}\\root\\CIMV2"/*, options*/);
-                    // Initialize Event Watcher
-                    ManagementEventWatcher eventWatcher = new ManagementEventWatcher(scope, query);
-                    eventWatcher.EventArrived += OnServiceStatusChanged;
-
-                    // Start the event watcher
-                    eventWatcher.Start();
-                    _eventWatcher.Add(eventWatcher);
-                }
-                catch (Exception ex)
-                {
-             
-                    continue;
-                }
-            }
-
-            CommonMethods.WriteToFile("ServiceMonitorRealTimeLogger has started.");
         }
 
         protected override void OnStop()
         {
+            _eventWatcher.Stop(); 
+            _eventWatcher.Dispose();
+            SqlDependency.Stop(_connectionString);
 
-            if (_eventWatcher != null)
-            {
-                foreach (var eventWatcher in _eventWatcher)
-                {
-                    eventWatcher.Stop(); eventWatcher.Dispose();
-                }
-            }
-
-            CommonMethods.WriteToFile("ServiceMonitorRealTimeLogger has stopped.");
         }
 
         private void OnServiceStatusChanged(object sender, EventArrivedEventArgs e)
@@ -97,17 +54,26 @@ namespace ServiceMonitorRealTimeLogger
                 {
                     if (connection == null) return;
 
-                    (string ServiceName, string ServiceStatus, string HostName)[] servicesInMonitor = CommonMethods.GetTripleColumn(connection, "GetServicesStatus").ToArray();
-
-                    // Check if serviceName exists in servicesInMonitor
-                    if (servicesInMonitor.Any(x => x.ServiceName == serviceInstalled && x.HostName == hostName))
+                    // Check if serviceName exists in _servicesInMonitor
+                    if (_servicesInMonitor.Any(x => x.ServiceName == serviceInstalled && x.HostName == hostName))
                     {
                         CommonMethods.GetServiceLogs(serviceInstalled, out DateTime lastStart, out string lastEventLog);
                         CommonMethods.SP_UpdateServiceStatus(connection, serviceInstalled, serviceStatus, hostName, logBy, lastStart, lastEventLog);
 
                         if (serviceStatus == ServiceControllerStatus.Stopped.ToString())
                         {
-                            CommonMethods.SendEmail(connection, "Service Name: " + serviceInstalled +  "\nStatus: " + serviceStatus + "\nLastStart: " + lastStart + "\nLastEventLog: " + lastEventLog + "\nHostName: " + hostName + "\nLogBy: " + logBy);
+                            try
+                            {
+                                string emailTemplate = ConfigurationManager.AppSettings["singleEmail"];
+
+                                // Format the email message with the required values
+                                string emailMessage = string.Format(emailTemplate, serviceInstalled, serviceStatus, lastStart, lastEventLog, hostName, logBy);
+                                CommonMethods.SendEmail(connection, emailMessage);
+                            }
+                            catch(Exception ex) 
+                            {
+                                CommonMethods.WriteToFile("Exception: " + ex.Message);
+                            }
                         }
                     }
                 }
@@ -119,6 +85,92 @@ namespace ServiceMonitorRealTimeLogger
                 CommonMethods.WriteToFile($"Exception in OnServiceStatusChanged: {ex.Message}");
             }
         }
+
+        private void GetServicesInMonitor()
+        {
+            try
+            {
+                using (var connection = CommonMethods.GetConnection())
+                {
+                    if (connection == null) return;
+
+                    using (SqlCommand command = new SqlCommand("dbo.GetServicesMonitored", connection))
+                    {
+                        // Execute the command to get the data
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            _servicesInMonitor.Clear(); // Clear the list before adding new entries
+
+                            while (reader.Read())
+                            {
+                                _servicesInMonitor.Add((reader.GetString(0), reader.GetString(1), reader.GetString(2)));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonMethods.WriteToFile($"Exception in GetServicesInMonitor: {ex.Message}");
+            }
+
+            InitializeEventWatcher();
+        }
+
+        private void InitializeEventWatcher()
+        {
+            // Stop the event watcher if it's already running
+            _eventWatcher?.Stop();
+
+            List<string> serviceNamesToMonitor = _servicesInMonitor.Select(x => x.ServiceName).ToList();
+
+            // Create WQL Event Query
+            string queryCondition = string.Join(" OR ", serviceNamesToMonitor.Select(serviceName => $"TargetInstance.Name = '{serviceName}'"));
+            var query = new WqlEventQuery($"SELECT * FROM __InstanceModificationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service' AND ({queryCondition})");
+
+            ManagementScope scope = new ManagementScope($"\\\\{Environment.MachineName}\\root\\CIMV2");
+
+            // Initialize Event Watcher
+            _eventWatcher = new ManagementEventWatcher(scope, query);
+            _eventWatcher.EventArrived += OnServiceStatusChanged;
+
+            // Start the event watcher
+            _eventWatcher.Start();
+        }
+
+        public void ServicesMonitoredListener()
+        {
+            try
+            {
+                using (var connection = CommonMethods.GetConnection())
+                {
+                    if (connection == null) return;
+
+                    // Set up the SqlDependency to listen for INSERTs and DELETEs
+                    SqlCommand dependencyCommand = new SqlCommand("dbo.GetServicesMonitoredRowCount", connection);
+                    SqlDependency dependency = new SqlDependency(dependencyCommand);
+
+                    // Set up the OnChange event handler to only handle INSERTs and DELETEs
+                    dependency.OnChange += (sender, e) =>
+                    {
+                        if (e.Info == SqlNotificationInfo.Insert || e.Info == SqlNotificationInfo.Delete)
+                        {
+                            GetServicesInMonitor();
+                        }
+                        ServicesMonitoredListener();
+                    };
+
+                    // Execute the dependencyCommand to start listening for notifications
+                    SqlDataReader dependencyReader = dependencyCommand.ExecuteReader();
+                    dependencyReader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonMethods.WriteToFile($"Exception in ServicesMonitoredListener: {ex.Message}");
+            }
+        }
+
     }
 }
 

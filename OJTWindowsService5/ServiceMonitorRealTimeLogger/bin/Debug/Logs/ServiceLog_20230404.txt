@@ -1,0 +1,66 @@
+ServiceMonitorLogger has stopped.
+02:59 pm
+
+ServiceMonitorLogger has started.
+02:59 pm
+
+Service: ServiceMonitorLogger, Status: Running
+02:59 pm
+
+Service: Service1, Status: Running
+02:59 pm
+
+Service: Service1, Status: Stopped
+02:59 pm
+
+Service: VSStandardCollectorService150, Status: Running
+03:00 pm
+
+ServiceMonitorLogger has stopped.
+03:01 pm
+
+ServiceMonitorLogger has started.
+03:02 pm
+
+Service: ServiceMonitorLogger, Status: Running
+03:02 pm
+
+Service: ClipSVC, Status: Running
+03:02 pm
+
+Service: Service1, Status: Running
+03:03 pm
+
+Service: Service1, Status: Stopped
+03:03 pm
+
+Service: ClipSVC, Status: Stopped
+03:08 pm
+
+ServiceMonitorLogger has stopped.
+03:10 pm
+
+ServiceMonitorLogger has started.
+03:10 pm
+
+Service: ServiceMonitorLogger, Status: Running
+03:11 pm
+
+ServiceMonitorLogger has stopped.
+03:11 pm
+
+ServiceMonitorLogger has started.
+03:13 pm
+
+Service: ServiceMonitorLogger, Status: Running
+03:13 pm
+
+Service: Service1, Status: Running
+03:13 pm
+
+Service: Service1, Status: Stopped
+03:13 pm
+
+ServiceMonitorLogger has stopped.
+03:15 pm
+

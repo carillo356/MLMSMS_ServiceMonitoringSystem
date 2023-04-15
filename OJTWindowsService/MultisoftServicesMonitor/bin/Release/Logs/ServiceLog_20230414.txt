@@ -1,0 +1,27 @@
+Service: Service1, Status: Running
+09:03 pm
+
+Service: Service2, Status: Running
+09:03 pm
+
+Exception: email Mailbox unavailable. The server response was: 5.4.5 Daily user sending quota exceeded. w11-20020a170902d70b00b001a0763fa8d6sm3042241ply.98 - gsmtp
+09:03 pm
+
+Service: Service2, Status: Stopped
+09:03 pm
+
+Exception: email Mailbox unavailable. The server response was: 5.4.5 Daily user sending quota exceeded. c10-20020aa78e0a000000b0062e12f945adsm3015013pfr.135 - gsmtp
+09:03 pm
+
+Service: Service1, Status: Stopped
+09:03 pm
+
+Service: Service1, Status: Running
+09:17 pm
+
+Exception: email Mailbox unavailable. The server response was: 5.4.5 Daily user sending quota exceeded. g1-20020a170902740100b001a67eace820sm3081758pll.3 - gsmtp
+09:17 pm
+
+Service: Service1, Status: Stopped
+09:17 pm
+

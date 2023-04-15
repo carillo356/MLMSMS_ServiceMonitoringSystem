@@ -1,0 +1,327 @@
+ServiceMonitorLogger has started.
+07:34 am
+
+Service: ServiceMonitorLogger, Status: Running
+07:34 am
+
+Service: Service1, Status: Running
+07:35 am
+
+Service: Service1, Status: Stopped
+07:35 am
+
+Service: wlidsvc, Status: Stopped
+07:37 am
+
+ServiceMonitorLogger has stopped.
+07:38 am
+
+ServiceMonitorLogger has started.
+07:55 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+07:55 am
+
+Service: Service1, Status: Running
+07:55 am
+
+Service: Service1, Status: Stopped
+07:55 am
+
+ServiceMonitorLogger has stopped.
+07:56 am
+
+ServiceMonitorRealTimeLogger has started.
+08:31 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+08:31 am
+
+Service: WinDefend, Status: Running
+08:31 am
+
+Service: gpsvc, Status: Stop Pending
+08:32 am
+
+Service: Service1, Status: Running
+08:32 am
+
+Service: gpsvc, Status: Stopped
+08:32 am
+
+Service: BITS, Status: Start Pending
+08:32 am
+
+Service: Service1, Status: Stopped
+08:32 am
+
+ServiceMonitorRealTimeLogger has stopped.
+08:32 am
+
+ServiceMonitorRealTimeLogger has started.
+11:01 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+11:01 am
+
+ServiceMonitorRealTimeLogger has stopped.
+11:01 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Stopped
+11:14 am
+
+Service: WerSvc, Status: Running
+11:14 am
+
+Service: WbioSrvc, Status: Stopped
+11:14 am
+
+ServiceMonitorRealTimeLogger has started.
+11:15 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+11:15 am
+
+ServiceMonitorRealTimeLogger has stopped.
+11:15 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Stopped
+11:16 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Stopped
+11:16 am
+
+ServiceMonitorRealTimeLogger has started.
+11:20 am
+
+Service: ServiceMonitorRealTimeLogger, Status: Running
+11:20 am
+
+Service: WinDefend, Status: Running
+11:20 am
+
+Service: wlidsvc, Status: Start Pending
+11:21 am
+
+Service: Service1, Status: Running
+11:21 am
+
+Service: TrustedInstaller, Status: Running
+11:21 am
+
+Service: wlidsvc, Status: Running
+11:21 am
+
+Service: Service1, Status: Stopped
+11:21 am
+
+Service: TrustedInstaller, Status: Stopped
+11:23 am
+
+Service: InventorySvc, Status: Stopped
+11:24 am
+
+Service: wlidsvc, Status: Stopped
+11:25 am
+
+Service: wlidsvc, Status: Running
+11:25 am
+
+Service: BITS, Status: Start Pending
+11:27 am
+
+Service: BITS, Status: Running
+11:27 am
+
+Service: gpsvc, Status: Stopped
+11:27 am
+
+Service: wlidsvc, Status: Stopped
+11:29 am
+
+Service: FrameServerMonitor, Status: Running
+11:29 am
+
+Service: dcsvc, Status: Running
+11:29 am
+
+Service: defragsvc, Status: Running
+11:29 am
+
+Service: gpsvc, Status: Running
+11:29 am
+
+Service: StiSvc, Status: Paused
+11:29 am
+
+Service: lmhosts, Status: Stopped
+11:31 am
+
+Service: BITS, Status: Stop Pending
+11:31 am
+
+Service: FrameServer, Status: Running
+11:31 am
+
+Service: lmhosts, Status: Running
+11:31 am
+
+Service: StiSvc, Status: Running
+11:31 am
+
+Service: BITS, Status: Stopped
+11:31 am
+
+Service: FrameServerMonitor, Status: Stopped
+11:31 am
+
+Service: FrameServer, Status: Stopped
+11:31 am
+
+Service: wuauserv, Status: Running
+11:32 am
+
+Service: wuauserv, Status: Stopped
+11:32 am
+
+Service: dcsvc, Status: Stopped
+11:33 am
+
+Service: defragsvc, Status: Stop Pending
+11:34 am
+
+Service: defragsvc, Status: Stopped
+11:34 am
+
+Service: ClipSVC, Status: Running
+11:35 am
+
+Service: gpsvc, Status: Stopped
+11:41 am
+
+Service: TrustedInstaller, Status: Running
+11:41 am
+
+Service: wlidsvc, Status: Running
+11:41 am
+
+Service: wuauserv, Status: Running
+11:41 am
+
+Service: gpsvc, Status: Running
+11:41 am
+
+Service: defragsvc, Status: Running
+11:42 am
+
+Service: TrustedInstaller, Status: Stopped
+11:43 am
+
+Service: wlidsvc, Status: Stopped
+11:44 am
+
+Service: ClipSVC, Status: Stopped
+11:44 am
+
+Service: WdiSystemHost, Status: Running
+11:48 am
+
+Service: WdiSystemHost, Status: Stopped
+11:48 am
+
+Service: wuauserv, Status: Stop Pending
+11:51 am
+
+Service: wuauserv, Status: Stopped
+11:51 am
+
+Service: gpsvc, Status: Stopped
+11:51 am
+
+Service: FrameServer, Status: Running
+11:56 am
+
+Service: FrameServerMonitor, Status: Running
+11:56 am
+
+Service: StiSvc, Status: Paused
+11:56 am
+
+Service: lmhosts, Status: Running
+12:12 pm
+
+Service: ClipSVC, Status: Running
+12:12 pm
+
+Service: lmhosts, Status: Stopped
+12:12 pm
+
+Service: StiSvc, Status: Running
+12:12 pm
+
+Service: lmhosts, Status: Running
+12:12 pm
+
+Service: WdiSystemHost, Status: Running
+12:12 pm
+
+Service: FrameServer, Status: Stopped
+12:12 pm
+
+Service: FrameServerMonitor, Status: Stopped
+12:12 pm
+
+Service: FrameServerMonitor, Status: Running
+12:13 pm
+
+Service: FrameServerMonitor, Status: Stopped
+12:13 pm
+
+Service: wlidsvc, Status: Running
+12:15 pm
+
+Service: ClipSVC, Status: Stopped
+12:17 pm
+
+Service: wlidsvc, Status: Running
+12:23 pm
+
+Service: defragsvc, Status: Stopped
+12:23 pm
+
+Service: wlidsvc, Status: Stopped
+12:23 pm
+
+Service: InventorySvc, Status: Running
+12:23 pm
+
+Service: WerSvc, Status: Running
+12:23 pm
+
+Service: ClipSVC, Status: Running
+12:23 pm
+
+Service: wlidsvc, Status: Running
+12:23 pm
+
+Service: lmhosts, Status: Stopped
+12:25 pm
+
+Service: gpsvc, Status: Running
+12:25 pm
+
+Service: lmhosts, Status: Running
+12:25 pm
+
+Service: WerSvc, Status: Stopped
+12:25 pm
+
+Service: InventorySvc, Status: Stopped
+12:28 pm
+
+Service: wlidsvc, Status: Stopped
+12:29 pm
+
+Service: WerSvc, Status: Running
+12:30 pm
+

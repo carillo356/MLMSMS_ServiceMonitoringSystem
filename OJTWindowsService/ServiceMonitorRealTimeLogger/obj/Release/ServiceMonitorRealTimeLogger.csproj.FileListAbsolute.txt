@@ -1,0 +1,14 @@
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\bin\Release\ServiceMonitorRealTimeLogger.exe.config
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\bin\Release\ServiceMonitorRealTimeLogger.exe
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\bin\Release\ServiceMonitorRealTimeLogger.pdb
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\bin\Release\CommonLibrary.dll
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\bin\Release\CommonLibrary.pdb
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\bin\Release\CommonLibrary.dll.config
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\obj\Release\ServiceMonitorRealTimeLogger.csproj.AssemblyReference.cache
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\obj\Release\ServiceMonitorRealTimeLogger.csproj.SuggestedBindingRedirects.cache
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\obj\Release\ServiceMonitorRealTimeLogger.ProjectInstaller.resources
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\obj\Release\ServiceMonitorRealTimeLogger.csproj.GenerateResource.cache
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\obj\Release\ServiceMonitorRealTimeLogger.csproj.CoreCompileInputs.cache
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\obj\Release\ServiceMonitorRealTimeLogger.csproj.CopyComplete
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\obj\Release\ServiceMonitorRealTimeLogger.exe
+C:\Users\Aaron\source\repos\OJTWindowsService\ServiceMonitorRealTimeLogger\obj\Release\ServiceMonitorRealTimeLogger.pdb
