@@ -84,10 +84,10 @@ namespace MultisoftServicesMonitor
                         {
                             try
                             {
-                                string emailTemplate = ConfigurationManager.AppSettings["singleEmail"];
+                                string singleEmailTemplate = ConfigurationManager.AppSettings["singleEmail"].Replace("&#x0A;", "\n");
 
                                 // Format the email message with the required values
-                                string emailMessage = string.Format(emailTemplate, serviceInstalled, serviceStatus, lastStart, lastEventLog, hostName, logBy);
+                                string emailMessage = string.Format(singleEmailTemplate, serviceInstalled, serviceStatus, lastStart, lastEventLog, hostName, logBy);
                                 SendEmail(connection, emailMessage);
                             }
                             catch (Exception ex)
@@ -282,10 +282,10 @@ namespace MultisoftServicesMonitor
                                 if (currentStatus == ServiceControllerStatus.Stopped.ToString())
                                 {
                                     // Read the email body template from the app.config
-                                    string emailBodyTemplate = ConfigurationManager.AppSettings["bulkEmail"];
+                                    string bulkEmailTemplate = ConfigurationManager.AppSettings["bulkEmail"].Replace("&#x0A;", "\n");
 
                                     // Format the email body with the required values
-                                    string emailBody = string.Format(emailBodyTemplate, serviceInMonitor.ServiceName, currentStatus, serviceInMonitor.HostName, logBy);
+                                    string emailBody = string.Format(bulkEmailTemplate, serviceInMonitor.ServiceName, currentStatus, serviceInMonitor.HostName, logBy);
 
                                     emailsToSend.Add(emailBody);
                                 }
