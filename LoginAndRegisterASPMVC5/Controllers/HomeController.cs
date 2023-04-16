@@ -556,15 +556,16 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult AdminUsers()
         {
-            if (Session["IdUser"] != null)
-            {
-                    return View();
+            return View();
+            //if (Session["IdUser"] != null)
+            //{
+            //    return View();
 
-            }
-            else
-            {
-                return RedirectToAction("Login");
-            }
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Login");
+            //}
         }
 
         public void UpdateEmailNotification(int IdUser)
@@ -750,17 +751,18 @@ namespace LoginAndRegisterASPMVC5.Controllers
         //create a string MD5
         public static string GetMD5(string str)
         {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] fromData = Encoding.UTF8.GetBytes(str);
-            byte[] targetData = md5.ComputeHash(fromData);
-            string byte2String = null;
-
-            for (int i = 0; i < targetData.Length; i++)
+            using (MD5 md5 = MD5.Create())
             {
-                byte2String += targetData[i].ToString("x2");
+                byte[] fromData = Encoding.Unicode.GetBytes(str); // Use UTF-16 encoding
+                byte[] targetData = md5.ComputeHash(fromData);
+                StringBuilder byte2String = new StringBuilder();
 
+                for (int i = 0; i < targetData.Length; i++)
+                {
+                    byte2String.Append(targetData[i].ToString("x2"));
+                }
+                return byte2String.ToString();
             }
-            return byte2String;
         }
 
         public void InsertAllServices()
