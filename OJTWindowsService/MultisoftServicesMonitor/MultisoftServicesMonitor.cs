@@ -32,6 +32,14 @@ namespace MultisoftServicesMonitor
         {
             _realTimeLogger.Stop();
             _periodicLogger.Stop();
+
+            using (var connection = GetConnection())
+            {
+                string singleEmailTemplate = ConfigurationManager.AppSettings["multisoftServicesMonitorEmailStopped"].Replace("&#x0A;", "\n"); ;
+                string emailMessage = string.Format(singleEmailTemplate, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, ServiceControllerStatus.Stopped.ToString());
+                SendEmail(connection, emailMessage);
+            }
+
         }
     }
 
@@ -54,7 +62,6 @@ namespace MultisoftServicesMonitor
             _eventWatcher.Stop();
             _eventWatcher.Dispose();
             SqlDependency.Stop(_connectionString);
-
         }
 
         private void OnServiceStatusChanged(object sender, EventArrivedEventArgs e)
@@ -145,10 +152,10 @@ namespace MultisoftServicesMonitor
             // Stop the event watcher if it's already running
             _eventWatcher?.Stop();
 
-            List<string> serviceNamesToMonitor = _servicesInMonitor.Select(x => x.ServiceName).ToList();
+            List<string> servicesInMonitor = _servicesInMonitor.Select(x => x.ServiceName).ToList();
 
             // Create WQL Event Query
-            string queryCondition = string.Join(" OR ", serviceNamesToMonitor.Select(serviceName => $"TargetInstance.Name = '{serviceName}'"));
+            string queryCondition = string.Join(" OR ", servicesInMonitor.Select(serviceName => $"TargetInstance.Name = '{serviceName}'"));
             var query = new WqlEventQuery($"SELECT * FROM __InstanceModificationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service' AND ({queryCondition})");
 
             ManagementScope scope = new ManagementScope($"\\\\{Environment.MachineName}\\root\\CIMV2");
@@ -204,9 +211,9 @@ namespace MultisoftServicesMonitor
         private bool isCheckServicesRunning = false;
         public void Start()
         {
-            if (int.TryParse(ConfigurationManager.AppSettings.Get("CheckServicesEveryXMinute"), out int interval))
+            if (int.TryParse(ConfigurationManager.AppSettings.Get("checkServicesEveryXMinute"), out int interval))
             {
-                checkServicesTimer.Interval = (interval) * 60 * 1000;
+                checkServicesTimer.Interval = /*(interval) * 60 * 1000*/5000;
             }
             else
             {
@@ -215,7 +222,7 @@ namespace MultisoftServicesMonitor
 
             checkServicesTimer.Elapsed += new ElapsedEventHandler(OnCheckServicesElapsedTime);
 
-            if (bool.TryParse(ConfigurationManager.AppSettings.Get("RunOnStart"), out bool runOnStart))
+            if (bool.TryParse(ConfigurationManager.AppSettings.Get("runOnStart"), out bool runOnStart))
             {
                 if (runOnStart)
                 {
@@ -241,7 +248,7 @@ namespace MultisoftServicesMonitor
             }
         }
 
-        public async void CheckServices()
+        public void CheckServices()
         {
             checkServicesTimer.Stop(); //Stopped the timer to ensure that the timer is stopped when checkservices is running.
             isCheckServicesRunning = true;
@@ -320,12 +327,12 @@ namespace MultisoftServicesMonitor
             finally
             {
                 checkServicesTimer.Start();
-                await ProcessQueue();
+                ProcessQueue();
                 isCheckServicesRunning = false; // Add this line
             }
         }
 
-        public async Task ProcessQueue()
+        public void ProcessQueue()
         {
             try
             {
@@ -333,7 +340,7 @@ namespace MultisoftServicesMonitor
                 {
                     while (qGetEventLogList.Count > 0)
                     {
-                        await Task.Delay(1000);
+                        Task.Delay(Convert.ToInt32(ConfigurationManager.AppSettings.Get("processQueueDelayXSecond")) * 1000).Wait();
                         if (qGetEventLogList.Count > 0) 
                         {
                             string serviceName = qGetEventLogList.Dequeue();

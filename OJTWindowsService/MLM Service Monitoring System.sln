@@ -5,9 +5,9 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultisoftServicesMonitor", "MultisoftServicesMonitor\MultisoftServicesMonitor.csproj", "{A702BC29-0866-414A-84A1-6D7DCAD471AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service1", "..\..\Users\Aaron\source\repos\OJTWindowsService\Service1\Service1.csproj", "{097FCD5E-6B47-4CDC-8E4D-A48B38E1A0E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service1", "Service1\Service1.csproj", "{097FCD5E-6B47-4CDC-8E4D-A48B38E1A0E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service2", "..\..\Users\Aaron\source\repos\OJTWindowsService\Service2\Service2.csproj", "{F9E36F79-45B5-465E-9440-3F42DF2C2C5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service2", "Service2\Service2.csproj", "{F9E36F79-45B5-465E-9440-3F42DF2C2C5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
