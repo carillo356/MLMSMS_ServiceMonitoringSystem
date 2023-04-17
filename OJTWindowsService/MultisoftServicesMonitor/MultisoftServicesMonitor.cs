@@ -10,13 +10,15 @@ using Timer = System.Timers.Timer;
 using static MultisoftServicesMonitor.CommonMethods;
 using System.Timers;
 using System.Threading.Tasks;
+using System.Text;
+
 
 namespace MultisoftServicesMonitor
 {
     public partial class MultisoftServicesMonitor : ServiceBase
     {
         private readonly RealTimeLogger _realTimeLogger = new RealTimeLogger();
-        private readonly PeriodicLogger _periodicLogger = new PeriodicLogger();
+        //private readonly PeriodicLogger _periodicLogger = new PeriodicLogger();
         public MultisoftServicesMonitor()
         {
             InitializeComponent();
@@ -25,13 +27,13 @@ namespace MultisoftServicesMonitor
         protected override void OnStart(string[] args)
         {
             _realTimeLogger.Start();
-            _periodicLogger.Start();
+            //_periodicLogger.Start();
         }
 
         protected override void OnStop()
         {
             _realTimeLogger.Stop();
-            _periodicLogger.Stop();
+            //_periodicLogger.Stop();
 
             using (var connection = GetConnection())
             {
@@ -45,9 +47,12 @@ namespace MultisoftServicesMonitor
 
     public class RealTimeLogger
     {
-        private ManagementEventWatcher _eventWatcher;
+        private List<ManagementEventWatcher> _eventWatchers = new List<ManagementEventWatcher>();
         private readonly List<(string ServiceName, string ServiceStatus, string HostName)> _servicesInMonitor = new List<(string ServiceName, string ServiceStatus, string HostName)>();
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
+
+        private int numMachines;
+        private string[,] machineDetails;
 
         public void Start()
         {
@@ -59,10 +64,18 @@ namespace MultisoftServicesMonitor
 
         public void Stop()
         {
-            _eventWatcher.Stop();
-            _eventWatcher.Dispose();
-            SqlDependency.Stop(_connectionString);
+            foreach (var eventWatcher in _eventWatchers)
+            {
+                eventWatcher?.Stop();
+                eventWatcher?.Dispose();
+            }
+
+            if (!string.IsNullOrEmpty(_connectionString))
+            {
+                SqlDependency.Stop(_connectionString);
+            }
         }
+
 
         private void OnServiceStatusChanged(object sender, EventArrivedEventArgs e)
         {
@@ -150,23 +163,80 @@ namespace MultisoftServicesMonitor
         private void InitializeEventWatcher()
         {
             // Stop the event watcher if it's already running
-            _eventWatcher?.Stop();
+            foreach (var eventWatcher in _eventWatchers)
+            {
+                eventWatcher?.Stop();
+                eventWatcher?.Dispose();
+            }
 
-            List<string> servicesInMonitor = _servicesInMonitor.Select(x => x.ServiceName).ToList();
+            _eventWatchers.Clear();
 
             // Create WQL Event Query
-            string queryCondition = string.Join(" OR ", servicesInMonitor.Select(serviceName => $"TargetInstance.Name = '{serviceName}'"));
+            List<string> servicesInMonitor = _servicesInMonitor.Select(x => x.ServiceName).ToList();
+            string queryCondition = string.Join(" OR ", _servicesInMonitor.Select(service => $"TargetInstance.Name = '{service.ServiceName}' AND TargetInstance.SystemName = '{service.HostName}'"));
             var query = new WqlEventQuery($"SELECT * FROM __InstanceModificationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Service' AND ({queryCondition})");
 
-            ManagementScope scope = new ManagementScope($"\\\\{Environment.MachineName}\\root\\CIMV2");
+            string machineName = ConfigurationManager.AppSettings.Get("machineName");
+            string[] machineNameArray = machineName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            // Initialize Event Watcher
-            _eventWatcher = new ManagementEventWatcher(scope, query);
-            _eventWatcher.EventArrived += OnServiceStatusChanged;
+            string machineUsername = ConfigurationManager.AppSettings.Get("machineUsername");
+            string[] machineUsernameArray = machineUsername.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            // Start the event watcher
-            _eventWatcher.Start();
+            string machinePassword = ConfigurationManager.AppSettings.Get("machinePassword");
+            string[] machinePasswordArray = machinePassword.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            int numMachines = machineNameArray.Length;
+            string[,] machineDetails = new string[numMachines, 3];
+            for (int i = 0; i < numMachines; i++)
+            {
+                machineDetails[i, 0] = machineNameArray[i];
+                machineDetails[i, 1] = machineUsernameArray[i];
+                machineDetails[i, 2] = machinePasswordArray[i];
+            }
+
+            for (int i = 0; i < numMachines; i++)
+            {
+                try
+                {
+                    string machine = machineDetails[i, 0];
+                    string username = machineDetails[i, 1];
+                    string password = machineDetails[i, 2];
+
+                    ConnectionOptions options = null;
+                    if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+                    {
+                        options = new ConnectionOptions
+                        {
+                            Username = username,
+                            Password = password,
+                            Impersonation = ImpersonationLevel.Impersonate,
+                            Authentication = AuthenticationLevel.PacketPrivacy,
+                            EnablePrivileges = true
+                        };
+                    }
+
+                    ManagementScope scope = new ManagementScope($"\\\\{machine}\\root\\CIMV2", options);
+                    scope.Connect();
+
+                    // Initialize Event Watcher
+                    var eventWatcher = new ManagementEventWatcher(scope, query);
+                    eventWatcher.EventArrived += OnServiceStatusChanged;
+
+                    // Add the event watcher to the list
+                    _eventWatchers.Add(eventWatcher);
+
+                    // Start the event watcher
+                    eventWatcher.Start();
+                }
+                catch (Exception ex)
+                {
+                    WriteToFile($"Exception in InitializeEventWatcher for machine {machineDetails[i, 0]}: {ex.Message}");
+                    continue;
+                }
+            }
         }
+
+
 
         public void SM_TableChangeListener()
         {
@@ -203,158 +273,182 @@ namespace MultisoftServicesMonitor
 
     }
 
-    public class PeriodicLogger
-    {
-        readonly Timer checkServicesTimer = new Timer();
+    //public class PeriodicLogger
+    //{
+    //    readonly Timer checkServicesTimer = new Timer();
 
-        public Queue<string> qGetEventLogList = new Queue<string>();
-        private bool isCheckServicesRunning = false;
-        public void Start()
-        {
-            if (int.TryParse(ConfigurationManager.AppSettings.Get("checkServicesEveryXMinute"), out int interval))
-            {
-                checkServicesTimer.Interval = /*(interval) * 60 * 1000*/5000;
-            }
-            else
-            {
-                checkServicesTimer.Interval = (60) * 60 * 1000; //1 Hour
-            }
+    //    public void Start()
+    //    {
+    //        if (int.TryParse(ConfigurationManager.AppSettings.Get("checkServicesEveryXMinute"), out int interval))
+    //        {
+    //            checkServicesTimer.Interval = /*(interval) * 60 * 1000*/5000;
+    //        }
+    //        else
+    //        {
+    //            checkServicesTimer.Interval = (60) * 60 * 1000; //1 Hour
+    //        }
 
-            checkServicesTimer.Elapsed += new ElapsedEventHandler(OnCheckServicesElapsedTime);
+    //        checkServicesTimer.Elapsed += new ElapsedEventHandler(OnCheckServicesElapsedTime);
 
-            if (bool.TryParse(ConfigurationManager.AppSettings.Get("runOnStart"), out bool runOnStart))
-            {
-                if (runOnStart)
-                {
-                    CheckServices();
-                }
-                else if (!runOnStart)
-                {
-                    checkServicesTimer.Start();
-                }
-            }
-        }
+    //        if (bool.TryParse(ConfigurationManager.AppSettings.Get("runOnStart"), out bool runOnStart))
+    //        {
+    //            if (runOnStart)
+    //            {
+    //                CheckServices();
+    //            }
+    //            else if (!runOnStart)
+    //            {
+    //                checkServicesTimer.Start();
+    //            }
+    //        }
+    //    }
 
-        public void Stop()
-        {
-            checkServicesTimer.Dispose();
-        }
+    //    public void Stop()
+    //    {
+    //        checkServicesTimer.Dispose();
+    //    }
 
-        private void OnCheckServicesElapsedTime(object source, ElapsedEventArgs e)
-        {
-            if (!isCheckServicesRunning)
-            {
-                CheckServices();
-            }
-        }
+    //    private void OnCheckServicesElapsedTime(object source, ElapsedEventArgs e)
+    //    {
+    //        CheckServices();
+    //    }
 
-        public void CheckServices()
-        {
-            checkServicesTimer.Stop(); //Stopped the timer to ensure that the timer is stopped when checkservices is running.
-            isCheckServicesRunning = true;
+    //    public void CheckServices()
+    //    {
+    //        checkServicesTimer.Stop(); //Stopped the timer to ensure that the timer is stopped when checkservices is running.
 
-            var servicesToUpdate = new List<(string ServiceName, string ServiceStatus, string HostName, string LogBy)>();
-            var emailsToSend = new List<string>();
+    //        var servicesToUpdate = new List<(string ServiceName, string ServiceStatus, string HostName, string LogBy)>();
+    //        var emailsToSend = new List<string>();
 
-            try
-            {
-                using (SqlConnection connection = GetConnection()) // Opened a connection and wrapped it in the using statement to ensure the connection is disposed properly after executing the code inside its body.
-                {
-                    if (connection == null) return;
-                    string hostName = Environment.MachineName;
-                    string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+    //        try
+    //        {
+    //            using (SqlConnection connection = GetConnection()) // Opened a connection and wrapped it in the using statement to ensure the connection is disposed properly after executing the code inside its body.
+    //            {
+    //                if (connection == null) return;
+    //                string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
-                    ServiceController[] servicesInController = ServiceController.GetServices(hostName);
-                    DataTable serviceInfoTable = CreateServiceInfoTable(servicesInController);
-                    SP_UpdateServicesAvailable(connection, serviceInfoTable, hostName);
+    //                string machineName = ConfigurationManager.AppSettings.Get("machineName");
+    //                string[] machineNameArray = machineName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    var servicesInstalled = GetTripleColumn(connection, GetServicesStatusQuery("ServicesAvailable", "sa")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
-                    var _servicesInMonitor = GetTripleColumn(connection, GetServicesStatusQuery("ServicesMonitored", "sm")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
+    //                string machineUsername = ConfigurationManager.AppSettings.Get("machineUsername");
+    //                string[] machineUsernameArray = machineUsername.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    foreach (var serviceInMonitor in _servicesInMonitor)
-                    {
-                        var serviceInstalled = servicesInstalled.FirstOrDefault(s => s.ServiceName == serviceInMonitor.ServiceName && s.HostName == serviceInMonitor.HostName);
+    //                string machinePassword = ConfigurationManager.AppSettings.Get("machinePassword");
+    //                string[] machinePasswordArray = machinePassword.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                        if (serviceInstalled != default) // Check if the service to monitor exists
-                        {
-                            string currentStatus = serviceInstalled.ServiceStatus;
-                            string previousStatus = serviceInMonitor.ServiceStatus;
 
-                            if (currentStatus != previousStatus) // Check if the current status is the same as the previous status
-                            {
+    //                int numMachines = machineNameArray.Length;
+    //                string[,] machineDetails = new string[numMachines, 3];
+    //                for (int i = 0; i < numMachines; i++)
+    //                {
+    //                    machineDetails[i, 0] = machineNameArray[i];
+    //                    machineDetails[i, 1] = machineUsernameArray[i];
+    //                    machineDetails[i, 2] = machinePasswordArray[i];
+    //                }
 
-                                servicesToUpdate.Add((serviceInMonitor.ServiceName, currentStatus, serviceInMonitor.HostName, logBy)); // If not, get the latest entry, last start, and last log from the event logs, and record it in the database using StoreData(), then if the current status is false, send email to the registered users in the website.
-                                qGetEventLogList.Enqueue(serviceInMonitor.ServiceName);
+    //                for (int i = 0; i < numMachines; i++)
+    //                {
+    //                    try
+    //                    {
+    //                        string machine = machineDetails[i, 0];
+    //                        string username = machineDetails[i, 1];
+    //                        string password = machineDetails[i, 2];
 
-                                if (currentStatus == ServiceControllerStatus.Stopped.ToString())
-                                {
-                                    // Read the email body template from the app.config
-                                    string bulkEmailTemplate = ConfigurationManager.AppSettings["bulkEmail"].Replace("&#x0A;", "\n");
+    //                        ConnectionOptions options = null;
+    //                        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+    //                        {
+    //                            options = new ConnectionOptions
+    //                            {
+    //                                Username = username,
+    //                                Password = password,
+    //                                Impersonation = ImpersonationLevel.Impersonate,
+    //                                Authentication = AuthenticationLevel.PacketPrivacy
+    //                            };
+    //                        }
 
-                                    // Format the email body with the required values
-                                    string emailBody = string.Format(bulkEmailTemplate, serviceInMonitor.ServiceName, currentStatus, serviceInMonitor.HostName, logBy);
+    //                        ManagementScope scope = new ManagementScope($"\\\\{machine}\\root\\cimv2", options);
+    //                        scope.Connect();
 
-                                    emailsToSend.Add(emailBody);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            servicesToUpdate.Add((serviceInMonitor.ServiceName, "NotFound", serviceInMonitor.HostName, logBy));
-                        }
-                    }
+    //                        ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_Service");
+    //                        ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
 
-                    if (servicesToUpdate.Any())
-                    {
-                        SP_UpdateServiceStatus(connection, servicesToUpdate.ToArray());
-                    }
-                    if (emailsToSend.Any())
-                    {
-                        SendEmail(connection, emailsToSend.ToArray());
-                    }
+    //                        DataTable serviceInfoTableRemote = CreateServiceInfoTable(searcher.Get());
+    //                        SP_UpdateServicesAvailable(connection, serviceInfoTableRemote, machine);
+    //                    }
+    //                    catch
+    //                    {
+    //                        continue;
+    //                    }
+    //                }
 
-                    if (connection.State != ConnectionState.Closed) connection.Close();
-                }
+    //                var localMachine = Environment.MachineName;
 
-            }
+    //                ServiceController[] servicesInController = ServiceController.GetServices(localMachine);
+    //                DataTable serviceInfoTableLocal = CreateServiceInfoTable(servicesInController);
+    //                SP_UpdateServicesAvailable(connection, serviceInfoTableLocal, localMachine);
 
-            catch (Exception ex)
-            {
-                WriteToFile("Exception: " + ex.Message);
 
-            }
+    //                var servicesInstalled = GetTripleColumn(connection, GetServicesStatusQuery("ServicesAvailable", "sa")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
+    //                var _servicesInMonitor = GetTripleColumn(connection, GetServicesStatusQuery("ServicesMonitored", "sm")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
 
-            finally
-            {
-                checkServicesTimer.Start();
-                ProcessQueue();
-                isCheckServicesRunning = false; // Add this line
-            }
-        }
+    //                foreach (var serviceInMonitor in _servicesInMonitor)
+    //                {
+    //                    var serviceInstalled = servicesInstalled.FirstOrDefault(s => s.ServiceName == serviceInMonitor.ServiceName && s.HostName == serviceInMonitor.HostName);
 
-        public void ProcessQueue()
-        {
-            try
-            {
-                using (SqlConnection connection = GetConnection())
-                {
-                    while (qGetEventLogList.Count > 0)
-                    {
-                        Task.Delay(Convert.ToInt32(ConfigurationManager.AppSettings.Get("processQueueDelayXSecond")) * 1000).Wait();
-                        if (qGetEventLogList.Count > 0) 
-                        {
-                            string serviceName = qGetEventLogList.Dequeue();
-                            GetServiceLogs(serviceName, out DateTime lastStart, out string lastEventLog);
-                            SP_UpdateServiceEventLogInfo(connection, serviceName, lastStart, lastEventLog);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteToFile("Exception: " + ex.Message);
-            } 
-        }
-    }
+    //                    if (serviceInstalled != default) // Check if the service to monitor exists
+    //                    {
+    //                        string currentStatus = serviceInstalled.ServiceStatus;
+    //                        string previousStatus = serviceInMonitor.ServiceStatus;
+
+    //                        if (currentStatus != previousStatus) // Check if the current status is the same as the previous status
+    //                        {
+
+    //                            servicesToUpdate.Add((serviceInMonitor.ServiceName, currentStatus, serviceInMonitor.HostName, logBy)); // If not, get the latest entry, last start, and last log from the event logs, and record it in the database using StoreData(), then if the current status is false, send email to the registered users in the website.
+
+    //                            if (currentStatus == ServiceControllerStatus.Stopped.ToString())
+    //                            {
+    //                                // Read the email body template from the app.config
+    //                                string bulkEmailTemplate = ConfigurationManager.AppSettings["bulkEmail"].Replace("&#x0A;", "\n");
+
+    //                                // Format the email body with the required values
+    //                                string emailBody = string.Format(bulkEmailTemplate, serviceInMonitor.ServiceName, currentStatus, serviceInMonitor.HostName, logBy);
+
+    //                                emailsToSend.Add(emailBody);
+    //                            }
+    //                        }
+    //                    }
+    //                    else
+    //                    {
+    //                        servicesToUpdate.Add((serviceInMonitor.ServiceName, "NotFound", serviceInMonitor.HostName, logBy));
+    //                    }
+    //                }
+
+    //                if (servicesToUpdate.Any())
+    //                {
+    //                    SP_UpdateServiceStatus(connection, servicesToUpdate.ToArray());
+    //                }
+    //                if (emailsToSend.Any())
+    //                {
+    //                    SendEmail(connection, emailsToSend.ToArray());
+    //                }
+
+    //                if (connection.State != ConnectionState.Closed) connection.Close();
+    //            }
+
+    //        }
+
+    //        catch (Exception ex)
+    //        {
+    //            WriteToFile("Exception: " + ex.Message);
+
+    //        }
+
+    //        finally
+    //        {
+    //            checkServicesTimer.Start();
+    //        }
+    //    }
+
+    //}
 
 }

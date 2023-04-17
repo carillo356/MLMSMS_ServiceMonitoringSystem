@@ -1,0 +1,13 @@
+﻿Installing assembly 'C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\bin\Release\Service2.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\bin\Release\Service2.InstallLog
+   assemblypath = C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\bin\Release\Service2.exe
+Installing service Service2...
+Service Service2 has been successfully installed.
+Creating EventLog source Service2 in log Application...
+Committing assembly 'C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\bin\Release\Service2.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\bin\Release\Service2.InstallLog
+   assemblypath = C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\bin\Release\Service2.exe

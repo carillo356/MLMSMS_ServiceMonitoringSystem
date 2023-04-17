@@ -6,9 +6,12 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
+using System.Management;
 using System.Net;
 using System.Net.Mail;
 using System.ServiceProcess;
+using System.Diagnostics.Eventing.Reader;
+using System.Security;
 
 namespace MultisoftServicesMonitor
 {
@@ -75,28 +78,6 @@ namespace MultisoftServicesMonitor
             catch (Exception ex)
             {
                 CommonMethods.WriteToFile("Exception: storedatabulk " + ex.Message);
-            }
-        }
-
-        public static void SP_UpdateServiceEventLogInfo(SqlConnection connection, string serviceName, DateTime lastStart, string lastEventLog)
-        {
-            try
-            {
-                if (lastEventLog == null) lastEventLog = "NotFound";
-                if (lastStart == null) lastStart = new DateTime(1900, 1, 1);
-
-                using (SqlCommand command = new SqlCommand("UpdateServiceEventLogInfo", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@ServiceName", serviceName);
-                    command.Parameters.AddWithValue("@LastStart", lastStart);
-                    command.Parameters.AddWithValue("@LastEventLog", lastEventLog);
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                CommonMethods.WriteToFile("Exception: " + ex.Message);
             }
         }
 
@@ -340,6 +321,23 @@ namespace MultisoftServicesMonitor
             }
         }
 
+        public static DataTable CreateServiceInfoTable(ManagementObjectCollection servicesInController)
+        {
+            DataTable serviceInfoTable = new DataTable();
+            serviceInfoTable.Columns.Add("ServiceName", typeof(string));
+            serviceInfoTable.Columns.Add("ServiceStatus", typeof(string));
+
+            foreach (var service in servicesInController)
+            {
+                string serviceName = (string)service["Name"];
+                string status = (string)service["State"];
+
+                serviceInfoTable.Rows.Add(serviceName, status);
+            }
+
+            return serviceInfoTable;
+        }
+
         public static DataTable CreateServiceInfoTable(ServiceController[] servicesInController)
         {
             DataTable serviceInfoTable = new DataTable();
@@ -352,6 +350,29 @@ namespace MultisoftServicesMonitor
             }
 
             return serviceInfoTable;
+        }
+
+        public static string[,] GetMachineDetails()
+        {
+            string machineName = ConfigurationManager.AppSettings.Get("machineName");
+            string[] machineNameArray = machineName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            string machineUsername = ConfigurationManager.AppSettings.Get("machineUsername");
+            string[] machineUsernameArray = machineUsername.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            string machinePassword = ConfigurationManager.AppSettings.Get("machinePassword");
+            string[] machinePasswordArray = machinePassword.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            int numMachines = machineNameArray.Length;
+            string[,] machineDetails = new string[numMachines, 3];
+            for (int i = 0; i < numMachines; i++)
+            {
+                machineDetails[i, 0] = machineNameArray[i];
+                machineDetails[i, 1] = machineUsernameArray[i];
+                machineDetails[i, 2] = machinePasswordArray[i];
+            }
+
+            return machineDetails;
         }
 
     }

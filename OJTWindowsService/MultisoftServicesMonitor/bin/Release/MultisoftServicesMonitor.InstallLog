@@ -11,3 +11,16 @@ Affected parameters are:
    logtoconsole = 
    logfile = C:\Users\Aaron\source\repos\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.InstallLog
    assemblypath = C:\Users\Aaron\source\repos\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.exe
+Installing assembly 'C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.InstallLog
+   assemblypath = C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.exe
+Installing service MultisoftServicesMonitor...
+Service MultisoftServicesMonitor has been successfully installed.
+Creating EventLog source MultisoftServicesMonitor in log Application...
+Committing assembly 'C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.exe'.
+Affected parameters are:
+   logtoconsole = 
+   logfile = C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.InstallLog
+   assemblypath = C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.exe
