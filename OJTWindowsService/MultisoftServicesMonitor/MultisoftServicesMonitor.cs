@@ -162,14 +162,6 @@ namespace MultisoftServicesMonitor
 
         private void InitializeEventWatcher()
         {
-            // Stop the event watcher if it's already running
-            foreach (var eventWatcher in _eventWatchers)
-            {
-                eventWatcher?.Stop();
-                eventWatcher?.Dispose();
-            }
-
-            _eventWatchers.Clear();
 
             // Create WQL Event Query
             List<string> servicesInMonitor = _servicesInMonitor.Select(x => x.ServiceName).ToList();
@@ -217,16 +209,6 @@ namespace MultisoftServicesMonitor
 
                     ManagementScope scope = new ManagementScope($"\\\\{machine}\\root\\CIMV2", options);
                     scope.Connect();
-
-                    // Initialize Event Watcher
-                    var eventWatcher = new ManagementEventWatcher(scope, query);
-                    eventWatcher.EventArrived += OnServiceStatusChanged;
-
-                    // Add the event watcher to the list
-                    _eventWatchers.Add(eventWatcher);
-
-                    // Start the event watcher
-                    eventWatcher.Start();
                 }
                 catch (Exception ex)
                 {
