@@ -557,15 +557,15 @@ namespace LoginAndRegisterASPMVC5.Controllers
         public ActionResult AdminUsers()
         {
             return View();
-            //if (Session["IdUser"] != null)
-            //{
-            //    return View();
+            if (Session["IdUser"] != null)
+            {
+                return View();
 
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Login");
-            //}
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         public void UpdateEmailNotification(int IdUser)
