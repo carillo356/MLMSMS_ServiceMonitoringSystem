@@ -9,7 +9,6 @@ using System.ServiceProcess;
 using Timer = System.Timers.Timer;
 using static MultisoftServicesMonitor.CommonMethods;
 using System.Timers;
-using System.Threading.Tasks;
 
 namespace MultisoftServicesMonitor
 {
