@@ -30,8 +30,8 @@ namespace MultisoftServicesMonitor
 
         protected override void OnStop()
         {
-            _realTimeLogger?.Stop();
-            _periodicLogger?.Stop();
+            _realTimeLogger.Stop();
+            _periodicLogger.Stop();
 
             using (var connection = GetConnection())
             {
@@ -39,8 +39,8 @@ namespace MultisoftServicesMonitor
                 string emailMessage = string.Format(singleEmailTemplate, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, ServiceControllerStatus.Stopped.ToString());
                 SendEmail(connection, emailMessage);
             }
-
         }
+
     }
 
     public class RealTimeLogger
@@ -59,8 +59,12 @@ namespace MultisoftServicesMonitor
 
         public void Stop()
         {
-            _eventWatcher?.Stop();
-            _eventWatcher?.Dispose();
+            if (_eventWatcher != null)
+            {
+                _eventWatcher.Stop();
+                _eventWatcher.Dispose();
+            }
+
             if (!string.IsNullOrEmpty(_connectionString))
             {
                 SqlDependency.Stop(_connectionString);
