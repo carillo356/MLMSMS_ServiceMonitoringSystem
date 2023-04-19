@@ -39,7 +39,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: storedata " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus, singleupdate: " + ex.Message);
             }
         }
 
@@ -74,7 +74,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: storedatabulk " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus, bulkupdate: " + ex.Message);
             }
         }
 
@@ -96,7 +96,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServiceEventLogInfo: " + ex.Message);
             }
         }
 
@@ -129,7 +129,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: servicelogs" + ex.Message);
+                CommonMethods.WriteToFile("Exception on GetServiceLogs: " + ex.Message);
             }
         }
 
@@ -193,7 +193,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                WriteToFile("Exception: email " + ex.Message);
+                WriteToFile("Exception on SendEmail: " + ex.Message);
             }
         }
 
@@ -273,7 +273,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: " + ex.Message);
+                CommonMethods.WriteToFile("Exception on GetColumns: " + ex.Message);
             }
 
             return columns;
@@ -313,7 +313,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: storedata " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus: " + ex.Message);
             }
         }
 
@@ -336,7 +336,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception: storeservicesavailable " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServicesAvailable: " + ex.Message);
             }
         }
 

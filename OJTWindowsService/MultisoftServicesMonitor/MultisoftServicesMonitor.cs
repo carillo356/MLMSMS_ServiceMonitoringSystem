@@ -59,15 +59,23 @@ namespace MultisoftServicesMonitor
 
         public void Stop()
         {
-            if (_eventWatcher != null)
+            try
             {
-                _eventWatcher.Stop();
-                _eventWatcher.Dispose();
-            }
+                if (_eventWatcher != null)
+                {
+                    _eventWatcher.Stop();
+                    _eventWatcher.Dispose();
+                }
 
-            if (!string.IsNullOrEmpty(_connectionString))
+                if (!string.IsNullOrEmpty(_connectionString))
+                {
+                    SqlDependency.Stop(_connectionString);
+                }
+            }
+            catch(Exception ex)
             {
-                SqlDependency.Stop(_connectionString);
+                WriteToFile("Exception OnStop: " + ex.Message);
+                Environment.FailFast("Forcefully stopping the service: " + ex.Message);
             }
         }
 
@@ -327,7 +335,7 @@ namespace MultisoftServicesMonitor
 
             catch (Exception ex)
             {
-                WriteToFile("Exception: " + ex.Message);
+                WriteToFile("Exception on CheckServices: " + ex.Message);
 
             }
 
@@ -359,7 +367,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                WriteToFile("Exception: " + ex.Message);
+                WriteToFile("Exception on ProcessQueue: " + ex.Message);
             } 
         }
     }
