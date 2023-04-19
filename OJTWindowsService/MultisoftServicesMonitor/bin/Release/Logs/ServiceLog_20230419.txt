@@ -16,3 +16,15 @@ Successful Stop
 Successful Stop
 12:38 PM
 
+Service: Service1, Status: Running
+02:08 PM
+
+Service: Service1, Status: Stopped
+02:09 PM
+
+Service: Service1, Status: Running
+02:09 PM
+
+Service: Service1, Status: Stopped
+02:09 PM
+
