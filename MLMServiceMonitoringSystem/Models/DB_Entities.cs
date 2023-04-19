@@ -20,30 +20,6 @@ namespace LoginAndRegisterASPMVC5.Models
 
 
         }
-
-        //public DB_Entities() : base("ServiceDB") { }
-        //public DbSet<ServiceTB> ServiceColumn { get; set; }
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    //Database.SetInitializer<demoEntities>(null);
-        //    modelBuilder.Entity<User>().ToTable("ServiceTB");
-        //    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
-        //    base.OnModelCreating(modelBuilder);
-
-
-        //}
-        //public DbSet<ServiceTB> ServiceColumn { get; set; }
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    //Database.SetInitializer<demoEntities>(null);
-        //    modelBuilder.Entity<User>().ToTable("ServiceTB");
-        //    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
-        //    base.OnModelCreating(modelBuilder);
-
-
-        //}
     }
 
 
