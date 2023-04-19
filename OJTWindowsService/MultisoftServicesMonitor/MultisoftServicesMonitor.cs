@@ -64,6 +64,7 @@ namespace MultisoftServicesMonitor
                     {
                         WriteToFile("Exception OnStart RealTimeLogger: " + ex.Message);
                         enabled_RealTimeLogger = false;
+                        WriteToFile("enabled_RealTimeLogger: " + enabled_RealTimeLogger);
                     }
                 }
                 else if (!enabled_RealTimeLogger)
@@ -277,6 +278,7 @@ namespace MultisoftServicesMonitor
                     {
                         WriteToFile("Exception OnStart PeriodicLogger: " + ex.Message);
                         enabled_PeriodicLogger = false;
+                        WriteToFile("enabled_PeriodicLogger: " + enabled_PeriodicLogger);
                     }
                 }
                 else if (!enabled_PeriodicLogger)
