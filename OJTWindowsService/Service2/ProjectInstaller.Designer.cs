@@ -39,8 +39,8 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "The Second Service";
-            this.serviceInstaller1.ServiceName = "Service2";
+            this.serviceInstaller1.Description = "The Second Service ";
+            this.serviceInstaller1.ServiceName = "Used to test MultisoftServicesMonitor (disable or delete when testing is finished).";
             // 
             // ProjectInstaller
             // 

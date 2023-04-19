@@ -1,4 +1,4 @@
-ALTER DATABASE [ServiceDB] SET  ENABLE_BROKER 
+ALTER DATABASE [ServiceMonitor] SET  ENABLE_BROKER 
 GO
 /****** Object:  UserDefinedTableType [dbo].[ServiceInfoTableType]    Script Date: 16/04/2023 5:16:22 pm ******/
 CREATE TYPE [dbo].[ServiceInfoTableType] AS TABLE(
@@ -560,8 +560,4 @@ BEGIN
     SET Email_Notification = ~@currentEmailNotification
     WHERE IdUser = @IdUser;
 END
-GO
-USE [master]
-GO
-ALTER DATABASE [ServiceDB] SET  READ_WRITE 
 GO
