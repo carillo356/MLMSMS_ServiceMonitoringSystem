@@ -1,3 +1,0 @@
-Exception OnStart RealTimeLogger: The SQL Server Service Broker for the current database is not enabled, and as a result query notifications are not supported.  Please enable the Service Broker for this database if you wish to use notifications.
-06:47 PM
-
