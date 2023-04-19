@@ -30,8 +30,8 @@ namespace MultisoftServicesMonitor
 
         protected override void OnStop()
         {
-            _realTimeLogger.Stop();
-            _periodicLogger.Stop();
+            _realTimeLogger?.Stop();
+            _periodicLogger?.Stop();
 
             using (var connection = GetConnection())
             {
@@ -59,9 +59,12 @@ namespace MultisoftServicesMonitor
 
         public void Stop()
         {
-            _eventWatcher.Stop();
-            _eventWatcher.Dispose();
-            SqlDependency.Stop(_connectionString);
+            _eventWatcher?.Stop();
+            _eventWatcher?.Dispose();
+            if (!string.IsNullOrEmpty(_connectionString))
+            {
+                SqlDependency.Stop(_connectionString);
+            }
         }
 
         private void OnServiceStatusChanged(object sender, EventArrivedEventArgs e)
@@ -237,7 +240,7 @@ namespace MultisoftServicesMonitor
 
         public void Stop()
         {
-            checkServicesTimer.Dispose();
+            checkServicesTimer?.Dispose();
         }
 
         private void OnCheckServicesElapsedTime(object source, ElapsedEventArgs e)
