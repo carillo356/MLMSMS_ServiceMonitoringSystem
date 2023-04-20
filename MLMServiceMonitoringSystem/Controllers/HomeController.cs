@@ -15,6 +15,7 @@ using Service = LoginAndRegisterASPMVC5.Models.Service;
 using System.Web.UI.WebControls;
 using Microsoft.Win32.TaskScheduler;
 using System.Diagnostics.Eventing.Reader;
+using System.IO;
 
 namespace LoginAndRegisterASPMVC5.Controllers
 {
@@ -23,8 +24,74 @@ namespace LoginAndRegisterASPMVC5.Controllers
         private DB_Entities _db = new DB_Entities();
         public static List<User> _users = new List<User>();
         public static List<string> _servicesAvailable;
-        private List<Service> _servicesLogsList = new List<Service>();
         public static List<Service> _servicesInMonitor = new List<Service>();
+        private List<Service> _servicesLogsList = new List<Service>();
+
+        [HttpPost]
+        public void AddService(Service GetInput) //Gets the User Input for adding a service
+        {
+            string serviceName = GetInput.ServiceName;
+            if (serviceName == null) return;
+
+            if (!_servicesInMonitor.Any(s => s.ServiceName == serviceName))
+            {
+                try
+                {
+
+                    using (SqlConnection connection = GetConnection())
+                    using (SqlCommand command = new SqlCommand("UpdateServiceStatus", connection))
+                    {
+                        var servicesInstalled = GetTripleColumn(connection, GetServicesStatusQuery("ServicesAvailable", "sa")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
+                        var serviceInstalled = servicesInstalled.FirstOrDefault(s => s.ServiceName == serviceName);
+
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@ServiceName", serviceInstalled.ServiceName);
+                        command.Parameters.AddWithValue("@ServiceStatus", serviceInstalled.ServiceStatus);
+                        command.Parameters.AddWithValue("@HostName", serviceInstalled.HostName);
+                        command.Parameters.AddWithValue("@LogBy", Session["FullName"]?.ToString() ?? "NotFound");
+                        command.Parameters.AddWithValue("@LastStart", new DateTime(1900, 1, 1));
+                        command.Parameters.AddWithValue("@LastEventLog", "NotFound");
+                        command.ExecuteNonQuery();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public ActionResult GetAddedServices()//For checkboxes as reference
+        {
+            List<string> addedServicesList = new List<string>();
+
+            foreach (Service service in _servicesInMonitor)
+            {
+                addedServicesList.Add(service.ServiceName.ToString());
+            }
+            return Json(addedServicesList, JsonRequestBehavior.AllowGet);
+        }
+
+        public void DeleteAddedService(string serviceName) //Removes a service row
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                using (SqlCommand command = new SqlCommand("DeleteServiceFromMonitored", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+
+                    command.ExecuteNonQuery();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         [HttpGet]
         public ActionResult GetMonitoredServicesCount()
@@ -46,117 +113,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             int totalLogHistory = _servicesLogsList.Count;
             return Json(new { totalLogHistory }, JsonRequestBehavior.AllowGet);
         }
-
-
-        public void DeleteAddedService(string serviceName) //Removes a service row
-        {
-            try
-            {
-                using (SqlConnection connection = GetConnection())
-                using (SqlCommand command = new SqlCommand("DeleteServiceFromMonitored", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@ServiceName", serviceName);
-
-                    command.ExecuteNonQuery();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            RemoveUnmonitoredTasks();
-        }
-
-        [HttpPost]
-        public void AddService(Service GetInput) //Gets the User Input for adding a service
-        {
-            string serviceName = GetInput.ServiceName;
-            if (serviceName == null) return;  
-
-            if (!_servicesInMonitor.Any(s => s.ServiceName == serviceName))
-            {
-                try
-                {
-                    GetServiceLogs(serviceName, out string serviceStatus, out string hostName, out DateTime lastStart, out string lastEventLog);
-
-                    using (SqlConnection connection = GetConnection())
-                    using (SqlCommand command = new SqlCommand("UpdateServiceStatus", connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@ServiceName", serviceName);
-                        command.Parameters.AddWithValue("@ServiceStatus", serviceStatus ?? "NotFound");
-                        command.Parameters.AddWithValue("@HostName", hostName ?? "NotFound");
-                        command.Parameters.AddWithValue("@LogBy", Session["FullName"]?.ToString() ?? "NotFound");
-                        command.Parameters.AddWithValue("@LastStart", lastStart);
-                        command.Parameters.AddWithValue("@LastEventLog", string.IsNullOrEmpty(lastEventLog) ? "NotFound" : lastEventLog);   
-                        command.ExecuteNonQuery();
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-
-                // Check if a task with the given name already exists
-                if (!TaskExists($"Watcher {serviceName}"))
-                {
-                    // If not, create a task for the service
-                    //CreateTasksForMonitoredServices(serviceName);
-                }
-                // Call RemoveUnmonitoredTasks method
-                RemoveUnmonitoredTasks();
-            }
-        }
-
-        public static void GetServiceLogs(string serviceName, out string serviceStatus, out string hostName, out DateTime lastStart, out string lastEventLog)
-        {
-            ServiceController[] servicesInController = ServiceController.GetServices();
-            ServiceController serviceInController = servicesInController.FirstOrDefault(ctr => ctr.ServiceName == serviceName);
-
-            // Default values
-            serviceStatus = "NotFound";
-            hostName = "NotFound";
-            lastStart = new DateTime(1900, 1, 1);
-            lastEventLog = "NotFound";
-
-            if (serviceInController != null)
-            {
-                serviceStatus = serviceInController.Status.ToString();
-                hostName = Environment.MachineName;
-
-                try
-                {
-                    using (var eventLog = new EventLog("Application"))
-                    {
-                        var query = new EventLogQuery("Application", PathType.LogName, $"*[System/Provider/@Name='{serviceName}']")
-                        {
-                            ReverseDirection = true, // Sort by descending time
-                        };
-
-                        using (var reader = new EventLogReader(query))
-                        {
-                            using (var eventRecord = reader.ReadEvent())
-                            {
-                                if (eventRecord != null)
-                                {
-                                    lastStart = eventRecord.TimeCreated.GetValueOrDefault();
-                                    lastEventLog = eventRecord.FormatDescription();
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-        }
-
 
         public static List<T> GetColumns<T>(SqlConnection connection, string query, Func<SqlDataReader, T> readColumns)
         {
@@ -197,80 +153,19 @@ namespace LoginAndRegisterASPMVC5.Controllers
             ));
         }
 
-        public static void CreateTasksForMonitoredServices(string serviceName)
+        public static List<(string, string, string)> GetTripleColumn(SqlConnection connection, string query)
         {
-            using (TaskService ts = new TaskService())
-            {
-                string taskName = $"Watcher {serviceName}";
-                TaskDefinition td = ts.NewTask();
-                td.RegistrationInfo.Description = $"Task to monitor the {serviceName} service";
-
-                td.Triggers.Add(new EventTrigger
-                {
-                    Subscription = $"<QueryList><Query Id='0' Path='Application'><Select Path='Application'>*[System[Provider[@Name='{serviceName}']]]</Select></Query></QueryList>",
-                    Enabled = true
-                });
-
-                string loggerPath = ConfigurationManager.AppSettings.Get("LoggerPath");
-
-                // Add escaped double quotes around the serviceName
-                td.Actions.Add(new ExecAction(loggerPath, $"\"{serviceName}\""));
-
-                td.Principal.RunLevel = TaskRunLevel.Highest;
-                ts.RootFolder.RegisterTaskDefinition(taskName, td);
-            }
-        }
-            
-        private void RemoveUnmonitoredWatcherTasks((string ServiceName, string ServiceStatus)[] servicesInMonitor)
-        {
-            using (TaskService ts = new TaskService())
-            {
-                // Get all the tasks in the RootFolder
-                var allTasks = ts.RootFolder.AllTasks;
-
-                // Iterate through each task
-                foreach (Task task in allTasks)
-                {
-                    // Check if the task starts with "Watcher "
-                    if (task.Name.StartsWith("Watcher "))
-                    {
-                        // Extract the service name from the task name
-                        string serviceName = task.Name.Substring("Watcher ".Length);
-
-                        // Check if the service is not in the monitored list
-                        if (!servicesInMonitor.Any(s => s.ServiceName == serviceName))
-                        {
-                            // If not in the list, delete the task
-                            ts.RootFolder.DeleteTask(task.Name);
-                        }
-                    }
-                }
-            }
+            return GetColumns(connection, query, reader => (
+                reader.IsDBNull(0) ? "" : reader.GetString(0),
+                reader.IsDBNull(1) ? "" : reader.GetString(1),
+                reader.IsDBNull(2) ? "" : reader.GetString(2)
+            ));
         }
 
-        public void RemoveUnmonitoredTasks()
+        public static string GetServicesStatusQuery(string tableName, string columnNamePrefix)
         {
-            using (SqlConnection connection = GetConnection())
-            {
-                if (connection == null) return;
-
-                // Get the services to monitor from the database
-                (string ServiceName, string ServiceStatus)[] servicesInMonitor = GetDoubleColumn(connection, "GetServicesStatus").ToArray();
-
-                // Remove tasks for unmonitored services
-                RemoveUnmonitoredWatcherTasks(servicesInMonitor);
-            }
+            return $"SELECT [{columnNamePrefix}_ServiceName], [{columnNamePrefix}_ServiceStatus], [{columnNamePrefix}_HostName] FROM {tableName}";
         }
-
-        private static bool TaskExists(string taskName)
-        {
-            using (TaskService taskService = new TaskService())
-            {
-                Task task = taskService.GetTask(taskName);
-                return task != null;
-            }
-        }
-
 
         public void GetServicesInMonitor()
         {
@@ -317,19 +212,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return Json(_servicesInMonitor, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Index()
-        {
-            
-            if (Session["IdUser"] != null)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login");
-            }
-        }
-
         public void GetServicesAvailable()
         {
             if(_servicesAvailable != null)
@@ -353,21 +235,10 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return Json(servicesToDisplay);
         }
 
-        public ActionResult GetAddedServices()//For checkboxes as reference
-        {
-            List<string> addedServicesList = new List<string>();
-
-            foreach (Service service in _servicesInMonitor)
-            {
-                addedServicesList.Add(service.ServiceName.ToString());
-            }
-            return Json(addedServicesList, JsonRequestBehavior.AllowGet);
-        }
-
         [HttpPost]
         public ActionResult GetServiceLogsTB(string serviceName)
         {
-            string query = $"SELECT * FROM ServicesLogs WHERE sl_ServiceName = '{serviceName}' ORDER BY sl_LastStart DESC";
+            string query = $"SELECT * FROM ServicesLogs WHERE sl_ServiceName = '{serviceName}' ORDER BY sl_LogID DESC";
             _servicesLogsList.Clear();
 
             try
@@ -399,43 +270,12 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return Json(_servicesLogsList, JsonRequestBehavior.AllowGet);
         }
 
-        private void GetServiceEventLog(string serviceName, out DateTime lastStart, out string lastEventLog, out string hostName)
-        {
-            lastStart = new DateTime(1900, 1, 1);
-            lastEventLog = "No Record";
-            hostName = "Unknown";
-
-            try
-            {
-                using (var eventLog = new EventLog("Application"))
-                {
-                    var serviceEvent = eventLog.Entries
-                        .Cast<EventLogEntry>()
-                        .Where(entry => entry.Source == serviceName)
-                        .OrderByDescending(entry => entry.TimeGenerated)
-                        .FirstOrDefault();
-
-                    if (serviceEvent != null)
-                    {
-                        lastStart = serviceEvent.TimeGenerated;
-                        lastEventLog = serviceEvent.Message;
-                        hostName = serviceEvent.MachineName;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-
         public void ServiceAction(string serviceName, string command)
         {
             string hostName = Environment.MachineName;
             DateTime lastStart = new DateTime(1900, 1, 1);
             string lastEventLog = "No Record";
-            string logBy = Session["FullName"].ToString();
+            string logBy = Session["FullName"].ToString() ?? "NotFound";
 
 
 
@@ -459,7 +299,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             }
                             else
                             {
-                                GetServiceEventLog(serviceName, out lastStart, out lastEventLog, out hostName);
                                 SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
                             }
                             break;
@@ -472,7 +311,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             }
                             else
                             {
-                                GetServiceEventLog(serviceName, out lastStart, out lastEventLog, out hostName);
                                 SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
                             }
                             break;
@@ -487,13 +325,11 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             }
                             else
                             {
-                                GetServiceEventLog(serviceName, out lastStart, out lastEventLog, out hostName);
                                 SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
                             }
                             break;
 
                         default:
-                            GetServiceEventLog(serviceName, out lastStart, out lastEventLog, out hostName);
                             SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
                             break;
                     }
@@ -556,7 +392,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult AdminUsers()
         {
-            return View();
             if (Session["IdUser"] != null)
             {
                 return View();
@@ -676,6 +511,23 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return View();
         }
 
+        //create a string MD5
+        public static string GetMD5(string str)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] fromData = Encoding.Unicode.GetBytes(str); // Use UTF-16 encoding
+                byte[] targetData = md5.ComputeHash(fromData);
+                StringBuilder byte2String = new StringBuilder();
+
+                for (int i = 0; i < targetData.Length; i++)
+                {
+                    byte2String.Append(targetData[i].ToString("x2"));
+                }
+                return byte2String.ToString();
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddUser(User _user)
@@ -748,48 +600,16 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return View("AdminUsers");
         }
 
-        //create a string MD5
-        public static string GetMD5(string str)
+        public ActionResult Index()
         {
-            using (MD5 md5 = MD5.Create())
-            {
-                byte[] fromData = Encoding.Unicode.GetBytes(str); // Use UTF-16 encoding
-                byte[] targetData = md5.ComputeHash(fromData);
-                StringBuilder byte2String = new StringBuilder();
 
-                for (int i = 0; i < targetData.Length; i++)
-                {
-                    byte2String.Append(targetData[i].ToString("x2"));
-                }
-                return byte2String.ToString();
+            if (Session["IdUser"] != null)
+            {
+                return View();
             }
-        }
-
-        public void InsertAllServices()
-        {
-            GetServicesAvailable();
-            using (SqlConnection connection = GetConnection())
-                // Insert each service name into the Services table
-                foreach (var service in _servicesAvailable)
-                {
-                    StoreServiceName(connection, service);
-                }
-
-        }
-
-        static void StoreServiceName(SqlConnection connection, string serviceName)
-        {
-            try
+            else
             {
-                using (var command = new SqlCommand("INSERT INTO ServicesMonitored (sm_ServiceName) SELECT @ServiceName WHERE NOT EXISTS (SELECT 1 FROM ServicesMonitored WHERE sm_ServiceName = @ServiceName)", connection))
-                {
-                    command.Parameters.AddWithValue("@ServiceName", serviceName);
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                return RedirectToAction("Login");
             }
         }
 

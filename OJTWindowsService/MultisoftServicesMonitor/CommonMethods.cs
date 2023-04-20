@@ -232,8 +232,6 @@ namespace MultisoftServicesMonitor
                 sw.WriteLine(DateTime.Now.ToString("hh:mm tt"));
                 sw.WriteLine();
             }
-
-
         }
 
         public static string GetServicesStatusQuery(string tableName, string columnNamePrefix)
