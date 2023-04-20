@@ -208,7 +208,7 @@ namespace MultisoftServicesMonitor
             return GetSingleColumn(connection, "SELECT [Email] FROM Users WHERE Email_Notification = 1");
         }
 
-        public static void WriteToFile(string Message)
+        public static void WriteToFile(string message, string additionalMessage = null)
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
             if (!Directory.Exists(path))
@@ -218,7 +218,8 @@ namespace MultisoftServicesMonitor
             string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ServiceLog_" + DateTime.Now.Date.ToString("yyyyMMdd").Replace('/', '_') + ".txt";
             using (StreamWriter sw = File.AppendText(filepath))
             {
-                sw.WriteLine(Message);
+                sw.WriteLine(message);
+                if (!string.IsNullOrWhiteSpace(additionalMessage)) sw.WriteLine(additionalMessage);
                 sw.WriteLine(DateTime.Now.ToString("hh:mm tt"));
                 sw.WriteLine();
             }

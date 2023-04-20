@@ -47,9 +47,10 @@ namespace MultisoftServicesMonitor
         private ManagementEventWatcher _eventWatcher;
         private readonly List<(string ServiceName, string ServiceStatus, string HostName)> _servicesInMonitor = new List<(string ServiceName, string ServiceStatus, string HostName)>();
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
+        private bool enabled_RealTimeLogger = false;
+
         public void Start()
         {
-            bool enabled_RealTimeLogger = false;
             if (bool.TryParse(ConfigurationManager.AppSettings.Get("enabled_RealTimeLogger"), out enabled_RealTimeLogger))
             {
                 if (enabled_RealTimeLogger)
@@ -62,9 +63,9 @@ namespace MultisoftServicesMonitor
                     }
                     catch (Exception ex)
                     {
-                        WriteToFile("Exception OnStart RealTimeLogger: " + ex.Message);
                         enabled_RealTimeLogger = false;
-                        WriteToFile("enabled_RealTimeLogger: " + enabled_RealTimeLogger);
+                        WriteToFile("Exception OnStart RealTimeLogger: " + ex.Message,
+                                    "enabled_RealTimeLogger: " + enabled_RealTimeLogger);
                     }
                 }
                 else if (!enabled_RealTimeLogger)
@@ -100,6 +101,8 @@ namespace MultisoftServicesMonitor
         {
             try
             {
+                if (!enabled_RealTimeLogger) return;
+
                 var targetInstance = (ManagementBaseObject)e.NewEvent["TargetInstance"];
                 var serviceInstalled = (string)targetInstance["Name"];
                 var serviceStatus = (string)targetInstance["State"];
@@ -244,48 +247,29 @@ namespace MultisoftServicesMonitor
         private bool _isQueueProcessing = false;
         public void Start()
         {
-            bool enabled_PeriodicLogger = false;
-            if (bool.TryParse(ConfigurationManager.AppSettings.Get("enabled_PeriodicLogger"), out enabled_PeriodicLogger))
+
+            if (int.TryParse(ConfigurationManager.AppSettings.Get("checkServicesEveryXMinute"), out int interval))
             {
-                if (enabled_PeriodicLogger)
-                {
-                    try
-                    {
-                        if (int.TryParse(ConfigurationManager.AppSettings.Get("checkServicesEveryXMinute"), out int interval))
-                        {
-                            checkServicesTimer.Interval = (interval) * 60 * 1000;
-                        }
-                        else
-                        {
-                            checkServicesTimer.Interval = (60) * 60 * 1000; //1 Hour
-                        }
-
-                        checkServicesTimer.Elapsed += new ElapsedEventHandler(OnCheckServicesElapsedTime);
-
-                        if (bool.TryParse(ConfigurationManager.AppSettings.Get("runOnStart"), out bool runOnStart))
-                        {
-                            if (runOnStart)
-                            {
-                                CheckServices();
-                            }
-                            else if (!runOnStart)
-                            {
-                                checkServicesTimer.Start();
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteToFile("Exception OnStart PeriodicLogger: " + ex.Message);
-                        enabled_PeriodicLogger = false;
-                        WriteToFile("enabled_PeriodicLogger: " + enabled_PeriodicLogger);
-                    }
-                }
-                else if (!enabled_PeriodicLogger)
-                {
-                    WriteToFile("enabled_PeriodicLogger: " + enabled_PeriodicLogger);
-                }
+                checkServicesTimer.Interval = interval * 60 * 1000;
             }
+            else
+            {
+                checkServicesTimer.Interval = 60 * 60 * 1000; // default is 1 Hour
+            }
+
+            checkServicesTimer.Elapsed += new ElapsedEventHandler(OnCheckServicesElapsedTime);
+
+            if (bool.TryParse(ConfigurationManager.AppSettings.Get("runOnStart"), out bool runOnStart))
+            {
+                if (runOnStart)
+                {
+                    CheckServices();
+                }
+                else if (!runOnStart)
+                {
+                    checkServicesTimer.Start();
+                }
+            }   
         }
 
         public void Stop()
