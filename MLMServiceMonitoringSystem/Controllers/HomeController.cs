@@ -556,11 +556,9 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult AdminUsers()
         {
-            return View();
             if (Session["IdUser"] != null)
             {
                 return View();
-
             }
             else
             {
@@ -774,7 +772,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
                 {
                     StoreServiceName(connection, service);
                 }
-
         }
 
         static void StoreServiceName(SqlConnection connection, string serviceName)
