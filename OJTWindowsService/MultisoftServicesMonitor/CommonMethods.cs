@@ -9,6 +9,7 @@ using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.ServiceProcess;
+using System.Text;
 
 namespace MultisoftServicesMonitor
 {
@@ -45,7 +46,8 @@ namespace MultisoftServicesMonitor
 
         public static void SP_UpdateServiceStatus(SqlConnection connection, (string ServiceName, string ServiceStatus, string HostName, string LogBy)[] servicesToUpdate)
         {
-      
+            StringBuilder sb = new StringBuilder();
+
             try
             {
                 DataTable dt = new DataTable();
@@ -63,6 +65,7 @@ namespace MultisoftServicesMonitor
                 foreach (var service in servicesToUpdate)
                 {
                     dt.Rows.Add(service.ServiceName, service.ServiceStatus, service.HostName, service.LogBy, lastStart, lastEventLog);
+                    sb.AppendLine($"ServiceName: {service.ServiceName}, ServiceStatus: {service.ServiceStatus}, HostName: {service.HostName}, LogBy: {service.LogBy}");
                 }
 
                 using (var command = new SqlCommand("UpdateServiceStatusBulk", connection))
@@ -71,6 +74,8 @@ namespace MultisoftServicesMonitor
                     command.Parameters.AddWithValue("@Updates", dt);
                     command.ExecuteNonQuery();
                 }
+
+                CommonMethods.WriteToFile(sb.ToString());
             }
             catch (Exception ex)
             {
@@ -93,6 +98,10 @@ namespace MultisoftServicesMonitor
                     command.Parameters.AddWithValue("@LastEventLog", lastEventLog);
                     command.ExecuteNonQuery();
                 }
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"ServiceName: {serviceName}, LastStart: {lastStart}, LastEventLog: {lastEventLog}");
+                CommonMethods.WriteToFile(sb.ToString());
             }
             catch (Exception ex)
             {

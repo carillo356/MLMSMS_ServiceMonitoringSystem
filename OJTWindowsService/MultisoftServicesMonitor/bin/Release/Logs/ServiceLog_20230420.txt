@@ -1,3 +1,42 @@
-Exception on SendEmail: Mailbox unavailable. The server response was: 5.4.5 Daily user sending quota exceeded. b6-20020a170902d88600b0019c2b1c4db1sm11909663plz.239 - gsmtp
-07:08 AM
+Exception OnStart RealTimeLogger: The SQL Server Service Broker for the current database is not enabled, and as a result query notifications are not supported.  Please enable the Service Broker for this database if you wish to use notifications.
+enabled_RealTimeLogger: False
+09:00 AM
+
+ServiceName: Service1, ServiceStatus: Running, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+ServiceName: Service2, ServiceStatus: Running, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+09:02 AM
+
+ServiceName: Service1, LastStart: 4/20/2023 9:02:37 AM, LastEventLog: Service started successfully.
+
+09:02 AM
+
+ServiceName: Service2, LastStart: 4/20/2023 9:02:39 AM, LastEventLog: Service started successfully.
+
+09:02 AM
+
+ServiceName: Service1, ServiceStatus: Stopped, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+09:03 AM
+
+Exception on SendEmail: Mailbox unavailable. The server response was: 5.4.5 Daily user sending quota exceeded. j2-20020a17090a318200b0024739d29252sm1948481pjb.15 - gsmtp
+09:03 AM
+
+ServiceName: Service1, LastStart: 4/20/2023 9:03:05 AM, LastEventLog: Service stopped successfully.
+
+09:03 AM
+
+ServiceName: Service2, ServiceStatus: Stopped, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+09:03 AM
+
+Exception on SendEmail: Mailbox unavailable. The server response was: 5.4.5 Daily user sending quota exceeded. y1-20020a170902700100b0019a7ef5e9a8sm76691plk.82 - gsmtp
+09:03 AM
+
+ServiceName: Service2, LastStart: 4/20/2023 9:03:07 AM, LastEventLog: Service stopped successfully.
+
+09:03 AM
+
+Exception on SendEmail: Mailbox unavailable. The server response was: 5.4.5 Daily user sending quota exceeded. fc2-20020a056a002e0200b0062d859a33d1sm18190pfb.84 - gsmtp
+09:04 AM
 

@@ -107,7 +107,7 @@ namespace MultisoftServicesMonitor
                 var serviceInstalled = (string)targetInstance["Name"];
                 var serviceStatus = (string)targetInstance["State"];
                 var hostName = (string)targetInstance["SystemName"];
-                var logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                var logBy = GetType().Name;
 
                 if (targetInstance == null || serviceInstalled == null || serviceStatus == null)
                     return;
@@ -250,7 +250,7 @@ namespace MultisoftServicesMonitor
 
             if (int.TryParse(ConfigurationManager.AppSettings.Get("checkServicesEveryXMinute"), out int interval))
             {
-                checkServicesTimer.Interval = interval * 60 * 1000;
+                checkServicesTimer.Interval = /*interval * 60 * 1000*/10000;
             }
             else
             {
@@ -299,7 +299,7 @@ namespace MultisoftServicesMonitor
                 {
                     if (connection == null) return;
                     string hostName = Environment.MachineName;
-                    string logBy = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                    string logBy = GetType().Name;
 
                     ServiceController[] servicesInController = ServiceController.GetServices(hostName);
                     DataTable serviceInfoTable = CreateServiceInfoTable(servicesInController);
