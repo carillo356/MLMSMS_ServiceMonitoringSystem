@@ -167,37 +167,43 @@ namespace MultisoftServicesMonitor
             return ssoToken;
         }
 
-        public static void SendEmail(SqlConnection connection, string[] messages)
+        public static void SendEmail(SqlConnection connection, string[] messages, string servicesCount = "")
         {
-
             try
             {
                 var recipients = GetEmailRecipients(connection);
 
                 using (var smtpServer = new SmtpClient(ConfigurationManager.AppSettings["smtpServer"]))
                 {
-                    smtpServer.Port = Convert.ToInt32(ConfigurationManager.AppSettings.Get("smtpPort"));
-                    smtpServer.UseDefaultCredentials = false;
-                    smtpServer.Credentials = new NetworkCredential(
-                                                 ConfigurationManager.AppSettings["smtpUsername"],
-                                                 ConfigurationManager.AppSettings["smtpPassword"]);
-                    smtpServer.EnableSsl = true;
+                    // ... other code ...
+
+                    // Use the same email subject for all recipients
+                    string mailSubjectTemplate = ConfigurationManager.AppSettings["mailSubject"];
+                    string mailSubject = string.Format(mailSubjectTemplate, servicesCount);
 
                     foreach (var userEmail in recipients)
                     {
-                        string ssoToken = GenerateSSOTokenForUser(connection, userEmail);
-                        string ssoLoginUrl = $"{ConfigurationManager.AppSettings["appUrl"]}?ssoToken={ssoToken}";
-
-                        using (var mail = new MailMessage())
+                        try
                         {
-                            mail.From = new MailAddress(ConfigurationManager.AppSettings["mailFrom"]);
-                            mail.Subject = ConfigurationManager.AppSettings["mailSubject"];
-                            mail.Body = string.Join("\n\n", messages) + $"\n\nLog in with your Single Sign-On token: {ssoLoginUrl}";
-                            mail.To.Add(userEmail);
+                            string ssoToken = GenerateSSOTokenForUser(connection, userEmail);
+                            string ssoLoginUrl = $"{ConfigurationManager.AppSettings["appUrl"]}?ssoToken={ssoToken}";
 
-                            smtpServer.Send(mail);
+                            using (var mail = new MailMessage())
+                            {
+                                mail.From = new MailAddress(ConfigurationManager.AppSettings["mailFrom"]);
+                                mail.Subject = mailSubject;
+                                mail.Body = string.Join("\n\n", messages) + $"\n\nLog in with your Single Sign-On token: {ssoLoginUrl}";
+                                mail.To.Add(userEmail);
+                                WriteToFile(mail.Subject);
+                                smtpServer.Send(mail);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            WriteToFile($"Exception on sending email to {userEmail}: {ex.Message}");
                         }
                     }
+
                 }
             }
             catch (Exception ex)
@@ -205,7 +211,6 @@ namespace MultisoftServicesMonitor
                 WriteToFile("Exception on SendEmail: " + ex.Message);
             }
         }
-
 
         public static void SendEmail(SqlConnection connection, string message)
         {

@@ -250,7 +250,7 @@ namespace MultisoftServicesMonitor
 
             if (int.TryParse(ConfigurationManager.AppSettings.Get("checkServicesEveryXMinute"), out int interval))
             {
-                checkServicesTimer.Interval = /*interval * 60 * 1000*/10000;
+                checkServicesTimer.Interval = interval * 60 * 1000;
             }
             else
             {
@@ -347,7 +347,8 @@ namespace MultisoftServicesMonitor
                     }
                     if (emailsToSend.Any())
                     {
-                        SendEmail(connection, emailsToSend.ToArray());
+                        var emailsToSendCount = emailsToSend.Count();
+                        SendEmail(connection, emailsToSend.ToArray(), emailsToSendCount.ToString());
                     }
 
                     if (connection.State != ConnectionState.Closed) connection.Close();
