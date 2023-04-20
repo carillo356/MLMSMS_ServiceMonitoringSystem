@@ -39,9 +39,3 @@ namespace LoginAndRegisterASPMVC5.Models
 
     }
 }
-
-
-//[NotMapped]
-//[Required]
-//[System.ComponentModel.DataAnnotations.Compare("Password")]
-//public string ConfirmPassword { get; set; }
