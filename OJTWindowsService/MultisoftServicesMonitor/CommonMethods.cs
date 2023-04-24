@@ -8,6 +8,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
+using System.Security.Authentication.ExtendedProtection;
 using System.ServiceProcess;
 using System.Text;
 
@@ -15,6 +16,7 @@ namespace MultisoftServicesMonitor
 {
     public class CommonMethods
     {
+        private static string _error = "Error";
         public static void SP_UpdateServiceStatus(SqlConnection connection, string serviceName, string serviceStatus, string hostName, string logBy, DateTime lastStart, string lastEventLog)
         {
             try
@@ -40,7 +42,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus, singleupdate: " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus, singleupdate: " + ex.Message, _error);
             }
         }
 
@@ -75,11 +77,11 @@ namespace MultisoftServicesMonitor
                     command.ExecuteNonQuery();
                 }
 
-                CommonMethods.WriteToFile(sb.ToString());
+                CommonMethods.WriteToFile(sb.ToString(), "Run Periodic Logger");
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus, bulkupdate: " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus, bulkupdate: " + ex.Message, _error);
             }
         }
 
@@ -101,11 +103,11 @@ namespace MultisoftServicesMonitor
 
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine($"ServiceName: {serviceName}, LastStart: {lastStart}, LastEventLog: {lastEventLog}");
-                CommonMethods.WriteToFile(sb.ToString());
+                CommonMethods.WriteToFile(sb.ToString(), "Run PeriodicLogger");
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception on SP_UpdateServiceEventLogInfo: " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServiceEventLogInfo: " + ex.Message, _error);
             }
         }
 
@@ -138,7 +140,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception on GetServiceLogs: " + ex.Message);
+                CommonMethods.WriteToFile("Exception on GetServiceLogs: " + ex.Message, _error);
             }
         }
 
@@ -167,40 +169,52 @@ namespace MultisoftServicesMonitor
             return ssoToken;
         }
 
-        public static void SendEmail(SqlConnection connection, string[] messages, string servicesCount = "")
+        public static void SendEmail(SqlConnection connection, string[] messages, int? emailsToSend = 1, string serviceName = "")
         {
+            string mailSubject = "";
             try
             {
                 var recipients = GetEmailRecipients(connection);
 
                 using (var smtpServer = new SmtpClient(ConfigurationManager.AppSettings["smtpServer"]))
                 {
-                    // ... other code ...
-
-                    // Use the same email subject for all recipients
-                    string mailSubjectTemplate = ConfigurationManager.AppSettings["mailSubject"];
-                    string mailSubject = string.Format(mailSubjectTemplate, servicesCount);
+                    smtpServer.EnableSsl = true;
+                    smtpServer.Port = Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"]);
+                    smtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["smtpUsername"], ConfigurationManager.AppSettings["smtpPassword"]);
+                    if (emailsToSend > 1)
+                    {
+                        string multiMailSubject = ConfigurationManager.AppSettings["multiMailSubject"];
+                        mailSubject = string.Format(multiMailSubject, emailsToSend.ToString());
+                    }
+                    else
+                    {
+                        string singleMailSubject = ConfigurationManager.AppSettings["singleMailSubject"];
+                        mailSubject = string.Format(singleMailSubject, serviceName);
+                    }
 
                     foreach (var userEmail in recipients)
                     {
                         try
                         {
-                            string ssoToken = GenerateSSOTokenForUser(connection, userEmail);
-                            string ssoLoginUrl = $"{ConfigurationManager.AppSettings["appUrl"]}?ssoToken={ssoToken}";
-
-                            using (var mail = new MailMessage())
+                            using (var conn = GetConnection())
                             {
-                                mail.From = new MailAddress(ConfigurationManager.AppSettings["mailFrom"]);
-                                mail.Subject = mailSubject;
-                                mail.Body = string.Join("\n\n", messages) + $"\n\nLog in with your Single Sign-On token: {ssoLoginUrl}";
-                                mail.To.Add(userEmail);
-                                WriteToFile(mail.Subject);
-                                smtpServer.Send(mail);
+
+                                string ssoToken = GenerateSSOTokenForUser(conn, userEmail);
+                                string ssoLoginUrl = $"{ConfigurationManager.AppSettings["appUrl"]}?ssoToken={ssoToken}";
+
+                                using (var mail = new MailMessage())
+                                {
+                                    mail.From = new MailAddress(ConfigurationManager.AppSettings["mailFrom"]);
+                                    mail.Subject = mailSubject;
+                                    mail.Body = string.Join("\n\n", messages) + $"\n\nLog in with your Single Sign-On token: {ssoLoginUrl}";
+                                    mail.To.Add(userEmail);
+                                    smtpServer.Send(mail);
+                                }
                             }
                         }
                         catch (Exception ex)
                         {
-                            WriteToFile($"Exception on sending email to {userEmail}: {ex.Message}");
+                            WriteToFile($"Exception on sending email to {userEmail}: {ex.ToString()}", _error);
                         }
                     }
 
@@ -208,21 +222,23 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                WriteToFile("Exception on SendEmail: " + ex.Message);
+                WriteToFile("Exception on SendEmail: " + ex.Message, _error);
+                Environment.FailFast("Forcefully stopping the service: " + ex.Message);
             }
         }
 
-        public static void SendEmail(SqlConnection connection, string message)
+        public static void SendEmail(SqlConnection connection, string message, int? emailsToSend = 1, string serviceName = "")
         {
-            SendEmail(connection, new string[] { message });
+            SendEmail(connection, new string[] { message }, emailsToSend, serviceName);
         }
+
 
         private static List<string> GetEmailRecipients(SqlConnection connection)
         {
             return GetSingleColumn(connection, "SELECT [Email] FROM Users WHERE Email_Notification = 1");
         }
 
-        public static void WriteToFile(string message, string additionalMessage = null)
+        public static void WriteToFile(string message, string title = null, string additionalMessage = null)
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
             if (!Directory.Exists(path))
@@ -232,12 +248,17 @@ namespace MultisoftServicesMonitor
             string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ServiceLog_" + DateTime.Now.Date.ToString("yyyyMMdd").Replace('/', '_') + ".txt";
             using (StreamWriter sw = File.AppendText(filepath))
             {
+                string logLine = $"{DateTime.Now.ToString("hh:mm tt")} - {title}";
+                sw.WriteLine(logLine);
                 sw.WriteLine(message);
-                if (!string.IsNullOrWhiteSpace(additionalMessage)) sw.WriteLine(additionalMessage);
-                sw.WriteLine(DateTime.Now.ToString("hh:mm tt"));
+                if (!string.IsNullOrWhiteSpace(additionalMessage))
+                {
+                    sw.WriteLine(additionalMessage);
+                }
                 sw.WriteLine();
             }
         }
+
 
         public static string GetServicesStatusQuery(string tableName, string columnNamePrefix)
         {
@@ -286,7 +307,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception on GetColumns: " + ex.Message);
+                CommonMethods.WriteToFile("Exception on GetColumns: " + ex.Message, _error);
             }
 
             return columns;
@@ -326,7 +347,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus: " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus: " + ex.Message, _error);
             }
         }
 
@@ -349,7 +370,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                CommonMethods.WriteToFile("Exception on SP_UpdateServicesAvailable: " + ex.Message);
+                CommonMethods.WriteToFile("Exception on SP_UpdateServicesAvailable: " + ex.Message, _error);
             }
         }
 

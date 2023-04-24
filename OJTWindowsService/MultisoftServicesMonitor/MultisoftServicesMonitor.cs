@@ -36,8 +36,10 @@ namespace MultisoftServicesMonitor
             {
                 string singleEmailTemplate = ConfigurationManager.AppSettings["multisoftServicesMonitorEmailStopped"].Replace("&#x0A;", "\n"); ;
                 string emailMessage = string.Format(singleEmailTemplate, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, ServiceControllerStatus.Stopped.ToString());
-                SendEmail(connection, emailMessage);
+                SendEmail(connection, emailMessage, 1, GetType().Name);
             }
+
+            WriteToFile(GetType().Name  + " have stopped ", "Stop " + GetType().Name);
         }
 
     }
@@ -47,7 +49,9 @@ namespace MultisoftServicesMonitor
         private ManagementEventWatcher _eventWatcher;
         private readonly List<(string ServiceName, string ServiceStatus, string HostName)> _servicesInMonitor = new List<(string ServiceName, string ServiceStatus, string HostName)>();
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["dbconnection"].ConnectionString;
+        private string _error = "Error";
         private bool enabled_RealTimeLogger = false;
+
 
         public void Start()
         {
@@ -55,6 +59,7 @@ namespace MultisoftServicesMonitor
             {
                 if (enabled_RealTimeLogger)
                 {
+                    WriteToFile("enabled_RealTimeLogger: " + enabled_RealTimeLogger, "Run " + GetType().Name);
                     try
                     {
                         SqlDependency.Start(_connectionString);
@@ -64,13 +69,12 @@ namespace MultisoftServicesMonitor
                     catch (Exception ex)
                     {
                         enabled_RealTimeLogger = false;
-                        WriteToFile("Exception OnStart RealTimeLogger: " + ex.Message,
-                                    "enabled_RealTimeLogger: " + enabled_RealTimeLogger);
+                        WriteToFile("Exception OnStart RealTimeLogger: " + ex.Message, _error);
                     }
                 }
                 else if (!enabled_RealTimeLogger)
                 {
-                    WriteToFile("enabled_RealTimeLogger: " + enabled_RealTimeLogger);
+                    WriteToFile("enabled_RealTimeLogger: " + enabled_RealTimeLogger, "Run " + GetType().Name);
                 }
             }
         }
@@ -92,8 +96,8 @@ namespace MultisoftServicesMonitor
             }
             catch(Exception ex)
             {
-                WriteToFile("Exception OnStop: " + ex.Message);
-                Environment.FailFast("Forcefully stopping the service: " + ex.Message);
+                WriteToFile("Exception OnStop: " + ex.Message, _error);
+    
             }
         }
 
@@ -104,12 +108,12 @@ namespace MultisoftServicesMonitor
                 if (!enabled_RealTimeLogger) return;
 
                 var targetInstance = (ManagementBaseObject)e.NewEvent["TargetInstance"];
-                var serviceInstalled = (string)targetInstance["Name"];
+                var serviceName = (string)targetInstance["Name"];
                 var serviceStatus = (string)targetInstance["State"];
                 var hostName = (string)targetInstance["SystemName"];
                 var logBy = GetType().Name;
 
-                if (targetInstance == null || serviceInstalled == null || serviceStatus == null)
+                if (targetInstance == null || serviceName == null || serviceStatus == null)
                     return;
 
                 using (var connection = GetConnection())
@@ -117,10 +121,10 @@ namespace MultisoftServicesMonitor
                     if (connection == null) return;
 
                     // Check if serviceName exists in _servicesInMonitor
-                    if (_servicesInMonitor.Any(x => x.ServiceName == serviceInstalled && x.HostName == hostName))
+                    if (_servicesInMonitor.Any(x => x.ServiceName == serviceName && x.HostName == hostName))
                     {
-                        GetServiceLogs(serviceInstalled, out DateTime lastStart, out string lastEventLog);
-                        SP_UpdateServiceStatus(connection, serviceInstalled, serviceStatus, hostName, logBy, lastStart, lastEventLog);
+                        GetServiceLogs(serviceName, out DateTime lastStart, out string lastEventLog);
+                        SP_UpdateServiceStatus(connection, serviceName, serviceStatus, hostName, logBy, lastStart, lastEventLog);
 
                         if (serviceStatus == ServiceControllerStatus.Stopped.ToString())
                         {
@@ -129,22 +133,22 @@ namespace MultisoftServicesMonitor
                                 string singleEmailTemplate = ConfigurationManager.AppSettings["singleEmail"].Replace("&#x0A;", "\n");
 
                                 // Format the email message with the required values
-                                string emailMessage = string.Format(singleEmailTemplate, serviceInstalled, serviceStatus, lastStart, lastEventLog, hostName, logBy);
-                                SendEmail(connection, emailMessage);
+                                string emailMessage = string.Format(singleEmailTemplate, serviceName, serviceStatus, lastStart, lastEventLog, hostName, logBy);
+                                SendEmail(connection, emailMessage, 1, serviceName);
                             }
                             catch (Exception ex)
                             {
-                                WriteToFile("Exception: " + ex.Message);
+                                WriteToFile("Exception: " + ex.Message, _error);
                             }
                         }
                     }
                 }
 
-                WriteToFile($"Service: {serviceInstalled}, Status: {serviceStatus}");
+                WriteToFile($"Service: {serviceName}, Status: {serviceStatus}", "Status Changed");
             }
             catch (Exception ex)
             {
-                WriteToFile($"Exception in OnServiceStatusChanged: {ex.Message}");
+                WriteToFile($"Exception in OnServiceStatusChanged: {ex.Message}", _error);
             }
         }
 
@@ -173,7 +177,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                WriteToFile($"Exception in GetServicesInMonitor: {ex.Message}");
+                WriteToFile($"Exception in GetServicesInMonitor: {ex.Message}", _error);
             }
 
             if (_servicesInMonitor != null && _servicesInMonitor.Count > 0)
@@ -232,7 +236,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                WriteToFile($"Exception in SM_TableChangeListener: {ex.Message}");
+                WriteToFile($"Exception in SM_TableChangeListener: {ex.Message}", _error);
             }
         }
 
@@ -245,6 +249,8 @@ namespace MultisoftServicesMonitor
         public Queue<string> _qGetEventLogList = new Queue<string>();
         private bool _isCheckServicesRunning = false;
         private bool _isQueueProcessing = false;
+        private string _error = "Error";
+
         public void Start()
         {
 
@@ -256,6 +262,9 @@ namespace MultisoftServicesMonitor
             {
                 checkServicesTimer.Interval = 60 * 60 * 1000; // default is 1 Hour
             }
+
+            CommonMethods.WriteToFile($"checkServicesEveryXMinute: {checkServicesTimer.Interval / 60000}", $"Run {GetType().Name}");
+
 
             checkServicesTimer.Elapsed += new ElapsedEventHandler(OnCheckServicesElapsedTime);
 
@@ -310,11 +319,11 @@ namespace MultisoftServicesMonitor
 
                     foreach (var serviceInMonitor in _servicesInMonitor)
                     {
-                        var serviceInstalled = servicesInstalled.FirstOrDefault(s => s.ServiceName == serviceInMonitor.ServiceName && s.HostName == serviceInMonitor.HostName);
+                        var serviceName = servicesInstalled.FirstOrDefault(s => s.ServiceName == serviceInMonitor.ServiceName && s.HostName == serviceInMonitor.HostName);
 
-                        if (serviceInstalled != default) // Check if the service to monitor exists
+                        if (serviceName != default) // Check if the service to monitor exists
                         {
-                            string currentStatus = serviceInstalled.ServiceStatus;
+                            string currentStatus = serviceName.ServiceStatus;
                             string previousStatus = serviceInMonitor.ServiceStatus;
 
                             if (currentStatus != previousStatus) // Check if the current status is the same as the previous status
@@ -326,10 +335,10 @@ namespace MultisoftServicesMonitor
                                 if (currentStatus == ServiceControllerStatus.Stopped.ToString())
                                 {
                                     // Read the email body template from the app.config
-                                    string bulkEmailTemplate = ConfigurationManager.AppSettings["bulkEmail"].Replace("&#x0A;", "\n");
+                                    string multiEmailTemplate = ConfigurationManager.AppSettings["multiEmail"].Replace("&#x0A;", "\n");
 
                                     // Format the email body with the required values
-                                    string emailBody = string.Format(bulkEmailTemplate, serviceInMonitor.ServiceName, currentStatus, serviceInMonitor.HostName, logBy);
+                                    string emailBody = string.Format(multiEmailTemplate, serviceInMonitor.ServiceName, currentStatus, serviceInMonitor.HostName, logBy);
 
                                     emailsToSend.Add(emailBody);
                                 }
@@ -347,8 +356,7 @@ namespace MultisoftServicesMonitor
                     }
                     if (emailsToSend.Any())
                     {
-                        var emailsToSendCount = emailsToSend.Count();
-                        SendEmail(connection, emailsToSend.ToArray(), emailsToSendCount.ToString());
+                        SendEmail(connection, emailsToSend.ToArray(), emailsToSend.Count());
                     }
 
                     if (connection.State != ConnectionState.Closed) connection.Close();
@@ -358,7 +366,7 @@ namespace MultisoftServicesMonitor
 
             catch (Exception ex)
             {
-                WriteToFile("Exception on CheckServices: " + ex.Message);
+                WriteToFile("Exception on CheckServices: " + ex.Message, _error);
 
             }
 
@@ -387,7 +395,7 @@ namespace MultisoftServicesMonitor
             }
             catch (Exception ex)
             {
-                WriteToFile("Exception on ProcessQueue: " + ex.Message);
+                WriteToFile("Exception on ProcessQueue: " + ex.Message, _error);
             }
             _isQueueProcessing = false;
         }
