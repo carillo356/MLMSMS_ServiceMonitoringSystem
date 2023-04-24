@@ -29,7 +29,7 @@ namespace MultisoftServicesMonitor
         }
 
         protected override void OnStop()
-        {
+        { 
             _realTimeLogger.Stop();
             _periodicLogger.Stop();
 
