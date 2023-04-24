@@ -1,0 +1,26 @@
+Service is started at 4/24/2023 12:39:06 PM
+Service is recall at 4/24/2023 12:39:09 PM My Counter: 
+Service is stopped at 4/24/2023 12:39:10 PM
+Service is started at 4/24/2023 12:41:17 PM
+Service is recall at 4/24/2023 12:41:20 PM My Counter: 
+Service is recall at 4/24/2023 12:41:23 PM My Counter: 
+Service is recall at 4/24/2023 12:41:26 PM My Counter: 
+Service is recall at 4/24/2023 12:41:29 PM My Counter: 
+Service is recall at 4/24/2023 12:41:32 PM My Counter: 
+Service is stopped at 4/24/2023 12:41:33 PM
+Service is started at 4/24/2023 12:41:59 PM
+Service is recall at 4/24/2023 12:42:02 PM My Counter: 
+Service is recall at 4/24/2023 12:42:05 PM My Counter: 
+Service is recall at 4/24/2023 12:42:08 PM My Counter: 
+Service is stopped at 4/24/2023 12:42:08 PM
+Service is started at 4/24/2023 12:42:25 PM
+Service is recall at 4/24/2023 12:42:28 PM My Counter: 
+Service is recall at 4/24/2023 12:42:31 PM My Counter: 
+Service is recall at 4/24/2023 12:42:34 PM My Counter: 
+Service is recall at 4/24/2023 12:42:37 PM My Counter: 
+Service is stopped at 4/24/2023 12:42:40 PM
+Service is started at 4/24/2023 12:42:55 PM
+Service is recall at 4/24/2023 12:42:58 PM My Counter: 
+Service is recall at 4/24/2023 12:43:01 PM My Counter: 
+Service is recall at 4/24/2023 12:43:04 PM My Counter: 
+Service is stopped at 4/24/2023 12:43:07 PM

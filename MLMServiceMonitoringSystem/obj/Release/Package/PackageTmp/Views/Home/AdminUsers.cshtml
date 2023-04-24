@@ -149,19 +149,19 @@
                         <div class="form-group m-3">
                             @Html.LabelFor(m => m.FirstName, "First Name:", new { @class = "label fw-bold" })
                             @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", autocomplete = "off" })
-                            <span class="badge badge-danger validation-message" id="FirstName-error"></span>
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "badge badge-danger" })
                         </div>
 
                         <div class="form-group m-3">
                             @Html.LabelFor(m => m.LastName, "Last Name:", new { @class = "label fw-bold" })
                             @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", autocomplete = "off" })
-                            <span class="badge badge-danger validation-message" id="LastName-error"></span>
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "badge badge-danger" })
                         </div>
 
                         <div class="form-group m-3">
                             @Html.LabelFor(m => m.Email, "Email Address:", new { @class = "label fw-bold" })
                             @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", autocomplete = "off" })
-                            <span class="badge badge-danger validation-message" id="Email-error"></span>
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
                             @if (ViewBag.error != null)
                             {
                                 <span class="badge badge-danger">@ViewBag.error</span>
@@ -172,7 +172,7 @@
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "password1" })
                             <span toggle="#password1" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
-                            <span class="badge badge-danger validation-message" id="Password-error"></span>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                         </div>
 
                         <div class="form-group m-3">
@@ -314,15 +314,15 @@
                         $('#add-user-form')[0].reset();
 
                     } else {
-                        // Check if there are validation errors
+                        // Check if there is a validation summary
                         if (result.message) {
-                            // Display validation messages
-                            for (const key in result.message) {
-                                const errorElement = document.getElementById(key + '-error');
-                                if (errorElement) {
-                                    errorElement.textContent = result.message[key];
-                                }
-                            }
+                            // Display validation summary as a list
+                            let validationSummaryList = '<ul class="validation-summary-list">';
+                            result.message.forEach(function (error) {
+                                validationSummaryList += `<li>${error}</li>`;
+                            });
+                            validationSummaryList += '</ul>';
+                            $('#validation-summary').html(validationSummaryList);
                         } else {
                             // Display error message
                             alert(result.message);
