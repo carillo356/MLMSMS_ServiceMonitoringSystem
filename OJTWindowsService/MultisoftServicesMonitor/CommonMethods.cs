@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
+using System.Management;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Authentication.ExtendedProtection;
@@ -374,19 +375,32 @@ namespace MultisoftServicesMonitor
             }
         }
 
-        public static DataTable CreateServiceInfoTable(ServiceController[] servicesInController)
+        public static DataTable CreateServiceInfoTable(string hostName)
         {
             DataTable serviceInfoTable = new DataTable();
             serviceInfoTable.Columns.Add("ServiceName", typeof(string));
             serviceInfoTable.Columns.Add("ServiceStatus", typeof(string));
+            serviceInfoTable.Columns.Add("Description", typeof(string));
+            serviceInfoTable.Columns.Add("StartupType", typeof(string));
+            serviceInfoTable.Columns.Add("LogOnAs", typeof(string));
 
-            foreach (var service in servicesInController)
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher($"\\\\{hostName}\\root\\cimv2", "SELECT * FROM Win32_Service"))
             {
-                serviceInfoTable.Rows.Add(service.ServiceName, service.Status.ToString());
+                foreach (ManagementObject queryObj in searcher.Get())
+                {
+                    string serviceName = queryObj["Name"]?.ToString() ?? "";
+                    string status = queryObj["State"]?.ToString() ?? "";
+                    string description = queryObj["Description"]?.ToString() ?? "";
+                    string startupType = queryObj["StartMode"]?.ToString() ?? "";
+                    string logOnAs = queryObj["StartName"]?.ToString() ?? "";
+
+                    serviceInfoTable.Rows.Add(serviceName, status, description, startupType, logOnAs);
+                }
             }
 
             return serviceInfoTable;
         }
+
 
     }
 }

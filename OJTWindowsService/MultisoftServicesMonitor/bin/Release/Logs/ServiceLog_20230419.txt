@@ -1,9 +1,0 @@
-Exception on SendEmail: Mailbox unavailable. The server response was: 5.4.5 Daily user sending quota exceeded. n13-20020a17090ac68d00b00244b10ebe1csm1344722pjt.19 - gsmtp
-08:36 PM
-
-Service: Service1, Status: Stopped
-08:36 PM
-
-Exception on SendEmail: Mailbox unavailable. The server response was: 5.4.5 Daily user sending quota exceeded. i4-20020a6561a4000000b0050336b0b08csm10227840pgv.19 - gsmtp
-08:36 PM
-

@@ -9,6 +9,8 @@ using System.ServiceProcess;
 using Timer = System.Timers.Timer;
 using static MultisoftServicesMonitor.CommonMethods;
 using System.Timers;
+using System.IO;
+using System.Reflection;
 
 namespace MultisoftServicesMonitor
 {
@@ -245,15 +247,16 @@ namespace MultisoftServicesMonitor
     public class PeriodicLogger
     {
         readonly Timer checkServicesTimer = new Timer();
+        readonly Timer deleteLogsTimer = new Timer();
 
         public Queue<string> _qGetEventLogList = new Queue<string>();
         private bool _isCheckServicesRunning = false;
         private bool _isQueueProcessing = false;
+        private int _deleteLogsXDaysOld = int.Parse(ConfigurationManager.AppSettings["deleteLogsXDaysOld"]);
         private string _error = "Error";
 
         public void Start()
         {
-
             if (int.TryParse(ConfigurationManager.AppSettings.Get("checkServicesEveryXMinute"), out int interval))
             {
                 checkServicesTimer.Interval = interval * 60 * 1000;
@@ -265,6 +268,9 @@ namespace MultisoftServicesMonitor
 
             CommonMethods.WriteToFile($"checkServicesEveryXMinute: {checkServicesTimer.Interval / 60000}", $"Run {GetType().Name}");
 
+            deleteLogsTimer.Interval = 24 * 60 * 60 * 1000;
+            deleteLogsTimer.Elapsed += new ElapsedEventHandler(OnDeleteLogsElapsedTime);
+            deleteLogsTimer.Start();
 
             checkServicesTimer.Elapsed += new ElapsedEventHandler(OnCheckServicesElapsedTime);
 
@@ -294,6 +300,52 @@ namespace MultisoftServicesMonitor
             }
         }
 
+        private void OnDeleteLogsElapsedTime(object source, ElapsedEventArgs e)
+        {
+
+            if (_deleteLogsXDaysOld < 7)
+            {
+                _deleteLogsXDaysOld = 7;
+            }
+            else if (_deleteLogsXDaysOld > 180)
+            {
+                _deleteLogsXDaysOld = 180;
+            }
+
+            DeleteOldLogFiles(_deleteLogsXDaysOld);
+            CommonMethods.WriteToFile($"deleteLogsXDaysOld: {_deleteLogsXDaysOld}", $"Delete Logs");
+        }
+
+        private void DeleteOldLogFiles(int deleteLogsXDaysOld)
+        {
+            string logDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
+
+            if (!Directory.Exists(logDirectory))
+            {
+                return;
+            }
+
+            DateTime cutoffDate = DateTime.Now.AddDays(-deleteLogsXDaysOld);
+
+            foreach (string file in Directory.GetFiles(logDirectory, "*.txt"))
+            {
+                FileInfo fileInfo = new FileInfo(file);
+
+                if (fileInfo.CreationTime < cutoffDate)
+                {
+                    try
+                    {
+                        File.Delete(file);
+                        CommonMethods.WriteToFile($"Deleted log file: {fileInfo.Name}", $"Delete Logs");
+                    }
+                    catch (Exception ex)
+                    {
+                        CommonMethods.WriteToFile($"Error deleting log file {fileInfo.Name}: {ex.Message}", _error);
+                    }
+                }
+            }
+        }
+
         public void CheckServices()
         {
             checkServicesTimer.Stop(); //Stopped the timer to ensure that the timer is stopped when checkservices is running.
@@ -310,8 +362,7 @@ namespace MultisoftServicesMonitor
                     string hostName = Environment.MachineName;
                     string logBy = GetType().Name;
 
-                    ServiceController[] servicesInController = ServiceController.GetServices(hostName);
-                    DataTable serviceInfoTable = CreateServiceInfoTable(servicesInController);
+                    DataTable serviceInfoTable = CreateServiceInfoTable(hostName);
                     SP_UpdateServicesAvailable(connection, serviceInfoTable, hostName);
 
                     var servicesInstalled = GetTripleColumn(connection, GetServicesStatusQuery("ServicesAvailable", "sa")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();

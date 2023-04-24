@@ -1,119 +1,104 @@
-07:28 AM - Run RealTimeLogger
+12:36 PM - Run RealTimeLogger
 enabled_RealTimeLogger: True
 
-07:28 AM - Run PeriodicLogger
+12:36 PM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
 
-07:28 AM - Stop MultisoftServicesMonitor
+12:36 PM - 
+hi
+
+12:37 PM - 
+hi
+
+12:37 PM - 
+hi
+
+12:37 PM - 
+hi
+
+12:37 PM - 
+hi
+
+12:37 PM - 
+hi
+
+12:37 PM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
-07:31 AM - Run RealTimeLogger
+12:49 PM - Run RealTimeLogger
 enabled_RealTimeLogger: True
 
-07:31 AM - Run PeriodicLogger
+12:49 PM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
 
-07:31 AM - Status Changed
-Service: Service1, Status: Running
-
-07:31 AM - Status Changed
-Service: Service2, Status: Running
-
-07:31 AM - Status Changed
-Service: Service1, Status: Stopped
-
-07:31 AM - Status Changed
-Service: Service2, Status: Stopped
-
-07:33 AM - Stop MultisoftServicesMonitor
+12:49 PM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
-07:34 AM - Run RealTimeLogger
-enabled_RealTimeLogger: False
-
-07:34 AM - Run PeriodicLogger
-checkServicesEveryXMinute: 30
-
-07:34 AM - Run Periodic Logger
-ServiceName: Service1, ServiceStatus: Running, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
-ServiceName: Service2, ServiceStatus: Running, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
-
-
-07:34 AM - Run PeriodicLogger
-ServiceName: Service1, LastStart: 4/24/2023 7:34:11 AM, LastEventLog: Service started successfully.
-
-
-07:34 AM - Run PeriodicLogger
-ServiceName: Service2, LastStart: 4/24/2023 7:34:14 AM, LastEventLog: Service started successfully.
-
-
-07:34 AM - Stop MultisoftServicesMonitor
-MultisoftServicesMonitor have stopped 
-
-07:35 AM - Run RealTimeLogger
-enabled_RealTimeLogger: False
-
-07:35 AM - Run PeriodicLogger
-checkServicesEveryXMinute: 30
-
-07:35 AM - Run Periodic Logger
-ServiceName: Service1, ServiceStatus: Stopped, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
-ServiceName: Service2, ServiceStatus: Stopped, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
-
-
-07:35 AM - Run PeriodicLogger
-ServiceName: Service1, LastStart: 4/24/2023 7:34:39 AM, LastEventLog: Service stopped successfully.
-
-
-07:35 AM - Run PeriodicLogger
-ServiceName: Service2, LastStart: 4/24/2023 7:34:42 AM, LastEventLog: Service stopped successfully.
-
-
-07:35 AM - Stop MultisoftServicesMonitor
-MultisoftServicesMonitor have stopped 
-
-07:38 AM - Run RealTimeLogger
-enabled_RealTimeLogger: False
-
-07:38 AM - Run PeriodicLogger
-checkServicesEveryXMinute: 30
-
-07:39 AM - Stop MultisoftServicesMonitor
-MultisoftServicesMonitor have stopped 
-
-07:39 AM - Run RealTimeLogger
+12:50 PM - Run RealTimeLogger
 enabled_RealTimeLogger: True
 
-07:39 AM - Run PeriodicLogger
+12:50 PM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
 
-07:40 AM - Status Changed
-Service: Service1, Status: Running
-
-07:40 AM - Status Changed
-Service: Service1, Status: Running
-
-07:40 AM - Status Changed
-Service: Service1, Status: Stopped
-
-07:41 AM - Stop MultisoftServicesMonitor
+12:50 PM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
-07:43 AM - Run RealTimeLogger
+12:52 PM - Run RealTimeLogger
 enabled_RealTimeLogger: True
 
-07:43 AM - Run PeriodicLogger
+12:52 PM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
 
-07:43 AM - Stop MultisoftServicesMonitor
+12:53 PM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
-09:47 AM - Run RealTimeLogger
+12:54 PM - Run RealTimeLogger
 enabled_RealTimeLogger: True
 
-09:47 AM - Run PeriodicLogger
+12:54 PM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
 
-09:47 AM - Stop MultisoftServicesMonitor
+12:54 PM - Delete Logs
+Deleted log file: ServiceLog_20230419.txt
+deleteLogsXDaysOld: 3
+
+12:54 PM - Delete Logs
+Deleted log file: ServiceLog_20230420.txt
+deleteLogsXDaysOld: 3
+
+12:56 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+01:23 PM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+01:23 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+01:23 PM - Delete Logs
+deleteLogsXDaysOld: 1
+
+01:23 PM - Delete Logs
+deleteLogsXDaysOld: 1
+
+01:23 PM - Delete Logs
+deleteLogsXDaysOld: 1
+
+01:24 PM - Delete Logs
+deleteLogsXDaysOld: 1
+
+01:24 PM - Delete Logs
+deleteLogsXDaysOld: 1
+
+01:24 PM - Delete Logs
+deleteLogsXDaysOld: 1
+
+01:24 PM - Delete Logs
+deleteLogsXDaysOld: 1
+
+01:24 PM - Delete Logs
+deleteLogsXDaysOld: 1
+
+01:24 PM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
