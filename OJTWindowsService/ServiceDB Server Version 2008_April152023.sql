@@ -257,17 +257,19 @@ BEGIN
     WHERE IdUser = @IdUser
 END
 GO
-/****** Object:  StoredProcedure [dbo].[GetLatestLogsForAllServices]    Script Date: 24/04/2023 2:38:35 pm ******/
+/****** Object:  StoredProcedure [dbo].[GetLatestLogsForAllServices]    Script Date: 25/04/2023 9:37:43 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
 CREATE PROCEDURE [dbo].[GetLatestLogsForAllServices]
 AS
 BEGIN
-    SELECT sl.sl_LogID, sl.sl_LogDate, sl.sl_LogBy, sm.sm_ServiceName, sl.sl_ServiceStatus, sl.sl_HostName, sl.sl_LastStart, sl.sl_LastEventLog
+    SELECT sl.sl_LogID, sl.sl_LogDate, sl.sl_LogBy, sm.sm_ServiceName, sl.sl_ServiceStatus, sl.sl_HostName, sl.sl_LastStart, sl.sl_LastEventLog, sa.sa_Description, sa.sa_StartupType, sa.sa_LogOnAs
     FROM ServicesMonitored sm
     LEFT JOIN ServicesLogs sl ON sm.sm_LastLogID = sl.sl_LogID
+    INNER JOIN ServicesAvailable sa ON sm.sm_ServiceName = sa.sa_ServiceName
 END
 GO
 /****** Object:  StoredProcedure [dbo].[GetServicesAvailable]    Script Date: 24/04/2023 2:38:35 pm ******/
