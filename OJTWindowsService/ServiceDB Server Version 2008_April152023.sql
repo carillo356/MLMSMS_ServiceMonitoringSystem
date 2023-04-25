@@ -1,12 +1,18 @@
 ALTER DATABASE [ServiceMonitor] SET  ENABLE_BROKER 
 GO
-/****** Object:  UserDefinedTableType [dbo].[ServiceInfoTableType]    Script Date: 16/04/2023 5:16:22 pm ******/
+
+USE [ServiceMonitor]
+GO
+/****** Object:  UserDefinedTableType [dbo].[ServiceInfoTableType]    Script Date: 24/04/2023 2:38:35 pm ******/
 CREATE TYPE [dbo].[ServiceInfoTableType] AS TABLE(
 	[ServiceName] [nvarchar](255) NULL,
-	[ServiceStatus] [nvarchar](255) NULL
+	[ServiceStatus] [nvarchar](255) NULL,
+	[Description] [nvarchar](4000) NULL,
+	[StartupType] [nvarchar](255) NULL,
+	[LogOnAs] [nvarchar](255) NULL
 )
 GO
-/****** Object:  UserDefinedTableType [dbo].[ServiceStatusUpdateType]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  UserDefinedTableType [dbo].[ServiceStatusUpdateType]    Script Date: 24/04/2023 2:38:35 pm ******/
 CREATE TYPE [dbo].[ServiceStatusUpdateType] AS TABLE(
 	[ServiceName] [nvarchar](100) NULL,
 	[ServiceStatus] [nvarchar](50) NULL,
@@ -16,7 +22,7 @@ CREATE TYPE [dbo].[ServiceStatusUpdateType] AS TABLE(
 	[LastEventLog] [nvarchar](max) NULL
 )
 GO
-/****** Object:  UserDefinedFunction [dbo].[GetMD5]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  UserDefinedFunction [dbo].[GetMD5]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -35,7 +41,7 @@ BEGIN
     RETURN @md5String;
 END
 GO
-/****** Object:  Table [dbo].[ServicesAvailable]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  Table [dbo].[ServicesAvailable]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -45,14 +51,17 @@ CREATE TABLE [dbo].[ServicesAvailable](
 	[sa_ServiceStatus] [nvarchar](50) NOT NULL,
 	[sa_HostName] [nvarchar](250) NOT NULL,
 	[sa_LastUpdate] [datetime] NOT NULL,
+	[sa_Description] [nvarchar](max) NULL,
+	[sa_StartupType] [nvarchar](50) NULL,
+	[sa_LogOnAs] [nvarchar](100) NULL,
  CONSTRAINT [PK_ServicesAvailable] PRIMARY KEY CLUSTERED 
 (
 	[sa_ServiceName] ASC,
 	[sa_HostName] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ServicesLogs]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  Table [dbo].[ServicesLogs]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -69,10 +78,10 @@ CREATE TABLE [dbo].[ServicesLogs](
  CONSTRAINT [PK__Services__8D34A6E347DC4CC1] PRIMARY KEY CLUSTERED 
 (
 	[sl_LogID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ServicesMonitored]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  Table [dbo].[ServicesMonitored]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -86,15 +95,15 @@ CREATE TABLE [dbo].[ServicesMonitored](
 (
 	[sm_ServiceName] ASC,
 	[sm_HostName] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ServicesTokens]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  Table [dbo].[SsoTokens]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[ServicesTokens](
+CREATE TABLE [dbo].[SsoTokens](
 	[st_Id] [int] IDENTITY(1,1) NOT NULL,
 	[st_Email] [nvarchar](100) NOT NULL,
 	[st_Token] [nvarchar](100) NOT NULL,
@@ -102,10 +111,10 @@ CREATE TABLE [dbo].[ServicesTokens](
 PRIMARY KEY CLUSTERED 
 (
 	[st_Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Users]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  Table [dbo].[Users]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -121,28 +130,28 @@ CREATE TABLE [dbo].[Users](
 PRIMARY KEY CLUSTERED 
 (
 	[IdUser] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_ServicesMonitored]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  Index [IX_ServicesMonitored]    Script Date: 24/04/2023 2:38:35 pm ******/
 CREATE UNIQUE NONCLUSTERED INDEX [IX_ServicesMonitored] ON [dbo].[ServicesMonitored]
 (
 	[sm_LastLogID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [IX_Users]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  Index [IX_Users]    Script Date: 24/04/2023 2:38:35 pm ******/
 CREATE UNIQUE NONCLUSTERED INDEX [IX_Users] ON [dbo].[Users]
 (
 	[Email] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Users] ADD  DEFAULT ((0)) FOR [Email_Notification]
 GO
 ALTER TABLE [dbo].[Users] ADD  DEFAULT ((0)) FOR [IsAdmin]
 GO
-/****** Object:  StoredProcedure [dbo].[AddNewUser]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[AddNewUser]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -210,7 +219,7 @@ BEGIN
     END CATCH;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteServiceFromMonitored]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[DeleteServiceFromMonitored]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -222,7 +231,7 @@ BEGIN
     DELETE FROM ServicesMonitored WHERE sm_ServiceName = @ServiceName
 END
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteServiceToken]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[DeleteServiceToken]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -231,11 +240,11 @@ CREATE PROCEDURE [dbo].[DeleteServiceToken]
     @Token NVARCHAR(36)
 AS
 BEGIN
-    DELETE FROM ServicesTokens
+    DELETE FROM SsoTokens
     WHERE st_Token = @Token;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteUser]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[DeleteUser]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -248,7 +257,7 @@ BEGIN
     WHERE IdUser = @IdUser
 END
 GO
-/****** Object:  StoredProcedure [dbo].[GetLatestLogsForAllServices]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[GetLatestLogsForAllServices]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -261,7 +270,7 @@ BEGIN
     LEFT JOIN ServicesLogs sl ON sm.sm_LastLogID = sl.sl_LogID
 END
 GO
-/****** Object:  StoredProcedure [dbo].[GetServicesAvailable]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[GetServicesAvailable]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -272,7 +281,7 @@ BEGIN
     SELECT sa_ServiceName FROM ServicesAvailable;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[GetServicesMonitored]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[GetServicesMonitored]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -286,7 +295,7 @@ BEGIN
     FROM dbo.ServicesMonitored;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[GetServicesMonitoredRowCount]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[GetServicesMonitoredRowCount]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -297,7 +306,7 @@ BEGIN
     SELECT COUNT_BIG(*) FROM dbo.ServicesMonitored;
 END
 GO
-/****** Object:  StoredProcedure [dbo].[GetServicesStatus]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[GetServicesStatus]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -309,7 +318,7 @@ BEGIN
     FROM ServicesMonitored
 END
 GO
-/****** Object:  StoredProcedure [dbo].[GetUserEmailBySSOToken]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[GetUserEmailBySSOToken]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -320,12 +329,12 @@ CREATE PROCEDURE [dbo].[GetUserEmailBySSOToken]
 AS
 BEGIN
     SELECT @Email = st_Email
-    FROM ServicesTokens
+    FROM SsoTokens
     WHERE st_Token = @Token
       AND st_ExpirationTime > GETUTCDATE();
 END
 GO
-/****** Object:  StoredProcedure [dbo].[InsertServicesToken]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[InsertServicesToken]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -336,11 +345,18 @@ CREATE PROCEDURE [dbo].[InsertServicesToken]
     @ExpirationTime DATETIME
 AS
 BEGIN
-    INSERT INTO ServicesTokens (st_Email, st_Token, st_ExpirationTime)
+    INSERT INTO SsoTokens (st_Email, st_Token, st_ExpirationTime)
     VALUES (@Email, @Token, @ExpirationTime);
 END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateServiceEventLogInfo]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[SqlQueryNotificationStoredProcedure-f100e403-773c-4cba-a7c7-d8c19ca60fe6]    Script Date: 24/04/2023 2:38:35 pm ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SqlQueryNotificationStoredProcedure-f100e403-773c-4cba-a7c7-d8c19ca60fe6] AS BEGIN BEGIN TRANSACTION; RECEIVE TOP(0) conversation_handle FROM [SqlQueryNotificationService-f100e403-773c-4cba-a7c7-d8c19ca60fe6]; IF (SELECT COUNT(*) FROM [SqlQueryNotificationService-f100e403-773c-4cba-a7c7-d8c19ca60fe6] WHERE message_type_name = 'http://schemas.microsoft.com/SQL/ServiceBroker/DialogTimer') > 0 BEGIN if ((SELECT COUNT(*) FROM sys.services WHERE name = 'SqlQueryNotificationService-f100e403-773c-4cba-a7c7-d8c19ca60fe6') > 0)   DROP SERVICE [SqlQueryNotificationService-f100e403-773c-4cba-a7c7-d8c19ca60fe6]; if (OBJECT_ID('SqlQueryNotificationService-f100e403-773c-4cba-a7c7-d8c19ca60fe6', 'SQ') IS NOT NULL)   DROP QUEUE [SqlQueryNotificationService-f100e403-773c-4cba-a7c7-d8c19ca60fe6]; DROP PROCEDURE [SqlQueryNotificationStoredProcedure-f100e403-773c-4cba-a7c7-d8c19ca60fe6]; END COMMIT TRANSACTION; END
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateServiceEventLogInfo]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -379,11 +395,12 @@ BEGIN
     END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateServicesAvailable]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[UpdateServicesAvailable]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
 CREATE PROCEDURE [dbo].[UpdateServicesAvailable]
     @ServiceInfo ServiceInfoTableType READONLY,
     @HostName NVARCHAR(255)
@@ -397,8 +414,8 @@ BEGIN
         DELETE FROM ServicesAvailable WHERE sa_HostName = @HostName;
 
         -- Insert new records
-        INSERT INTO ServicesAvailable (sa_ServiceName, sa_ServiceStatus, sa_HostName, sa_LastUpdate)
-        SELECT ServiceName, ServiceStatus, @HostName, GETDATE()
+        INSERT INTO ServicesAvailable (sa_ServiceName, sa_ServiceStatus, sa_HostName, sa_LastUpdate, sa_Description, sa_StartupType, sa_LogOnAs)
+        SELECT ServiceName, ServiceStatus, @HostName, GETDATE(), Description, StartupType, LogOnAs
         FROM @ServiceInfo;
 
         COMMIT TRANSACTION;
@@ -410,7 +427,7 @@ BEGIN
     END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateServiceStatus]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[UpdateServiceStatus]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -477,7 +494,7 @@ BEGIN
     END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateServiceStatusBulk]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[UpdateServiceStatusBulk]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -540,7 +557,7 @@ BEGIN
     END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateUserEmailNotification]    Script Date: 16/04/2023 5:16:22 pm ******/
+/****** Object:  StoredProcedure [dbo].[UpdateUserEmailNotification]    Script Date: 24/04/2023 2:38:35 pm ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

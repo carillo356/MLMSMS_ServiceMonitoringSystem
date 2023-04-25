@@ -274,7 +274,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
         {
             string hostName = Environment.MachineName;
             DateTime lastStart = new DateTime(1900, 1, 1);
-            string lastEventLog = "No Record";
+            string lastEventLog = "Service is already ";
             string logBy = Session["FullName"].ToString() ?? "NotFound";
 
 
@@ -299,7 +299,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             }
                             else
                             {
-                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
+                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, "NotFound", lastStart, lastEventLog + sc.Status.ToString());
                             }
                             break;
 
@@ -311,7 +311,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             }
                             else
                             {
-                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
+                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, "NotFound", lastStart, lastEventLog + sc.Status.ToString());
                             }
                             break;
 
@@ -325,12 +325,12 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             }
                             else
                             {
-                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
+                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, "NotFound", lastStart, lastEventLog + sc.Status.ToString());
                             }
                             break;
 
                         default:
-                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, logBy, lastStart, lastEventLog);
+                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, "NotFound", lastStart, lastEventLog + sc.Status.ToString());
                             break;
                     }
                 }

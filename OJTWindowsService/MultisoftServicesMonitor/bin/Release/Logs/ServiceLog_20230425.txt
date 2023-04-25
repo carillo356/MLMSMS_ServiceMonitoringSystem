@@ -1,0 +1,34 @@
+01:15 PM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+01:15 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+01:21 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+01:21 PM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+01:21 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+01:21 PM - Run Periodic Logger
+ServiceName: Service1, ServiceStatus: Running, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+ServiceName: Service2, ServiceStatus: Running, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+01:21 PM - Run PeriodicLogger
+ServiceName: Service1, LastStart: 4/25/2023 1:21:14 PM, LastEventLog: Service started successfully.
+
+
+01:21 PM - Run PeriodicLogger
+ServiceName: Service2, LastStart: 4/25/2023 1:20:19 PM, LastEventLog: Service started successfully.
+
+
+01:23 PM - Status Changed
+Service: Service2, Status: Stopped
+
+01:24 PM - Status Changed
+Service: Service1, Status: Stopped
+
