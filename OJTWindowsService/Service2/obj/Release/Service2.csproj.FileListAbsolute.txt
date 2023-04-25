@@ -18,3 +18,13 @@ C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Releas
 C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.csproj.CoreCompileInputs.cache
 C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.exe
 C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.pdb
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\bin\Release\Service2.exe.config
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\bin\Release\Service2.exe
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\bin\Release\Service2.pdb
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.csproj.AssemblyReference.cache
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.csproj.SuggestedBindingRedirects.cache
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.ProjectInstaller.resources
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.csproj.GenerateResource.cache
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.csproj.CoreCompileInputs.cache
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.exe
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\Service2\obj\Release\Service2.pdb
