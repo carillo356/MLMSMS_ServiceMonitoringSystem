@@ -18,5 +18,11 @@ namespace LoginAndRegisterASPMVC5.Models
         public string LastEventLog { get; set; }
 
         public string HostName { get; set; }
+        
+        public string Description { get; set; }
+
+        public string StartupType { get; set; }
+
+        public string LogOnAs { get; set; }
     }
 }

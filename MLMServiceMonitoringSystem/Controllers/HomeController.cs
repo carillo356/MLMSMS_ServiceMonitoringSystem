@@ -189,7 +189,10 @@ namespace LoginAndRegisterASPMVC5.Controllers
                                 ServiceStatus = reader["sl_ServiceStatus"] == DBNull.Value ? "" : reader["sl_ServiceStatus"].ToString(),
                                 LastEventLog = reader["sl_LastEventLog"] == DBNull.Value ? "" : reader["sl_LastEventLog"].ToString(),
                                 HostName = reader["sl_HostName"] == DBNull.Value ? "" : reader["sl_HostName"].ToString(),
-                                LogBy = reader["sl_LogBy"] == DBNull.Value ? "" : reader["sl_LogBy"].ToString()
+                                LogBy = reader["sl_LogBy"] == DBNull.Value ? "" : reader["sl_LogBy"].ToString(),
+                                Description = reader["sa_Description"] == DBNull.Value ? "" : reader["sa_Description"].ToString(),
+                                StartupType = reader["sa_StartupType"] == DBNull.Value ? "" : reader["sa_StartupType"].ToString(),
+                                LogOnAs = reader["sa_LogOnAs"] == DBNull.Value ? "" : reader["sa_LogOnAs"].ToString()
                             });
                         }
                     }
