@@ -78,3 +78,6 @@ ServiceName: MultisoftServicesMonitor, LastStart: 4/25/2023 3:25:11 PM, LastEven
 03:25 PM - Status Changed
 Service: MultisoftServicesMonitor, Status: Running
 
+09:40 PM - Error
+Exception in SM_TableChangeListener: Login failed for user 'sa2'.
+

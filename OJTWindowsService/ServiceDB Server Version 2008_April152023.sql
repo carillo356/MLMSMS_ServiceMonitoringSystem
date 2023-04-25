@@ -1,4 +1,4 @@
-ALTER DATABASE [ServiceMonitor] SET  ENABLE_BROKER 
+ALTER DATABASE [ServiceMonitor] SET ENABLE_BROKER;
 GO
 
 USE [ServiceMonitor]
