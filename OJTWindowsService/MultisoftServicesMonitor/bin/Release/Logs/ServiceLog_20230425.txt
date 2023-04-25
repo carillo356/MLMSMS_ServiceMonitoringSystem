@@ -1,0 +1,6 @@
+Service: Service1, Status: Running
+10:33 AM
+
+Service: Service1, Status: Stopped
+10:33 AM
+
