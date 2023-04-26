@@ -138,11 +138,11 @@
     <Content Include="JS_Scripts\admin_Users\dropdown_showhidePassword.js" />
     <Content Include="JS_Scripts\admin_Users\pagination.js" />
     <Content Include="JS_Scripts\admin_Users\tooltip_deleteUser_editUser_modal.js" />
-    <Content Include="JS_Scripts\index\add_remove_service.js" />
-    <Content Include="JS_Scripts\index\clearField_submitForm_dropdown.js" />
-    <Content Include="JS_Scripts\index\serviceTable_logs.js" />
+    <Content Include="JS_Scripts\index\add_remove.js" />
+    <Content Include="JS_Scripts\index\clearField_dropDown_submitForm.js" />
+    <Content Include="JS_Scripts\index\serviceTable_Logs.js" />
     <Content Include="JS_Scripts\nonAdmin_Users\dropdown.js" />
-    <Content Include="JS_Scripts\nonAdmin_Users\pagination.js" />
+    <Content Include="JS_Scripts\nonAdmin_Users\nonAdmin_pagination.js" />
     <Content Include="JS_Scripts\nonAdmin_Users\tooltips.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />

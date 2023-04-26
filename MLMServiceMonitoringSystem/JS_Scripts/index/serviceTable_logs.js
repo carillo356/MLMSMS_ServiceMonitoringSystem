@@ -1,47 +1,37 @@
-﻿$(document).ready(function () {
-    SynchServiceTB();
-});
+﻿    $(document).ready(function () {
+        SynchServiceTB();
+    });
 
     let ITEMS_PER_PAGE = 5;
     let logHistoryCount;
     let serviceTableCount;
 
-    function ServicesAvailable() {
-        return GetServicesInController()
-            .then(function (servicesInController) {
-                Checkbox(servicesInController);
-            })
-            .catch(function (error) {
-                alert(error);
-            });
-    }
-
     function SynchServiceTB() {
         ServicesInMonitor()
-            .then(function () {
-                return ServicesAvailable();
-            })
-            .then(function () {
-                generatePageNumbers();
-            })
-            .then(function () {
-                // Get the current page value and set it to 1 if it's null
-                let currentPage = parseInt(document.getElementById('current-page').textContent);
-                let totalPages = parseInt(document.getElementById('total-pages').textContent);
-                currentPage = currentPage ? currentPage : 1;
-                totalPages = totalPages ? totalPages : 1;
-                // Pass the current page value to the function
-                if (currentPage < totalPages || currentPage/totalPages === 1) {
-                    showPageServiceTB(currentPage);
-                }
-                else if (currentPage > totalPages) {
-                    document.getElementById('current-page').textContent = totalPages;
-                    showPageServiceTB(totalPages);
-                }
-            })
-            .catch(function (error) {
-                alert(error);
-            });
+        .then(function () {
+            return GetServicesInController(); // Add return here
+        })
+        .then(function (servicesInController) {
+            Checkbox(servicesInController);
+        })
+        .then(function () {
+            generatePageNumbers();
+        })
+        .then(function () {
+            // Get the current page value and set it to 1 if it's null
+            let currentPage = parseInt(document.getElementById('current-page').textContent);
+            let totalPages = parseInt(document.getElementById('total-pages').textContent);
+            currentPage = currentPage ? currentPage : 1;
+            totalPages = totalPages ? totalPages : 1;
+            // Pass the current page value to the function
+            if (currentPage < totalPages || currentPage/totalPages === 1) {
+                showPageServiceTB(currentPage);
+            }
+            else if (currentPage > totalPages) {
+                document.getElementById('current-page').textContent = totalPages;
+                showPageServiceTB(totalPages);
+            }
+        })
     }
 
     // Set up the event listener for options
@@ -63,79 +53,107 @@
                 url: '/Home/ServicesInMonitor',
                 type: 'GET',
                 dataType: 'json',
-                success: function (result) {
-                    $("#serviceTable tbody").empty();
+                success: function (response) {
+                    if (response.success) {
+                        $("#serviceTable tbody").empty();
+                        // Loop through the data and append each row to the table
+                        response.servicesInMonitor.forEach(function (Data) {
+                            var limit = 5;
+                            if (Data.ServiceStatus === "Running")
+                                statusText = '<span style="color:green">Running</span>'
+                            else if (Data.ServiceStatus === "Stopped")
+                                statusText = '<span style="color:red">Stopped</span>'
+                            else
+                                statusText = "";
 
-                    // Loop through the data and append each row to the table
-                    result.forEach(function (Data) {
-                        var limit = 5;
-                        if (Data.ServiceStatus === "Running")
-                            statusText = '<span style="color:green">Running</span>'
-                        else if (Data.ServiceStatus === "Stopped")
-                            statusText = '<span style="color:red">Stopped</span>'
-                        else
-                            statusText = "";
+                            var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                            row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
+                            row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
+                            row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastEventLog + "</td>";
+                            row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
+                            row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.HostName + "</td>";
+                            row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LogBy + "</td>";
+                            row += "<td>";
 
-                        var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastEventLog + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + statusText + "</span></td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.HostName + "</td>";
-                        row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LogBy + "</td>";
-                        row += "<td>";
+                            if (Data.ServiceStatus === "Stopped") {
+                                row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Run Service'>";
+                                row += "<i class='bi bi-caret-right-fill'></i>";
+                                row += "</button>";
+                            }
+                            else {
+                                row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
+                                row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Stop Service'>";
+                                row += "<i class='bi bi-stop-fill'></i>";
+                                row += "</button>";
+                                row += "<button class='action-button mx-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Restart Service'>"
+                                row += "<i class='bi bi-arrow-repeat'></i>";
+                                row += "</button>";
+                            }
 
-                        if (Data.ServiceStatus === "Stopped") {
-                            row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Run Service'>";
-                            row += "<i class='bi bi-caret-right-fill'></i>";
+                            row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete Service'>";
+                            row += "<i class='bi bi-trash3-fill'></i>";
                             row += "</button>";
-                        } else if (Data.ServiceStatus === "Running") {
-                            row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\")'>Run</button>";
-                            row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Stop Service'>";
-                            row += "<i class='bi bi-stop-fill'></i>";
-                            row += "</button>";
-                            row += "<button class='action-button mx-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Restart Service'>"
-                            row += "<i class='bi bi-arrow-repeat'></i>";
-                            row += "</button>";
-                        }
-                        row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete Service'>";
-                        row += "<i class='bi bi-trash3-fill'></i>";
-                        row += "</button>";
-                        row += "</td></tr>";
-                        $("#serviceTable tbody").append(row);
-                    });
-                    serviceTableCount = result.length;
-                    resolve();
+
+                            row += "</td></tr>";
+                            $("#serviceTable tbody").append(row);
+                        });
+                        serviceTableCount = response.servicesInMonitor.length;
+                        resolve();
+                    }
+                    else {
+                        var errorContainer = document.getElementById("error-container");
+                        errorContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${response.errorMessage}</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                    }
+                    
                 },
-                error: function () {
-                    reject("Failed to refresh services.");
+                error: function (xhr) {
+                    var errorMessage = xhr.responseText;
+
+                    var errorContainer = document.getElementById("error-container");
+                    errorContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${errorMessage}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
+                    reject(); 
                 }
             });
         });
     }
 
     function GetServicesInController() {
-        var servicesInTable = [];
-        $('#servicesTable tbody tr').each(function () {
-            servicesInTable.push($(this).find('td:first').text());
-        });
-
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: "/Home/GetServicesInController",
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(servicesInTable),
-                success: function (result) {
-                    resolve(result);
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    reject('Error getting service names');
-                }
+            var servicesInTable = [];
+            $('#servicesTable tbody tr').each(function () {
+                servicesInTable.push($(this).find('td:first').text());
             });
-        });
-    }
+
+            return new Promise(function (resolve) {
+                $.ajax({
+                    url: "/Home/GetServicesInController",
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(servicesInTable),
+                    success: function (response) {
+                        resolve(response);
+                    },
+                    error: function (xhr) {
+                        var errorMessage = xhr.responseText;
+
+                        var errorContainer = document.getElementById("error-container");
+                        errorContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${errorMessage}</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                    }
+                });
+            });
+        }
 
     function Checkbox(servicesInController) {
         if (servicesInController.length > 0) {
@@ -197,42 +215,77 @@
             $.ajax({
                 url: '/Home/ServiceAction',
                 type: 'POST',
+                dataType: 'json',
                 data: { serviceName: serviceName, command: command },
-                success: function () {
-                    $("#serviceTable tbody").empty();
+                success: function (response) {
+                    if (response.success) {
+                        $("#serviceTable tbody").empty();
 
-                    var commandText = command.toUpperCase();
-                    if (command === "stop") {
-                        commandText = "STOPPED";
-                    } else if (command === "start") {
-                        commandText = "STARTED";
-                    } else if (command === "restart") {
-                        commandText = "RESTARTED";
-                    }
+                        var commandText = command.toUpperCase();
+                        if (command === "stop") {
+                            commandText = "STOPPED";
+                        } else if (command === "start") {
+                            commandText = "STARTED";
+                        } else if (command === "restart") {
+                            commandText = "RESTARTED";
+                        }
 
-                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
-                    var toastMessage = "You " + commandText + " the service " + " ' " + serviceName + " ' " + ".";
-                    document.querySelector('.toast-body').innerHTML = toastMessage;
+                        var toastElement = document.createElement('div');
+                        toastElement.setAttribute('class', 'toast hide toast-stack');
+                        toastElement.setAttribute('role', 'alert');
+                        toastElement.setAttribute('aria-live', 'assertive');
+                        toastElement.setAttribute('aria-atomic', 'true');
 
-                    if (commandText === "STOPPED") {
-                        // set background color to red if commandText is Stopped
-                        toast._element.classList.remove("bg-success");
-                        toast._element.classList.add("bg-danger");
+                        var toastBody = document.createElement('div');
+                        toastBody.setAttribute('class', 'toast-body');
+                        toastElement.appendChild(toastBody);
+
+                        var toastWrapper = document.getElementById('toast-wrapper');
+                        toastWrapper.appendChild(toastElement);
+
+                        var toast = new bootstrap.Toast(toastElement);
+                        var toastMessage = "You " + commandText + " the service " + " ' " + serviceName + " ' " + ".";
+                        toastBody.innerHTML = toastMessage;
+
+                        if (commandText === "STOPPED") {
+                            // set background color to red if commandText is Stopped
+                            toast._element.classList.remove("bg-success");
+                            toast._element.classList.add("bg-danger");
+                        } else {
+                            // set background color to green for any other commandText
+                            toast._element.classList.remove("bg-danger");
+                            toast._element.classList.add("bg-success");
+                        }
+
+                        toast.show();
+
+                        setTimeout(function () {
+                            toast.dispose();
+                        }, 4000);
                     } else {
-                        // set background color to green for any other commandText
-                        toast._element.classList.remove("bg-danger");
-                        toast._element.classList.add("bg-success");
+                        // Handle the error case
+                        var errorContainer = document.getElementById("error-container");
+                        errorContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${response.errorMessage}</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
                     }
-
-                    toast.show();
-
-                    setTimeout(function () {
-                        toast.dispose();
-                    }, 4000);
                 },
-                error: function () {
-                    alert('Failed to ' + command + ' ' + serviceName);
+                error: function (xhr) {
+                    var errorMessage = xhr.responseText;
+                    
+                    var errorContainer = document.getElementById("error-container");
+                    errorContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${errorMessage}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
                 }
+
+
+
+
             }).then(function () {
                 SynchServiceTB();
             });
@@ -243,6 +296,7 @@
             modal.style.display = "none";
         }
     }
+
 
     // Pagination for Log History 
     let indexPageLogHistory = 1;
@@ -294,50 +348,67 @@
     });
 
     // Log History Modal
-    function logHistory(serviceName, limit) {
+    function logHistory(serviceName) {
         //Viewlogs, Gets all the records of a service
         $.ajax({
             url: "/Home/GetServiceLogsTB",
             type: "POST",
             data: { serviceName: serviceName },
-            success: function (data) {
+            success: function (response) {
                 // Get the table body element
-                var tbody = $('#popupTable tbody');
-                tbody.empty();
+                if (response.success) {
+                    var tbody = $('#popupTable tbody');
+                    tbody.empty();
 
-                // Create a string containing all the rows
-                var rows = '';
-                data.forEach(function (service) {
-                    // Add a CSS class to the td element based on the value of ServiceStatus
-                    var statusColorClass = service.ServiceStatus === 'Running' ? 'text-success' : 'text-danger';
+                    // Create a string containing all the rows
+                    var rows = '';
+                    response.servicesLogsList.forEach(function (service) {
+                        // Add a CSS class to the td element based on the value of ServiceStatus
+                        var statusColorClass = service.ServiceStatus === 'Running' ? 'text-success' : 'text-danger';
 
-                    rows += '<tr>' +
-                        '<td>' + service.LastStart + '</td>' +
-                        '<td>' + service.LastEventLog + '</td>' +
-                        '<td class="status">' +
-                        '<span class="' + statusColorClass + '">' + service.ServiceStatus + '</span>' +
-                        '</td>' +
-                        '<td>' + service.HostName + '</td>' +
-                        '<td>' + service.LogBy + '</td>' +
-                        '</tr>';
-                });
+                        rows += '<tr>' +
+                            '<td>' + service.LastStart + '</td>' +
+                            '<td>' + service.LastEventLog + '</td>' +
+                            '<td class="status">' +
+                            '<span class="' + statusColorClass + '">' + service.ServiceStatus + '</span>' +
+                            '</td>' +
+                            '<td>' + service.HostName + '</td>' +
+                            '<td>' + service.LogBy + '</td>' +
+                            '</tr>';
+                    });
 
-                // Append the rows to the table in a single operation
-                tbody.append(rows);
-                activeServiceName = serviceName;
+                    // Append the rows to the table in a single operation
+                    tbody.append(rows);
+                    activeServiceName = serviceName;
 
-                $('#logHistory-modal .modal-servicelogs .service_name').text(serviceName);
+                    $('#logHistory-modal .modal-servicelogs .service_name').text(serviceName);
 
-                //// Show the popup dialog
-                //ITEMS_PAR_PAGE_LOGS = limit;
-                //logsshowPage(1);
-                $('#logHistory-modal').css('display', 'block');
-                showPageLogHistory(1);
-                logHistoryCount = data.length;
-                generatePageNumbersLogHistory();
+                    //// Show the popup dialog
+                    //ITEMS_PAR_PAGE_LOGS = limit;
+                    //logsshowPage(1);
+                    $('#logHistory-modal').css('display', 'block');
+                    showPageLogHistory(1);
+                    logHistoryCount = response.servicesLogsList.length;
+                    generatePageNumbersLogHistory();
+                }
+                else {
+                    var errorContainer = document.getElementById("error-container");
+                    errorContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${response.errorMessage}</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                }
             },
-            error: function () {
-                alert("Failed to retrieve records for " + serviceName);
+            error: function (xhr) {
+                var errorMessage = xhr.responseText;
+
+                var errorContainer = document.getElementById("error-container");
+                errorContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${errorMessage}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
             }
         });
     }
@@ -455,8 +526,15 @@ function generatePageNumbersLogHistory() {
                 success: function (result) {
                     resolve(result.totalMonitoredServices);
                 },
-                error: function () {
-                    reject("Failed to get the total number of monitored services.");
+                error: function (xhr) {
+                    var errorMessage = xhr.responseText;
+
+                    var errorContainer = document.getElementById("error-container");
+                    errorContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${errorMessage}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
                 }
             });
         });

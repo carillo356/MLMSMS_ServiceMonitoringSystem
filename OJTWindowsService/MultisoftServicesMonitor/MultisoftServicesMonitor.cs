@@ -268,7 +268,7 @@ namespace MultisoftServicesMonitor
 
             CommonMethods.WriteToFile($"checkServicesEveryXMinute: {checkServicesTimer.Interval / 60000}", $"Run {GetType().Name}");
 
-            deleteLogsTimer.Interval = 24 * 60 * 60 * 1000;
+            deleteLogsTimer.Interval = 24 * 60 * 60 * 1000; // every 24 hours
             deleteLogsTimer.Elapsed += new ElapsedEventHandler(OnDeleteLogsElapsedTime);
             deleteLogsTimer.Start();
 

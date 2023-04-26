@@ -241,25 +241,31 @@ namespace MultisoftServicesMonitor
 
         public static void WriteToFile(string message, string title = null, string additionalMessage = null)
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
-            if (!Directory.Exists(path))
+            try
             {
-                Directory.CreateDirectory(path);
-            }
-            string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ServiceLog_" + DateTime.Now.Date.ToString("yyyyMMdd").Replace('/', '_') + ".txt";
-            using (StreamWriter sw = File.AppendText(filepath))
-            {
-                string logLine = $"{DateTime.Now.ToString("hh:mm tt")} - {title}";
-                sw.WriteLine(logLine);
-                sw.WriteLine(message);
-                if (!string.IsNullOrWhiteSpace(additionalMessage))
+                string path = AppDomain.CurrentDomain.BaseDirectory + "\\Logs";
+                if (!Directory.Exists(path))
                 {
-                    sw.WriteLine(additionalMessage);
+                    Directory.CreateDirectory(path);
                 }
-                sw.WriteLine();
+                string filepath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\ServiceLog_" + DateTime.Now.Date.ToString("yyyyMMdd").Replace('/', '_') + ".txt";
+                using (StreamWriter sw = File.AppendText(filepath))
+                {
+                    string logLine = $"{DateTime.Now.ToString("hh:mm tt")} - {title}";
+                    sw.WriteLine(logLine);
+                    sw.WriteLine(message);
+                    if (!string.IsNullOrWhiteSpace(additionalMessage))
+                    {
+                        sw.WriteLine(additionalMessage);
+                    }
+                    sw.WriteLine();
+                }
+            }
+            catch
+            {
+
             }
         }
-
 
         public static string GetServicesStatusQuery(string tableName, string columnNamePrefix)
         {
