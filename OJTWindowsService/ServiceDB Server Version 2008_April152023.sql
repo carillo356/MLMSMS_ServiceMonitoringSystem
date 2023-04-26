@@ -580,3 +580,11 @@ BEGIN
     WHERE IdUser = @IdUser;
 END
 GO
+
+CREATE PROCEDURE [dbo].[IsServiceAvailable]
+	@ServiceName varchar(100)
+AS
+BEGIN
+    SELECT CAST(1 as bit) FROM ServicesAvailable WHERE UPPER(sa_ServiceName) = UPPER(@ServiceName);
+END
+GO
