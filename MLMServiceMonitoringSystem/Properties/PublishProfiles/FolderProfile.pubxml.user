@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\inetpub\wwwroot\MLMServiceMonitoringSystem\bin</_PublishTargetUrl>
-    <History>True|2023-04-26T01:32:43.1104092Z;</History>
+    <History>True|2023-04-26T02:54:52.0708905Z;True|2023-04-26T10:40:17.9924598+08:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -34,10 +34,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/29/2023 13:24:01</publishTime>
     </File>
     <File Include="bin/LoginAndRegisterASPMVC5.dll">
-      <publishTime>04/26/2023 09:32:42</publishTime>
+      <publishTime>04/26/2023 10:40:16</publishTime>
     </File>
     <File Include="bin/LoginAndRegisterASPMVC5.pdb">
-      <publishTime>04/26/2023 09:32:42</publishTime>
+      <publishTime>04/26/2023 10:40:16</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Web.Optimization.WebForms.dll">
       <publishTime>03/06/2023 06:38:39</publishTime>
@@ -736,7 +736,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/29/2023 13:50:17</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/26/2023 09:32:42</publishTime>
+      <publishTime>04/26/2023 10:40:17</publishTime>
     </File>
   </ItemGroup>
 </Project>
