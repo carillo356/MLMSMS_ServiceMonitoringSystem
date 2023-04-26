@@ -225,12 +225,17 @@
         </div>
     </div>
 
-    <!-- Toast Design for any ACTION-->
+    <!-- Toast Design for any Action -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="liveToast" class="toast hide text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-body">
             </div>
         </div>
+    </div>
+
+    <!-- Stacked Toast Design for any ACTION -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toast-wrapper"></div>
     </div>
 
     <!-- Alert Box for all buttons in Action column -->
@@ -245,7 +250,6 @@
         </div>
     </div>
 
-    <script src="~/JS_Scripts/index/pagination_serviceTable.js"></script>
     <script src="~/JS_Scripts/index/serviceTable_logHistory.js"></script>
     <script src="~/JS_Scripts/index/add_remove_service.js"></script>
     <script src="~/JS_Scripts/index/clearField_submitForm_dropdown.js"></script>

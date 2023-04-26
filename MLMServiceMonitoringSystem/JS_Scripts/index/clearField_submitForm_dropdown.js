@@ -29,7 +29,7 @@ function submitForm() {
 
         setTimeout(function () {
             toast.dispose();
-        }, 2000);
+        }, 4000);
     }
     $('#displayService-modal').modal('hide');
 }

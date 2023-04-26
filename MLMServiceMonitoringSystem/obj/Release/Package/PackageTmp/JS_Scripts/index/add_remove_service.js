@@ -57,9 +57,22 @@ function RemoveAddedService(serviceName, command) {
                     commandText = "DELETED";
                 }
 
-                var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                var toastElement = document.createElement('div');
+                toastElement.setAttribute('class', 'toast hide toast-stack');
+                toastElement.setAttribute('role', 'alert');
+                toastElement.setAttribute('aria-live', 'assertive');
+                toastElement.setAttribute('aria-atomic', 'true');
+
+                var toastBody = document.createElement('div');
+                toastBody.setAttribute('class', 'toast-body');
+                toastElement.appendChild(toastBody);
+
+                var toastWrapper = document.getElementById('toast-wrapper');
+                toastWrapper.appendChild(toastElement);
+
+                var toast = new bootstrap.Toast(toastElement);
                 var toastMessage = "You " + commandText + " the service " + "' " + serviceName + " '" + ".";
-                document.querySelector('.toast-body').innerHTML = toastMessage;
+                toastBody.innerHTML = toastMessage;
 
                 if (commandText === "DELETED") {
                     // set background color to red if commandText is Deleted

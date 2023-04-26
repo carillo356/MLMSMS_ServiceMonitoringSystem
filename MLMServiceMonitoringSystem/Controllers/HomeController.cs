@@ -277,8 +277,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             string lastEventLog = "No Record";
             string logBy = Session["FullName"].ToString() ?? "NotFound";
 
-
-
             using (SqlConnection connection = GetConnection())
             {
                 List<string> ServicesAvailable = GetSingleColumn(connection, "GetServicesAvailable");

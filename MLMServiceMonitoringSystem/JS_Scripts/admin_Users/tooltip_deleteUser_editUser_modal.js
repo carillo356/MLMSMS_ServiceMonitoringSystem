@@ -42,7 +42,7 @@ function DeleteUser(IdUser, FirstName, LastName, command) {
 
                 setTimeout(function () {
                     toast.dispose();
-                }, 4000);
+                }, 2000);
             },
             error: function (xhr, status, error) {
                 alert(error);
