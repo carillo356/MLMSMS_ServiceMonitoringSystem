@@ -1,0 +1,105 @@
+07:43 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+07:43 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+07:43 AM - Error
+Exception on CheckServices: Login failed for user 'sa2'.
+
+07:43 AM - Error
+Exception on ProcessQueue: Login failed for user 'sa2'.
+
+07:50 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+07:50 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+07:50 AM - Error
+Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpException: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
+   at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, Boolean allowUnicode, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MultisoftServicesMonitor.CommonMethods.SendEmail(SqlConnection connection, String[] messages, Nullable`1 emailsToSend, String serviceName) in C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\CommonMethods.cs:line 212
+
+07:50 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+07:52 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+07:52 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+07:52 AM - Error
+Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpException: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
+   at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, Boolean allowUnicode, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MultisoftServicesMonitor.CommonMethods.SendEmail(SqlConnection connection, String[] messages, Nullable`1 emailsToSend, String serviceName) in C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\CommonMethods.cs:line 212
+
+07:54 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+07:54 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+08:03 AM - Error
+Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpException: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
+   at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, Boolean allowUnicode, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MultisoftServicesMonitor.CommonMethods.SendEmail(SqlConnection connection, String[] messages, Nullable`1 emailsToSend, String serviceName) in C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\CommonMethods.cs:line 212
+
+08:04 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+08:04 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+08:04 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+08:04 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 4/27/2023 8:03:57 AM, LastEventLog: Service stopped successfully.
+
+
+08:21 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+08:21 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+08:21 AM - Run Periodic Logger
+ServiceName: Service1, ServiceStatus: Running, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+08:21 AM - Run PeriodicLogger
+ServiceName: Service1, LastStart: 4/27/2023 8:19:39 AM, LastEventLog: Service started successfully.
+
+
+08:24 AM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+08:24 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+08:24 AM - Run Periodic Logger
+ServiceName: Service1, ServiceStatus: Stopped, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+08:24 AM - Run PeriodicLogger
+ServiceName: Service1, LastStart: 4/27/2023 8:21:46 AM, LastEventLog: Service stopped successfully.
+
+
+08:24 AM - Status Changed
+Service: Service1, Status: Running
+
+08:24 AM - Status Changed
+Service: Service1, Status: Stopped
+

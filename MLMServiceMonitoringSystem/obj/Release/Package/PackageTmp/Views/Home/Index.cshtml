@@ -69,9 +69,9 @@
                 <thead>
                     <tr class="border-4 border-dark">
                         <th scope="col" style="width: 25%;">LAST START</th>
-                        <th scope="col" style="width: 20%;">LAST LOG</th>
+                        <th scope="col" style="width: 25%;">LAST LOG</th>
                         <th scope="col">STATUS</th>
-                        <th scope="col" style="width: 25%;">HOST NAME</th>
+                        <th scope="col" style="width: 20%;">HOST NAME</th>
                         <th scope="col" style="width: 25%;">LOG BY</th>
                     </tr>
                 </thead>
@@ -148,6 +148,11 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Generic error message -->
+    <div id="error-container">
+        <!-- Error message will be inserted here by JavaScript -->
     </div>
 
     <!-- Service Table Modal -->
@@ -233,6 +238,11 @@
         </div>
     </div>
 
+    <!-- Stacked Toast Design for any ACTION -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toast-wrapper"></div>
+    </div>
+
     <!-- Alert Box for all buttons in Action column -->
     <div id="alert-modal" class="modal">
         <div class="modal-content">
@@ -245,9 +255,9 @@
         </div>
     </div>
 
+    <script src="~/JS_Scripts/index/serviceTable_Logs.js"></script>
     <script src="~/JS_Scripts/index/pagination_serviceTable.js"></script>
-    <script src="~/JS_Scripts/index/serviceTable_logHistory.js"></script>
-    <script src="~/JS_Scripts/index/add_remove_service.js"></script>
-    <script src="~/JS_Scripts/index/clearField_submitForm_dropdown.js"></script>
+    <script src="~/JS_Scripts/index/add_remove.js"></script>
+    <script src="~/JS_Scripts/index/clearField_dropDown_submitForm.js"></script>
 
 </body>

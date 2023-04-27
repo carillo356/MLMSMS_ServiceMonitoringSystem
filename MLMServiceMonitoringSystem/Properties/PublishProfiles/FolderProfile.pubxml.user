@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\MLMServiceMonitoringSystem</_PublishTargetUrl>
+    <History>True|2023-04-26T23:22:20.4971778Z;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>03/06/2023 06:38:28</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.pdb">
+      <publishTime>03/06/2023 06:38:28</publishTime>
+    </File>
+    <File Include="bin/de/Microsoft.Win32.TaskScheduler.resources.dll">
+      <publishTime>03/29/2023 13:24:01</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>03/06/2023 06:38:29</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>03/06/2023 06:38:29</publishTime>
+    </File>
+    <File Include="bin/es/Microsoft.Win32.TaskScheduler.resources.dll">
+      <publishTime>03/29/2023 13:24:01</publishTime>
+    </File>
+    <File Include="bin/fr/Microsoft.Win32.TaskScheduler.resources.dll">
+      <publishTime>03/29/2023 13:24:01</publishTime>
+    </File>
+    <File Include="bin/it/Microsoft.Win32.TaskScheduler.resources.dll">
+      <publishTime>03/29/2023 13:24:01</publishTime>
+    </File>
+    <File Include="bin/LoginAndRegisterASPMVC5.dll">
+      <publishTime>04/27/2023 07:22:19</publishTime>
+    </File>
+    <File Include="bin/LoginAndRegisterASPMVC5.pdb">
+      <publishTime>04/27/2023 07:22:19</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Web.Optimization.WebForms.dll">
+      <publishTime>03/06/2023 06:38:39</publishTime>
+    </File>
+    <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
+      <publishTime>03/06/2023 06:38:30</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Win32.TaskScheduler.dll">
+      <publishTime>03/29/2023 13:24:01</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>03/06/2023 06:38:35</publishTime>
+    </File>
+    <File Include="bin/pl/Microsoft.Win32.TaskScheduler.resources.dll">
+      <publishTime>03/29/2023 13:24:01</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe.config">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.rsp">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.exe">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.exe.config">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.rsp">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.Scripting.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.Scripting.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.amd64.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.x86.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Managed.Core.targets">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Win32.Primitives.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.AppContext.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Collections.Immutable.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Console.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Diagnostics.DiagnosticSource.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Diagnostics.FileVersionInfo.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Diagnostics.StackTrace.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Globalization.Calendars.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.Compression.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.Compression.ZipFile.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.FileSystem.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.FileSystem.Primitives.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Net.Http.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Net.Sockets.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Reflection.Metadata.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Runtime.InteropServices.RuntimeInformation.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Cryptography.Algorithms.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Cryptography.Encoding.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Cryptography.Primitives.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Cryptography.X509Certificates.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Text.Encoding.CodePages.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Threading.Tasks.Extensions.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.ValueTuple.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Xml.ReaderWriter.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Xml.XmlDocument.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Xml.XPath.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Xml.XPath.XDocument.dll">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe.config">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.rsp">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe.config">
+      <publishTime>03/06/2023 06:38:31</publishTime>
+    </File>
+    <File Include="bin/ru/Microsoft.Win32.TaskScheduler.resources.dll">
+      <publishTime>03/29/2023 13:24:01</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>03/06/2023 06:38:35</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>03/06/2023 06:38:39</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/System.Web.Webpages.Deployment.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/System.Web.Webpages.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/System.Web.Webpages.Razor.dll">
+      <publishTime>03/06/2023 06:38:32</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>03/06/2023 06:38:39</publishTime>
+    </File>
+    <File Include="bin/zh-CN/Microsoft.Win32.TaskScheduler.resources.dll">
+      <publishTime>03/29/2023 13:24:01</publishTime>
+    </File>
+    <File Include="bin/zh-Hant/Microsoft.Win32.TaskScheduler.resources.dll">
+      <publishTime>03/29/2023 13:24:01</publishTime>
+    </File>
+    <File Include="Content/bootstrap-grid.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-grid.css.map">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="Content/bootstrap-grid.min.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-grid.min.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-grid.rtl.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-grid.rtl.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-grid.rtl.min.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-grid.rtl.min.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-reboot.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-reboot.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-reboot.min.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-reboot.min.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-reboot.rtl.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-reboot.rtl.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-reboot.rtl.min.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-reboot.rtl.min.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-utilities.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-utilities.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-utilities.min.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-utilities.min.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-utilities.rtl.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-utilities.rtl.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-utilities.rtl.min.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap-utilities.rtl.min.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap.rtl.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap.rtl.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap.rtl.min.css">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Content/bootstrap.rtl.min.css.map">
+      <publishTime>03/06/2023 06:38:40</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>03/06/2023 06:38:16</publishTime>
+    </File>
+    <File Include="JS_Scripts/admin_Users/clearFields.js">
+      <publishTime>04/12/2023 11:05:34</publishTime>
+    </File>
+    <File Include="JS_Scripts/admin_Users/dropdown_showhidePassword.js">
+      <publishTime>03/27/2023 15:15:31</publishTime>
+    </File>
+    <File Include="JS_Scripts/admin_Users/pagination.js">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="JS_Scripts/admin_Users/tooltip_deleteUser_editUser_modal.js">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="JS_Scripts/index/add_remove.js">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="JS_Scripts/index/clearField_dropDown_submitForm.js">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="JS_Scripts/index/serviceTable_Logs.js">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="JS_Scripts/nonAdmin_Users/dropdown.js">
+      <publishTime>03/27/2023 06:45:23</publishTime>
+    </File>
+    <File Include="JS_Scripts/nonAdmin_Users/nonAdmin_pagination.js">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="JS_Scripts/nonAdmin_Users/tooltips.js">
+      <publishTime>03/27/2023 06:45:23</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.bundle.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.bundle.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.bundle.min.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.bundle.min.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.esm.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.esm.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.esm.min.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.esm.min.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/esm/popper-utils.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/esm/popper-utils.js.map">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/esm/popper-utils.min.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/esm/popper-utils.min.js.map">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/esm/popper.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/esm/popper.js.map">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/esm/popper.min.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/esm/popper.min.js.map">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/index.js.flow">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.3.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.3.min.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.3.min.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.3.slim.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.3.slim.min.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.3.slim.min.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/popper-utils.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/popper-utils.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/popper-utils.min.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/popper-utils.min.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/popper.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/popper.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/popper.min.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/popper.min.js.map">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/README.md">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/src/index.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/src/methods/defaults.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/methods/destroy.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/methods/disableEventListeners.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/src/methods/enableEventListeners.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/methods/placements.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/methods/update.js">
+      <publishTime>03/06/2023 06:38:41</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/applyStyle.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/arrow.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/computeStyle.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/flip.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/hide.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/index.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/inner.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/keepTogether.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/offset.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/preventOverflow.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/modifiers/shift.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/clockwise.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/computeAutoPlacement.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/debounce.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/find.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/findCommonOffsetParent.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/findIndex.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getBordersSize.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getBoundaries.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getBoundingClientRect.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getClientRect.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getFixedPositionOffsetParent.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getOffsetParent.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getOffsetRect.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getOffsetRectRelativeToArbitraryNode.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getOppositePlacement.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getOppositeVariation.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getOuterSizes.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getParentNode.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getPopperOffsets.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getReferenceNode.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getReferenceOffsets.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getRoot.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getRoundedOffsets.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getScroll.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getScrollParent.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getStyleComputedProperty.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getSupportedPropertyName.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getViewportOffsetRectRelativeToArtbitraryNode.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getWindow.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/getWindowSizes.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/includeScroll.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/index.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/isBrowser.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/isFixed.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/isFunction.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/isIE.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/isModifierEnabled.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/isModifierRequired.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/isNumeric.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/isOffsetContainer.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/removeEventListeners.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/runModifiers.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/setAttributes.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/setStyles.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/src/utils/setupEventListeners.js">
+      <publishTime>03/06/2023 06:38:42</publishTime>
+    </File>
+    <File Include="Scripts/umd/popper-utils.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/umd/popper-utils.js.map">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/umd/popper-utils.min.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/umd/popper-utils.min.js.map">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/umd/popper.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/umd/popper.js.flow">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/umd/popper.js.map">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/umd/popper.min.js">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Scripts/umd/popper.min.js.map">
+      <publishTime>03/06/2023 06:38:43</publishTime>
+    </File>
+    <File Include="Style/homepage.css">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="Style/login.css">
+      <publishTime>04/12/2023 09:20:23</publishTime>
+    </File>
+    <File Include="Style/service.css">
+      <publishTime>04/12/2023 11:27:26</publishTime>
+    </File>
+    <File Include="Style/users.css">
+      <publishTime>04/12/2023 10:28:24</publishTime>
+    </File>
+    <File Include="Views/Home/AdminUsers.cshtml">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="Views/Home/Index.cshtml">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="Views/Home/Login.cshtml">
+      <publishTime>04/20/2023 13:26:31</publishTime>
+    </File>
+    <File Include="Views/Home/Users.cshtml">
+      <publishTime>04/27/2023 07:17:12</publishTime>
+    </File>
+    <File Include="Views/Shared/_LayoutPage1.cshtml">
+      <publishTime>04/11/2023 10:40:32</publishTime>
+    </File>
+    <File Include="Views/Test1/Create.cshtml">
+      <publishTime>03/20/2023 06:54:01</publishTime>
+    </File>
+    <File Include="Views/Test1/Delete.cshtml">
+      <publishTime>03/20/2023 06:54:01</publishTime>
+    </File>
+    <File Include="Views/Test1/Details.cshtml">
+      <publishTime>03/20/2023 06:54:01</publishTime>
+    </File>
+    <File Include="Views/Test1/Edit.cshtml">
+      <publishTime>03/20/2023 06:54:01</publishTime>
+    </File>
+    <File Include="Views/Test1/Index.cshtml">
+      <publishTime>03/20/2023 06:54:01</publishTime>
+    </File>
+    <File Include="Views/web.config">
+      <publishTime>03/29/2023 13:50:17</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>04/27/2023 07:22:19</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

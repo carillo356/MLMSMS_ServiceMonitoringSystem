@@ -31,17 +31,23 @@ namespace MultisoftServicesMonitor
 
         protected override void OnStop()
         {
-            _realTimeLogger.Stop();
-            _periodicLogger.Stop();
-
-            using (var connection = GetConnection())
+            try
             {
-                string singleEmailTemplate = ConfigurationManager.AppSettings["multisoftServicesMonitorEmailStopped"].Replace("&#x0A;", "\n"); ;
-                string emailMessage = string.Format(singleEmailTemplate, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, ServiceControllerStatus.Stopped.ToString());
-                SendEmail(connection, emailMessage, 1, GetType().Name);
-            }
+                _realTimeLogger.Stop();
+                _periodicLogger.Stop();
 
-            WriteToFile(GetType().Name  + " have stopped ", "Stop " + GetType().Name);
+                using (var connection = GetConnection())
+                {
+                    string singleEmailTemplate = ConfigurationManager.AppSettings["multisoftServicesMonitorEmailStopped"].Replace("&#x0A;", "\n"); ;
+                    string emailMessage = string.Format(singleEmailTemplate, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, ServiceControllerStatus.Stopped.ToString());
+                    SendEmail(connection, emailMessage, 1, GetType().Name);
+                }
+            }
+            catch
+            {
+                WriteToFile(GetType().Name + " have stopped ", "Stop " + GetType().Name);
+                Environment.FailFast("Forcefully stopping the service");
+            }
         }
 
     }
@@ -99,7 +105,6 @@ namespace MultisoftServicesMonitor
             catch(Exception ex)
             {
                 WriteToFile("Exception OnStop: " + ex.Message, _error);
-    
             }
         }
 
