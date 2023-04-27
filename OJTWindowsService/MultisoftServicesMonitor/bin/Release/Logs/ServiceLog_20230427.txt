@@ -2,3 +2,15 @@
 ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
 
 
+08:26 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+08:56 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+09:26 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
