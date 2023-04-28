@@ -30,7 +30,7 @@ namespace MultisoftServicesMonitor
         }
 
         protected override void OnStop()
-        {
+        {   
             try
             {
                 _realTimeLogger.Stop();
@@ -39,7 +39,7 @@ namespace MultisoftServicesMonitor
                 using (var connection = GetConnection())
                 {
                     string singleEmailTemplate = ConfigurationManager.AppSettings["multisoftServicesMonitorEmailStopped"].Replace("&#x0A;", "\n"); ;
-                    string emailMessage = string.Format(singleEmailTemplate, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, ServiceControllerStatus.Stopped.ToString());
+                    string emailMessage = string.Format(singleEmailTemplate, Assembly.GetExecutingAssembly().GetName().Name, ServiceControllerStatus.Stopped.ToString());
                     SendEmail(connection, emailMessage, 1, GetType().Name);
                 }
 
