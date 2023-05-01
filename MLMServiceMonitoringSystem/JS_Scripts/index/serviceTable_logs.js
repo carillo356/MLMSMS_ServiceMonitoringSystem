@@ -5,14 +5,18 @@
     let ITEMS_PER_PAGE = 5;
     let logHistoryCount;
     let serviceTableCount;
+    let servicesNotMonitored;
+    var activeServiceName;
+
+    // Pagination for Log History 
+    let indexPageLogHistory = 1;
+    let paginationLogHistory = document.querySelector(".paginationLogs ul");
+    let totalPagesLogHistory;
 
     function SynchServiceTB() {
         ServicesInMonitor()
         .then(function () {
-            return GetServicesInController(); // Add return here
-        })
-        .then(function (servicesInController) {
-            Checkbox(servicesInController);
+            Checkbox();
         })
         .then(function () {
             generatePageNumbers();
@@ -98,6 +102,8 @@
                             $("#serviceTable tbody").append(row);
                         });
                         serviceTableCount = response.servicesInMonitor.length;
+                        servicesNotMonitored = response.servicesNotMonitored;
+
                         resolve();
                     }
                     else {
@@ -125,40 +131,10 @@
         });
     }
 
-    function GetServicesInController() {
-            var servicesInTable = [];
-            $('#servicesTable tbody tr').each(function () {
-                servicesInTable.push($(this).find('td:first').text());
-            });
-
-            return new Promise(function (resolve) {
-                $.ajax({
-                    url: "/Home/GetServicesInController",
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: JSON.stringify(servicesInTable),
-                    success: function (response) {
-                        resolve(response);
-                    },
-                    error: function (xhr) {
-                        var errorMessage = xhr.responseText;
-
-                        var errorContainer = document.getElementById("error-container");
-                        errorContainer.innerHTML = `
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${errorMessage}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>`;
-                    }
-                });
-            });
-        }
-
-    function Checkbox(servicesInController) {
-        if (servicesInController.length > 0) {
+    function Checkbox() {
+        if (servicesNotMonitored.length > 0) {
             var checkboxes = '';
-            $.each(servicesInController, function (i, item) {
+            $.each(servicesNotMonitored, function (i, item) {
                 if (!$('#servicesTable td:contains(' + item + ')').length) { // Check if the service is already in the table
                     var checkbox = `<li class="item"><div class="form-check">
                     <input class="form-check-input" type="checkbox" value="${item}" id="service-${i}">
@@ -188,7 +164,7 @@
         });
     });
 
-    var activeServiceName;
+
 
     function handleRowClick(serviceName, limit) {
         logHistory(serviceName, limit);
@@ -297,11 +273,6 @@
         }
     }
 
-
-    // Pagination for Log History 
-    let indexPageLogHistory = 1;
-    let paginationLogHistory = document.querySelector(".paginationLogs ul");
-    let totalPagesLogHistory;
 
     // Log History pagination
     var itemsPerPageLogHistory = 5;
@@ -413,17 +384,17 @@
         });
     }
 
-// Get the modal element
-var logHistoryModal = document.getElementById("logHistory-modal");
+    // Get the modal element
+    var logHistoryModal = document.getElementById("logHistory-modal");
 
-// Get the close button element
-var closeButton = logHistoryModal.querySelector(".close");
+    // Get the close button element
+    var closeButton = logHistoryModal.querySelector(".close");
 
-// Add event listener to the close button
-closeButton.addEventListener("click", function () {
-    // Hide the modal when close button is clicked
-    logHistoryModal.style.display = "none";
-});
+    // Add event listener to the close button
+    closeButton.addEventListener("click", function () {
+        // Hide the modal when close button is clicked
+        logHistoryModal.style.display = "none";
+    });
 
 function generatePageNumbersLogHistory() {
     totalPagesLogHistory = Math.ceil(logHistoryTableBody.querySelectorAll('tr').length / itemsPerPageLogHistory);
