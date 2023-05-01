@@ -1,0 +1,167 @@
+07:39 AM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+07:39 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+07:39 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+07:39 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 4/25/2023 3:25:18 PM, LastEventLog: Service started successfully.
+
+
+07:39 AM - Status Changed
+Service: MultisoftServicesMonitor, Status: Running
+
+07:39 AM - Error
+Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpException: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
+   at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, Boolean allowUnicode, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MultisoftServicesMonitor.CommonMethods.SendEmail(SqlConnection connection, String[] messages, Nullable`1 emailsToSend, String serviceName) in C:\github repos\OJTWindowsService\MultisoftServicesMonitor\CommonMethods.cs:line 212
+
+07:39 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+07:39 AM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+07:39 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+07:40 AM - Error
+Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpException: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
+   at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, Boolean allowUnicode, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MultisoftServicesMonitor.CommonMethods.SendEmail(SqlConnection connection, String[] messages, Nullable`1 emailsToSend, String serviceName) in C:\github repos\OJTWindowsService\MultisoftServicesMonitor\CommonMethods.cs:line 212
+
+07:40 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+01:27 PM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+01:27 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+01:27 PM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+01:27 PM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 4/26/2023 7:40:17 AM, LastEventLog: Service stopped successfully.
+
+
+01:27 PM - Status Changed
+Service: MultisoftServicesMonitor, Status: Running
+
+01:43 PM - Status Changed
+Service: Service1, Status: Running
+
+01:43 PM - Error
+Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpException: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
+   at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, Boolean allowUnicode, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MultisoftServicesMonitor.CommonMethods.SendEmail(SqlConnection connection, String[] messages, Nullable`1 emailsToSend, String serviceName) in C:\github repos\OJTWindowsService\MultisoftServicesMonitor\CommonMethods.cs:line 212
+
+01:43 PM - Status Changed
+Service: Service1, Status: Stopped
+
+01:57 PM - Status Changed
+Service: Service1, Status: Running
+
+01:57 PM - Error
+Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpException: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
+   at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, Boolean allowUnicode, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at MultisoftServicesMonitor.CommonMethods.SendEmail(SqlConnection connection, String[] messages, Nullable`1 emailsToSend, String serviceName) in C:\github repos\OJTWindowsService\MultisoftServicesMonitor\CommonMethods.cs:line 212
+
+01:57 PM - Status Changed
+Service: Service1, Status: Stopped
+
+01:57 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+02:27 PM - Status Changed
+Service: AMD Crash Defender Service, Status: Stopped
+
+02:27 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+03:19 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+03:49 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+05:58 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+06:07 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+06:07 PM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+06:07 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+06:07 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+06:37 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+07:12 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+07:50 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+08:20 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+08:50 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+09:21 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+09:55 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+10:42 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+11:13 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+11:43 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+

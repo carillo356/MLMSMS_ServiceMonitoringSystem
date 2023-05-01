@@ -1,0 +1,400 @@
+﻿@model LoginAndRegisterASPMVC5.Models.User
+@{
+    ViewBag.Title = "MLM Admin Users";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<body class="bgcolor">
+    <!-- Nav Bar with Responsive -->
+    <header>
+        <div class="container-fluid">
+            <div class="navb-name">
+                MLM Service Monitoring System
+            </div>
+
+            <div class="navb-items d-none d-xl-flex">
+                <div class="menu-item">
+                    <a href="@Url.Action("Index","Home")" class="navbar">Home</a>
+                </div>
+
+                <div class="menu-item">
+                    <a href="@Url.Action("Users","Home")" class="navbar active">Users</a>
+                </div>
+
+                <div class="item-button">
+                    <a href="@Url.Action("Logout","Home")" type="button">Logout</a>
+                </div>
+            </div>
+
+            <!-- Button trigger modal (Responsive) -->
+            <div class="mobile-toggler d-lg-none">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#navbModal">
+                    <i class="bi bi-list"></i>
+                </a>
+            </div>
+
+            <!-- Modal (Responsive) -->
+            <div class="modal fade" style="width: 500px;" id="navbModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="title">MLM Service Monitoring System</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="modal-line">
+                                <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="bi bi-house"></i> Home</a>
+                            </div>
+
+                            <div class="modal-line">
+                                <a href="@Url.Action("Users","Home")" class="btn btn-primary"><i class="bi bi-bell"></i>Users</a>
+                            </div>
+
+                            <a href="@Url.Action("Logout","Home")" class="navb-button" type="button">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Generic error message -->
+    <div id="error-container">
+        <!-- Error message will be inserted here by JavaScript -->
+    </div>
+
+    <!-- Users Table -->
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>List of Users</b></h2>
+                        </div>
+                        <div class="col-sm-6 button-container">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUsers-modal"><i class="bi bi-plus-circle"></i><span>Add Users</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table" id="usersTable">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 15%;">FIRST NAME</th>
+                    <th scope="col" style="width: 15%;">LAST NAME</th>
+                    <th scope="col" style="width: 15%;">EMAIL ADDRESS</th>
+                    <th scope="col" style="width: 10%;">USER ROLE</th>
+                    <th scope="col" style="width: 12%;">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- table content goes here -->
+            </tbody>
+        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="adminRow">
+                        <div class="btn_AdminRow">
+                            <span class="sBtn_AdminRow">Select row</span>
+                            <i class="bi bi-arrow-down-short"></i>
+                        </div>
+
+                        <ul class="options_AdminRow">
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">5 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">10 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">15 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">20 rows</span>
+                            </li>
+                            <li class="option_Admin">
+                                <span class="option_Admin-text">All rows</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="hint-text">Page <b id="current-page"></b> out of <b id="total-pages"></b></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="pagination">
+                        <ul>
+                            <!--pages or li are comes from javascript -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Users Modal -->
+    <div class="modal" id="addUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Add user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-user-form" method="post">
+                        <div id="validation-summary">
+                            @Html.ValidationSummary(true)
+                        </div>
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.FirstName, "First Name:", new { @class = "label fw-bold" })
+                            @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.LastName, "Last Name:", new { @class = "label fw-bold" })
+                            @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            @Html.LabelFor(m => m.Email, "Email Address:", new { @class = "label fw-bold" })
+                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
+                            @if (ViewBag.error != null)
+                            {
+                                <span class="badge badge-danger">@ViewBag.error</span>
+                            }
+                        </div>
+
+                        <div class="form-group m-3 position-relative">
+                            @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "password1" })
+                            <span toggle="#password1" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            <div class="radio-container d-flex flex-column">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="IsAdmin" id="isAdminTrue" value="true" onchange="this.value = this.checked" />
+                                    <label class="form-check-label" for="isAdminTrue">Admin</label>
+                                </div>
+                                <div class="text-muted ml-2 mt-2 d-flex flex-column adminReminder">
+                                    <span class="ml-2 fst-italic"><i class="bi bi-info-circle"></i>Only an Admin can add other users and edit other users info including passwords.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Add User</button>
+                            <button type="button" id="cancelButton" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Edit Users Modal -->
+    <div class="modal fade" id="editUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Edit user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-user-form" onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUser", "Home")">
+                        @Html.ValidationSummary()
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group m-3">
+                            <label for="firstName" class="label fw-bold">First Name:</label>
+                            <input type="text" id="firstName" name="FirstName" class="form-control" placeholder="First Name" value="" autocomplete="off" />
+                            <input type="hidden" id="idUser" name="IdUser" value="" />
+                        </div>
+
+                        <div class="form-group m-3">
+                            <label for="lastName" class="label fw-bold">Last Name:</label>
+                            <input type="text" id="lastName" name="LastName" class="form-control" placeholder="Last Name" value="" autocomplete="off" />
+                        </div>
+
+                        <div class="form-group m-3">
+                            <label for="email" class="label fw-bold">Email Address:</label>
+                            <input type="email" id="email" name="Email" class="form-control" placeholder="Email Address" value="" autocomplete="off" />
+                        </div>
+
+                        <div class="form-group m-3 position-relative">
+                            @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password2" })
+                            <span toggle="#password2" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3">
+                            <div class="radio-container d-flex flex-column">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="IsAdmin" id="isAdmin" value="true" />
+                                    <label class="form-check-label" for="isAdminTrue">Admin</label>
+                                </div>
+                                <div class="text-muted ml-2 mt-2 d-flex flex-column adminReminder">
+                                    <span class="ml-2 fst-italic"><i class="bi bi-info-circle"></i>Only an Admin can add other users and edit other users info including passwords.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2" data-bs-dismiss="modal" value="addUser">Save Changes</button>
+                            <button type="button" id="cancel-button" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Design for any Action -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast hide text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body">
+            </div>
+        </div>
+    </div>
+
+    <!-- Stacked Toast Design for any ACTION -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toast-wrapper"></div>
+    </div>
+
+    <!-- Delete Users Modal -->
+    <div id="deleteUsers-modal" class="modal">
+        <div class="modal-content">
+            <div id="modal-title">System Message</div>
+            <div id="modal-message"></div>
+            <div class="modal-buttons">
+                <button type="button" id="btnYes" name="Yes" onclick="btnYes_Click" class="alert-buttons">Yes</button>
+                <button type="button" id="btnNo" name="No" onclick="btnNo_Click" class="alert-buttons">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/JS_Scripts/admin_Users/pagination.js"></script>
+    <script src="~/JS_Scripts/admin_Users/tooltip_deleteUser_editUser_modal.js"></script>
+    <script src="~/JS_Scripts/admin_Users/dropdown_showhidePassword.js"></script>
+    <script src="~/JS_Scripts/admin_Users/clearFields.js"></script>
+
+</body>
+
+<!-- Add User Modal with Toast and Validation Message -->
+<script>
+    $(document).ready(function () {
+        // Handle form submission using AJAX
+        $('#add-user-form').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission behavior
+
+            // Send form data using AJAX
+            $.ajax({
+                url: '@Url.Action("AddUser", "Home")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        // Update table with new user data
+                        $('#user-table').html(result);
+
+                        var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                        var toastMessage = "User successfully added!";
+                        document.querySelector('.toast-body').innerHTML = toastMessage;
+                        // set background color to green if service/s has been added.
+                        toast._element.classList.remove("text-bg-danger");
+                        toast._element.classList.add("bg-success");
+                        toast.show();
+
+                        setTimeout(function () {
+                            toast.dispose();
+                        }, 4000);
+
+                        // Hide modal
+                        $('#addUsers-modal').modal('dispose');
+                        $('#add-user-form')[0].reset();
+
+                    } else {
+                        // Check if there is a validation summary
+                        if (result.message) {
+                            // Display validation summary as a list
+                            let validationSummaryList = '<ul class="validation-summary-list">';
+                            result.message.forEach(function (error) {
+                                validationSummaryList += `<li>${error}</li>`;
+                            });
+                            validationSummaryList += '</ul>';
+                            $('#validation-summary').html(validationSummaryList);
+                        } else {
+                            // Display error message
+                            alert(result.message);
+                        }
+                    }
+                    Synch();
+                }
+            });
+        });
+    });
+
+        // Reset form fields when modal is hidden
+        $('#addUsers-modal').on('hidden.bs.modal', function () {
+            $('#add-user-form')[0].reset();
+            $('#validation-summary').html('');
+        });
+
+        // Close modal when "Cancel" button is clicked
+        $('#cancelButton').on('click', function () {
+            $('#addUsers-modal').modal('hide');
+        });
+</script>
+
+<!-- Edit User Modal with Toast and Validation Message -->
+<script>
+    $(document).ready(function () {
+      // Handle form submission using AJAX
+      $('#edit-user-form').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Send form data using AJAX
+        $.ajax({
+          url: '@Url.Action("UpdateUser", "Home")',
+          type: 'POST',
+          data: $(this).serialize(),
+            success: function (result) {
+                if (result.success) {
+                    // Update table with new user data
+                    $('#user-table').html(result);
+
+                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    var toastMessage = result.message;
+                    document.querySelector('.toast-body').innerHTML = toastMessage;
+                    // set background color to green if service/s has been added.
+                    toast._element.classList.remove("text-bg-danger");
+                    toast._element.classList.add("bg-success");
+                    toast.show();
+
+                    setTimeout(function () {
+                        toast.dispose();
+                    }, 4000);
+
+                    // Hide modal
+                    $('#editUsers-modal').modal('hide');
+
+                } else {
+                    // Display error message
+                    alert(result.message);
+                }
+                Synch();
+            }
+        });
+      });
+    });
+</script>

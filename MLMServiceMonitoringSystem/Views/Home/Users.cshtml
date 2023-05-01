@@ -1,0 +1,147 @@
+﻿@model LoginAndRegisterASPMVC5.Models.User
+@{
+    ViewBag.Title = "MLM Non-Admin Users";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<body class="bgcolor">
+    <!-- Nav Bar with Responsive -->
+    <header>
+        <div class="container-fluid">
+            <div class="navb-name">
+                MLM Service Monitoring System
+            </div>
+
+            <div class="navb-items d-none d-xl-flex">
+                <div class="menu-item">
+                    <a href="@Url.Action("Index","Home")" class="navbar">Home</a>
+                </div>
+
+                <div class="menu-item">
+                    <a href="@Url.Action("Users","Home")" class="navbar active">Users</a>
+                </div>
+
+                <div class="item-button">
+                    <a href="@Url.Action("Logout","Home")" type="button">Logout</a>
+                </div>
+            </div>
+
+            <!-- Button trigger modal (Responsive) -->
+            <div class="mobile-toggler d-lg-none">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#navbModal">
+                    <i class="bi bi-list"></i>
+                </a>
+            </div>
+
+            <!-- Modal (Responsive) -->
+            <div class="modal fade" style="width: 500px;" id="navbModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="title">MLM Service Monitoring System</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="modal-line">
+                                <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="bi bi-house"></i> Home</a>
+                            </div>
+
+                            <div class="modal-line">
+                                <a href="@Url.Action("Users","Home")" class="btn btn-primary"><i class="bi bi-bell"></i>Users</a>
+                            </div>
+
+                            <a href="@Url.Action("Logout","Home")" class="navb-button" type="button">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Generic error message -->
+    <div id="error-container">
+        <!-- Error message will be inserted here by JavaScript -->
+    </div>
+
+    <!-- Users Table -->
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2><b>List of Users</b></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table" id="usersTable">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 15%;">FIRST NAME</th>
+                    <th scope="col" style="width: 15%;">LAST NAME</th>
+                    <th scope="col" style="width: 15%;">EMAIL ADDRESS</th>
+                    <th scope="col" style="width: 10%;">USER ROLE</th>
+                    <th scope="col" style="width: 12%;">ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- table content goes here -->
+            </tbody>
+        </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="nonAdminRow">
+                        <div class="btn_nonAdminRow">
+                            <span class="sBtn_nonAdminRow">Select row</span>
+                            <i class="bi bi-arrow-down-short"></i>
+                        </div>
+
+                        <ul class="options_nonAdminRow">
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">5 rows</span>
+                            </li>
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">10 rows</span>
+                            </li>
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">15 rows</span>
+                            </li>
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">20 rows</span>
+                            </li>
+                            <li class="option_nonAdmin">
+                                <span class="option_nonAdmin-text">All rows</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="hint-text">Page <b id="current-page"></b> out of <b id="total-pages"></b></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="pagination">
+                        <ul>
+                            <!--pages or li are comes from javascript -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stacked Toast Design for any ACTION -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toast-wrapper"></div>
+    </div>
+
+    <script src="~/JS_Scripts/nonAdmin_Users/dropdown.js"></script>
+    <script src="~/JS_Scripts/nonAdmin_Users/tooltips.js"></script>
+    <script src="~/JS_Scripts/nonAdmin_Users/nonAdmin_pagination.js"></script>
+
+</body>
+
+

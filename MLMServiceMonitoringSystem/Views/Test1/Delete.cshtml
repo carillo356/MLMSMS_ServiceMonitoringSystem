@@ -1,0 +1,73 @@
+﻿@model LoginAndRegisterASPMVC5.Models.Service
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Service</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LogDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LogDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LogBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LogBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastEventLog)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastEventLog)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HostName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HostName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

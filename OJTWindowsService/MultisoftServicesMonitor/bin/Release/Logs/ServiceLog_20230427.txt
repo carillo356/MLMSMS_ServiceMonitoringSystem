@@ -1,0 +1,52 @@
+07:22 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+08:26 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+08:56 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+09:26 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+09:56 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+10:26 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+10:56 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+11:26 AM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+01:01 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+01:04 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+01:04 PM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+01:04 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+01:04 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+01:04 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
