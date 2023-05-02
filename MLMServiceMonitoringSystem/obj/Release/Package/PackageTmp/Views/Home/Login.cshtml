@@ -6,6 +6,15 @@
 
 <!-- Login Module -->
 <body class="gradient-page">
+
+    @if (!string.IsNullOrEmpty(ViewBag.error))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>@ViewBag.error</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
         <div class="container-fluid" style="width: 80%;">
             <div class="row justify-content-center">
@@ -15,7 +24,7 @@
                             <div class="text-center">
                                 <h1 class="display-4">MLM</h1>
                                 <h4 class="fw-light">Service Monitoring System</h4>
-                                <hr/>
+                                <hr />
                                 <h2 class="fw-normal">Sign in</h2>
                             </div>
                             @using (Html.BeginForm("Login", "Home", FormMethod.Post))
@@ -23,7 +32,7 @@
                                 @Html.AntiForgeryToken()
                                 <div class="form-group mb-2">
                                     @Html.LabelFor(m => m.Email, new { @class = "form-label mb-2" })
-                                    @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control my-1", @placeholder = "Email" })
+                                    @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control my-1", @placeholder = "Email", autocomplete = "off" })
                                     @Html.ValidationMessageFor(m => m.Email, "", new { @class = "badge badge-danger" })
                                 </div>
                                 <div class="form-group mb-4 position-relative">

@@ -6,16 +6,17 @@ function submitForm() {
         serviceNames.push($(this).val());
     });
 
-    AddService(serviceNames);
-
-    var checkedCount = $('input[type="checkbox"]:checked').length;
-    var servicesAdded = [];
-
-    $('input[type="checkbox"]:checked').each(function () {
-        var serviceName = $(this).val();
-        AddService(serviceName);
-        servicesAdded.push(serviceName);
+    // Wrap each AddService call in a promise and store them in an array
+    var promises = serviceNames.map(function (serviceName) {
+        return new Promise(function (resolve, reject) {
+            AddService(serviceName, resolve, reject);
+        });
     });
+    // Wait for all promises to complete
+    Promise.all(promises).then(function () {
+        SynchServiceTB();
+    });
+
 
     if (servicesAdded.length > 0) {
         var toast = new bootstrap.Toast(document.getElementById('liveToast'));
