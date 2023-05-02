@@ -1,0 +1,65 @@
+10:11 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+10:11 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+10:11 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+10:11 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 5/2/2023 6:58:01 AM, LastEventLog: Service cannot be started. The service process could not connect to the service controller
+
+
+10:11 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+10:11 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+10:11 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+10:11 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+10:11 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 5/2/2023 10:11:26 AM, LastEventLog: Service stopped successfully.
+
+
+10:12 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+10:12 AM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+10:12 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+10:12 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+ServiceName: Service1, ServiceStatus: Stopped, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+10:12 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 5/2/2023 10:12:46 AM, LastEventLog: Service stopped successfully.
+
+
+10:12 AM - Run PeriodicLogger
+ServiceName: Service1, LastStart: 5/2/2023 10:11:51 AM, LastEventLog: Service stopped successfully.
+
+
+10:12 AM - Status Changed
+Service: MultisoftServicesMonitor, Status: Running
+
+10:12 AM - Status Changed
+Service: Service1, Status: Running
+
+10:16 AM - Error
+Exception in SM_TableChangeListener: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Shared Memory Provider, error: 40 - Could not open a connection to SQL Server)
+

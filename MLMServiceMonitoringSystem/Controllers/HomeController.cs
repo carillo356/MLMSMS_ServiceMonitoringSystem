@@ -659,27 +659,31 @@ namespace LoginAndRegisterASPMVC5.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserLogin _userlogin)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var f_password = GetMD5(_userlogin.Password);
-                var data = _db.Users.Where(s => s.Email.Equals(_userlogin.Email) && s.Password.Equals(f_password)).ToList();
-                if (data.Count() > 0)
+                if (ModelState.IsValid)
                 {
-                    //add session
-                    Session["FullName"] = data.FirstOrDefault().FirstName + " " + data.FirstOrDefault().LastName;
-                    Session["FirstName"] = data.FirstOrDefault().FirstName;
-                    Session["LastName"] = data.FirstOrDefault().LastName;
-                    Session["Email"] = data.FirstOrDefault().Email;
-                    Session["IdUser"] = data.FirstOrDefault().IdUser;
-                    Session["IsAdmin"] = data.FirstOrDefault().IsAdmin;
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ViewBag.error = "Login failed";
-                    return RedirectToAction("Login");
+                    var f_password = GetMD5(_userlogin.Password);
+                    var data = _db.Users.Where(s => s.Email.Equals(_userlogin.Email) && s.Password.Equals(f_password)).ToList();
+                    if (data.Count() > 0)
+                    {
+                        //add session
+                        Session["FullName"] = data.FirstOrDefault().FirstName + " " + data.FirstOrDefault().LastName;
+                        Session["FirstName"] = data.FirstOrDefault().FirstName;
+                        Session["LastName"] = data.FirstOrDefault().LastName;
+                        Session["Email"] = data.FirstOrDefault().Email;
+                        Session["IdUser"] = data.FirstOrDefault().IdUser;
+                        Session["IsAdmin"] = data.FirstOrDefault().IsAdmin;
+                        return RedirectToAction("Index");
+                    }
                 }
             }
+            catch
+            {
+                ViewBag.error = "Login failed";
+                return View("Login");
+            }
+
             return View();
         }
 
@@ -713,7 +717,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
 
             ViewBag.error = "Invalid SSO token";
-            return RedirectToAction("Login");
+            return View("Login");
         }
 
 
