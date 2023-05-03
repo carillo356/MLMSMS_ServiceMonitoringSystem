@@ -390,7 +390,14 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
         public ActionResult Users()
         {
-            return View();
+            if (Session["IdUser"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         //public ActionResult Users()
@@ -597,46 +604,104 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
 
 
+        //[HttpPost]
+        //public ActionResult UpdateUser(UserUpdate _user, string Password)
+        //{
+        //    // Retrieve the user from the database
+        //    var userToUpdate = _db.Users.FirstOrDefault(u => u.IdUser == _user.IdUser);
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (userToUpdate.FirstName == _user.FirstName && userToUpdate.LastName == _user.LastName && userToUpdate.Email == _user.Email && userToUpdate.IsAdmin == _user.IsAdmin)
+        //        {
+        //            return Json(new { success = true, message = "No changes" });
+        //        }
+        //        if (userToUpdate != null)
+        //        {
+
+        //            // Update the user's properties
+        //            userToUpdate.FirstName = _user.FirstName;
+        //            userToUpdate.LastName = _user.LastName;
+        //            userToUpdate.Email = _user.Email;
+        //            userToUpdate.IsAdmin = _user.IsAdmin;
+
+        //            // Update the user's password if it is not null
+        //            if (!string.IsNullOrEmpty(Password))
+        //            {
+        //                userToUpdate.Password = GetMD5(Password);
+
+        //            }
+        //            _db.Configuration.ValidateOnSaveEnabled = false;
+        //            _db.Entry(userToUpdate).State = EntityState.Modified;
+        //            _db.SaveChanges();
+
+        //            return Json(new { success = true, message = "User info updated successfully!" });
+        //        }
+        //        else
+        //        {
+        //            return Json(new { success = false, message = "User info updated unsuccessfully!" });
+        //        }
+        //    }
+        //    return View("AdminUsers");
+        //}
+
         [HttpPost]
         public ActionResult UpdateUser(UserUpdate _user, string Password)
         {
-            // Retrieve the user from the database
-            var userToUpdate = _db.Users.FirstOrDefault(u => u.IdUser == _user.IdUser);
-
             if (ModelState.IsValid)
             {
-                if (userToUpdate.FirstName == _user.FirstName && userToUpdate.LastName == _user.LastName && userToUpdate.Email == _user.Email && userToUpdate.IsAdmin == _user.IsAdmin)
-                {
-                    return Json(new { success = true, message = "No changes" });
-                }
+                var userToUpdate = _db.Users.FirstOrDefault(u => u.IdUser == _user.IdUser);
+
                 if (userToUpdate != null)
                 {
+                    var newPassword = string.IsNullOrEmpty(Password) ? userToUpdate.Password : GetMD5(Password);
 
-                    // Update the user's properties
-                    userToUpdate.FirstName = _user.FirstName;
-                    userToUpdate.LastName = _user.LastName;
-                    userToUpdate.Email = _user.Email;
-                    userToUpdate.IsAdmin = _user.IsAdmin;
-
-                    // Update the user's password if it is not null
-                    if (!string.IsNullOrEmpty(Password))
+                    if (userToUpdate.FirstName == _user.FirstName &&
+                        userToUpdate.LastName == _user.LastName &&
+                        userToUpdate.Email == _user.Email &&
+                        (string.IsNullOrEmpty(Password) || newPassword == userToUpdate.Password) &&
+                        userToUpdate.IsAdmin == _user.IsAdmin)
                     {
-                        userToUpdate.Password = GetMD5(Password);
-
+                        return Json(new { success = true, message = "No changes" });
                     }
-                    _db.Configuration.ValidateOnSaveEnabled = false;
-                    _db.Entry(userToUpdate).State = EntityState.Modified;
-                    _db.SaveChanges();
 
-                    return Json(new { success = true, message = "User info updated successfully!" });
+                    try
+                    {
+                        // Update the user's properties
+                        userToUpdate.FirstName = _user.FirstName;
+                        userToUpdate.LastName = _user.LastName;
+                        userToUpdate.Email = _user.Email;
+                        userToUpdate.IsAdmin = _user.IsAdmin;
+
+                        // Update the user's password if it is not null
+                        if (!string.IsNullOrEmpty(Password))
+                        {
+                            userToUpdate.Password = GetMD5(Password);
+                        }
+
+                        _db.Configuration.ValidateOnSaveEnabled = false;
+                        _db.Entry(userToUpdate).State = EntityState.Modified;
+                        _db.SaveChanges();
+
+                        return Json(new { success = true, message = "User info updated successfully!" });
+                    }
+                    catch 
+                    {
+                        // If any exception occurs during the update process, return the "unsuccessfully updated" message
+                        return Json(new { success = false, message = "User info update unsuccessfully!" });
+                    }
                 }
                 else
                 {
-                    return Json(new { success = false, message = "User info updated unsuccessfully!" });
+                    return Json(new { success = false, message = "User not found!" });
                 }
             }
-            return View("AdminUsers");
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors)
+                              .Select(e => e.ErrorMessage);
+            return Json(new { success = false, message = errors });
         }
+    
 
         public ActionResult Index()
         {
@@ -679,7 +744,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         Session["Email"] = data.FirstOrDefault().Email;
                         Session["IdUser"] = data.FirstOrDefault().IdUser;
                         Session["IsAdmin"] = data.FirstOrDefault().IsAdmin;
-                        return RedirectToAction("Index");
+                        return View("Index");
                     }
                 }
             }
