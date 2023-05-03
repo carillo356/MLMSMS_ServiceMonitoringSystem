@@ -28,3 +28,13 @@ C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMo
 C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.csproj.CoreCompileInputs.cache
 C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.exe
 C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.pdb
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.exe.config
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.exe
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\bin\Release\MultisoftServicesMonitor.pdb
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.csproj.AssemblyReference.cache
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.csproj.SuggestedBindingRedirects.cache
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.ProjectInstaller.resources
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.csproj.GenerateResource.cache
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.csproj.CoreCompileInputs.cache
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.exe
+C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\obj\Release\MultisoftServicesMonitor.pdb
