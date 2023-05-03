@@ -291,6 +291,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\UserUpdate.cs" />
+    <Compile Include="Models\UserUpdatePassword.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

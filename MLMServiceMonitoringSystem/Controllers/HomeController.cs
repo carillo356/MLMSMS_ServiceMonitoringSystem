@@ -602,49 +602,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return Json(new { success = false, message = errors });
         }
 
-
-
-        //[HttpPost]
-        //public ActionResult UpdateUser(UserUpdate _user, string Password)
-        //{
-        //    // Retrieve the user from the database
-        //    var userToUpdate = _db.Users.FirstOrDefault(u => u.IdUser == _user.IdUser);
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (userToUpdate.FirstName == _user.FirstName && userToUpdate.LastName == _user.LastName && userToUpdate.Email == _user.Email && userToUpdate.IsAdmin == _user.IsAdmin)
-        //        {
-        //            return Json(new { success = true, message = "No changes" });
-        //        }
-        //        if (userToUpdate != null)
-        //        {
-
-        //            // Update the user's properties
-        //            userToUpdate.FirstName = _user.FirstName;
-        //            userToUpdate.LastName = _user.LastName;
-        //            userToUpdate.Email = _user.Email;
-        //            userToUpdate.IsAdmin = _user.IsAdmin;
-
-        //            // Update the user's password if it is not null
-        //            if (!string.IsNullOrEmpty(Password))
-        //            {
-        //                userToUpdate.Password = GetMD5(Password);
-
-        //            }
-        //            _db.Configuration.ValidateOnSaveEnabled = false;
-        //            _db.Entry(userToUpdate).State = EntityState.Modified;
-        //            _db.SaveChanges();
-
-        //            return Json(new { success = true, message = "User info updated successfully!" });
-        //        }
-        //        else
-        //        {
-        //            return Json(new { success = false, message = "User info updated unsuccessfully!" });
-        //        }
-        //    }
-        //    return View("AdminUsers");
-        //}
-
         [HttpPost]
         public ActionResult UpdateUser(UserUpdate _user, string Password)
         {
@@ -701,7 +658,53 @@ namespace LoginAndRegisterASPMVC5.Controllers
                               .Select(e => e.ErrorMessage);
             return Json(new { success = false, message = errors });
         }
-    
+
+        [HttpPost]
+        public ActionResult UpdateUserPassword(UserUpdatePassword _user, string currentPassword, string newPassword)
+        {
+            if (ModelState.IsValid)
+            {
+                var userToUpdate = _db.Users.FirstOrDefault(u => u.IdUser == _user.IdUser);
+
+                if (userToUpdate != null)
+                {
+                    if (GetMD5(currentPassword) != userToUpdate.Password)
+                    {
+                        return Json(new { success = false, message = "Current password is incorrect!" });
+                    }
+
+                    try
+                    {
+                        // Update the user's password if it is not null
+                        if (!string.IsNullOrEmpty(newPassword))
+                        {
+                            userToUpdate.Password = GetMD5(newPassword);
+                        }
+
+                        _db.Configuration.ValidateOnSaveEnabled = false;
+                        _db.Entry(userToUpdate).State = EntityState.Modified;
+                        _db.SaveChanges();
+
+                        return Json(new { success = true, message = "User info updated successfully!" });
+                    }
+                    catch
+                    {
+                        // If any exception occurs during the update process, return the "unsuccessfully updated" message
+                        return Json(new { success = false, message = "User info update unsuccessfully!" });
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "User not found!" });
+                }
+            }
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors)
+                              .Select(e => e.ErrorMessage);
+            return Json(new { success = false, message = errors });
+        }
+
+
 
         public ActionResult Index()
         {

@@ -74,6 +74,9 @@
                         <div class="col-sm-6">
                             <h2><b>List of Users</b></h2>
                         </div>
+                        <div class="col-sm-6 button-container">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changePass-modal"><i class="bi bi-lock"></i><span>Change Password</span></button>
+                        </div>
                         @if (Session["IsAdmin"] != null && (bool)Session["IsAdmin"])
                         {
                             <div class="col-sm-6 button-container">
@@ -135,6 +138,45 @@
                             <!--pages or li are comes from javascript -->
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="changePass-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Change my password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="change-pass-form" onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUserPassword", "Home")">
+                        <div id="validation-summary">
+                            @Html.ValidationSummary(true)
+                        </div>
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.IdUser)
+
+                        <div class="form-group m-3 position-relative">
+                            @Html.Label("currentPassword", "Current Password:", new { @class = "label fw-bold" })
+                            @Html.Password("currentPassword", null, new { @class = "form-control", id = "currentPassword" })
+                            <span toggle="#currentPassword" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                        </div>
+
+                        <div class="form-group m-3 position-relative">
+                            @Html.Label("newPassword", "New Password:", new { @class = "label fw-bold" })
+                            @Html.Password("newPassword", null, new { @class = "form-control", id = "newPassword" })
+                            <span toggle="#newPassword" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <button onclick="editPassword(@Session["IdUser"])" type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Save Changes</button>
+                            <button type="button" id="cancelButton" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -677,4 +719,63 @@
         });
       });
     });
+</script>
+
+<!-- Edit User Password Modal with Toast and Validation Message -->
+<script>
+    $(document).ready(function () {
+      // Handle form submission using AJAX
+      $('#change-pass-form').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Send form data using AJAX
+        $.ajax({
+          url: '@Url.Action("UpdateUserPassword", "Home")',
+          type: 'POST',
+          data: $(this).serialize(),
+            success: function (result) {
+                if (result.success) {
+                    // Update table with new user data
+                    $('#user-table').html(result);
+
+                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    var toastMessage = result.message;
+                    document.querySelector('.toast-body').innerHTML = toastMessage;
+                    // set background color to green if service/s has been added.
+                    toast._element.classList.remove("text-bg-danger");
+                    toast._element.classList.add("bg-success");
+                    toast.show();
+
+                    setTimeout(function () {
+                        toast.dispose();
+                    }, 4000);
+
+                    // Hide modal
+                    $('#changePass-modal').modal('hide');
+
+                } else {
+                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    var toastMessage = result.message;
+                    document.querySelector('.toast-body').innerHTML = toastMessage;
+                    // set background color to green if service/s has been added.
+                    toast._element.classList.remove("text-bg-danger");
+                    toast._element.classList.add("bg-success");
+                    toast.show();
+
+                    setTimeout(function () {
+                        toast.dispose();
+                    }, 4000);
+                }
+                Synch();
+            }
+        });
+      });
+    });
+</script>
+
+<script>
+    function editPassword(IdUser) {
+        // Set the value of the IdUser hidden field in the modal
+        $('#IdUser').val(IdUser);
+    }
 </script>
