@@ -9,6 +9,7 @@ function AddService(serviceName, resolve, reject) {
             if (response.success) {
                 var $servicesTable = $('#servicesTable');
                 $servicesTable.find('tbody').prepend($newRows);
+                $('#error-container').html('');
                 resolve();
             }
             else {
