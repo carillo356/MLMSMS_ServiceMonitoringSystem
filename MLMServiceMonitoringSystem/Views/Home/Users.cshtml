@@ -156,9 +156,6 @@
                 </div>
                 <div class="modal-body">
                     <form id="change-pass-form" onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUserPassword", "Home")">
-                        <div id="validation-summary">
-                            @Html.ValidationSummary(true)
-                        </div>
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(m => m.IdUser)
 
@@ -654,6 +651,7 @@
                             alert(result.message);
                         }
                     }
+
                     Synch();
                 }
             });
