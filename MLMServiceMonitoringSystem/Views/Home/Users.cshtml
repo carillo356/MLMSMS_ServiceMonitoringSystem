@@ -636,6 +636,9 @@
                         $('#addUsers-modal').modal('dispose');
                         $('#add-user-form')[0].reset();
 
+                        // Clear the validation summary
+                        $('#validation-summary').html('');
+
                     } else {
                         // Check if there is a validation summary
                         if (result.message) {
