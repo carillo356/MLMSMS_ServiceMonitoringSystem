@@ -105,3 +105,10 @@ Exception on CheckServices: A network-related or instance-specific error occurre
 01:44 PM - Error
 Exception on ProcessQueue: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Shared Memory Provider, error: 40 - Could not open a connection to SQL Server)
 
+02:14 PM - Run Periodic Logger
+ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+02:23 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
