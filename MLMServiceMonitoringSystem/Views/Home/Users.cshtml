@@ -74,13 +74,16 @@
                         <div class="col-sm-6">
                             <h2><b>List of Users</b></h2>
                         </div>
-                        <div class="col-sm-6 button-container">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changePass-modal"><i class="bi bi-lock"></i><span>Change Password</span></button>
-                        </div>
                         @if (Session["IsAdmin"] != null && (bool)Session["IsAdmin"])
                         {
                             <div class="col-sm-6 button-container">
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUsers-modal"><i class="bi bi-plus-circle"></i><span>Add Users</span></button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-sm-6 button-container">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changePass-modal"><i class="bi bi-lock"></i><span>Change Password</span></button>
                             </div>
                         }
                     </div>
