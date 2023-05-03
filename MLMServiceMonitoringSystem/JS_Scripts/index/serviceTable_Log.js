@@ -164,8 +164,6 @@
         });
     });
 
-
-
     function handleRowClick(serviceName, limit) {
         logHistory(serviceName, limit);
     }

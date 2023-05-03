@@ -1,10 +1,18 @@
 ﻿// Submit Form for Add Service
 function submitForm() {
     var serviceNames = [];
+    var checkedCount = $('input[type="checkbox"]:checked').length;
 
     $('input[type="checkbox"]:checked').each(function () {
         serviceNames.push($(this).val());
     });
+
+    if (serviceNames.length === 0) {
+        // Display error message if no services are selected
+        var errorContainer = document.getElementById("error-container-addservices");
+        errorContainer.innerHTML = '<span>Please select a service/s</span>'
+        return;
+    }
 
     // Wrap each AddService call in a promise and store them in an array
     var promises = serviceNames.map(function (serviceName) {
@@ -18,10 +26,24 @@ function submitForm() {
     });
 
 
-    if (servicesAdded.length > 0) {
-        var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+    if (serviceNames.length > 0) {
+        var toastElement = document.createElement('div');
+        toastElement.setAttribute('class', 'toast hide toast-stack');
+        toastElement.setAttribute('role', 'alert');
+        toastElement.setAttribute('aria-live', 'assertive');
+        toastElement.setAttribute('aria-atomic', 'true');
+
+        var toastBody = document.createElement('div');
+        toastBody.setAttribute('class', 'toast-body');
+        toastElement.appendChild(toastBody);
+
+        var toastWrapper = document.getElementById('toast-wrapper');
+        toastWrapper.appendChild(toastElement);
+
+        var toast = new bootstrap.Toast(toastElement);
         var toastMessage = "You have added " + checkedCount + " service(s)";
-        document.querySelector('.toast-body').innerHTML = toastMessage;
+        toastBody.innerHTML = toastMessage;
+
         // set background color to green if service/s has been added.
         toast._element.classList.remove("text-bg-danger");
         toast._element.classList.add("bg-success");
@@ -30,20 +52,19 @@ function submitForm() {
 
         setTimeout(function () {
             toast.dispose();
-        }, 2000);
+        }, 4000);
     }
-    $('#displayService-modal').modal('hide');
 }
 
 // Clear Field in Search Filter
 $(function () {
-    // Function to clear all input fields
+    // Function to clear search box input field
     function clearFields() {
-        $('#displayService-modal input[type="text"]').val('');
+        $('#displayService-modal .search-box').val('');
     }
 
     // Attach the clearFields function to the Cancel button click event
-    $('#btnCancelService, #btnAddService').click(function () {
+    $('#btnCancelService').click(function () {
         clearFields();
     });
 });

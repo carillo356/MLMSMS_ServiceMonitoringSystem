@@ -68,6 +68,10 @@ hr {
         box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
     }
 
+.text-center span {
+    color: red;
+}
+
 @media only screen and (max-width: 375px) {
     .card {
         margin: 0;
