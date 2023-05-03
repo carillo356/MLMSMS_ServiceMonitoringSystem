@@ -26,6 +26,11 @@
                                 <h4 class="fw-light">Service Monitoring System</h4>
                                 <hr />
                                 <h2 class="fw-normal">Sign in</h2>
+
+                                @if (!string.IsNullOrEmpty(ViewBag.validation))
+                                {
+                                   <span>@ViewBag.validation</span>
+                                }
                             </div>
                             @using (Html.BeginForm("Login", "Home", FormMethod.Post))
                             {

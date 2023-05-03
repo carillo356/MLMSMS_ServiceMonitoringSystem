@@ -749,6 +749,12 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         Session["IsAdmin"] = data.FirstOrDefault().IsAdmin;
                         return View("Index");
                     }
+                    else
+                    {
+                        // If email or password is incorrect
+                        ViewBag.validation = "Email/Password is incorrect";
+                        return View("Login");
+                    }
                 }
             }
             catch
@@ -759,6 +765,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
 
             return View();
         }
+
 
         public ActionResult LoginWithSSOToken(string ssoToken)
         {
