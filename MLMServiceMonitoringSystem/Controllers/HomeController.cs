@@ -59,6 +59,8 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         }
                     }
                 }
+                // Sort the list by ServiceName
+                _servicesInMonitor = _servicesInMonitor.OrderBy(service => service.ServiceName).ToList();
             }
             catch
             {

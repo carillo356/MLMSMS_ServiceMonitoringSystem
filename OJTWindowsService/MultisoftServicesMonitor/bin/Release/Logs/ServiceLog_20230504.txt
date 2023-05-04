@@ -63,3 +63,69 @@ Service: Service1, Status: Stopped
 09:25 AM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
+10:57 AM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+10:57 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+10:57 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+10:57 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 5/4/2023 9:25:00 AM, LastEventLog: Service stopped successfully.
+
+
+10:57 AM - Status Changed
+Service: MultisoftServicesMonitor, Status: Running
+
+10:57 AM - Status Changed
+Service: Service2, Status: Running
+
+10:58 AM - Status Changed
+Service: Service2, Status: Stopped
+
+10:58 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+10:59 AM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+10:59 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+10:59 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+10:59 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 5/4/2023 10:58:14 AM, LastEventLog: Service stopped successfully.
+
+
+10:59 AM - Status Changed
+Service: MultisoftServicesMonitor, Status: Running
+
+10:59 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+11:03 AM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+11:03 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+11:03 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+11:03 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 5/4/2023 10:59:27 AM, LastEventLog: Service stopped successfully.
+
+
+11:03 AM - Status Changed
+Service: MultisoftServicesMonitor, Status: Running
+
+11:03 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
