@@ -134,9 +134,13 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Global.asax" />
-    <Content Include="JS_Scripts\admin_Users\clearFields.js" />
-    <Content Include="JS_Scripts\admin_Users\dropdown_showhidePassword.js" />
-    <Content Include="JS_Scripts\admin_Users\tooltip_deleteUser_editUser_modal.js" />
+    <Content Include="JS_Scripts\index\addRemove_services.js" />
+    <Content Include="JS_Scripts\index\serviceTable_logs_pagination.js" />
+    <Content Include="JS_Scripts\index\submitForm_clearReset.js" />
+    <Content Include="JS_Scripts\Users\clearFields.js" />
+    <Content Include="JS_Scripts\Users\dropdown_showhidePassword.js" />
+    <Content Include="JS_Scripts\Users\tooltip_deleteUser_editUser_modal.js" />
+    <Content Include="JS_Scripts\Users\usersPagination.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -310,7 +314,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="JS_Scripts\index\" />
     <Folder Include="Views\Index\" />
     <Folder Include="Views\Service\" />
   </ItemGroup>
