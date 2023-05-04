@@ -15,3 +15,51 @@ ServiceName: MultisoftServicesMonitor, LastStart: 5/2/2023 7:12:54 AM, LastEvent
 09:13 AM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
+09:23 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+09:23 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+09:23 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+ServiceName: Service1, ServiceStatus: Running, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+09:23 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 5/4/2023 9:13:52 AM, LastEventLog: Service stopped successfully.
+
+
+09:23 AM - Run PeriodicLogger
+ServiceName: Service1, LastStart: 5/4/2023 9:14:13 AM, LastEventLog: Service started successfully.
+
+
+09:23 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+09:24 AM - Run RealTimeLogger
+enabled_RealTimeLogger: True
+
+09:24 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+09:24 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+09:24 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 5/4/2023 9:23:53 AM, LastEventLog: Service stopped successfully.
+
+
+09:24 AM - Status Changed
+Service: MultisoftServicesMonitor, Status: Running
+
+09:24 AM - Status Changed
+Service: Service1, Status: Running
+
+09:24 AM - Status Changed
+Service: Service1, Status: Stopped
+
+09:25 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
