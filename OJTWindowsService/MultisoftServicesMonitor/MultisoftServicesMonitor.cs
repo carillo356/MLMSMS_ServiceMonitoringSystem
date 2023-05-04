@@ -260,7 +260,7 @@ namespace MultisoftServicesMonitor
         public Queue<string> _qGetEventLogList = new Queue<string>();
         private bool _isCheckServicesRunning = false;
         private bool _isQueueProcessing = false;
-        private int _deleteLogsXDaysOld = int.Parse(ConfigurationManager.AppSettings["deleteLogsXDaysOld"]);
+        private int _deleteLogsXDaysOld = 30;
         private string _error = "Error";
 
         public void Start()
@@ -275,6 +275,13 @@ namespace MultisoftServicesMonitor
             }
 
             CommonMethods.WriteToFile($"checkServicesEveryXMinute: {checkServicesTimer.Interval / 60000}", $"Run {GetType().Name}");
+
+            if (!int.TryParse(ConfigurationManager.AppSettings.Get("deleteLogsXDaysOld"), out int _deleteLogsXDaysOld))
+                _deleteLogsXDaysOld = 30;
+            if (_deleteLogsXDaysOld < 7)
+                _deleteLogsXDaysOld = 7;
+            if (_deleteLogsXDaysOld > 90)
+                _deleteLogsXDaysOld = 90;
 
             deleteLogsTimer.Interval = 24 * 60 * 60 * 1000; // every 24 hours
             deleteLogsTimer.Elapsed += new ElapsedEventHandler(OnDeleteLogsElapsedTime);
@@ -310,16 +317,6 @@ namespace MultisoftServicesMonitor
 
         private void OnDeleteLogsElapsedTime(object source, ElapsedEventArgs e)
         {
-
-            if (_deleteLogsXDaysOld < 7)
-            {
-                _deleteLogsXDaysOld = 7;
-            }
-            else if (_deleteLogsXDaysOld > 180)
-            {
-                _deleteLogsXDaysOld = 180;
-            }
-
             DeleteOldLogFiles(_deleteLogsXDaysOld);
             CommonMethods.WriteToFile($"deleteLogsXDaysOld: {_deleteLogsXDaysOld}", $"Delete Logs");
         }

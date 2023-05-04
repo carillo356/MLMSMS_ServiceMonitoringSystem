@@ -1,0 +1,17 @@
+09:13 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+09:13 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+09:13 AM - Run Periodic Logger
+ServiceName: MultisoftServicesMonitor, ServiceStatus: Start Pending, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+09:13 AM - Run PeriodicLogger
+ServiceName: MultisoftServicesMonitor, LastStart: 5/2/2023 7:12:54 AM, LastEventLog: Service stopped successfully.
+
+
+09:13 AM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
