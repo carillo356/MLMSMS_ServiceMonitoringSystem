@@ -83,7 +83,7 @@
                         else
                         {
                             <div class="col-sm-6 button-container">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changePass-modal"><i class="bi bi-lock"></i><span>Change Password</span></button>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changePass-modal"><i class="bi bi-lock"></i><span>Change my Password</span></button>
                             </div>
                         }
                     </div>
@@ -152,7 +152,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">Change my password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="changePass-close" aria-label="Close"></button>
+                </div>
+                <div id="error-container-changePass">
+                    <!-- Error message will be inserted here by JavaScript -->
                 </div>
                 <div class="modal-body">
                     <form id="change-pass-form" onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUserPassword", "Home")">
@@ -173,7 +176,7 @@
 
 
                         <div class="form-group">
-                            <button onclick="editPassword(@Session["IdUser"])" type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Save Changes</button>
+                            <button onclick="editPassword(@Session["IdUser"])" id="changePass-save" type="submit" name="submit" class="btn btn-primary mt-3 mb-2" value="changePassword">Save Changes</button>
                             <button type="button" id="cancelButton" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
@@ -329,6 +332,8 @@
         </div>
     </div>
 
+
+
     <script src="~/JS_Scripts/admin_Users/tooltip_deleteUser_editUser_modal.js"></script>
     <script src="~/JS_Scripts/admin_Users/dropdown_showhidePassword.js"></script>
     <script src="~/JS_Scripts/admin_Users/clearFields.js"></script>
@@ -339,6 +344,7 @@
     var isAdminSession = @isAdminSession.ToString().ToLower();
 </script>
 
+<!-- Users -->
 <script>
     // Pagination for Admin User Table
 
@@ -671,6 +677,15 @@
         $('#cancelButton').on('click', function () {
             $('#addUsers-modal').modal('hide');
         });
+
+
+    // Reset form fields when modal is hidden
+    $('#changePass-close').on('click', function () {
+        $('#change-pass-form')[0].reset();
+        $('#error-container-changePass').html('');
+    });
+
+
 </script>
 
 <!-- Edit User Modal with Toast and Validation Message -->
@@ -725,12 +740,12 @@
     });
 </script>
 
-<!-- Edit User Password Modal with Toast and Validation Message -->
+<!-- Update User Password Modal with Toast and Validation Message -->
 <script>
     $(document).ready(function () {
       // Handle form submission using AJAX
       $('#change-pass-form').submit(function (event) {
-        event.preventDefault(); // Prevent default form submission behavior
+          event.preventDefault(); // Prevent default form submission behavior
 
         // Send form data using AJAX
         $.ajax({
@@ -755,20 +770,13 @@
                     }, 4000);
 
                     // Hide modal
-                    $('#changePass-modal').modal('hide');
+                    $('#changePass-modal').modal('dispose');
+                    $('#change-pass-form')[0].reset();
+                    $('#error-container-changePass').html('');
 
                 } else {
-                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
-                    var toastMessage = result.message;
-                    document.querySelector('.toast-body').innerHTML = toastMessage;
-                    // set background color to green if service/s has been added.
-                    toast._element.classList.remove("text-bg-danger");
-                    toast._element.classList.add("bg-success");
-                    toast.show();
-
-                    setTimeout(function () {
-                        toast.dispose();
-                    }, 4000);
+                    var errorContainer = document.getElementById("error-container-changePass");
+                    errorContainer.innerHTML = result.message;
                 }
                 Synch();
             }
@@ -777,9 +785,9 @@
     });
 </script>
 
+<!-- Edit Password -->
 <script>
     function editPassword(IdUser) {
-        // Set the value of the IdUser hidden field in the modal
         $('#IdUser').val(IdUser);
     }
 </script>

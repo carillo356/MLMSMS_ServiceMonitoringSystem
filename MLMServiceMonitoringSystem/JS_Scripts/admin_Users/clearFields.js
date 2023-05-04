@@ -21,3 +21,19 @@ $(function () {
         clearFields();
     });
 });
+
+// Clear all fields when clicking the Cancel Button for Update Password
+$(function () {
+    // Function to clear all input fields
+    function clearFields() {
+        $('#change-pass-form input[type="password"]').val('');
+    }
+
+    // Attach the clearFields function to the Cancel button click event
+    $('#cancelButton').click(function () {
+        clearFields();
+        $('#error-container-changePass').html('');
+    });
+});
+
+

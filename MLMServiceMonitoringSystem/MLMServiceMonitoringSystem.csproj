@@ -137,7 +137,6 @@
     <Content Include="JS_Scripts\admin_Users\clearFields.js" />
     <Content Include="JS_Scripts\admin_Users\dropdown_showhidePassword.js" />
     <Content Include="JS_Scripts\admin_Users\tooltip_deleteUser_editUser_modal.js" />
-    <Content Include="JS_Scripts\index\serviceTable_Log.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -311,6 +310,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="JS_Scripts\index\" />
     <Folder Include="Views\Index\" />
     <Folder Include="Views\Service\" />
   </ItemGroup>
