@@ -74,6 +74,28 @@ table.table td:last-child i {
     overflow-y: auto;
 }
 
+/* Change Password modal */
+#changePass-modal .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 60%;
+}
+
+#changePass-modal .modal-dialog {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+}
+
+#changePass-modal .modal-content {
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
 /* Edit Users modal */
 #editUsers-modal .modal {
     display: flex;
@@ -270,7 +292,7 @@ table.table td:last-child i {
 /* Responsive */
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
 
-    #addUsers-modal .modal-dialog, #editUsers-modal .modal-dialog, #deleteUsers-modal .modal-content {
+    #addUsers-modal .modal-dialog, #editUsers-modal .modal-dialog, #deleteUsers-modal .modal-content, #changePass-modal .modal-dialog {
         width: 80%;
     }
 

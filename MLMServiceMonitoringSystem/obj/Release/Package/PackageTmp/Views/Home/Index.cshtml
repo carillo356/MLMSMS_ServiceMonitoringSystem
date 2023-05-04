@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "MLM Homepage";
     Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+    bool isAdminSession = Session["IsAdmin"] != null && (bool)Session["IsAdmin"];
 }
 
 <body class="bgcolor">
@@ -69,9 +70,9 @@
                 <thead>
                     <tr class="border-4 border-dark">
                         <th scope="col" style="width: 25%;">LAST START</th>
-                        <th scope="col" style="width: 20%;">LAST LOG</th>
+                        <th scope="col" style="width: 25%;">LAST LOG</th>
                         <th scope="col">STATUS</th>
-                        <th scope="col" style="width: 25%;">HOST NAME</th>
+                        <th scope="col" style="width: 20%;">HOST NAME</th>
                         <th scope="col" style="width: 25%;">LOG BY</th>
                     </tr>
                 </thead>
@@ -128,26 +129,36 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">Add Services</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" id="btnCloseService" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="d-flex justify-content-left">
-                        <form onsubmit="event.preventDefault();" class="d-flex align-items-center mb-0">
+                        <form onsubmit="event.preventDefault();" id="addService-search" class="d-flex align-items-center mb-0">
                             <div class="form-group m-3" style="width: 100%;">
-                                <input type="text" name="ServiceName" class="form-control search-box" autocomplete="off" placeholder="Search" />
+                                <input type="text" name="ServiceName"  class="form-control search-box" autocomplete="off" placeholder="Search" />
                             </div>
                         </form>
+                    </div>
+                    <div id="error-container-addservices">
+                        <!-- Error message will be inserted here by JavaScript -->
                     </div>
                     <div class="list-group">
                         <div id="serviceCheckboxes"></div>
                     </div>
                 </div>
+
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary custom-button" id="btnAddService" onclick="submitForm()" data-bs-dismiss="modal">Add</button>
+                    <button type="button" class="btn btn-secondary custom-button" id="btnAddService" onclick="submitForm()">Add</button>
                     <button type="button" class="btn btn-secondary custom-button" id="btnCancelService" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Generic error message -->
+    <div id="error-container">
+        <!-- Error message will be inserted here by JavaScript -->
     </div>
 
     <!-- Service Table Modal -->
@@ -160,7 +171,10 @@
                             <h2><b>List of Services</b></h2>
                         </div>
                         <div class="col-sm-6 button-container">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
+                            @if (Session["IsAdmin"] != null && (bool)Session["IsAdmin"])
+                            {
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#displayService-modal"><i class="bi bi-plus-circle"></i><span>Add Services</span></button>
+                            }
                             <button type="button" class="btn btn-success" onclick="ServicesInMonitor();"><i class="bi bi-arrow-clockwise"></i><span>Refresh List</span></button>
                         </div>
                     </div>
@@ -225,12 +239,9 @@
         </div>
     </div>
 
-    <!-- Toast Design for any ACTION-->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-body">
-            </div>
-        </div>
+    <!-- Stacked Toast Design for any ACTION -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toast-wrapper"></div>
     </div>
 
     <!-- Alert Box for all buttons in Action column -->
@@ -245,9 +256,16 @@
         </div>
     </div>
 
-    <script src="~/JS_Scripts/index/pagination_serviceTable.js"></script>
-    <script src="~/JS_Scripts/index/serviceTable_logHistory.js"></script>
-    <script src="~/JS_Scripts/index/add_remove_service.js"></script>
-    <script src="~/JS_Scripts/index/clearField_submitForm_dropdown.js"></script>
+    <script src="~/JS_Scripts/index/serviceTable_logs_pagination.js"></script>
+    <script src="~/JS_Scripts/index/submitForm_clearReset.js"></script>
+    <script src="~/JS_Scripts/index/addRemove_services.js"></script>
 
 </body>
+
+<script>
+    var isAdminSession = @isAdminSession.ToString().ToLower();
+</script>
+
+
+
+

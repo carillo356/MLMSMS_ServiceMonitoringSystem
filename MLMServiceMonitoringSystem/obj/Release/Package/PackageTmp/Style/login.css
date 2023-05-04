@@ -11,7 +11,8 @@
 .gradient-page {
     margin: 0;
     padding: 0;
-    background: linear-gradient(120deg,#2980b9, #8e44ad);
+ /*   background: linear-gradient(120deg,#2980b9, #8e44ad);*/
+    background-image: linear-gradient(to right top, #370535, #363f7c, #0079b6, #00b3d5, #12ebd8);
     height: 100vh;
     overflow: hidden;
     font-family: "Trebuchet MS", sans-serif;
@@ -67,6 +68,10 @@ hr {
     .form-control:focus {
         box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
     }
+
+.text-center span {
+    color: red;
+}
 
 @media only screen and (max-width: 375px) {
     .card {

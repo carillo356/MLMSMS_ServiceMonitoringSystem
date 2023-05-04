@@ -260,7 +260,6 @@ table.table td:last-child i {
         font-size: 12px;
     }
 
-
 /* Add and Edit Users (Text Field and Button) */
 .form-control :where(.input-box input, .select-box) {
     position: relative;

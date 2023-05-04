@@ -486,6 +486,7 @@ header .mobile-toggler {
 
 .bi.bi-eye-fill, .bi.bi-eye-slash-fill {
     font-size: 20px;
+    margin: auto;
 }
 
 /* All Toast */

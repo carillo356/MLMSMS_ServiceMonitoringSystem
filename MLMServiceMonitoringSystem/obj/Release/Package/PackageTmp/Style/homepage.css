@@ -499,9 +499,24 @@ header .mobile-toggler {
     color: white;
 }
 
+.toast-stack {
+    margin-bottom: 10px;
+}
+
+#error-container-addservices {
+    color: red;
+    margin: -20px 0px 15px 15px
+}
+
+
+#error-container-changePass {
+    color: red;
+    margin: 10px 30px 0px 30px;
+    text-align: center;
+}
+
 /* Responsive */
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
-
     .list-items {
         z-index: 999;
     }

@@ -54,44 +54,65 @@ function RealTimeUsersTable() {
             url: "/Home/RealTimeUsersTable",
             type: "GET",
             dataType: 'json',
-            success: function (result) {
-                $("#usersTable tbody").empty();
-                // Loop through the data and append each row to the table
-                result.forEach(function (Data) {
-                    const Role = (Data.IsAdmin === true) ? '<span><i class="bi bi-person-gear"></i></span>' : '<span><i class="bi bi-person"></i></span>';
+            success: function (response) {
+                if (response.success) {
+                    $("#usersTable tbody").empty();
+                    // Loop through the data and append each row to the table
+                    response.users.forEach(function (Data) {
+                        const Role = (Data.IsAdmin === true) ? '<span><i class="bi bi-person-gear"></i></span>' : '<span><i class="bi bi-person"></i></span>';
 
-                    var row = "<tr data-toggle='modal' data-target='#service-modal'>";
-                    row += "<td>" + Data.FirstName + "</td>";
-                    row += "<td>" + Data.LastName + "</td>";
-                    row += "<td>" + Data.Email + "</td>";
-                    row += "<td>" + Role + "</td>";
-                    row += "<td>";
-                    if (Data.Email_Notification == true) {
-                        row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
-                        row += "<i class='bi bi-envelope-check-fill'></i>";
-                        row += "</button>";
-                    } else {
-                        row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
-                        row += "<i class='bi bi-envelope-x-fill'></i>";
-                        row += "</button>";
-                    }
+                        var row = "<tr data-toggle='modal' data-target='#service-modal'>";
+                        row += "<td>" + Data.FirstName + "</td>";
+                        row += "<td>" + Data.LastName + "</td>";
+                        row += "<td>" + Data.Email + "</td>";
+                        row += "<td>" + Role + "</td>";
+                        row += "<td>";
+                        if (Data.Email_Notification == true) {
+                            row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"off\")' class='user-button btn-green' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email On'>";
+                            row += "<i class='bi bi-envelope-check-fill'></i>";
+                            row += "</button>";
+                        } else {
+                            row += "<button onclick='setNotification(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"on\")' class='user-button btn-red' id='btnSet' data-bs-toggle='tooltip' data-bs-placement='top' title='Set Email Off'>";
+                            row += "<i class='bi bi-envelope-x-fill'></i>";
+                            row += "</button>";
+                        }
 
-                    row += "<button onclick='editUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\", \"update\")' class='user-button' data-bs-toggle='modal' data-bs-target='#editUsers-modal' data-bs-toggle='tooltip' data-bs-placement='top' title='Edit User'>";
-                    row += "<i class='bi bi-pencil-square'></i>";
-                    row += "</button>";
+                        if (isAdminSession) {
+                            row += "<button onclick='editUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"" + Data.Email + "\", \"" + Data.IsAdmin + "\", \"update\")' class='user-button' data-bs-toggle='modal' data-bs-target='#editUsers-modal' data-bs-toggle='tooltip' data-bs-placement='top' title='Edit User'>";
+                            row += "<i class='bi bi-pencil-square'></i>";
+                            row += "</button>";
 
-                    row += "<button onclick='DeleteUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"delete\")' class='user-button' id='btnDelete' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete User'>";
-                    row += "<i class='bi bi-trash3-fill'></i>";
-                    row += "</button>";
+                            row += "<button onclick='DeleteUser(\"" + Data.IdUser + "\", \"" + Data.FirstName + "\", \"" + Data.LastName + "\", \"delete\")' class='user-button' id='btnDelete' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete User'>";
+                            row += "<i class='bi bi-trash3-fill'></i>";
+                            row += "</button>";
+                        }
 
-                    row += "</td></tr>";
-                    $("#usersTable tbody").append(row);
-                });
-                totalUserCount = result.length;
-                resolve();
+
+                        row += "</td></tr>";
+                        $("#usersTable tbody").append(row);
+                    });
+                    totalUserCount = response.users.length;
+                    resolve();
+                }
+                else {
+                    var errorContainer = document.getElementById("error-container");
+                    errorContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${response.errorMessage}</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                }
             },
-            error: function () {
-                reject("Failed to refresh users.");
+            error: function (xhr) {
+                var errorMessage = xhr.responseText;
+
+                var errorContainer = document.getElementById("error-container");
+                errorContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${errorMessage}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
+                reject();
             }
         });
     });
@@ -129,9 +150,22 @@ function setNotification(IdUser, FirstName, LastName, command) {
                 commandText = "NOT RECEIVE";
             }
 
-            var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+            var toastElement = document.createElement('div');
+            toastElement.setAttribute('class', 'toast hide toast-stack');
+            toastElement.setAttribute('role', 'alert');
+            toastElement.setAttribute('aria-live', 'assertive');
+            toastElement.setAttribute('aria-atomic', 'true');
+
+            var toastBody = document.createElement('div');
+            toastBody.setAttribute('class', 'toast-body');
+            toastElement.appendChild(toastBody);
+
+            var toastWrapper = document.getElementById('toast-wrapper');
+            toastWrapper.appendChild(toastElement);
+
+            var toast = new bootstrap.Toast(toastElement);
             var toastMessage = "User " + "' " + FirstName + " " + LastName + " '" + " WILL " + commandText + " email notifications.";
-            document.querySelector('.toast-body').innerHTML = toastMessage;
+            toastBody.innerHTML = toastMessage;
 
             if (commandText === "NOT RECEIVE") {
                 // set background color to red if commandText is Stopped
@@ -149,8 +183,15 @@ function setNotification(IdUser, FirstName, LastName, command) {
                 toast.dispose();
             }, 4000);
         },
-        error: function (xhr, status, error) {
-            alert(error);
+        error: function (xhr) {
+            var errorMessage = xhr.responseText;
+
+            var errorContainer = document.getElementById("error-container");
+            errorContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${errorMessage}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
         }
     });
 }
