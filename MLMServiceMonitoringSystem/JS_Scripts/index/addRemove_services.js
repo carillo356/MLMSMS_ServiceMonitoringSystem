@@ -8,6 +8,7 @@ function AddService(serviceName, resolve, reject) {
         success: function (response) {
             if (response.success) {
                 $('#error-container-addservices').html('');
+                $('#addService-search')[0].reset();
                 resolve();
             }
             else {
