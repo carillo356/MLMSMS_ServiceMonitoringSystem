@@ -503,10 +503,10 @@
                         toast.dispose();
                     }, 4000);
 
-                    // Hide modal
-                    $('#changePass-modal').modal('dispose');
                     $('#change-pass-form')[0].reset();
                     $('#error-container-changePass').html('');
+
+                    $('#changePass-modal').modal('dispose');
 
                 } else {
                     var errorContainer = document.getElementById("error-container-changePass");

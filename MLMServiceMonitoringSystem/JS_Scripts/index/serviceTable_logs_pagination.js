@@ -180,12 +180,14 @@ function ServiceActions(serviceName, command) {
     var modal = document.getElementById("alert-modal");
     var modalTitle = document.getElementById("modal-title");
     var modalMessage = document.getElementById("modal-message");
+    var modalNote = document.getElementById("modal-messageNote");
     var btnYes = document.getElementById("btnYes");
     var btnNo = document.getElementById("btnNo");
 
     modal.style.display = "block";
     modalTitle.innerHTML = "<i class='bi bi-exclamation-triangle-fill text-warning'></i> System Message";
     modalMessage.innerHTML = "Are you sure you want to " + command.toUpperCase() + " '" + serviceName + "'?";
+    modalNote.innerHTML = "Note: This action may take a while, refresh your list after 5 minutes.";
     btnYes.onclick = function () {
         /* Handle the command here*/
         $.ajax({
@@ -199,11 +201,11 @@ function ServiceActions(serviceName, command) {
 
                     var commandText = command.toUpperCase();
                     if (command === "stop") {
-                        commandText = "STOPPED";
+                        commandText = "STOP";
                     } else if (command === "start") {
-                        commandText = "STARTED";
+                        commandText = "STAR";
                     } else if (command === "restart") {
-                        commandText = "RESTARTED";
+                        commandText = "RESTART";
                     }
 
                     var toastElement = document.createElement('div');
@@ -220,7 +222,8 @@ function ServiceActions(serviceName, command) {
                     toastWrapper.appendChild(toastElement);
 
                     var toast = new bootstrap.Toast(toastElement);
-                    var toastMessage = "You " + commandText + " the service " + " ' " + serviceName + " ' " + ".";
+                    var toastMessage = "Command to " + commandText + " ' " + serviceName + "' " + "has been queued. This process may take a while, refresh your list after 5 minutes.";
+                    /*var toastMessage = "You " + commandText + " the service " + " ' " + serviceName + " ' " + ".";*/
                     toastBody.innerHTML = toastMessage;
 
                     if (commandText === "STOPPED") {

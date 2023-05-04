@@ -486,7 +486,6 @@ header .mobile-toggler {
 
 .bi.bi-eye-fill, .bi.bi-eye-slash-fill {
     font-size: 20px;
-    margin: auto;
 }
 
 /* All Toast */
@@ -514,6 +513,10 @@ header .mobile-toggler {
     color: red;
     margin: 10px 30px 0px 30px;
     text-align: center;
+}
+
+.messageNote {
+    font-size: 12px;
 }
 
 /* Responsive */
