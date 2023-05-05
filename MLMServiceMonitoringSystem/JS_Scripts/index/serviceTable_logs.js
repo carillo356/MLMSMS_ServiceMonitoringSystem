@@ -258,10 +258,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>`;
                 }
-
-
-
-
             }).then(function () {
                 SynchServiceTB();
             });
@@ -355,8 +351,6 @@
                     $('#logHistory-modal .modal-servicelogs .service_name').text(serviceName);
 
                     //// Show the popup dialog
-                    //ITEMS_PAR_PAGE_LOGS = limit;
-                    //logsshowPage(1);
                     $('#logHistory-modal').css('display', 'block');
                     showPageLogHistory(1);
                     logHistoryCount = response.servicesLogsList.length;

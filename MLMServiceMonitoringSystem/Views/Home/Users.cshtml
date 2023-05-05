@@ -73,6 +73,9 @@
                         <div class="col-sm-6">
                             <h2><b>List of Users</b></h2>
                         </div>
+                        <div class="col-sm-6 button-container">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changePass-modal"><i class="bi bi-lock"></i><span>Change Password</span></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,6 +131,45 @@
                             <!--pages or li are comes from javascript -->
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="changePass-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Change my password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="change-pass-form" method="post">
+                        <div id="validation-summary">
+                            @Html.ValidationSummary(true)
+                        </div>
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group m-3 position-relative">
+                            @Html.LabelFor(m => m.Password, "Current Password:", new { @class = "label fw-bold" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "password1" })
+                            <span toggle="#password1" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group m-3 position-relative">
+                            @Html.LabelFor(m => m.Password, "New Password:", new { @class = "label fw-bold" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "password1" })
+                            <span toggle="#password1" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2 " value="addUser">Save Changes</button>
+                            <button type="button" id="cancelButton" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

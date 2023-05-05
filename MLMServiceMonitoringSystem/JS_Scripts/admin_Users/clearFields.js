@@ -1,12 +1,11 @@
 ﻿// Clear all field when clicking the Cancel Button for Add users
 document.getElementById('cancelButton').addEventListener('click', function () {
     document.getElementById('add-user-form').reset();
+});
 
-    document.getElementById('addUserButton').addEventListener('click', function () {
-        setTimeout(function () {
-            document.getElementById('add-user-form').reset();
-        }, 500);
-    });
+document.getElementById('addUserButton').addEventListener('click', function () {
+        document.getElementById('add-user-form').reset();
+        $('#validation-summary').html(''); // Clear validation summary
 });
 
 // Clear all fields when clicking the Cancel Button for Edit users

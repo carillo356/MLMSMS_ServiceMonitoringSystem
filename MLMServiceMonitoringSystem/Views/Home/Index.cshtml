@@ -123,7 +123,7 @@
     </div>
 
     <!-- Adding Service with Checkbox Modal -->
-    <div class="modal fade" id="displayService-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal" id="displayService-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -143,7 +143,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary custom-button" id="btnAddService" onclick="submitForm()" data-bs-dismiss="modal">Add</button>
+                    <button type="button" class="btn btn-secondary custom-button" id="btnAddService" onclick="submitForm()">Add</button>
                     <button type="button" class="btn btn-secondary custom-button" id="btnCancelService" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -230,14 +230,6 @@
         </div>
     </div>
 
-    <!-- Toast Design for any ACTION-->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-body">
-            </div>
-        </div>
-    </div>
-
     <!-- Stacked Toast Design for any ACTION -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
         <div id="toast-wrapper"></div>
@@ -256,8 +248,9 @@
     </div>
 
     <script src="~/JS_Scripts/index/serviceTable_Logs.js"></script>
-    <script src="~/JS_Scripts/index/pagination_serviceTable.js"></script>
     <script src="~/JS_Scripts/index/add_remove.js"></script>
     <script src="~/JS_Scripts/index/clearField_dropDown_submitForm.js"></script>
 
 </body>
+
+

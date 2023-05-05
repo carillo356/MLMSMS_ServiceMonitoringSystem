@@ -46,6 +46,11 @@
     font-size: 20px;
 }
 
+.bi.bi-lock {
+    font-size: 20px;
+    color: white;
+}
+
 table.table td:last-child i {
     opacity: 0.9;
     font-size: 22px;
@@ -104,6 +109,28 @@ table.table td:last-child i {
         font-size: 12px;
         margin-right: 10px;
     }
+
+/* Change Passowrd modal */
+#changePass-modal .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 60%;
+}
+
+#changePass-modal .modal-dialog {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+}
+
+#changePass-modal .modal-content {
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
 
 /* Delete Users Modal */
 #deleteUsers-modal .modal {
