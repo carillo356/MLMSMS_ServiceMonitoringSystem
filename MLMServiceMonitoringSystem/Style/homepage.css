@@ -478,10 +478,11 @@ header .mobile-toggler {
 /* Show/Hide Password (Eye Icon) */
 .field-icon {
     position: absolute;
-    top: 70%;
+    top: 50%;
     right: 15px;
     transform: translateY(-50%);
     cursor: pointer;
+
 }
 
 .bi.bi-eye-fill, .bi.bi-eye-slash-fill {
