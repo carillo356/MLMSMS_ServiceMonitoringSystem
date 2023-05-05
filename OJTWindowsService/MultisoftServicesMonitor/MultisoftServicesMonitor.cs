@@ -87,6 +87,10 @@ namespace MultisoftServicesMonitor
                     WriteToFile("enabled_RealTimeLogger: " + enabled_RealTimeLogger, "Run " + GetType().Name);
                 }
             }
+            else
+            {
+                WriteToFile("Config setting 'enabled_RealTimeLogger' not found.");
+            }
         }
 
         public void Stop()
@@ -256,12 +260,16 @@ namespace MultisoftServicesMonitor
     {
         readonly Timer checkServicesTimer = new Timer();
         readonly Timer deleteLogsTimer = new Timer();
+        readonly Timer checkCommandsIssuedTimer = new Timer();
 
-        public Queue<string> _qGetEventLogList = new Queue<string>();
         private bool _isCheckServicesRunning = false;
+        private bool _isCheckCommandsIssuedRunning = false;
         private bool _isQueueProcessing = false;
+
+
         private int _deleteLogsXDaysOld = 30;
         private string _error = "Error";
+        public Queue<string> _qGetEventLogList = new Queue<string>();
 
         public void Start()
         {
@@ -272,9 +280,10 @@ namespace MultisoftServicesMonitor
             else
             {
                 checkServicesTimer.Interval = 60 * 60 * 1000; // default is 1 Hour
+                WriteToFile("Config setting 'checkServicesEveryXMinute' not found.");
             }
 
-            CommonMethods.WriteToFile($"checkServicesEveryXMinute: {checkServicesTimer.Interval / 60000}", $"Run {GetType().Name}");
+            WriteToFile($"checkServicesEveryXMinute: {checkServicesTimer.Interval / 60000}", $"Run {GetType().Name}");
 
             if (!int.TryParse(ConfigurationManager.AppSettings.Get("deleteLogsXDaysOld"), out int _deleteLogsXDaysOld))
                 _deleteLogsXDaysOld = 30;
@@ -282,6 +291,10 @@ namespace MultisoftServicesMonitor
                 _deleteLogsXDaysOld = 7;
             if (_deleteLogsXDaysOld > 90)
                 _deleteLogsXDaysOld = 90;
+
+            checkCommandsIssuedTimer.Interval = /*5 * 60 * 1000*/12000; // every 5 minutes
+            checkCommandsIssuedTimer.Elapsed += new ElapsedEventHandler(OnCheckCommandsIssuedElapsedTime);
+            checkCommandsIssuedTimer.Start();
 
             deleteLogsTimer.Interval = 24 * 60 * 60 * 1000; // every 24 hours
             deleteLogsTimer.Elapsed += new ElapsedEventHandler(OnDeleteLogsElapsedTime);
@@ -309,16 +322,42 @@ namespace MultisoftServicesMonitor
 
         private void OnCheckServicesElapsedTime(object source, ElapsedEventArgs e)
         {
-            if (!_isCheckServicesRunning)
+            if (!_isCheckServicesRunning && !_isCheckCommandsIssuedRunning)
             {
                 CheckServices();
             }
         }
 
+        private void OnCheckCommandsIssuedElapsedTime(object source, ElapsedEventArgs e)
+        {
+            if (!_isCheckServicesRunning && !_isQueueProcessing)
+            {
+                CheckCommandsIssued();
+            }
+        }
+
+        public void CheckCommandsIssued()
+        {
+            checkCommandsIssuedTimer.Stop();
+            _isCheckCommandsIssuedRunning = true;
+
+            using (SqlConnection connection = GetConnection())
+            {
+                var servicesStartStopQueue = GetColumns(connection, GetCommandsIssuedQuery("ServicesStartStopQueue", "sq"), reader => (LogID: reader.GetInt32(0), ServiceName: reader.GetString(1), Command: reader.GetString(2), HostName: reader.GetString(3), IssuedBy: reader.GetInt32(4))).ToArray();
+                foreach (var (logId, serviceName, command, hostName, issuedBy) in servicesStartStopQueue)
+                {
+                    ExecuteCommandIssued(logId, serviceName, command.ToLower(), hostName, issuedBy);
+                }
+            }
+
+            _isCheckCommandsIssuedRunning = false;
+            checkCommandsIssuedTimer.Start();
+        }
+
         private void OnDeleteLogsElapsedTime(object source, ElapsedEventArgs e)
         {
             DeleteOldLogFiles(_deleteLogsXDaysOld);
-            CommonMethods.WriteToFile($"deleteLogsXDaysOld: {_deleteLogsXDaysOld}", $"Delete Logs");
+            WriteToFile($"deleteLogsXDaysOld: {_deleteLogsXDaysOld}", $"Delete Logs");
         }
 
         private void DeleteOldLogFiles(int deleteLogsXDaysOld)
@@ -371,9 +410,9 @@ namespace MultisoftServicesMonitor
                     SP_UpdateServicesAvailable(connection, serviceInfoTable, hostName);
 
                     var servicesInstalled = GetTripleColumn(connection, GetServicesStatusQuery("ServicesAvailable", "sa")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
-                    var _servicesInMonitor = GetTripleColumn(connection, GetServicesStatusQuery("ServicesMonitored", "sm")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
+                    var servicesMonitored = GetTripleColumn(connection, GetServicesStatusQuery("ServicesMonitored", "sm")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
 
-                    foreach (var serviceInMonitor in _servicesInMonitor)
+                    foreach (var serviceInMonitor in servicesMonitored)
                     {
                         var serviceName = servicesInstalled.FirstOrDefault(s => s.ServiceName == serviceInMonitor.ServiceName && s.HostName == serviceInMonitor.HostName);
 
@@ -429,8 +468,8 @@ namespace MultisoftServicesMonitor
             finally
             {
                 checkServicesTimer.Start();
-                if (!_isQueueProcessing) ProcessQueue();
-                _isCheckServicesRunning = false; // Add this line
+                if (!_isQueueProcessing && !_isCheckCommandsIssuedRunning) ProcessQueue();
+                _isCheckServicesRunning = false; 
             }
         }
 
@@ -455,6 +494,131 @@ namespace MultisoftServicesMonitor
             }
             _isQueueProcessing = false;
         }
+
+        public void ExecuteCommandIssued(int logID, string serviceName, string command, string hostName, int issuedBy)
+        {
+            string serviceStatus = "";
+
+            using (SqlConnection connection = GetConnection())
+            {
+                try
+                {
+                    if (!IsServiceAvailable(serviceName))
+                    {
+                        return;
+                    }
+                    ServiceController sc = new ServiceController(serviceName);
+
+                    switch (command)
+                    {
+                        case "start":
+                            if (sc.Status == ServiceControllerStatus.Stopped)
+                            {
+                                sc.Start();
+                                serviceStatus = ServiceControllerStatus.Running.ToString();
+                            }
+                            else
+                            {
+                                serviceStatus = ServiceControllerStatus.Running.ToString();
+                                WriteToFile(serviceName + " is already running ", "start");
+                            }
+                            break;
+
+                        case "stop":
+                            if (sc.Status == ServiceControllerStatus.Running)
+                            {
+                                sc.Stop();
+                                serviceStatus = ServiceControllerStatus.Stopped.ToString();
+                            }
+                            else
+                            {
+                                serviceStatus = ServiceControllerStatus.Stopped.ToString();
+                                WriteToFile(serviceName + " is already stopped ", "stop");
+                            }
+                            break;
+
+                        case "restart":
+                            if (sc.Status == ServiceControllerStatus.Running)
+                            {
+                                sc.Stop();
+                                sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(20));
+                                sc.Start();
+                                serviceStatus = ServiceControllerStatus.Running.ToString();
+                            }
+                            else
+                            {
+                                serviceStatus = sc.Status.ToString();
+                                WriteToFile("Failed to restart " + serviceName, "restart", "Current Status: " +sc.Status.ToString());
+                            }
+                            break;
+
+                        default:
+                            serviceStatus = "NotFound";
+                            WriteToFile("The command '" + command + "' is invalid", serviceName);
+                            break;
+                    }
+
+                    UpdateDateExecuted(logID);
+                    SP_UpdateServiceStatus(connection, serviceName, serviceStatus, hostName, "User" + issuedBy, DateTime.Now, "Command Issued in the website");
+
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    WriteToFile("Exception OnExecuteCommandIssued: " + ex.Message, _error);
+                    return;
+                }
+               
+            }
+
+        }
+
+        public void UpdateDateExecuted(int logID)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    string updateQuery = "UPDATE [dbo].[ServicesStartStopQueue] SET [sq_DateExecuted] = @DateExecuted WHERE [sq_LogID] = @LogID";
+
+                    using (SqlCommand command = new SqlCommand(updateQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@DateExecuted", DateTime.Now);
+                        command.Parameters.AddWithValue("@LogID", logID);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch(Exception ex) 
+            {
+                WriteToFile("Exception OnUpdateDateExecuted: " + ex.Message, _error);
+            }
+
+        }
+
+        public bool IsServiceAvailable(string serviceName)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    using (SqlCommand command = new SqlCommand("IsServiceAvailable", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@ServiceName", serviceName);
+
+                        object result = command.ExecuteScalar();
+                        return Convert.ToBoolean(result);
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 
 }

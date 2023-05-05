@@ -272,6 +272,11 @@ namespace MultisoftServicesMonitor
             return $"SELECT [{columnNamePrefix}_ServiceName], [{columnNamePrefix}_ServiceStatus], [{columnNamePrefix}_HostName] FROM {tableName}";
         }
 
+        public static string GetCommandsIssuedQuery(string tableName, string columnNamePrefix)
+        {
+            return $"SELECT [{columnNamePrefix}_LogID], [{columnNamePrefix}_ServiceName], [{columnNamePrefix}_Command], [{columnNamePrefix}_HostName], [{columnNamePrefix}_IssuedBy] FROM {tableName} WHERE [{columnNamePrefix}_DateExecuted] IS NULL";
+        }
+
         public static List<string> GetSingleColumn(SqlConnection connection, string query)
         {
             return GetColumns(connection, query, reader => reader.GetString(0));
@@ -291,6 +296,16 @@ namespace MultisoftServicesMonitor
                 reader.IsDBNull(0) ? "" : reader.GetString(0),
                 reader.IsDBNull(1) ? "" : reader.GetString(1),
                 reader.IsDBNull(2) ? "" : reader.GetString(2)
+            ));
+        }
+
+        public static List<(string, string, string, string)> GetQuadraColumn(SqlConnection connection, string query)
+        {
+            return GetColumns(connection, query, reader => (
+                reader.IsDBNull(0) ? "" : reader.GetString(0),
+                reader.IsDBNull(1) ? "" : reader.GetString(1),
+                reader.IsDBNull(2) ? "" : reader.GetString(2),
+                reader.IsDBNull(3) ? "" : reader.GetString(3)
             ));
         }
 
@@ -339,6 +354,34 @@ namespace MultisoftServicesMonitor
                 logBy = logBy ?? "NotFound";
                 string lastEventLog = "NotFound";
                 DateTime lastStart = new DateTime(1900, 1, 1);
+
+                using (var command = new SqlCommand("UpdateServiceStatus", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.Parameters.AddWithValue("@ServiceStatus", serviceStatus);
+                    command.Parameters.AddWithValue("@HostName", hostName);
+                    command.Parameters.AddWithValue("@LogBy", logBy);
+                    command.Parameters.AddWithValue("@LastStart", lastStart);
+                    command.Parameters.AddWithValue("@LastEventLog", lastEventLog);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                CommonMethods.WriteToFile("Exception on SP_UpdateServiceStatus: " + ex.Message, _error);
+            }
+        }
+        public static void SP_UpdateServiceStatus(SqlConnection connection, string serviceName, string serviceStatus, string hostName, string logBy, DateTime? lastStart = null)
+        {
+            try
+            {
+                // Set default values for null inputs
+                serviceStatus = serviceStatus ?? "NotFound";
+                hostName = hostName ?? "NotFound";
+                logBy = logBy ?? "NotFound";
+                string lastEventLog = "NotFound";
+                DateTime lastStartValue = lastStart ?? new DateTime(1900, 1, 1);
 
                 using (var command = new SqlCommand("UpdateServiceStatus", connection))
                 {
