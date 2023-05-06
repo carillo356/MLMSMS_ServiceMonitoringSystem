@@ -48,6 +48,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                                     ServiceName = reader["sm_ServiceName"].ToString(),
                                     LastStart = reader["sl_LastStart"] == DBNull.Value ? "" : reader["sl_LastStart"].ToString(),
                                     ServiceStatus = reader["sl_ServiceStatus"] == DBNull.Value ? "" : reader["sl_ServiceStatus"].ToString(),
+                                    PendingCommand = reader["sq_Command"] == DBNull.Value ? null : reader["sq_Command"].ToString(),
                                     LastEventLog = reader["sl_LastEventLog"] == DBNull.Value ? "" : reader["sl_LastEventLog"].ToString(),
                                     HostName = reader["sl_HostName"] == DBNull.Value ? "" : reader["sl_HostName"].ToString(),
                                     LogBy = reader["sl_LogBy"] == DBNull.Value ? "" : reader["sl_LogBy"].ToString(),
@@ -93,13 +94,48 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
             using (SqlConnection connection = GetConnection())
             {
-                string query = "SELECT sa_ServiceName, sa_HostName FROM ServicesAvailable"; // Replace 'YourTable' with the appropriate table name
+                string query = "SELECT sa_ServiceName, sa_HostName FROM ServicesAvailable";
                 _servicesAvailable = GetColumnsDynamic(connection, query, reader => new { ServiceName = reader.GetString(0), HostName = reader.GetString(1) });
             }
 
             // Update the following line based on the anonymous object structure
             _servicesNotMonitored = _servicesAvailable.Where(service => !_servicesInMonitor.Any(s => s.ServiceName == service.ServiceName && s.HostName == service.HostName)).ToList();
         }
+
+        [HttpPost]
+        public JsonResult CancelPendingCommand(string serviceName, string hostName)
+        {
+            try
+            {
+                // Call the function to cancel the pending command in the database
+                CancelPendingCommandInDatabase(serviceName, hostName);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, errorMessage = $"{ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private void CancelPendingCommandInDatabase(string serviceName, string hostName)
+        {
+            // Implement the necessary logic to delete the pending command in the database
+            // This function should execute an SQL query to remove the pending command for the specified service and host
+            using (SqlConnection connection = GetConnection())
+            {
+                string query = "DELETE FROM ServicesStartStopQueue WHERE sq_ServiceName = @ServiceName AND sq_HostName = @HostName AND sq_Command IS NOT NULL";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ServiceName", serviceName);
+                    command.Parameters.AddWithValue("@HostName", hostName);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
 
         [HttpPost]
         public JsonResult AddService(string serviceName, string hostName) // Gets the User Input for adding a service

@@ -24,5 +24,7 @@ namespace LoginAndRegisterASPMVC5.Models
         public string StartupType { get; set; }
 
         public string LogOnAs { get; set; }
+
+        public string PendingCommand { get; set; }
     }
 }

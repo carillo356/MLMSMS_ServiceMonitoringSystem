@@ -343,6 +343,10 @@
                             else
                                 statusText = "";
 
+                            if (Data.PendingCommand) {
+                                statusText = '<span style="color:orange">Issued to ' + Data.PendingCommand + '</span>';
+                            }
+
                             var row = "<tr data-toggle='modal' data-target='#service-modal'>";
                             row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.ServiceName + "</td>";
                             row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LastStart + "</td>";
@@ -352,24 +356,30 @@
                             row += "<td onclick='handleRowClick(\"" + Data.ServiceName + "\", \"" + limit + "\")'>" + Data.LogBy + "</td>";
                             row += "<td>";
 
-                            if (Data.ServiceStatus === "Stopped") {
-                                row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Run Service'>";
-                                row += "<i class='bi bi-caret-right-fill'></i>";
-                                row += "</button>";
+                            if (!Data.PendingCommand) {
+                                if (Data.ServiceStatus === "Stopped") {
+                                    row += "<button class='action-button' style='margin-right: 5px;'; id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Run Service'>";
+                                    row += "<i class='bi bi-caret-right-fill'></i>";
+                                    row += "</button>";
+                                }
+                                else {
+                                    row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\", \"" + Data.HostName + "\")'>Run</button>";
+                                    row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Stop Service'>";
+                                    row += "<i class='bi bi-stop-fill'></i>";
+                                    row += "</button>";
+                                    row += "<button class='action-button mx-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Restart Service'>"
+                                    row += "<i class='bi bi-arrow-repeat'></i>";
+                                    row += "</button>";
+                                }
+                                if (isAdminSession) {
+                                    row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete Service'>";
+                                    row += "<i class='bi bi-trash3-fill'></i>";
+                                    row += "</button>";
+                                }
                             }
                             else {
-                                row += "<button class='action-button' style='display:none;' id='btnRun' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"start\", \"" + Data.HostName + "\")'>Run</button>";
-                                row += "<button class='action-button' id='btnStop' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"stop\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Stop Service'>";
-                                row += "<i class='bi bi-stop-fill'></i>";
-                                row += "</button>";
-                                row += "<button class='action-button mx-2' id='btnRestart' onclick='handleServiceAction(\"" + Data.ServiceName + "\", \"restart\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Restart Service'>"
-                                row += "<i class='bi bi-arrow-repeat'></i>";
-                                row += "</button>";
-                            }
-
-                            if (isAdminSession) {
-                                row += "<button class='action-button' id='btnDelete' onclick='RemoveAddedService(\"" + Data.ServiceName + "\", \"delete\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Delete Service'>";
-                                row += "<i class='bi bi-trash3-fill'></i>";
+                                row += "<button class='action-button' id='btnCancelCommand' onclick='handlePendingCommandCancellation(\"" + Data.ServiceName + "\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Cancel Issued Command'>";
+                                row += "<i class='bi bi-x-circle'></i>";
                                 row += "</button>";
                             }
 
@@ -405,6 +415,45 @@
             });
         });
     }
+
+    function handlePendingCommandCancellation(serviceName, hostName) {
+        // Prepare the data to send to the server
+        const requestData = {
+            serviceName: serviceName,
+            hostName: hostName
+        };
+
+        // Add your AJAX call to cancel the issued command here
+        $.ajax({
+            url: '/Home/CancelPendingCommand', // Update the URL to match your controller and action
+            type: 'POST',
+            dataType: 'json',
+            data: requestData,
+            success: function (response) {
+                if (response.success) {
+                    ServicesInMonitor();
+                } else {
+                    var errorContainer = document.getElementById("error-container");
+                    errorContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${response.errorMessage}</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                }
+            },
+            error: function (xhr) {
+                var errorMessage = xhr.responseText;
+
+                var errorContainer = document.getElementById("error-container");
+                errorContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="fa fa-exclamation"></i> Error!</strong> <span>${errorMessage}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>`;
+            }
+        });
+    }
+
 
     //function Checkbox() {
     //    if (servicesNotMonitored.length > 0) {
