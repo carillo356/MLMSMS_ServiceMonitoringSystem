@@ -134,8 +134,6 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Global.asax" />
-    <Content Include="JS_Scripts\index\addRemove_services.js" />
-    <Content Include="JS_Scripts\index\serviceTable_logs_pagination.js" />
     <Content Include="JS_Scripts\index\submitForm_clearReset.js" />
     <Content Include="JS_Scripts\Users\clearFields.js" />
     <Content Include="JS_Scripts\Users\dropdown_showhidePassword.js" />

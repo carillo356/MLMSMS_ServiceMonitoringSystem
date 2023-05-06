@@ -1,26 +1,80 @@
-12:06 PM - Stop MultisoftServicesMonitor
-MultisoftServicesMonitor have stopped 
-
-12:07 PM - Run RealTimeLogger
+08:59 PM - Run RealTimeLogger
 enabled_RealTimeLogger: False
 
-12:07 PM - Run PeriodicLogger
+08:59 PM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
 
-12:07 PM - Run Periodic Logger
+08:59 PM - Run Periodic Logger
+ServiceName: Sdasdasdas, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549, LogBy: PeriodicLogger
 ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
 
 
-12:09 PM - Stop MultisoftServicesMonitor
+08:59 PM - Same ServiceName on Different Host
+Command 'start' for service 'Service1' was issued on host 'LAPTOP-F2U9549', current machine's hostname: LAPTOP-F2U9549V
+
+08:59 PM - Same ServiceName on Different Host
+Command 'start' for service 'Service1' was issued on host 'LAPTOP-F2U9549', current machine's hostname: LAPTOP-F2U9549V
+
+08:59 PM - Same ServiceName on Different Host
+Command 'start' for service 'Service1' was issued on host 'LAPTOP-F2U9549', current machine's hostname: LAPTOP-F2U9549V
+
+09:00 PM - Same ServiceName on Different Host
+Command 'start' for service 'Service1' was issued on host 'LAPTOP-F2U9549', current machine's hostname: LAPTOP-F2U9549V
+
+09:00 PM - Same ServiceName on Different Host
+Command 'start' for service 'Service1' was issued on host 'LAPTOP-F2U9549', current machine's hostname: LAPTOP-F2U9549V
+
+09:00 PM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
-12:09 PM - Run RealTimeLogger
+09:19 PM - Run RealTimeLogger
 enabled_RealTimeLogger: False
 
-12:09 PM - Run PeriodicLogger
+09:19 PM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
 
-12:09 PM - Run Periodic Logger
-ServiceName: Service2, ServiceStatus: NotFound, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+09:20 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
 
+09:43 PM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+09:43 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+09:44 PM - start
+Service1 is already running 
+
+09:45 PM - stop
+Service1 is already stopped 
+
+09:46 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+09:50 PM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+09:50 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+09:51 PM - stop
+Service1 is already stopped 
+
+09:51 PM - stop
+Service1 is already stopped 
+
+09:51 PM - stop
+Service1 is already stopped 
+
+09:51 PM - stop
+Service1 is already stopped 
+
+09:51 PM - start
+Service1 is already running 
+
+09:51 PM - start
+Service1 is already running 
+
+09:51 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
 

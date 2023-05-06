@@ -328,32 +328,6 @@ namespace MultisoftServicesMonitor
             }
         }
 
-        private void OnCheckCommandsIssuedElapsedTime(object source, ElapsedEventArgs e)
-        {
-            if (!_isCheckServicesRunning && !_isQueueProcessing)
-            {
-                CheckCommandsIssued();
-            }
-        }
-
-        public void CheckCommandsIssued()
-        {
-            checkCommandsIssuedTimer.Stop();
-            _isCheckCommandsIssuedRunning = true;
-
-            using (SqlConnection connection = GetConnection())
-            {
-                var servicesStartStopQueue = GetColumns(connection, GetCommandsIssuedQuery("ServicesStartStopQueue", "sq"), reader => (LogID: reader.GetInt32(0), ServiceName: reader.GetString(1), Command: reader.GetString(2), HostName: reader.GetString(3), IssuedBy: reader.GetInt32(4))).ToArray();
-                foreach (var (logId, serviceName, command, hostName, issuedBy) in servicesStartStopQueue)
-                {
-                    ExecuteCommandIssued(logId, serviceName, command.ToLower(), hostName, issuedBy);
-                }
-            }
-
-            _isCheckCommandsIssuedRunning = false;
-            checkCommandsIssuedTimer.Start();
-        }
-
         private void OnDeleteLogsElapsedTime(object source, ElapsedEventArgs e)
         {
             DeleteOldLogFiles(_deleteLogsXDaysOld);
@@ -495,20 +469,53 @@ namespace MultisoftServicesMonitor
             _isQueueProcessing = false;
         }
 
+        private void OnCheckCommandsIssuedElapsedTime(object source, ElapsedEventArgs e)
+        {
+            if (!_isCheckServicesRunning && !_isQueueProcessing)
+            {
+                CheckCommandsIssued();
+            }
+        }
+
+        public void CheckCommandsIssued()
+        {
+            checkCommandsIssuedTimer.Stop();
+            _isCheckCommandsIssuedRunning = true;
+
+            using (SqlConnection connection = GetConnection())
+            {
+                var servicesStartStopQueue = GetColumns(connection, GetCommandsIssuedQuery("ServicesStartStopQueue", "sq"), reader => (LogID: reader.GetInt32(0), ServiceName: reader.GetString(1), Command: reader.GetString(2), HostName: reader.GetString(3), IssuedBy: reader.GetInt32(4))).ToArray();
+                foreach (var (logId, serviceName, command, hostName, issuedBy) in servicesStartStopQueue)
+                {
+                    if (hostName.Equals(Environment.MachineName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        ExecuteCommandIssued(logId, serviceName, command.ToLower(), hostName, issuedBy);
+                    }
+                    else
+                    {
+                        WriteToFile($"Command '{command}' for service '{serviceName}' was issued on host '{hostName}', current machine's hostname: " + Environment.MachineName, "Monitored ServiceName on Different Host");
+                    }
+                }
+            }
+
+            _isCheckCommandsIssuedRunning = false;
+            checkCommandsIssuedTimer.Start();
+        }
+
         public void ExecuteCommandIssued(int logID, string serviceName, string command, string hostName, int issuedBy)
         {
-            string serviceStatus = "";
-
             using (SqlConnection connection = GetConnection())
             {
                 try
                 {
-                    if (!IsServiceAvailable(serviceName))
+                    if (!IsServiceAvailable(serviceName, hostName))
                     {
+                        WriteToFile(serviceName + " + " + hostName);
                         return;
                     }
                     ServiceController sc = new ServiceController(serviceName);
 
+                    string serviceStatus;
                     switch (command)
                     {
                         case "start":
@@ -548,7 +555,7 @@ namespace MultisoftServicesMonitor
                             else
                             {
                                 serviceStatus = sc.Status.ToString();
-                                WriteToFile("Failed to restart " + serviceName, "restart", "Current Status: " +sc.Status.ToString());
+                                WriteToFile("Failed to restart " + serviceName, "restart", "Current Status: " + sc.Status.ToString());
                             }
                             break;
 
@@ -568,7 +575,7 @@ namespace MultisoftServicesMonitor
                     WriteToFile("Exception OnExecuteCommandIssued: " + ex.Message, _error);
                     return;
                 }
-               
+
             }
 
         }
@@ -597,7 +604,7 @@ namespace MultisoftServicesMonitor
 
         }
 
-        public bool IsServiceAvailable(string serviceName)
+        public bool IsServiceAvailable(string serviceName, string hostName)
         {
             try
             {
@@ -607,6 +614,7 @@ namespace MultisoftServicesMonitor
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.AddWithValue("@ServiceName", serviceName);
+                        command.Parameters.AddWithValue("@HostName", hostName);
 
                         object result = command.ExecuteScalar();
                         return Convert.ToBoolean(result);

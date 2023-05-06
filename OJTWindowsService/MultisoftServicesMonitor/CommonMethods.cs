@@ -99,6 +99,7 @@ namespace MultisoftServicesMonitor
                     command.Parameters.AddWithValue("@ServiceName", serviceName);
                     command.Parameters.AddWithValue("@LastStart", lastStart);
                     command.Parameters.AddWithValue("@LastEventLog", lastEventLog);
+                    command.Parameters.AddWithValue("@HostName", Environment.MachineName);
                     command.ExecuteNonQuery();
                 }
 

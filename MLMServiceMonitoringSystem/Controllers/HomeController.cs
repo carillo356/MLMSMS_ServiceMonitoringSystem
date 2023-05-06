@@ -20,9 +20,9 @@ namespace LoginAndRegisterASPMVC5.Controllers
     {
         private DB_Entities _db = new DB_Entities();
         public static List<User> _users = new List<User>();
-        public static List<string> _servicesAvailable;
+        public static List<dynamic> _servicesAvailable;
         public static List<Service> _servicesInMonitor = new List<Service>();
-        public static List<string> _servicesNotMonitored;
+        public static List<dynamic> _servicesNotMonitored;
         private List<Service> _servicesLogsList = new List<Service>();
 
         public void GetServicesInMonitor()
@@ -93,19 +93,20 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
             using (SqlConnection connection = GetConnection())
             {
-                _servicesAvailable = GetSingleColumn(connection, "GetServicesAvailable");
+                string query = "SELECT sa_ServiceName, sa_HostName FROM ServicesAvailable"; // Replace 'YourTable' with the appropriate table name
+                _servicesAvailable = GetColumnsDynamic(connection, query, reader => new { ServiceName = reader.GetString(0), HostName = reader.GetString(1) });
             }
 
-            _servicesNotMonitored = _servicesAvailable.Where(service => !_servicesInMonitor.Any(s => s.ServiceName == service)).ToList();
+            // Update the following line based on the anonymous object structure
+            _servicesNotMonitored = _servicesAvailable.Where(service => !_servicesInMonitor.Any(s => s.ServiceName == service.ServiceName && s.HostName == service.HostName)).ToList();
         }
 
         [HttpPost]
-        public JsonResult AddService(Service GetInput) //Gets the User Input for adding a service
+        public JsonResult AddService(string serviceName, string hostName) // Gets the User Input for adding a service
         {
-            string serviceName = GetInput.ServiceName;
-            if (serviceName == null) return Json(new { success = false, errorMessage = $"serviceName is null at " + MethodBase.GetCurrentMethod().Name }); 
+            if (serviceName == null) return Json(new { success = false, errorMessage = $"serviceName is null at " + MethodBase.GetCurrentMethod().Name });
 
-            if (!_servicesInMonitor.Any(s => s.ServiceName == serviceName))
+            if (!_servicesInMonitor.Any(s => s.ServiceName == serviceName && s.HostName == hostName))
             {
                 try
                 {
@@ -114,7 +115,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         using (SqlCommand command = new SqlCommand("UpdateServiceStatus", connection))
                         {
                             var servicesInstalled = GetTripleColumn(connection, GetServicesStatusQuery("ServicesAvailable", "sa")).Select(t => (ServiceName: t.Item1, ServiceStatus: t.Item2, HostName: t.Item3)).ToArray();
-                            var serviceInstalled = servicesInstalled.FirstOrDefault(s => s.ServiceName == serviceName);
+                            var serviceInstalled = servicesInstalled.FirstOrDefault(s => s.ServiceName == serviceName && s.HostName == hostName);
 
                             command.CommandType = CommandType.StoredProcedure;
                             command.Parameters.AddWithValue("@ServiceName", serviceInstalled.ServiceName);
@@ -134,12 +135,13 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
             else
             {
-                return Json(new { success = false, errorMessage = $"Service {serviceName} already exists in the monitor" });
+                return Json(new { success = false, errorMessage = $"Service {serviceName} already exists in the monitor for the host {hostName}" });
             }
             return Json(new { success = true });
         }
 
-        public JsonResult DeleteAddedService(string serviceName) //Removes a service row
+
+        public JsonResult DeleteAddedService(string serviceName, string hostName) //Removes a service row
         {
             try
             {
@@ -149,6 +151,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.AddWithValue("@ServiceName", serviceName);
+                        command.Parameters.AddWithValue("@HostName", hostName);
 
                         command.ExecuteNonQuery();
                     }
@@ -207,6 +210,33 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return columns;
         }
 
+        public static List<dynamic> GetColumnsDynamic(SqlConnection connection, string query, Func<SqlDataReader, dynamic> readColumns)
+        {
+            var columns = new List<dynamic>();
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            columns.Add(readColumns(reader));
+                        }
+                    }
+                }
+            }
+            catch
+            {
+            }
+
+            return columns;
+        }
+
+
+
         public static List<string> GetSingleColumn(SqlConnection connection, string query)
         {
             return GetColumns(connection, query, reader => reader.GetString(0));
@@ -234,7 +264,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return $"SELECT [{columnNamePrefix}_ServiceName], [{columnNamePrefix}_ServiceStatus], [{columnNamePrefix}_HostName] FROM {tableName}";
         }
 
-        public bool IsServiceAvailable(string serviceName)
+        public bool IsServiceAvailable(string serviceName, string hostName)
         {
             try
             {
@@ -244,17 +274,18 @@ namespace LoginAndRegisterASPMVC5.Controllers
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.AddWithValue("@ServiceName", serviceName);
+                        command.Parameters.AddWithValue("@HostName", hostName);
 
                         object result = command.ExecuteScalar();
                         return Convert.ToBoolean(result);
                     }
                 }
             }
-            catch 
+            catch
             {
                 return false;
             }
-        }
+        }   
 
         [HttpPost]
         public JsonResult GetServiceLogsTB(string serviceName)
@@ -296,78 +327,57 @@ namespace LoginAndRegisterASPMVC5.Controllers
             return Json(new { success = true, servicesLogsList = _servicesLogsList }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult ServiceAction(string serviceName, string command)
+        public JsonResult ServiceAction(string serviceName, string command, string hostName)
         {
-            string hostName = Environment.MachineName;
-            DateTime lastStart = new DateTime(1900, 1, 1);
-            string lastEventLog = "Service is already ";
-            string logBy = Session["FullName"].ToString() ?? "NotFound";
-
             using (SqlConnection connection = GetConnection())
             {
                 try
                 {
-                    if (!IsServiceAvailable(serviceName))
+                    if (!IsServiceAvailable(serviceName, hostName))
                     {
                         return Json(new { success = false, errorMessage = $"{serviceName} is not available" });
                     }
-                    ServiceController sc = new ServiceController(serviceName);
 
                     switch (command)
                     {
                         case "start":
-                            if (sc.Status == ServiceControllerStatus.Stopped)
-                            {
-                                sc.Start();
-                                SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Running.ToString(), hostName, logBy, DateTime.Now, "Started at SMS");
-                            }
-                            else
-                            {
-                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, "NotFound", lastStart, lastEventLog + sc.Status.ToString());
-                            }
-                            break;
-
                         case "stop":
-                            if (sc.Status == ServiceControllerStatus.Running)
-                            {
-                                sc.Stop();
-                                SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Stopped.ToString(), hostName, logBy, DateTime.Now, "Stop at SMS");
-                            }
-                            else
-                            {
-                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, "NotFound", lastStart, lastEventLog + sc.Status.ToString());
-                            }
-                            break;
-
                         case "restart":
-                            if (sc.Status == ServiceControllerStatus.Running)
-                            {
-                                sc.Stop();
-                                sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
-                                sc.Start();
-                                SP_UpdateServiceStatus(connection, serviceName, ServiceControllerStatus.Running.ToString(), hostName, logBy, DateTime.Now, "Restarted at SMS");
-                            }
-                            else
-                            {
-                                SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, "NotFound", lastStart, lastEventLog + sc.Status.ToString());
-                            }
+                            InsertIntoServicesStartStopQueue(serviceName, hostName, command, connection);
                             break;
 
                         default:
-                            SP_UpdateServiceStatus(connection, serviceName, sc.Status.ToString(), hostName, "NotFound", lastStart, lastEventLog + sc.Status.ToString());
                             break;
                     }
 
                     return Json(new { success = true });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return Json(new { errorMessage = $"{ex.Message}" });
                 }
-             
             }
-
         }
+
+        private void InsertIntoServicesStartStopQueue(string serviceName, string hostName, string command, SqlConnection connection)
+        {
+            string query = @"
+            INSERT INTO [dbo].[ServicesStartStopQueue]
+                ([sq_ServiceName], [sq_HostName], [sq_Command], [sq_IssuedBy], [sq_DateIssued])
+            VALUES
+                (@ServiceName, @HostName, @Command, @IssuedBy, GETDATE())";
+
+            using (SqlCommand commandToExecute = new SqlCommand(query, connection))
+            {
+                commandToExecute.Parameters.AddWithValue("@ServiceName", serviceName);
+                commandToExecute.Parameters.AddWithValue("@HostName", hostName);
+                commandToExecute.Parameters.AddWithValue("@Command", command);
+                commandToExecute.Parameters.AddWithValue("@IssuedBy", HttpContext.Session["IdUser"]); // Make sure to use the correct session variable name
+
+                commandToExecute.ExecuteNonQuery();
+            }
+        }
+
 
         private void SP_UpdateServiceStatus(SqlConnection connection, string serviceName, string serviceStatus, string hostName, string logBy, DateTime lastStart, string lastEventLog)
         {
