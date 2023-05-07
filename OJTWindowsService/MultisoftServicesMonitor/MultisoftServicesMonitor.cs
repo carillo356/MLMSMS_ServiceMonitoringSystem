@@ -292,7 +292,7 @@ namespace MultisoftServicesMonitor
             if (_deleteLogsXDaysOld > 90)
                 _deleteLogsXDaysOld = 90;
 
-            checkCommandsIssuedTimer.Interval = /*5 * 60 * 1000*/12000; // every 5 minutes
+            checkCommandsIssuedTimer.Interval = /*5 * 60 * 1000*/12000; // every 12 seconds
             checkCommandsIssuedTimer.Elapsed += new ElapsedEventHandler(OnCheckCommandsIssuedElapsedTime);
             checkCommandsIssuedTimer.Start();
 
@@ -516,6 +516,7 @@ namespace MultisoftServicesMonitor
                     ServiceController sc = new ServiceController(serviceName);
 
                     string serviceStatus;
+                    string lastEventLog = "Command Issued in the website";
                     switch (command)
                     {
                         case "start":
@@ -527,6 +528,7 @@ namespace MultisoftServicesMonitor
                             else
                             {
                                 serviceStatus = ServiceControllerStatus.Running.ToString();
+                                lastEventLog = serviceName + " is already running.";
                                 WriteToFile(serviceName + " is already running ", "start");
                             }
                             break;
@@ -540,6 +542,7 @@ namespace MultisoftServicesMonitor
                             else
                             {
                                 serviceStatus = ServiceControllerStatus.Stopped.ToString();
+                                lastEventLog = serviceName + " is already stopped ";
                                 WriteToFile(serviceName + " is already stopped ", "stop");
                             }
                             break;
@@ -555,6 +558,7 @@ namespace MultisoftServicesMonitor
                             else
                             {
                                 serviceStatus = sc.Status.ToString();
+                                lastEventLog = "Failed to restart " + serviceName + ", current Status is " + sc.Status.ToString();
                                 WriteToFile("Failed to restart " + serviceName, "restart", "Current Status: " + sc.Status.ToString());
                             }
                             break;
@@ -566,7 +570,7 @@ namespace MultisoftServicesMonitor
                     }
 
                     UpdateDateExecuted(logID);
-                    SP_UpdateServiceStatus(connection, serviceName, serviceStatus, hostName, "User" + issuedBy, DateTime.Now, "Command Issued in the website");
+                    SP_UpdateServiceStatus(connection, serviceName, serviceStatus, hostName, "User" + issuedBy, DateTime.Now, lastEventLog);
 
                     return;
                 }
