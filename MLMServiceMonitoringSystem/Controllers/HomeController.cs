@@ -448,47 +448,6 @@ namespace LoginAndRegisterASPMVC5.Controllers
             }
         }
 
-        //public ActionResult Users()
-        //{
-        //    if (Session["IdUser"] != null)
-        //    {
-
-        //        bool isAdmin = false;
-        //        if (Session["IsAdmin"] != null)
-        //        {
-        //            isAdmin = (bool)Session["IsAdmin"];
-        //        }
-
-        //        if (isAdmin)
-        //        {
-        //            return RedirectToAction("AdminUsers");
-        //        }
-        //        else
-        //        {
-        //            return View();
-
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Login");
-        //    }
-        //}
-
-        //public ActionResult AdminUsers()
-        //{
-        //    if (Session["IdUser"] != null)
-        //    {
-        //        return View();
-
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Login");
-        //    }
-        //}
-
         public void UpdateEmailNotification(int IdUser)
         {
             using (SqlConnection connection = GetConnection())
