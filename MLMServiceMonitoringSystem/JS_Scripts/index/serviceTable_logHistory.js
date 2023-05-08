@@ -106,7 +106,7 @@ function ServicesInMonitor() {
                         }
                         else {
                             row += "<button class='action-button' id='btnCancelCommand' onclick='handlePendingCommandCancellation(\"" + Data.ServiceName + "\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Cancel Issued Command'>";
-                            row += "<i class='bi bi-x-lg'></i>";
+                            row += "<i class='bi bi-x-circle-fill'></i>";
                             row += "</button>";
                         }
 
