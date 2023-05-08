@@ -336,6 +336,9 @@ table.table tbody {
     width: 415px;
 }
 
+#displayService-modal .form-select {
+    width: 415px;
+}
 
 /* Responsive */
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
@@ -358,8 +361,9 @@ table.table tbody {
         width: 290px;
     }
 
-    #displayService-modal .hostname-dropdown {
+    #displayService-modal .form-select {
         width: 290px;
+
     }
 
     #displayService-modal .modal-dialog {
