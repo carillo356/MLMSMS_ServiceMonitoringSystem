@@ -157,7 +157,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                             command.Parameters.AddWithValue("@ServiceName", serviceInstalled.ServiceName);
                             command.Parameters.AddWithValue("@ServiceStatus", serviceInstalled.ServiceStatus);
                             command.Parameters.AddWithValue("@HostName", serviceInstalled.HostName);
-                            command.Parameters.AddWithValue("@LogBy", Session["FullName"]?.ToString() ?? "NotFound");
+                            command.Parameters.AddWithValue("@LogBy", "User" + Session["IdUser"]?.ToString() ?? "NotFound");
                             command.Parameters.AddWithValue("@LastStart", new DateTime(1900, 1, 1));
                             command.Parameters.AddWithValue("@LastEventLog", "NotFound");
                             command.ExecuteNonQuery();

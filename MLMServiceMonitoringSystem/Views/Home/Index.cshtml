@@ -132,7 +132,7 @@
                     <button type="button" class="btn-close" id="btnCloseService" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <select id="hostnameDropdown" class="form-select">
+                    <select id="hostnameDropdown" class="form-select hostname-dropdown">
                         <!-- Options will be populated using JavaScript -->
                     </select>
 
@@ -379,7 +379,7 @@
                             }
                             else {
                                 row += "<button class='action-button' id='btnCancelCommand' onclick='handlePendingCommandCancellation(\"" + Data.ServiceName + "\", \"" + Data.HostName + "\")' data-bs-toggle='tooltip' data-bs-placement='top' title='Cancel Issued Command'>";
-                                row += "<i class='bi bi-x-circle'></i>";
+                                row += "<i class='bi bi-x-lg'></i>";
                                 row += "</button>";
                             }
 

@@ -1,10 +1,46 @@
-07:08 AM - Run RealTimeLogger
+10:33 AM - Run RealTimeLogger
 enabled_RealTimeLogger: False
 
-07:08 AM - Run PeriodicLogger
+10:33 AM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
 
-07:34 AM - Error
+10:33 AM - Error
+Exception on CheckServices: Cannot open database "ServiceMonitor" requested by the login. The login failed.
+Login failed for user 'NT AUTHORITY\SYSTEM'.
+
+10:33 AM - Error
+Exception on ProcessQueue: Cannot open database "ServiceMonitor" requested by the login. The login failed.
+Login failed for user 'NT AUTHORITY\SYSTEM'.
+
+10:34 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+10:34 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+10:34 AM - Error
+Exception on CheckServices: Cannot open database "ServiceMonitor" requested by the login. The login failed.
+Login failed for user 'NT AUTHORITY\SYSTEM'.
+
+10:34 AM - Error
+Exception on ProcessQueue: Cannot open database "ServiceMonitor" requested by the login. The login failed.
+Login failed for user 'NT AUTHORITY\SYSTEM'.
+
+10:38 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+10:38 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+10:38 AM - Run Periodic Logger
+ServiceName: Service1, ServiceStatus: Running, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+10:38 AM - Run PeriodicLogger
+ServiceName: Service1, LastStart: 5/8/2023 10:14:00 AM, LastEventLog: Service started successfully.
+
+
+10:40 AM - Error
 Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpException: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
    at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
    at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
@@ -12,12 +48,20 @@ Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpExc
    at System.Net.Mail.SmtpClient.Send(MailMessage message)
    at MultisoftServicesMonitor.CommonMethods.SendEmail(SqlConnection connection, String[] messages, Nullable`1 emailsToSend, String serviceName) in C:\Users\MultisoftOJT\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\CommonMethods.cs:line 213
 
-07:34 AM - Stop MultisoftServicesMonitor
+10:40 AM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
-07:35 AM - Run RealTimeLogger
+10:40 AM - Run RealTimeLogger
 enabled_RealTimeLogger: False
 
-07:35 AM - Run PeriodicLogger
+10:40 AM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
+
+10:40 AM - Run Periodic Logger
+ServiceName: Service1, ServiceStatus: Running, HostName: DESKTOP-UFSVUGM, LogBy: PeriodicLogger
+
+
+10:40 AM - Run PeriodicLogger
+ServiceName: Service1, LastStart: 5/8/2023 10:39:54 AM, LastEventLog: Service started successfully.
+
 

@@ -336,9 +336,9 @@ table.table tbody {
     width: 415px;
 }
 
+
 /* Responsive */
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
-
     .action-button {
         font-size: 10px;
     }
@@ -355,6 +355,10 @@ table.table tbody {
     }
 
     #displayService-modal .search-box {
+        width: 290px;
+    }
+
+    #displayService-modal .hostname-dropdown {
         width: 290px;
     }
 
