@@ -124,7 +124,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
             // This function should execute an SQL query to remove the pending command for the specified service and host
             using (SqlConnection connection = GetConnection())
             {
-                string query = "DELETE FROM ServicesStartStopQueue WHERE sq_ServiceName = @ServiceName AND sq_HostName = @HostName AND sq_Command IS NOT NULL";
+                string query = "DELETE FROM ServicesStartStopQueue WHERE sq_ServiceName = @ServiceName AND sq_HostName = @HostName AND sq_DateExecuted IS NULL";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

@@ -431,7 +431,37 @@
             data: requestData,
             success: function (response) {
                 if (response.success) {
+
+                    var toastElement = document.createElement('div');
+                    toastElement.setAttribute('class', 'toast hide toast-stack');
+                    toastElement.setAttribute('role', 'alert');
+                    toastElement.setAttribute('aria-live', 'assertive');
+                    toastElement.setAttribute('aria-atomic', 'true');
+
+                    var toastBody = document.createElement('div');
+                    toastBody.setAttribute('class', 'toast-body');
+                    toastElement.appendChild(toastBody);
+
+                    var toastWrapper = document.getElementById('toast-wrapper');
+                    toastWrapper.appendChild(toastElement);
+
+                    var toast = new bootstrap.Toast(toastElement);
+                    var toastMessage = "Command issued for " + " ' " + serviceName + "' " + "has been cancelled.";
+                    toastBody.innerHTML = toastMessage;
+
+                    // set background color to red if commandText is Stopped
+                    toast._element.classList.remove("bg-success");
+                    toast._element.classList.add("bg-dark");
+
+                    toast.show();
+
+                    setTimeout(function () {
+                        toast.dispose();
+                    }, 4000);
+
                     ServicesInMonitor();
+
+
                 } else {
                     var errorContainer = document.getElementById("error-container");
                     errorContainer.innerHTML = `
@@ -617,9 +647,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>`;
                 }
-
-
-
 
             }).then(function () {
                 SynchServiceTB();

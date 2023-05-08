@@ -506,6 +506,10 @@
                     $('#change-pass-form')[0].reset();
                     $('#error-container-changePass').html('');
 
+                    // Hide the change-pass-modal after a successful password change
+                    $('#change-pass-modal').modal('hide');
+                    document.getElementById('changePass-close').click();
+
                 } else {
                     var errorContainer = document.getElementById("error-container-changePass");
                     errorContainer.innerHTML = result.message;

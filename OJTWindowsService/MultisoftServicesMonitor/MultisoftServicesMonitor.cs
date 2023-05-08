@@ -292,7 +292,7 @@ namespace MultisoftServicesMonitor
             if (_deleteLogsXDaysOld > 90)
                 _deleteLogsXDaysOld = 90;
 
-            checkCommandsIssuedTimer.Interval = /*5 * 60 * 1000*/12000; // every 12 seconds
+            checkCommandsIssuedTimer.Interval = /*5 * 60 * 1000*/30000; // every 12 seconds
             checkCommandsIssuedTimer.Elapsed += new ElapsedEventHandler(OnCheckCommandsIssuedElapsedTime);
             checkCommandsIssuedTimer.Start();
 

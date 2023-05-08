@@ -515,6 +515,10 @@ header .mobile-toggler {
     text-align: center;
 }
 
+.messageNote {
+    font-size: 12px;
+}
+
 /* Responsive */
 @media only screen and (max-width:768px), (min-device-width:768px) and (max-device-width:992px) {
     .list-items {

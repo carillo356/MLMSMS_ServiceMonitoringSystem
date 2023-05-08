@@ -20,7 +20,9 @@ function submitForm() {
     var checkedCount = $('input[type="checkbox"]:checked').length;
 
     $('input[type="checkbox"]:checked').each(function () {
-        serviceNames.push($(this).val());
+        var serviceName = $(this).val();
+        var hostName = $(this).data('hostName');
+        serviceNames.push({ serviceName: serviceName, hostName: hostName });
     });
 
     if (serviceNames.length === 0) {
@@ -31,11 +33,12 @@ function submitForm() {
     }
 
     // Wrap each AddService call in a promise and store them in an array
-    var promises = serviceNames.map(function (serviceName) {
+    var promises = serviceNames.map(function (service) {
         return new Promise(function (resolve, reject) {
-            AddService(serviceName, resolve, reject);
+            AddService(service.serviceName, service.hostName, resolve, reject);
         });
     });
+
     // Wait for all promises to complete
     Promise.all(promises).then(function () {
         SynchServiceTB();
