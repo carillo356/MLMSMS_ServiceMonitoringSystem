@@ -165,13 +165,13 @@
                         <div class="form-group m-3 position-relative">
                             @Html.Label("currentPassword", "Current Password:", new { @class = "label fw-bold" })
                             @Html.Password("currentPassword", null, new { @class = "form-control", id = "currentPassword" })
-                            <span toggle="#currentPassword" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                            <span toggle="#currentPassword" class="bi bi-eye-slash-fill fieldIcon_users toggle-password"></span>
                         </div>
 
                         <div class="form-group m-3 position-relative">
                             @Html.Label("newPassword", "New Password:", new { @class = "label fw-bold" })
                             @Html.Password("newPassword", null, new { @class = "form-control", id = "newPassword" })
-                            <span toggle="#newPassword" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                            <span toggle="#newPassword" class="bi bi-eye-slash-fill fieldIcon_users toggle-password"></span>
                         </div>
 
 
@@ -225,7 +225,7 @@
                         <div class="form-group m-3 position-relative">
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "password1" })
-                            <span toggle="#password1" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                            <span toggle="#password1" class="bi bi-eye-slash-fill fieldIcon_users toggle-password"></span>
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                         </div>
 
@@ -282,7 +282,7 @@
                         <div class="form-group m-3 position-relative">
                             @Html.LabelFor(m => m.Password, "Password:", new { @class = "label fw-bold" })
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", id = "password2" })
-                            <span toggle="#password2" class="bi bi-eye-slash-fill field-icon toggle-password"></span>
+                            <span toggle="#password2" class="bi bi-eye-slash-fill fieldIcon_users toggle-password"></span>
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                         </div>
 

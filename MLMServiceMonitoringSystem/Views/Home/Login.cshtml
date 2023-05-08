@@ -44,7 +44,7 @@
                                     @Html.LabelFor(m => m.Password, new { @class = "form-label my-2" })
                                     <div class="position-relative">
                                         @Html.PasswordFor(m => m.Password, new { @class = "form-control my-1", @placeholder = "Password", id = "password" })
-                                        <span toggle="#password" class="bi bi-eye-slash-fill mt-1 field-icon toggle-password"></span>
+                                        <span toggle="#password" class="bi bi-eye-slash-fill mt-1 fieldIcon_login toggle-password"></span>
                                     </div>
                                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                                 </div>

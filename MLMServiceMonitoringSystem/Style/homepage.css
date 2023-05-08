@@ -476,9 +476,17 @@ header .mobile-toggler {
 }
 
 /* Show/Hide Password (Eye Icon) */
-.field-icon {
+.fieldIcon_login {
     position: absolute;
     top: 45%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.fieldIcon_users {
+    position: absolute;
+    top: 70%;
     right: 15px;
     transform: translateY(-50%);
     cursor: pointer;
