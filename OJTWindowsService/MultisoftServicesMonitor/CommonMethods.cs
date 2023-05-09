@@ -183,7 +183,7 @@ namespace MultisoftServicesMonitor
                     smtpServer.EnableSsl = true;
                     smtpServer.Port = Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"]);
                     smtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["smtpUsername"], ConfigurationManager.AppSettings["smtpPassword"]);
-                    if (emailsToSend > 1)
+                    if (emailsToSend > 1 || emailsToSend == 1 && serviceName == "")
                     {
                         string multiMailSubject = ConfigurationManager.AppSettings["multiMailSubject"];
                         mailSubject = string.Format(multiMailSubject, emailsToSend.ToString());
@@ -225,7 +225,6 @@ namespace MultisoftServicesMonitor
             catch (Exception ex)
             {
                 WriteToFile("Exception on SendEmail: " + ex.Message, _error);
-                Environment.FailFast("Forcefully stopping the service: " + ex.Message);
             }
         }
 

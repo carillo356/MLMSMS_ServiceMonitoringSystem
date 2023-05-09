@@ -292,7 +292,7 @@ namespace MultisoftServicesMonitor
             if (_deleteLogsXDaysOld > 90)
                 _deleteLogsXDaysOld = 90;
 
-            checkCommandsIssuedTimer.Interval = /*5 * 60 * 1000*/30000; // every 12 seconds
+            checkCommandsIssuedTimer.Interval = /*5 * 60 * 1000*/18000; // every 12 seconds
             checkCommandsIssuedTimer.Elapsed += new ElapsedEventHandler(OnCheckCommandsIssuedElapsedTime);
             checkCommandsIssuedTimer.Start();
 
@@ -531,6 +531,8 @@ namespace MultisoftServicesMonitor
                                 lastEventLog = serviceName + " is already running.";
                                 WriteToFile(serviceName + " is already running ", "start");
                             }
+                            UpdateDateExecuted(logID);
+                            SP_UpdateServiceStatus(connection, serviceName, serviceStatus, hostName, "User" + issuedBy, DateTime.Now, lastEventLog);
                             break;
 
                         case "stop":
@@ -545,6 +547,8 @@ namespace MultisoftServicesMonitor
                                 lastEventLog = serviceName + " is already stopped ";
                                 WriteToFile(serviceName + " is already stopped ", "stop");
                             }
+                            UpdateDateExecuted(logID);
+                            SP_UpdateServiceStatus(connection, serviceName, serviceStatus, hostName, "User" + issuedBy, DateTime.Now, lastEventLog);
                             break;
 
                         case "restart":
@@ -561,16 +565,14 @@ namespace MultisoftServicesMonitor
                                 lastEventLog = "Failed to restart " + serviceName + ", current Status is " + sc.Status.ToString();
                                 WriteToFile("Failed to restart " + serviceName, "restart", "Current Status: " + sc.Status.ToString());
                             }
+                            UpdateDateExecuted(logID);
+                            SP_UpdateServiceStatus(connection, serviceName, serviceStatus, hostName, "User" + issuedBy, DateTime.Now, lastEventLog);
                             break;
 
                         default:
-                            serviceStatus = "NotFound";
                             WriteToFile("The command '" + command + "' is invalid", serviceName);
                             break;
                     }
-
-                    UpdateDateExecuted(logID);
-                    SP_UpdateServiceStatus(connection, serviceName, serviceStatus, hostName, "User" + issuedBy, DateTime.Now, lastEventLog);
 
                     return;
                 }

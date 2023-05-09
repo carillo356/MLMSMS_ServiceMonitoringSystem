@@ -27,12 +27,14 @@ $(function () {
     // Function to clear all input fields
     function clearFields() {
         $('#change-pass-form input[type="password"]').val('');
+        $('#validation-summary-edit').html('');
     }
 
     // Attach the clearFields function to the Cancel button click event
     $('#cancelButton').click(function () {
         clearFields();
         $('#error-container-changePass').html('');
+        $('#password2').val('');
     });
 });
 

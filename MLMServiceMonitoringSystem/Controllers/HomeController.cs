@@ -626,7 +626,7 @@ namespace LoginAndRegisterASPMVC5.Controllers
                         (string.IsNullOrEmpty(Password) || newPassword == userToUpdate.Password) &&
                         userToUpdate.IsAdmin == _user.IsAdmin)
                     {
-                        return Json(new { success = true, message = "No changes" });
+                        return Json(new { success = false, message = "No changes" });
                     }
 
                     try

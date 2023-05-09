@@ -1,17 +1,46 @@
-08:04 AM - Run RealTimeLogger
+12:33 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+12:33 PM - Run RealTimeLogger
 enabled_RealTimeLogger: False
 
-08:04 AM - Run PeriodicLogger
+12:33 PM - Run PeriodicLogger
 checkServicesEveryXMinute: 30
 
-08:50 AM - Error
-Exception on sending email to multisoft.admin@gmail.com: System.Net.Mail.SmtpException: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. Learn more at
-   at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
-   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
-   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, Boolean allowUnicode, SmtpFailedRecipientException& exception)
-   at System.Net.Mail.SmtpClient.Send(MailMessage message)
-   at MultisoftServicesMonitor.CommonMethods.SendEmail(SqlConnection connection, String[] messages, Nullable`1 emailsToSend, String serviceName) in C:\Users\PC\Documents\GitHub\OJT\OJTWindowsService\MultisoftServicesMonitor\CommonMethods.cs:line 213
+12:34 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
 
-08:50 AM - Stop MultisoftServicesMonitor
+12:34 PM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+12:34 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+12:34 PM - Run Periodic Logger
+ServiceName: Service1, ServiceStatus: Running, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+12:34 PM - Run PeriodicLogger
+ServiceName: Service1, LastStart: 5/9/2023 12:34:31 PM, LastEventLog: Service started successfully.
+
+
+12:34 PM - Stop MultisoftServicesMonitor
+MultisoftServicesMonitor have stopped 
+
+12:34 PM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+12:34 PM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
+12:34 PM - Run Periodic Logger
+ServiceName: Service1, ServiceStatus: Stopped, HostName: LAPTOP-F2U9549V, LogBy: PeriodicLogger
+
+
+12:34 PM - Run PeriodicLogger
+ServiceName: Service1, LastStart: 5/9/2023 12:34:46 PM, LastEventLog: Service stopped successfully.
+
+
+12:35 PM - Stop MultisoftServicesMonitor
 MultisoftServicesMonitor have stopped 
 
