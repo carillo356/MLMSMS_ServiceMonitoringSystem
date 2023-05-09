@@ -251,12 +251,12 @@
     </div>
 
     <!--Edit Users Modal -->
-    <div class="modal fade" id="editUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal" id="editUsers-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">Edit user</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" id="editUsers-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="edit-user-form" onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUser", "Home")">
@@ -376,6 +376,8 @@
 
                         // Hide modal
                         $('#addUsers-modal').modal('dispose');
+
+                        //Reset Form
                         $('#add-user-form')[0].reset();
 
                         // Clear the validation summary
@@ -413,15 +415,6 @@
         $('#cancelButton').on('click', function () {
             $('#addUsers-modal').modal('hide');
         });
-
-
-    // Reset form fields when modal is hidden
-    $('#changePass-close').on('click', function () {
-        $('#change-pass-form')[0].reset();
-        $('#error-container-changePass').html('');
-    });
-
-
 </script>
 
 <!-- Edit User Modal with Toast and Validation Message -->
@@ -453,12 +446,14 @@
                         toast.dispose();
                     }, 4000);
 
-                    // Hide modal
-                    $('#editUsers-modal').modal('dispose');
+                    //Clear Password
                     $('#edit-user-form input[type="password"]').val('');
 
                     // Clear the validation summary
                     $('#validation-summary-edit').html('');
+
+                    $('#editUsers-modal').modal('hide');
+                    document.getElementById('editUsers-close').click();
 
                 } else {
                     // Check if there is a validation summary
@@ -480,6 +475,12 @@
             }
         });
       });
+    });
+
+    // Reset validation and password fields when clicking the close button
+    $('#editUsers-close').on('click', function () {
+        $('#validation-summary-edit').html('');
+        $('#edit-user-form input[type="password"]').val('');
     });
 </script>
 
@@ -512,7 +513,10 @@
                         toast.dispose();
                     }, 4000);
 
+                    // Reset Form
                     $('#change-pass-form')[0].reset();
+
+                    // Clear Error
                     $('#error-container-changePass').html('');
 
                     // Hide the change-pass-modal after a successful password change
@@ -527,6 +531,12 @@
             }
         });
       });
+    });
+
+    // Reset form fields and errors when clicking the close button
+    $('#changePass-close').on('click', function () {
+        $('#change-pass-form')[0].reset();
+        $('#error-container-changePass').html('');
     });
 </script>
 
