@@ -260,7 +260,9 @@
                 </div>
                 <div class="modal-body">
                     <form id="edit-user-form" onsubmit="Event.preventDefault();" method="post" action="@Url.Action("UpdateUser", "Home")">
-                        @Html.ValidationSummary()
+                        <div id="validation-summary-edit">
+                            @Html.ValidationSummary(true)
+                        </div>
                         @Html.AntiForgeryToken()
 
                         <div class="form-group m-3">
@@ -298,7 +300,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" name="submit" class="btn btn-primary mt-3 mb-2" data-bs-dismiss="modal" value="addUser">Save Changes</button>
+                            <button type="submit" id="editUser-save" name="submit" class="btn btn-primary mt-3 mb-2" value="addUser">Save Changes</button>
                             <button type="button" id="cancel-button" class="btn btn-primary custom-button" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </form>
@@ -452,21 +454,28 @@
                     }, 4000);
 
                     // Hide modal
-                    $('#editUsers-modal').modal('hide');
+                    $('#editUsers-modal').modal('dispose');
+                    $('#edit-user-form input[type="password"]').val('');
+
+                    // Clear the validation summary
+                    $('#validation-summary-edit').html('');
 
                 } else {
-                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
-                    var toastMessage = result.message;
-                    document.querySelector('.toast-body').innerHTML = toastMessage;
-                    // set background color to green if service/s has been added.
-                    toast._element.classList.remove("text-bg-danger");
-                    toast._element.classList.add("bg-success");
-                    toast.show();
-
-                    setTimeout(function () {
-                        toast.dispose();
-                    }, 4000);
+                    // Check if there is a validation summary
+                    if (result.message) {
+                        // Display validation summary as a list
+                        let validationSummaryList = '<ul class="validation-summary-list">';
+                        result.message.forEach(function (error) {
+                            validationSummaryList += `<li>${error}</li>`;
+                        });
+                        validationSummaryList += '</ul>';
+                        $('#validation-summary-edit').html(validationSummaryList);
+                    } else {
+                        // Display error message
+                        alert(result.message);
+                    }
                 }
+
                 Synch();
             }
         });

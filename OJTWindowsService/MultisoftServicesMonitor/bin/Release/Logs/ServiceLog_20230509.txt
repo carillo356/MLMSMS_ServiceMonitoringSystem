@@ -1,0 +1,6 @@
+08:04 AM - Run RealTimeLogger
+enabled_RealTimeLogger: False
+
+08:04 AM - Run PeriodicLogger
+checkServicesEveryXMinute: 30
+
