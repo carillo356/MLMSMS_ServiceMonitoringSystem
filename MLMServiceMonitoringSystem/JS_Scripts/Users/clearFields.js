@@ -13,7 +13,8 @@ document.getElementById('cancelButton').addEventListener('click', function () {
 $(function () {
     // Function to clear all input fields
     function clearFields() {
-        $('#edit-user-form input[type="password"]').val('');
+        $('#edit-user-form')[0].reset();
+        $('#validation-summary-edit').html('');
     }
 
     // Attach the clearFields function to the Cancel button click event

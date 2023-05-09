@@ -440,25 +440,24 @@
                     var toastMessage = result.message;
                     document.querySelector('.toast-body').innerHTML = toastMessage;
                     // set background color to green if service/s has been added.
-                    toast._element.classList.remove("text-bg-danger");
-                    toast._element.classList.add("bg-success");
-                    toast.show();
+                    if (result.nochange == true) {
+                        toast._element.classList.remove("text-bg-danger");
+                        toast._element.classList.add("bg-danger");
+                        toast.show();
+                    } else {
+                        toast._element.classList.remove("text-bg-danger");
+                        toast._element.classList.add("bg-success");
+                        toast.show();
+                    }
 
-                    setTimeout(function () {
-                        toast.dispose();
-                    }, 4000);
-                }
-                else if (!result.success) {
-                    // Update table with new user data
-                    $('#user-table').html(result);
+                    //Clear Password
+                    $('#edit-user-form')[0].reset();
 
-                    var toast = new bootstrap.Toast(document.getElementById('liveToast'));
-                    var toastMessage = result.message;
-                    document.querySelector('.toast-body').innerHTML = toastMessage;
-                    // set background color to green if service/s has been added.
-                    toast._element.classList.remove("text-bg-danger");
-                    toast._element.classList.add("bg-danger");
-                    toast.show();
+                    // Clear the validation summary
+                    $('#validation-summary-edit').html('');
+
+                    $('#editUsers-modal').modal('hide');
+                    document.getElementById('editUsers-close').click();
 
                     setTimeout(function () {
                         toast.dispose();
@@ -479,16 +478,6 @@
                         alert(result.message);
                     }
                 }
-
-                //Clear Password
-                $('#edit-user-form input[type="password"]').val('');
-                $('#password2').val('');
-
-                // Clear the validation summary
-                $('#validation-summary-edit').html('');
-
-                $('#editUsers-modal').modal('hide');
-                document.getElementById('editUsers-close').click();
                 Synch();
             }
         });
